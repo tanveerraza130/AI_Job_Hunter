@@ -4,6 +4,8 @@ AI Job Hunter API - Main Entry Point
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from api.s3_refresh import refresh_loop
+import asyncio
 
 from api.config import settings
 from api.routes import applications, dashboard, jobs, profiles
@@ -13,6 +15,14 @@ app = FastAPI(
     description="API for AI Job Hunter - Job search, scoring, and ranking platform",
     version="1.0.0",
 )
+
+
+@app.on_event("startup")
+async def start_s3_refresh() -> None:
+    asyncio.create_task(
+        asyncio.to_thread(refresh_loop)
+    )
+
 
 # Configure CORS
 app.add_middleware(
