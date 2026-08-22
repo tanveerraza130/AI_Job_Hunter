@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 MAIN_SCRIPT = ROOT / "main.py"
 BUILD_SCRIPT = ROOT / "scripts" / "build_production_snapshot.py"
+PUBLISH_SCRIPT = ROOT / "scripts" / "publish_production.py"
 
 
 def run_step(name: str, command: list[str]) -> None:
@@ -58,6 +59,11 @@ def main() -> int:
     if not BUILD_SCRIPT.exists():
         raise FileNotFoundError(
             f"Missing build script: {BUILD_SCRIPT}"
+        )
+
+    if not PUBLISH_SCRIPT.exists():
+        raise FileNotFoundError(
+            f"Missing publish script: {PUBLISH_SCRIPT}"
         )
 
     # ------------------------------------------------------------
@@ -101,26 +107,46 @@ def main() -> int:
     )
 
     # ------------------------------------------------------------
+    # STEP 3 — PUBLISH PRODUCTION
+    # ------------------------------------------------------------
+
+    run_step(
+        "STEP 3 — PUBLISH TO S3 + GITHUB",
+        [
+            sys.executable,
+            str(PUBLISH_SCRIPT),
+        ],
+    )
+
+    # ------------------------------------------------------------
     # COMPLETE
     # ------------------------------------------------------------
 
     print()
     print("=" * 70)
-    print("LOCAL PIPELINE COMPLETE")
+    print("🚀 FULL PRODUCTION PIPELINE COMPLETE")
     print("=" * 70)
 
     print()
-    print("Current flow:")
+    print("Final flow:")
+    print("  Fetch")
+    print("      ↓")
     print("  Master DB")
     print("      ↓")
     print("  Production DB — rolling 30 days")
     print("      ↓")
-    print("  Minimal DB — rolling 30 days")
+    print("  Minimal DB")
+    print("      ↓")
+    print("  S3 Production")
+    print("      ↓")
+    print("  GitHub Minimal Snapshot")
+    print("      ↓")
+    print("  AWS automatic DB refresh")
+    print("      ↓")
+    print("  Live Frontend")
 
     print()
-    print("✓ No AWS changes")
-    print("✓ No GitHub changes")
-    print("✓ Master DB preserved")
+    print("✓ End-to-end production publish complete")
 
     return 0
 
