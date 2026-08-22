@@ -1,0 +1,31 @@
+# Bonus Rules for CRM Manager Profile
+
+version: 1
+
+skill_bonuses:
+  - skill: "SQL"
+    bonus: 2.0
+    min_count: 1
+  - skill: "Python"
+    bonus: 2.0
+    min_count: 1
+  - skill: "Data Analytics"
+    bonus: 1.5
+    min_count: 1
+  - skill: "Tableau"
+    bonus: 1.0
+    min_count: 1
+  - skill: "Power BI"
+    bonus: 1.0
+    min_count: 1
+
+tool_bonuses:
+  - tool: "CleverTap"
+    bonus: 2.0
+    min_count: 1
+  - tool: "MoEngage"
+    bonus: 2.0
+    min_count: 1
+  - tool: "Braze"
+    bonus: 1.5
+    min_count: 1

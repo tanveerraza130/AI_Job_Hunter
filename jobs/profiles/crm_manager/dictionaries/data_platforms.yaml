@@ -1,0 +1,155 @@
+category:
+  name: data_platforms
+items:
+- name: Airbyte
+  aliases:
+  - airbyte platform
+- name: Apache Kylin
+  aliases:
+  - kylin
+- name: Atlan
+  aliases:
+  - atlan data
+  - atlan platform
+- name: BigQuery
+  aliases:
+  - bq
+  - gcp bigquery
+  - google bigquery
+- name: ClickHouse
+  aliases:
+  - clickhouse analytics
+  - clickhouse database
+- name: Databricks
+  aliases:
+  - databricks lakehouse
+  - databricks platform
+- name: Datadog
+  aliases:
+  - datadog analytics
+  - datadog monitoring
+- name: dbt
+  aliases:
+  - data build tool
+  - dbt cloud
+  - dbt core
+- name: Delta Lake
+  aliases:
+  - delta
+  - delta lakehouse
+- name: DuckDB
+  aliases:
+  - duck db
+  - duckdb database
+- name: Fivetran
+  aliases:
+  - fivetran data
+  - fivetran platform
+- name: Hightouch
+  aliases:
+  - hightouch platform
+  - hightouch reverse etl
+- name: Iceberg
+  aliases:
+  - apache iceberg
+  - iceberg table
+- name: Microsoft Fabric
+  aliases:
+  - fabric
+  - ms fabric
+- name: Microsoft Synapse
+  aliases:
+  - azure synapse
+  - ms synapse
+  - synapse
+- name: Presto
+  aliases:
+  - presto db
+  - presto sql
+- name: Redis
+  aliases:
+  - redis cache
+  - redis platform
+- name: Redshift
+  aliases:
+  - amazon redshift
+  - aws redshift
+- name: RudderStack
+  aliases:
+  - rudderstack cdp
+  - rudderstack platform
+- name: Snowflake
+  aliases:
+  - snowflake cloud
+  - snowflake data
+  - snowflake platform
+- name: Trino
+  aliases:
+  - trino db
+  - trino sql
+lookup:
+  airbyte: Airbyte
+  airbyte platform: Airbyte
+  apache kylin: Apache Kylin
+  kylin: Apache Kylin
+  atlan: Atlan
+  atlan data: Atlan
+  atlan platform: Atlan
+  bigquery: BigQuery
+  google bigquery: BigQuery
+  gcp bigquery: BigQuery
+  bq: BigQuery
+  clickhouse: ClickHouse
+  clickhouse database: ClickHouse
+  clickhouse analytics: ClickHouse
+  databricks: Databricks
+  databricks platform: Databricks
+  databricks lakehouse: Databricks
+  datadog: Datadog
+  datadog monitoring: Datadog
+  datadog analytics: Datadog
+  dbt: dbt
+  data build tool: dbt
+  dbt cloud: dbt
+  dbt core: dbt
+  delta lake: Delta Lake
+  delta: Delta Lake
+  delta lakehouse: Delta Lake
+  duckdb: DuckDB
+  duck db: DuckDB
+  duckdb database: DuckDB
+  fivetran: Fivetran
+  fivetran platform: Fivetran
+  fivetran data: Fivetran
+  hightouch: Hightouch
+  hightouch platform: Hightouch
+  hightouch reverse etl: Hightouch
+  iceberg: Iceberg
+  apache iceberg: Iceberg
+  iceberg table: Iceberg
+  microsoft fabric: Microsoft Fabric
+  fabric: Microsoft Fabric
+  ms fabric: Microsoft Fabric
+  microsoft synapse: Microsoft Synapse
+  synapse: Microsoft Synapse
+  azure synapse: Microsoft Synapse
+  ms synapse: Microsoft Synapse
+  presto: Presto
+  presto sql: Presto
+  presto db: Presto
+  redis: Redis
+  redis cache: Redis
+  redis platform: Redis
+  redshift: Redshift
+  amazon redshift: Redshift
+  aws redshift: Redshift
+  rudderstack: RudderStack
+  rudderstack platform: RudderStack
+  rudderstack cdp: RudderStack
+  snowflake: Snowflake
+  snowflake platform: Snowflake
+  snowflake data: Snowflake
+  snowflake cloud: Snowflake
+  trino: Trino
+  trino sql: Trino
+  trino db: Trino

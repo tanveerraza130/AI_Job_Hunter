@@ -1,0 +1,132 @@
+category:
+  name: advertising_platforms
+items:
+- name: Amazon Ads
+  aliases:
+  - amazon advertising
+  - amazon ppc
+  - amazon sponsored
+- name: Apple Search Ads
+  aliases:
+  - apple ads
+  - apple app store ads
+  - apple search
+- name: Facebook Ads
+  aliases:
+  - facebook advertising
+  - fb ads
+- name: Google Ads
+  aliases:
+  - adwords
+  - google advertising
+  - google search ads
+  - ppc
+- name: Instagram Ads
+  aliases:
+  - ig ads
+  - instagram advertising
+  - instagram sponsored
+- name: LinkedIn Ads
+  aliases:
+  - li ads
+  - linkedin advertising
+  - linkedin sponsored
+- name: Meta Business Suite
+  aliases:
+  - facebook business
+  - fb business
+  - meta ads
+  - meta business
+- name: Microsoft Advertising
+  aliases:
+  - bing ads
+  - bing advertising
+  - microsoft ads
+- name: Pinterest Ads
+  aliases:
+  - pin ads
+  - pinterest advertising
+  - pinterest promoted
+- name: Reddit Ads
+  aliases:
+  - reddit advertising
+  - reddit promoted
+  - reddit sponsored
+- name: Snapchat Ads
+  aliases:
+  - snap ads
+  - snapchat advertising
+  - snapchat sponsored
+- name: TikTok Ads
+  aliases:
+  - tiktok advertising
+  - tiktok sponsored
+  - tt ads
+- name: Twitter Ads
+  aliases:
+  - twitter advertising
+  - twitter promoted
+  - x ads
+- name: YouTube Ads
+  aliases:
+  - youtube advertising
+  - youtube video ads
+  - yt ads
+lookup:
+  amazon ads: Amazon Ads
+  amazon advertising: Amazon Ads
+  amazon sponsored: Amazon Ads
+  amazon ppc: Amazon Ads
+  apple search ads: Apple Search Ads
+  apple ads: Apple Search Ads
+  apple search: Apple Search Ads
+  apple app store ads: Apple Search Ads
+  facebook ads: Facebook Ads
+  facebook advertising: Facebook Ads
+  fb ads: Facebook Ads
+  google ads: Google Ads
+  google advertising: Google Ads
+  adwords: Google Ads
+  google search ads: Google Ads
+  ppc: Google Ads
+  instagram ads: Instagram Ads
+  instagram advertising: Instagram Ads
+  ig ads: Instagram Ads
+  instagram sponsored: Instagram Ads
+  linkedin ads: LinkedIn Ads
+  linkedin advertising: LinkedIn Ads
+  linkedin sponsored: LinkedIn Ads
+  li ads: LinkedIn Ads
+  meta business suite: Meta Business Suite
+  meta ads: Meta Business Suite
+  facebook business: Meta Business Suite
+  meta business: Meta Business Suite
+  fb business: Meta Business Suite
+  microsoft advertising: Microsoft Advertising
+  bing ads: Microsoft Advertising
+  microsoft ads: Microsoft Advertising
+  bing advertising: Microsoft Advertising
+  pinterest ads: Pinterest Ads
+  pinterest advertising: Pinterest Ads
+  pinterest promoted: Pinterest Ads
+  pin ads: Pinterest Ads
+  reddit ads: Reddit Ads
+  reddit advertising: Reddit Ads
+  reddit sponsored: Reddit Ads
+  reddit promoted: Reddit Ads
+  snapchat ads: Snapchat Ads
+  snapchat advertising: Snapchat Ads
+  snap ads: Snapchat Ads
+  snapchat sponsored: Snapchat Ads
+  tiktok ads: TikTok Ads
+  tiktok advertising: TikTok Ads
+  tiktok sponsored: TikTok Ads
+  tt ads: TikTok Ads
+  twitter ads: Twitter Ads
+  twitter advertising: Twitter Ads
+  x ads: Twitter Ads
+  twitter promoted: Twitter Ads
+  youtube ads: YouTube Ads
+  youtube advertising: YouTube Ads
+  yt ads: YouTube Ads
+  youtube video ads: YouTube Ads

@@ -1,0 +1,61 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+
+# Logs
+*.log
+
+# Debug / generated scraping artifacts
+debug/*.json
+
+# Local application state
+data/application.duckdb
+
+# Generated output
+output/
+
+# Frontend dependencies / build
+frontend/node_modules/
+frontend/.next/
+frontend/tsconfig.tsbuildinfo
+
+# CI virtual environment
+.ci-venv/
+
+# Naukri authentication session
+/data/sessions/naukri_cookies.json
+
+# Local databases
+*.db
+*.duckdb
+
+# Debug artifacts
+debug/*.json
+debug/*.html
+debug/*.png
+debug/*.jpg
+debug/*.jpeg
+debug/*.webp
+
+# Temporary backup files
+*.bak
+*.backup
+*.tmp
+*.old
+
+# Root debug logs
+debug.log

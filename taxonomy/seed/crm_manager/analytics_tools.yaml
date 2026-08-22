@@ -1,0 +1,181 @@
+category:
+  name: analytics_tools
+
+items:
+  - name: "Adobe Analytics"
+    aliases:
+      - "adobe reporting"
+      - "adobe insights"
+
+  - name: "Amplitude"
+    aliases:
+      - "amplitude analytics"
+      - "amplitude product"
+
+  - name: "Chartio"
+    aliases:
+      - "chartio analytics"
+
+  - name: "Cognos"
+    aliases:
+      - "ibm cognos"
+      - "cognos analytics"
+      - "cognos bi"
+
+  - name: "Cube"
+    aliases:
+      - "cube js"
+      - "cube platform"
+
+  - name: "Datorama"
+    aliases:
+      - "salesforce datorama"
+      - "datorama analytics"
+
+  - name: "Datameer"
+    aliases:
+      - "datameer platform"
+
+  - name: "Google Analytics"
+    aliases:
+      - "ga"
+      - "ga4"
+      - "universal analytics"
+      - "google analytics 4"
+
+  - name: "Google Looker"
+    aliases:
+      - "looker"
+      - "google looker"
+      - "looker bi"
+      - "looker platform"
+
+  - name: "Heap"
+    aliases:
+      - "heap analytics"
+      - "heap platform"
+
+  - name: "Hex"
+    aliases:
+      - "hex platform"
+      - "hex analytics"
+
+  - name: "Hotjar"
+    aliases:
+      - "hotjar analytics"
+      - "hotjar platform"
+
+  - name: "Kissmetrics"
+    aliases:
+      - "kissmetrics analytics"
+      - "km"
+
+  - name: "Looker Studio"
+    aliases:
+      - "data studio"
+      - "google data studio"
+      - "looker studio reports"
+
+  - name: "Matomo"
+    aliases:
+      - "matomo analytics"
+      - "piwik"
+
+  - name: "Metabase"
+    aliases:
+      - "metabase bi"
+      - "metabase platform"
+
+  - name: "MicroStrategy"
+    aliases:
+      - "microstrategy platform"
+      - "mstr"
+
+  - name: "Mixpanel"
+    aliases:
+      - "mixpanel analytics"
+      - "mixpanel platform"
+
+  - name: "Mode Analytics"
+    aliases:
+      - "mode platform"
+      - "mode bi"
+
+  - name: "Omni"
+    aliases:
+      - "omni analytics"
+      - "omni platform"
+
+  - name: "Oracle Analytics"
+    aliases:
+      - "oracle bi"
+      - "oracle platform"
+
+  - name: "Power BI"
+    aliases:
+      - "powerbi"
+      - "microsoft power bi"
+      - "ms power bi"
+
+  - name: "Preset"
+    aliases:
+      - "preset bi"
+      - "preset platform"
+
+  - name: "Qlik"
+    aliases:
+      - "qlik view"
+      - "qlik sense"
+      - "qlik platform"
+
+  - name: "Redash"
+    aliases:
+      - "redash bi"
+      - "redash platform"
+
+  - name: "Salesforce Analytics"
+    aliases:
+      - "einstein analytics"
+      - "salesforce einstein"
+      - "sf analytics"
+
+  - name: "SAP Analytics"
+    aliases:
+      - "sap bi"
+      - "sap platform"
+
+  - name: "Sigma Computing"
+    aliases:
+      - "sigma"
+      - "sigma platform"
+
+  - name: "Sisense"
+    aliases:
+      - "sisense platform"
+      - "sisense bi"
+
+  - name: "Superset"
+    aliases:
+      - "apache superset"
+      - "superset bi"
+
+  - name: "Tableau"
+    aliases:
+      - "salesforce tableau"
+      - "tableau platform"
+      - "tableau bi"
+
+  - name: "ThoughtSpot"
+    aliases:
+      - "thoughtspot platform"
+      - "thoughtspot analytics"
+
+  - name: "TIBCO Spotfire"
+    aliases:
+      - "spotfire"
+      - "tibco platform"
+
+  - name: "Zoho Analytics"
+    aliases:
+      - "zoho bi"
+      - "zoho analytics"

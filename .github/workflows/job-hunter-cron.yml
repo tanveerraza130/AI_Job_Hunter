@@ -1,0 +1,264 @@
+name: AI Job Hunter Pipeline
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ai-job-hunter-production
+  cancel-in-progress: false
+
+jobs:
+  job-hunter:
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 30
+
+    env:
+      S3_BUCKET: ai-job-hunter-production-db
+      S3_KEY: job_hunter.duckdb
+      DB_PATH: output/job_hunter_production.duckdb
+      PLAYWRIGHT_HEADLESS: "true"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Setup production Python environment
+        run: |
+          python -m venv .ci-venv
+
+          .ci-venv/bin/python -m pip install --upgrade pip
+          .ci-venv/bin/python -m pip install --no-cache-dir -r requirements.txt
+
+          echo "===== CI PYTHON ====="
+          .ci-venv/bin/python --version
+          .ci-venv/bin/python -m pip --version
+
+          echo "===== REQUIRED DEPENDENCIES ====="
+          .ci-venv/bin/python -m pip show duckdb
+          .ci-venv/bin/python -m pip show playwright
+          .ci-venv/bin/python -m pip show PyYAML
+
+          echo "===== IMPORT TEST ====="
+          .ci-venv/bin/python -c "import duckdb, playwright, yaml; print('DuckDB:', duckdb.__version__); print('Playwright: OK'); print('PyYAML:', yaml.__version__)"
+          .ci-venv/bin/python -c "import jobs.cli; print('jobs.cli: OK')"
+
+      - name: Restore Naukri session
+        env:
+          NAUKRI_COOKIES_JSON: ${{ secrets.NAUKRI_COOKIES_JSON }}
+        run: |
+          mkdir -p data/sessions
+          printf '%s' "$NAUKRI_COOKIES_JSON" > data/sessions/naukri_cookies.json
+          .ci-venv/bin/python - <<'PY2'
+          import json
+          from pathlib import Path
+
+          path = Path("data/sessions/naukri_cookies.json")
+          cookies = json.loads(path.read_text())
+
+          if not isinstance(cookies, list) or not cookies:
+              raise SystemExit("Invalid Naukri cookie secret")
+
+          print(f"Naukri session restored: {len(cookies)} cookies")
+          PY2
+
+      - name: Install Playwright Chromium
+        run: |
+          .ci-venv/bin/python -m playwright install --with-deps chromium chromium-headless-shell
+
+      - name: Diagnose Naukri access
+        run: |
+          .ci-venv/bin/python - <<'PY2'
+          from playwright.sync_api import sync_playwright
+
+          url = "https://www.naukri.com"
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              page = browser.new_page()
+
+              response = page.goto(
+                  url,
+                  wait_until="domcontentloaded",
+                  timeout=30000,
+              )
+
+              print("===== NAUKRI ACCESS TEST =====")
+              print(
+                  "HTTP status:",
+                  response.status if response else "NO RESPONSE",
+              )
+              print("Final URL:", page.url)
+              print("Page title:", page.title())
+
+              html = page.content().lower()
+
+              print("Access Denied:", "access denied" in html)
+              print("Akamai:", "edgesuite.net" in html)
+
+              browser.close()
+          PY2
+
+      - name: Download production database
+        run: |
+          mkdir -p output
+          aws s3 cp \
+            "s3://${S3_BUCKET}/${S3_KEY}" \
+            "${DB_PATH}"
+
+      - name: Backup production database
+        run: |
+          TIMESTAMP=$(date -u +"%Y%m%d_%H%M%S")
+          aws s3 cp \
+            "s3://${S3_BUCKET}/${S3_KEY}" \
+            "s3://${S3_BUCKET}/backups/job_hunter_${TIMESTAMP}.duckdb"
+
+      - name: Run AI Job Hunter
+        run: |
+          echo "===== FINAL PYTHON CHECK ====="
+          .ci-venv/bin/python --version
+          .ci-venv/bin/python -c "import duckdb, playwright, yaml; print('DuckDB:', duckdb.__version__); print('Playwright: OK'); print('PyYAML:', yaml.__version__)"
+
+          echo "===== RUN AI JOB HUNTER ====="
+          .ci-venv/bin/python -m jobs.cli \
+            --profile crm_manager \
+            --connector naukri \
+            --exporter duckdb
+
+      - name: Validate production database
+        run: |
+          .ci-venv/bin/python - <<'PY'
+          import duckdb
+          from pathlib import Path
+
+          db = Path("output/job_hunter_production.duckdb")
+
+          if not db.exists():
+              raise SystemExit("Production database was not created.")
+
+          conn = duckdb.connect(str(db), read_only=True)
+
+          tables = {
+              row[0]
+              for row in conn.execute(
+                  "SHOW TABLES"
+              ).fetchall()
+          }
+
+          required = {
+              "fact_jobs",
+              "fact_job_scores",
+              "job_registry",
+              "search_session",
+          }
+
+          missing = required - tables
+
+          if missing:
+              raise SystemExit(
+                  f"Missing required tables: {sorted(missing)}"
+              )
+
+          count = conn.execute(
+              "SELECT COUNT(*) FROM fact_jobs"
+          ).fetchone()[0]
+
+          if count == 0:
+              raise SystemExit("fact_jobs is empty.")
+
+          print(f"Production DB validated: {count} jobs")
+
+          conn.close()
+          PY
+
+      - name: Upload candidate database
+        run: |
+          TIMESTAMP=$(date -u +"%Y%m%d_%H%M%S")
+          CANDIDATE_KEY="releases/job_hunter_${TIMESTAMP}.duckdb"
+
+          echo "CANDIDATE_KEY=${CANDIDATE_KEY}" >> "$GITHUB_ENV"
+
+          aws s3 cp \
+            "${DB_PATH}" \
+            "s3://${S3_BUCKET}/${CANDIDATE_KEY}"
+
+      - name: Validate candidate database
+        run: |
+          mkdir -p /tmp/candidate
+
+          aws s3 cp \
+            "s3://${S3_BUCKET}/${CANDIDATE_KEY}" \
+            "/tmp/candidate/job_hunter.duckdb"
+
+          .ci-venv/bin/python - <<'PY2'
+          import duckdb
+          from pathlib import Path
+
+          db = Path("/tmp/candidate/job_hunter.duckdb")
+
+          conn = duckdb.connect(str(db), read_only=True)
+
+          required = {
+              "fact_jobs",
+              "fact_job_scores",
+              "job_registry",
+              "search_session",
+          }
+
+          tables = {
+              row[0]
+              for row in conn.execute("SHOW TABLES").fetchall()
+          }
+
+          missing = required - tables
+
+          if missing:
+              raise SystemExit(
+                  f"Candidate DB missing tables: {sorted(missing)}"
+              )
+
+          jobs = conn.execute(
+              "SELECT COUNT(*) FROM fact_jobs"
+          ).fetchone()[0]
+
+          scores = conn.execute(
+              "SELECT COUNT(*) FROM fact_job_scores"
+          ).fetchone()[0]
+
+          if jobs == 0:
+              raise SystemExit("Candidate DB contains zero jobs.")
+
+          if scores == 0:
+              raise SystemExit("Candidate DB contains zero scores.")
+
+          print(
+              f"Candidate DB validated: "
+              f"{jobs} jobs, {scores} scores"
+          )
+
+          conn.close()
+          PY2
+
+      - name: Promote candidate database
+        run: |
+          aws s3 cp \
+            "s3://${S3_BUCKET}/${CANDIDATE_KEY}" \
+            "s3://${S3_BUCKET}/${S3_KEY}"
+
+      - name: Verify production database
+        run: |
+          aws s3 ls \
+            "s3://${S3_BUCKET}/${S3_KEY}"

@@ -1,0 +1,196 @@
+category:
+  name: communication_channels
+
+items:
+  - name: "App Inbox"
+    aliases:
+      - "app inbox"
+      - "inbox"
+      - "app notifications inbox"
+
+  - name: "Call Center"
+    aliases:
+      - "call center"
+      - "contact center"
+      - "telephony"
+
+  - name: "Direct Mail"
+    aliases:
+      - "postal mail"
+      - "physical mail"
+      - "mail campaign"
+      - "catalog mail"
+
+  - name: "Display Ads"
+    aliases:
+      - "display advertising"
+      - "banner ads"
+      - "display network"
+
+  - name: "Email"
+    aliases:
+      - "email campaigns"
+      - "email outreach"
+      - "newsletter"
+      - "email strategy"
+
+  - name: "Email AMP"
+    aliases:
+      - "amp email"
+      - "amp for email"
+      - "interactive email"
+
+  - name: "Events"
+    aliases:
+      - "conferences"
+      - "trade shows"
+      - "seminars"
+
+  - name: "In-App Messages"
+    aliases:
+      - "in-app notifications"
+      - "app messages"
+      - "in-app alerts"
+      - "mobile app messages"
+
+  - name: "IVR"
+    aliases:
+      - "interactive voice response"
+      - "ivr system"
+      - "voice response"
+
+  - name: "Live Chat"
+    aliases:
+      - "chat"
+      - "web chat"
+      - "chat support"
+      - "instant messaging"
+
+  - name: "Live Commerce"
+    aliases:
+      - "live shopping"
+      - "live streaming commerce"
+      - "shoppable video"
+
+  - name: "MMS"
+    aliases:
+      - "multimedia messaging service"
+      - "mms messaging"
+      - "picture messaging"
+
+  - name: "Mobile Wallet"
+    aliases:
+      - "mobile wallet"
+      - "digital wallet"
+      - "wallet pass"
+      - "apple wallet"
+
+  - name: "Native Ads"
+    aliases:
+      - "native advertising"
+      - "sponsored content"
+      - "native ad placement"
+
+  - name: "On-Site Popups"
+    aliases:
+      - "popups"
+      - "pop-up"
+      - "exit intent"
+      - "overlay"
+
+  - name: "Podcast"
+    aliases:
+      - "podcast marketing"
+      - "audio content"
+      - "sponsored podcasts"
+
+  - name: "Programmatic Ads"
+    aliases:
+      - "programmatic advertising"
+      - "automated ads"
+      - "programmatic buying"
+
+  - name: "Push Inbox"
+    aliases:
+      - "push inbox"
+      - "push notification inbox"
+
+  - name: "Push Notifications"
+    aliases:
+      - "push messages"
+      - "push alerts"
+      - "mobile push"
+
+  - name: "QR Code"
+    aliases:
+      - "qr"
+      - "quick response code"
+      - "qr marketing"
+
+  - name: "RCS"
+    aliases:
+      - "rich communication services"
+      - "rcs messaging"
+      - "rcs chat"
+
+  - name: "Referral"
+    aliases:
+      - "referral marketing"
+      - "referral program"
+      - "refer-a-friend"
+      - "word of mouth"
+
+  - name: "SMS"
+    aliases:
+      - "text messaging"
+      - "sms marketing"
+      - "text marketing"
+      - "short message service"
+      - "bulk sms"
+
+  - name: "Social Media"
+    aliases:
+      - "social networks"
+      - "social platforms"
+      - "social marketing"
+
+  - name: "Video Ads"
+    aliases:
+      - "video advertising"
+      - "video marketing"
+      - "online video ads"
+
+  - name: "Virtual Events"
+    aliases:
+      - "online events"
+
+  - name: "Voice"
+    aliases:
+      - "voice marketing"
+      - "voice channel"
+      - "voice communication"
+
+  - name: "Web Message"
+    aliases:
+      - "web messaging"
+      - "website messaging"
+      - "browser messaging"
+
+  - name: "Web Push"
+    aliases:
+      - "browser push"
+      - "web notifications"
+      - "browser notifications"
+
+  - name: "Webinars"
+    aliases:
+      - "webinar"
+      - "online seminar"
+      - "live stream"
+
+  - name: "WhatsApp"
+    aliases:
+      - "whatsapp business"
+      - "wa"
+      - "whatsapp marketing"
+      - "whatsapp api"

@@ -1,0 +1,11 @@
+# Intelligence Categories for CRM Manager Profile
+# Maps profile concepts to intelligence category names.
+# Version: 1.0.0
+
+categories:
+  skills: "crm_skills"
+  tools: "crm_platforms"
+  concepts: "crm_concepts"
+  channels: "communication_channels"
+  analytics: "analytics_tools"
+  bsps: "cpaas_providers"

@@ -1,0 +1,3 @@
+"""
+AI Job Hunter API
+"""

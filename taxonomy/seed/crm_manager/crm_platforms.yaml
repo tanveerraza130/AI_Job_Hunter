@@ -1,0 +1,156 @@
+category:
+  name: crm_platforms
+
+items:
+  - name: "ActionIQ"
+    aliases:
+      - "actioniq platform"
+      - "actioniq cdp"
+
+  - name: "Adobe Campaign"
+    aliases:
+      - "adobe campaign classic"
+      - "adobe campaign standard"
+
+  - name: "Bloomreach"
+    aliases:
+      - "bloomreach engagement"
+      - "bloomreach cdp"
+
+  - name: "Bluecore"
+    aliases:
+      - "bluecore platform"
+      - "bluecore marketing"
+
+  - name: "Blueshift"
+    aliases:
+      - "blueshift platform"
+      - "blueshift marketing"
+
+  - name: "Braze"
+    aliases:
+      - "appboy"
+      - "braze platform"
+      - "braze engagement"
+
+  - name: "CleverTap"
+    aliases:
+      - "clever tap"
+      - "clevertap platform"
+      - "clevertap marketing"
+
+  - name: "Cordial"
+    aliases:
+      - "cordial platform"
+      - "cordial messaging"
+
+  - name: "Customer.io"
+    aliases:
+      - "customerio"
+      - "customer io"
+
+  - name: "HubSpot"
+    aliases:
+      - "hub spot"
+      - "hubspot crm"
+      - "hubspot marketing"
+
+  - name: "Insider"
+    aliases:
+      - "insider platform"
+      - "insider marketing"
+
+  - name: "Iterable"
+    aliases:
+      - "iterable platform"
+      - "iterable marketing"
+      - "iterable engagement"
+
+  - name: "Klaviyo"
+    aliases:
+      - "klaviyo platform"
+      - "klaviyo marketing"
+
+  - name: "Leanplum"
+    aliases:
+      - "leanplum platform"
+      - "leanplum marketing"
+
+  - name: "Marketo"
+    aliases:
+      - "adobe marketo"
+      - "marketo engage"
+
+  - name: "Microsoft Dynamics 365"
+    aliases:
+      - "dynamics 365"
+      - "microsoft dynamics"
+      - "ms dynamics"
+
+  - name: "MoEngage"
+    aliases:
+      - "mo engage"
+      - "moengage platform"
+      - "moengage marketing"
+
+  - name: "mParticle"
+    aliases:
+      - "m particle"
+      - "mparticle platform"
+      - "mparticle cdp"
+
+  - name: "Netcore"
+    aliases:
+      - "net core"
+      - "netcore platform"
+      - "netcore marketing"
+
+  - name: "Oracle Eloqua"
+    aliases:
+      - "eloqua"
+      - "oracle eloqua"
+
+  - name: "Oracle Responsys"
+    aliases:
+      - "responsys"
+      - "oracle responsys"
+
+  - name: "Salesforce Marketing Cloud"
+    aliases:
+      - "sfmc"
+      - "marketing cloud"
+      - "salesforce mcloud"
+
+  - name: "Salesforce Sales Cloud"
+    aliases:
+      - "sales cloud"
+      - "salesforce crm"
+      - "sfdc"
+
+  - name: "Segment"
+    aliases:
+      - "twilio segment"
+      - "segment platform"
+      - "segment cdp"
+
+  - name: "Tealium"
+    aliases:
+      - "tealium platform"
+      - "tealium cdp"
+      - "tealium audience"
+
+  - name: "Treasure Data"
+    aliases:
+      - "treasure data platform"
+      - "td"
+
+  - name: "WebEngage"
+    aliases:
+      - "web engage"
+      - "webengage platform"
+      - "webengage marketing"
+
+  - name: "Zoho"
+    aliases:
+      - "zoho crm"
+      - "zoho platform"

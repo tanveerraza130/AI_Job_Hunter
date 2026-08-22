@@ -1,0 +1,52 @@
+.card {
+  min-width: 0;
+  padding: 16px 18px;
+
+  border: 1px solid var(--ajh-color-border);
+  border-radius: var(--ajh-radius-lg);
+
+  background: var(--ajh-color-surface);
+  box-shadow: var(--ajh-shadow-card);
+}
+
+.label {
+  color: var(--ajh-color-text-muted);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.value {
+  margin-top: 6px;
+
+  color: var(--ajh-color-text-primary);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.hint {
+  margin-top: 7px;
+
+  color: var(--ajh-color-text-muted);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 14px 15px;
+  }
+
+  .value {
+    font-size: 24px;
+  }
+
+  .hint {
+    margin-top: 6px;
+    font-size: 11px;
+  }
+}

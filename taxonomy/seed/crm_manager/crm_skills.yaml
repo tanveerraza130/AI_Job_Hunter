@@ -1,0 +1,119 @@
+category:
+  name: crm_skills
+items:
+- name: A/B Testing
+  aliases:
+  - ab testing
+  - split testing
+  - multivariate testing
+- name: Audience Builder
+  aliases:
+  - audience builder
+  - segment builder
+  - audience construction
+- name: Automation
+  aliases:
+  - marketing automation
+  - campaign automation
+  - workflow automation
+- name: Campaign Execution
+  aliases:
+  - campaign execution
+  - campaign implementation
+  - campaign delivery
+- name: Campaign Management
+  aliases:
+  - campaign strategy
+  - campaign optimization
+  - multi-channel campaigns
+  - campaign planning
+- name: Churn Reduction
+  aliases:
+  - churn management
+  - churn prevention
+  - attrition reduction
+  - churn analysis
+- name: Customer Onboarding
+  aliases:
+  - onboarding
+  - user onboarding
+  - client onboarding
+  - welcome program
+- name: Dashboarding
+  aliases:
+  - dashboards
+  - dashboard creation
+  - report building
+  - data visualization
+- name: Data Analysis
+  aliases:
+  - data analytics
+  - data interpretation
+  - insights generation
+- name: Email Marketing
+  aliases:
+  - email automation
+- name: Experimentation
+  aliases:
+  - experiment design
+  - test design
+  - optimization testing
+- name: Journey Builder
+  aliases:
+  - journey orchestration
+  - customer journey builder
+  - journey automation
+  - journey management
+- name: Journey Design
+  aliases:
+  - journey planning
+  - journey architecture
+  - experience design
+- name: Loyalty
+  aliases:
+  - Loyalty
+  - loyalty campaigns
+  - loyalty execution
+  - loyalty optimization
+  - loyalty program management
+- name: Preference Center
+  aliases:
+  - preference management
+  - customer preferences
+  - preference center design
+- name: Python
+  aliases:
+  - python programming
+  - python scripting
+  - python development
+  - python coding
+- name: Retention
+  aliases:
+  - retention campaigns
+  - retention execution
+  - retention optimization
+  - retention strategy execution
+- name: Segmentation
+  aliases:
+  - segment implementation
+  - segment execution
+  - audience creation
+  - audience building
+- name: Segmentation Execution
+  aliases:
+  - segmentation execution
+  - segmentation workflow
+  - segmentation operations
+  - audience deployment
+- name: SQL
+  aliases:
+  - structured query language
+  - sql querying
+  - database querying
+  - sql development
+- name: Statistical Analysis
+  aliases:
+  - Statistical Analysis
+  - statistical modeling
+  - quantitative analysis
+  - statistics

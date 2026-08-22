@@ -1,0 +1,634 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 18px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.heroMain {
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+
+  min-height: 112px;
+  padding: 16px 18px;
+
+  background: #ffffff;
+  border: 1px solid #e4e8f0;
+  border-radius: 8px;
+
+  box-shadow: 0 3px 12px rgba(31, 41, 55, 0.04);
+}
+
+.companyLogo {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+  border: 1px solid #e3e8f0;
+  border-radius: 8px;
+
+  color: #182033;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  box-shadow: 0 2px 6px rgba(17, 24, 39, 0.04);
+}
+
+.companyLogoOyo {
+  color: #ed1c24;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+}
+
+.heroContent {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 28px;
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.companyLine {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-top: 7px;
+
+  color: #52617d;
+
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.companyLine strong {
+  color: #344054;
+  font-weight: 700;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin-top: 13px;
+}
+
+.metaPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  min-height: 30px;
+  padding: 0 11px;
+
+  color: #52617d;
+  background: #ffffff;
+
+  border: 1px solid #dfe5ef;
+  border-radius: 7px;
+
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.metaPill svg {
+  color: #65738b;
+}
+
+.rupee {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding-right: 2px;
+}
+
+.saveButton,
+.applyButton {
+  height: 38px;
+
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+.saveButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-width: 78px;
+  padding: 0 13px;
+
+  color: #4f46e5;
+  background: #ffffff;
+
+  border: 1px solid #d8d2ff;
+
+  cursor: pointer;
+}
+
+.saveButton.saved {
+  background: #f7f5ff;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.applyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-width: 108px;
+  padding: 0 14px;
+
+  color: #ffffff;
+  background: #5638ef;
+
+  border: 1px solid #5638ef;
+  border-radius: 7px;
+
+  text-decoration: none;
+
+  box-shadow: 0 5px 12px rgba(86, 56, 239, 0.2);
+}
+
+.applyButton:hover {
+  background: #4b2fe0;
+}
+
+.scoreCard {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+
+  min-width: 0;
+  min-height: 112px;
+
+  padding: 16px 20px;
+
+  background: #ffffff;
+  border: 1px solid #e4e8f0;
+  border-radius: 8px;
+
+  box-shadow: 0 3px 12px rgba(31, 41, 55, 0.04);
+}
+
+.scoreRing {
+  --score: 0%;
+
+  position: relative;
+
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      #10b981 0 28%,
+      #14b8a6 28% 43%,
+      #f59e0b 43% 55%,
+      #8b5cf6 55% var(--score),
+      #e9edf3 var(--score) 100%
+    );
+}
+
+.scoreRing::before {
+  content: "";
+
+  position: absolute;
+  inset: 5px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+}
+
+.scoreRingInner {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: baseline;
+
+  color: #111827;
+}
+
+.scoreRingInner strong {
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.scoreRingInner span {
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.scoreInfo {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.scoreInfo > span {
+  color: #7a879f;
+
+  font-size: 9px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+
+  white-space: nowrap;
+}
+
+.scoreInfo > strong {
+  margin-top: 4px;
+
+  color: #111827;
+
+  font-size: 24px;
+  line-height: 1;
+
+  font-weight: 800;
+}
+
+.scoreInfo small {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  margin-top: 5px;
+
+  color: #059669;
+
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .scoreCard {
+    min-height: 86px;
+    justify-content: flex-start;
+  }
+}
+
+/* ============================================================
+   MOBILE JOB HEADER — INDEPENDENT PRESENTATION
+   Desktop styles above remain untouched.
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  /* ----------------------------------------------------------
+     JOB IDENTITY
+     ---------------------------------------------------------- */
+
+  .heroMain {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 12px;
+
+    width: 100%;
+    min-height: 0;
+
+    padding: 16px;
+
+    background: #ffffff;
+    border: 1px solid #e6eaf0;
+    border-radius: 14px;
+
+    box-shadow: 0 2px 10px rgba(20, 30, 50, 0.04);
+  }
+
+  .companyLogo {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 11px;
+
+    font-size: 14px;
+  }
+
+  .companyLogoOyo {
+    font-size: 18px;
+  }
+
+  .heroContent {
+    min-width: 0;
+  }
+
+  .title {
+    margin: 0;
+
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .companyLine {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+
+    margin-top: 6px;
+
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  /* ----------------------------------------------------------
+     JOB META
+     ---------------------------------------------------------- */
+
+  .meta {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+
+    margin-top: 3px;
+  }
+
+  .metaPill {
+    min-width: 0;
+    min-height: 32px;
+
+    padding: 0 9px;
+
+    border-radius: 8px;
+
+    background: #f8f9fc;
+    border-color: #e4e8ef;
+
+    font-size: 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .metaPill svg {
+    width: 13px;
+    height: 13px;
+    flex: 0 0 auto;
+  }
+
+  .rupee {
+    font-size: 12px;
+  }
+
+  /* ----------------------------------------------------------
+     ACTIONS
+     ---------------------------------------------------------- */
+
+  .actions {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 8px;
+
+    width: 100%;
+
+    padding: 0;
+    margin-top: 2px;
+  }
+
+  .saveButton,
+  .applyButton {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+    font-weight: 750;
+  }
+
+  /* ----------------------------------------------------------
+     MATCH SCORE
+     ---------------------------------------------------------- */
+
+  .scoreCard {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    width: 100%;
+    min-height: 82px;
+
+    padding: 13px 15px;
+
+    border-radius: 14px;
+
+    box-shadow: 0 2px 10px rgba(20, 30, 50, 0.04);
+  }
+
+  .scoreRing {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
+  }
+
+  .scoreRingInner strong {
+    font-size: 19px;
+  }
+
+  .scoreRingInner span {
+    font-size: 8px;
+  }
+}
+
+/* ============================================================
+   MOBILE — SCORE MOVED INTO MATCH SNAPSHOT
+   Desktop untouched
+   ============================================================ */
+
+@media (max-width: 700px) {
+  .scoreCard {
+    display: none;
+  }
+}
+
+/* ============================================================
+   MOBILE — JOB HEADER FINAL ALIGNMENT
+   ------------------------------------------------------------
+   Remove logo column and use full-width content.
+   Desktop untouched.
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .heroMain {
+    display: grid !important;
+
+    grid-template-columns: minmax(0, 1fr) !important;
+
+    gap: 0 !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    padding: 14px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  /* Remove logo completely on mobile.
+     Do not leave an empty grid column. */
+
+  .companyLogo {
+    display: none !important;
+  }
+
+  .heroContent {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .title {
+    width: 100% !important;
+
+    margin: 0 !important;
+
+    font-size: 20px !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.025em !important;
+
+    white-space: normal !important;
+  }
+
+  .companyLine {
+    width: 100% !important;
+
+    margin-top: 5px !important;
+
+    gap: 6px !important;
+
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+  }
+
+  .meta {
+    width: 100% !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 6px !important;
+
+    margin-top: 9px !important;
+  }
+
+  .metaPill {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    min-height: 34px !important;
+
+    padding: 0 9px !important;
+
+    box-sizing: border-box !important;
+
+    font-size: 10px !important;
+  }
+
+  .actions {
+    grid-column: 1 / -1 !important;
+
+    width: 100% !important;
+
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+
+    gap: 8px !important;
+
+    margin-top: 10px !important;
+    padding: 0 !important;
+  }
+
+  .saveButton,
+  .applyButton {
+    width: 100% !important;
+
+    height: 38px !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    font-size: 10px !important;
+  }
+}
+

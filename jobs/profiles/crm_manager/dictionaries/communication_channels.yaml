@@ -1,0 +1,289 @@
+category:
+  name: communication_channels
+items:
+- name: App Inbox
+  aliases:
+  - app notifications inbox
+  - inbox
+- name: Call Center
+  aliases:
+  - contact center
+  - telephony
+- name: Direct Mail
+  aliases:
+  - catalog mail
+  - mail campaign
+  - physical mail
+  - postal mail
+- name: Display Ads
+  aliases:
+  - banner ads
+  - display advertising
+  - display network
+- name: Email
+  aliases:
+  - email campaigns
+  - email outreach
+  - email strategy
+  - newsletter
+- name: Email AMP
+  aliases:
+  - amp email
+  - amp for email
+  - interactive email
+- name: Events
+  aliases:
+  - conferences
+  - seminars
+  - trade shows
+- name: In-App Messages
+  aliases:
+  - app messages
+  - in app alerts
+  - in app notifications
+  - mobile app messages
+- name: IVR
+  aliases:
+  - interactive voice response
+  - ivr system
+  - voice response
+- name: Live Chat
+  aliases:
+  - chat
+  - chat support
+  - instant messaging
+  - web chat
+- name: Live Commerce
+  aliases:
+  - live shopping
+  - live streaming commerce
+  - shoppable video
+- name: MMS
+  aliases:
+  - mms messaging
+  - multimedia messaging service
+  - picture messaging
+- name: Mobile Wallet
+  aliases:
+  - apple wallet
+  - digital wallet
+  - wallet pass
+- name: Native Ads
+  aliases:
+  - native ad placement
+  - native advertising
+  - sponsored content
+- name: On-Site Popups
+  aliases:
+  - exit intent
+  - overlay
+  - pop up
+  - popups
+- name: Podcast
+  aliases:
+  - audio content
+  - podcast marketing
+  - sponsored podcasts
+- name: Programmatic Ads
+  aliases:
+  - automated ads
+  - programmatic advertising
+  - programmatic buying
+- name: Push Inbox
+  aliases:
+  - push notification inbox
+- name: Push Notifications
+  aliases:
+  - mobile push
+  - push alerts
+  - push messages
+- name: QR Code
+  aliases:
+  - qr
+  - qr marketing
+  - quick response code
+- name: RCS
+  aliases:
+  - rcs chat
+  - rcs messaging
+  - rich communication services
+- name: Referral
+  aliases:
+  - refer a friend
+  - referral marketing
+  - referral program
+  - word of mouth
+- name: SMS
+  aliases:
+  - bulk sms
+  - short message service
+  - sms marketing
+  - text marketing
+  - text messaging
+- name: Social Media
+  aliases:
+  - social marketing
+  - social networks
+  - social platforms
+- name: Video Ads
+  aliases:
+  - online video ads
+  - video advertising
+  - video marketing
+- name: Virtual Events
+  aliases:
+  - online events
+- name: Voice
+  aliases:
+  - voice channel
+  - voice communication
+  - voice marketing
+- name: Web Message
+  aliases:
+  - browser messaging
+  - web messaging
+  - website messaging
+- name: Web Push
+  aliases:
+  - browser notifications
+  - browser push
+  - web notifications
+- name: Webinars
+  aliases:
+  - live stream
+  - online seminar
+  - webinar
+- name: WhatsApp
+  aliases:
+  - wa
+  - whatsapp api
+  - whatsapp business
+  - whatsapp marketing
+lookup:
+  app inbox: App Inbox
+  inbox: App Inbox
+  app notifications inbox: App Inbox
+  call center: Call Center
+  contact center: Call Center
+  telephony: Call Center
+  direct mail: Direct Mail
+  postal mail: Direct Mail
+  physical mail: Direct Mail
+  mail campaign: Direct Mail
+  catalog mail: Direct Mail
+  display ads: Display Ads
+  display advertising: Display Ads
+  banner ads: Display Ads
+  display network: Display Ads
+  email: Email
+  email campaigns: Email
+  email outreach: Email
+  newsletter: Email
+  email strategy: Email
+  email amp: Email AMP
+  amp email: Email AMP
+  amp for email: Email AMP
+  interactive email: Email AMP
+  events: Events
+  conferences: Events
+  trade shows: Events
+  seminars: Events
+  in app messages: In-App Messages
+  in app notifications: In-App Messages
+  app messages: In-App Messages
+  in app alerts: In-App Messages
+  mobile app messages: In-App Messages
+  ivr: IVR
+  interactive voice response: IVR
+  ivr system: IVR
+  voice response: IVR
+  live chat: Live Chat
+  chat: Live Chat
+  web chat: Live Chat
+  chat support: Live Chat
+  instant messaging: Live Chat
+  live commerce: Live Commerce
+  live shopping: Live Commerce
+  live streaming commerce: Live Commerce
+  shoppable video: Live Commerce
+  mms: MMS
+  multimedia messaging service: MMS
+  mms messaging: MMS
+  picture messaging: MMS
+  mobile wallet: Mobile Wallet
+  digital wallet: Mobile Wallet
+  wallet pass: Mobile Wallet
+  apple wallet: Mobile Wallet
+  native ads: Native Ads
+  native advertising: Native Ads
+  sponsored content: Native Ads
+  native ad placement: Native Ads
+  on site popups: On-Site Popups
+  popups: On-Site Popups
+  pop up: On-Site Popups
+  exit intent: On-Site Popups
+  overlay: On-Site Popups
+  podcast: Podcast
+  podcast marketing: Podcast
+  audio content: Podcast
+  sponsored podcasts: Podcast
+  programmatic ads: Programmatic Ads
+  programmatic advertising: Programmatic Ads
+  automated ads: Programmatic Ads
+  programmatic buying: Programmatic Ads
+  push inbox: Push Inbox
+  push notification inbox: Push Inbox
+  push notifications: Push Notifications
+  push messages: Push Notifications
+  push alerts: Push Notifications
+  mobile push: Push Notifications
+  qr code: QR Code
+  qr: QR Code
+  quick response code: QR Code
+  qr marketing: QR Code
+  rcs: RCS
+  rich communication services: RCS
+  rcs messaging: RCS
+  rcs chat: RCS
+  referral: Referral
+  referral marketing: Referral
+  referral program: Referral
+  refer a friend: Referral
+  word of mouth: Referral
+  sms: SMS
+  text messaging: SMS
+  sms marketing: SMS
+  text marketing: SMS
+  short message service: SMS
+  bulk sms: SMS
+  social media: Social Media
+  social networks: Social Media
+  social platforms: Social Media
+  social marketing: Social Media
+  video ads: Video Ads
+  video advertising: Video Ads
+  video marketing: Video Ads
+  online video ads: Video Ads
+  virtual events: Virtual Events
+  online events: Virtual Events
+  voice: Voice
+  voice marketing: Voice
+  voice channel: Voice
+  voice communication: Voice
+  web message: Web Message
+  web messaging: Web Message
+  website messaging: Web Message
+  browser messaging: Web Message
+  web push: Web Push
+  browser push: Web Push
+  web notifications: Web Push
+  browser notifications: Web Push
+  webinars: Webinars
+  webinar: Webinars
+  online seminar: Webinars
+  live stream: Webinars
+  whatsapp: WhatsApp
+  whatsapp business: WhatsApp
+  wa: WhatsApp
+  whatsapp marketing: WhatsApp
+  whatsapp api: WhatsApp

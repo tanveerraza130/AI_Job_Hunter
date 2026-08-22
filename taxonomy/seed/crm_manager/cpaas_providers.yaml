@@ -1,0 +1,71 @@
+category:
+  name: cpaas_providers
+
+items:
+  - name: "ACL Mobile"
+    aliases:
+      - "acl"
+      - "acl mobile"
+
+  - name: "Exotel"
+    aliases:
+      - "exotel platform"
+
+  - name: "Gupshup"
+    aliases:
+      - "gupshup platform"
+      - "gupshup messaging"
+
+  - name: "Infobip"
+    aliases:
+      - "infobip platform"
+      - "infobip messaging"
+
+  - name: "Kaleyra"
+    aliases:
+      - "kaleyra platform"
+
+  - name: "Karix"
+    aliases:
+      - "karix platform"
+      - "karix messaging"
+
+  - name: "MSG91"
+    aliases:
+      - "msg 91"
+      - "msg91 platform"
+
+  - name: "Netcore CPaaS"
+    aliases:
+      - "netcore communications"
+
+  - name: "Route Mobile"
+    aliases:
+      - "route mobile platform"
+
+  - name: "Sinch"
+    aliases:
+      - "sinch platform"
+      - "sinch messaging"
+
+  - name: "Tata Tele Business"
+    aliases:
+      - "tata tele"
+      - "ttb"
+      - "tata communications"
+
+  - name: "Textlocal"
+    aliases:
+      - "textlocal platform"
+      - "textlocal messaging"
+
+  - name: "Twilio"
+    aliases:
+      - "twilio platform"
+      - "twilio messaging"
+      - "twilio api"
+
+  - name: "ValueFirst"
+    aliases:
+      - "value first"
+      - "vf"

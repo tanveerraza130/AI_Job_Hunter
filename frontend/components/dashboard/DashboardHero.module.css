@@ -1,0 +1,119 @@
+.hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ajh-space-8);
+
+  padding: var(--ajh-space-10) 4px var(--ajh-space-6);
+}
+
+.copy {
+  min-width: 0;
+  max-width: 760px;
+}
+
+.eyebrow {
+  color: var(--ajh-color-brand);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: var(--ajh-line-height-tight);
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 10px 0 8px;
+
+  color: var(--ajh-color-text-primary);
+  font-size: clamp(40px, 3vw, 44px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.hero p {
+  margin: 0;
+
+  color: var(--ajh-color-text-secondary);
+  font-size: 15px;
+  line-height: var(--ajh-line-height-normal);
+}
+
+.resultCount {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: baseline;
+  gap: var(--ajh-space-1);
+
+  min-width: 148px;
+  padding: 14px var(--ajh-space-4);
+
+  border: 1px solid var(--ajh-color-border);
+  border-radius: var(--ajh-radius-lg);
+
+  background: var(--ajh-color-surface);
+
+  box-shadow: var(--ajh-shadow-card);
+
+  white-space: nowrap;
+}
+
+.resultCount strong {
+  color: var(--ajh-color-text-primary);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.resultCount span {
+  color: var(--ajh-color-text-muted);
+  font-size: var(--ajh-font-size-xs);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: var(--ajh-space-8) 4px var(--ajh-space-5);
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ajh-space-4);
+
+    padding-top: var(--ajh-space-6);
+    padding-bottom: var(--ajh-space-6);
+  }
+
+  .copy {
+    max-width: none;
+  }
+
+  .hero h1 {
+    margin-top: 8px;
+    font-size: 30px;
+    line-height: 1.08;
+  }
+
+  .hero p {
+    font-size: var(--ajh-font-size-md);
+  }
+
+  .resultCount {
+    min-width: 0;
+    padding: 12px var(--ajh-space-4);
+  }
+
+  .resultCount strong {
+    font-size: 24px;
+  }
+}

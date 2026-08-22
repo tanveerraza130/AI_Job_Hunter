@@ -1,0 +1,144 @@
+.section {
+  margin: 0 0 18px;
+  padding: 22px;
+  border: 1px solid #e4e8f1;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(31, 41, 68, 0.04);
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.eyebrow {
+  color: #5138ee;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.header h2 {
+  margin: 4px 0 3px;
+  color: #17233f;
+  font-size: 20px;
+}
+
+.header p {
+  margin: 0;
+  color: #8995aa;
+  font-size: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.card,
+.gaps {
+  min-height: 105px;
+  padding: 15px;
+  border: 1px solid #e3e8f1;
+  border-radius: 12px;
+}
+
+.skills {
+  background: #f1fbf6;
+  border-color: #d4efdf;
+}
+
+.tools {
+  background: #f3f6ff;
+  border-color: #dbe3fb;
+}
+
+.gaps {
+  background: #fff9ed;
+  border-color: #f2dfb5;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 11px;
+}
+
+.cardHeader > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.cardHeader strong {
+  color: #263552;
+  font-size: 13px;
+}
+
+.cardHeader b {
+  min-width: 22px;
+  padding: 3px 6px;
+  border-radius: 20px;
+  background: #fff;
+  color: #78869f;
+  font-size: 10px;
+  text-align: center;
+}
+
+.icon,
+.gapIcon {
+  display: inline-flex;
+  width: 19px;
+  height: 19px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.icon {
+  background: #d9f5e6;
+  color: #159563;
+}
+
+.gapIcon {
+  background: #ffe8bd;
+  color: #b87800;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chips span {
+  padding: 6px 9px;
+  border: 1px solid #dce3ee;
+  border-radius: 7px;
+  background: #fff;
+  color: #53627f;
+  font-size: 10px;
+}
+
+.chips .more {
+  color: #5138ee;
+  font-weight: 700;
+}
+
+.empty {
+  color: #8995aa !important;
+  border: 0 !important;
+  background: transparent !important;
+  padding: 4px 0 !important;
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

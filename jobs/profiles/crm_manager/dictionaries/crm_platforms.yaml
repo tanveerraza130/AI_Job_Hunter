@@ -1,0 +1,341 @@
+category:
+  name: crm_platforms
+
+items:
+  - name: CleverTap
+    aliases:
+      - clever tap
+      - clevertap platform
+      - clevertap marketing
+
+  - name: MoEngage
+    aliases:
+      - mo engage
+      - moengage platform
+      - moengage marketing
+
+  - name: WebEngage
+    aliases:
+      - web engage
+      - webengage platform
+      - webengage marketing
+
+  - name: Netcore Cloud
+    aliases:
+      - netcore
+      - netcore cloud
+      - net core
+      - netcore platform
+      - netcore marketing
+
+  - name: Braze
+    aliases:
+      - appboy
+      - braze platform
+      - braze engagement
+
+  - name: Iterable
+    aliases:
+      - iterable platform
+      - iterable marketing
+      - iterable engagement
+
+  - name: Insider
+    aliases:
+      - insider platform
+      - insider marketing
+
+  - name: Customer.io
+    aliases:
+      - customer io
+      - customerio
+      - customer.io
+
+  - name: Mailmodo
+    aliases:
+      - mailmodo platform
+      - mailmodo marketing
+
+  - name: Leanplum
+    aliases:
+      - leanplum platform
+      - leanplum marketing
+
+  - name: OneSignal
+    aliases:
+      - one signal
+      - onesignal platform
+      - onesignal marketing
+
+  - name: Upshot.ai
+    aliases:
+      - upshot
+      - upshot ai
+      - upshot.ai
+
+  - name: Salesforce Marketing Cloud
+    aliases:
+      - sfmc
+      - salesforce marketing cloud
+      - marketing cloud
+      - salesforce mcloud
+
+  - name: Adobe Experience Cloud
+    aliases:
+      - adobe experience cloud
+      - adobe experience platform
+      - aep
+      - adobe experience
+
+  - name: Adobe Campaign
+    aliases:
+      - adobe campaign
+      - adobe campaign classic
+      - adobe campaign standard
+
+  - name: Marketo
+    aliases:
+      - adobe marketo
+      - marketo engage
+      - marketo platform
+
+  - name: Klaviyo
+    aliases:
+      - klaviyo platform
+      - klaviyo marketing
+
+  - name: ActiveCampaign
+    aliases:
+      - active campaign
+      - activecampaign
+      - activecampaign platform
+
+  - name: HubSpot
+    aliases:
+      - hub spot
+      - hubspot crm
+      - hubspot marketing
+      - hubspot platform
+
+  - name: Blueshift
+    aliases:
+      - blueshift platform
+      - blueshift marketing
+
+  - name: Omnisend
+    aliases:
+      - omni send
+      - omnisend platform
+      - omnisend marketing
+
+  - name: Drip
+    aliases:
+      - drip marketing
+      - drip platform
+
+  - name: Airship
+    aliases:
+      - airship platform
+      - urban airship
+
+  - name: Freshworks CRM
+    aliases:
+      - freshworks
+      - freshworks crm
+      - freshsales suite
+
+  - name: Freshsales
+    aliases:
+      - fresh sales
+      - freshsales crm
+      - freshsales platform
+
+  - name: Leadsquared
+    aliases:
+      - lead squared
+      - leadsquared
+      - lead squared crm
+
+  - name: Segment
+    aliases:
+      - segment
+      - twilio segment
+      - segment platform
+      - segment cdp
+
+  - name: Tealium
+    aliases:
+      - tealium platform
+      - tealium cdp
+      - tealium audience
+
+  - name: RudderStack
+    aliases:
+      - rudder stack
+      - rudderstack
+      - rudderstack cdp
+
+  - name: mParticle
+    aliases:
+      - m particle
+      - mparticle
+      - mparticle cdp
+      - mparticle platform
+
+  - name: Hightouch
+    aliases:
+      - high touch
+      - hightouch
+      - hightouch platform
+
+  - name: Census
+    aliases:
+      - census data
+      - census platform
+
+lookup:
+  clever tap: CleverTap
+  clevertap: CleverTap
+  clevertap platform: CleverTap
+  clevertap marketing: CleverTap
+
+  mo engage: MoEngage
+  moengage: MoEngage
+  moengage platform: MoEngage
+  moengage marketing: MoEngage
+
+  web engage: WebEngage
+  webengage: WebEngage
+  webengage platform: WebEngage
+  webengage marketing: WebEngage
+
+  netcore: Netcore Cloud
+  netcore cloud: Netcore Cloud
+  net core: Netcore Cloud
+  netcore platform: Netcore Cloud
+  netcore marketing: Netcore Cloud
+
+  braze: Braze
+  appboy: Braze
+  braze platform: Braze
+  braze engagement: Braze
+
+  iterable: Iterable
+  iterable platform: Iterable
+  iterable marketing: Iterable
+  iterable engagement: Iterable
+
+  insider: Insider
+  insider platform: Insider
+  insider marketing: Insider
+
+  customer.io: Customer.io
+  customer io: Customer.io
+  customerio: Customer.io
+
+  mailmodo: Mailmodo
+  mailmodo platform: Mailmodo
+  mailmodo marketing: Mailmodo
+
+  leanplum: Leanplum
+  leanplum platform: Leanplum
+  leanplum marketing: Leanplum
+
+  onesignal: OneSignal
+  one signal: OneSignal
+  onesignal platform: OneSignal
+  onesignal marketing: OneSignal
+
+  upshot: Upshot.ai
+  upshot ai: Upshot.ai
+  upshot.ai: Upshot.ai
+
+  salesforce marketing cloud: Salesforce Marketing Cloud
+  sfmc: Salesforce Marketing Cloud
+  marketing cloud: Salesforce Marketing Cloud
+  salesforce mcloud: Salesforce Marketing Cloud
+
+  adobe experience cloud: Adobe Experience Cloud
+  adobe experience platform: Adobe Experience Cloud
+  aep: Adobe Experience Cloud
+  adobe experience: Adobe Experience Cloud
+
+  adobe campaign: Adobe Campaign
+  adobe campaign classic: Adobe Campaign
+  adobe campaign standard: Adobe Campaign
+
+  marketo: Marketo
+  adobe marketo: Marketo
+  marketo engage: Marketo
+  marketo platform: Marketo
+
+  klaviyo: Klaviyo
+  klaviyo platform: Klaviyo
+  klaviyo marketing: Klaviyo
+
+  activecampaign: ActiveCampaign
+  active campaign: ActiveCampaign
+  activecampaign platform: ActiveCampaign
+
+  hubspot: HubSpot
+  hub spot: HubSpot
+  hubspot crm: HubSpot
+  hubspot marketing: HubSpot
+  hubspot platform: HubSpot
+
+  blueshift: Blueshift
+  blueshift platform: Blueshift
+  blueshift marketing: Blueshift
+
+  omnisend: Omnisend
+  omni send: Omnisend
+  omnisend platform: Omnisend
+  omnisend marketing: Omnisend
+
+  drip: Drip
+  drip marketing: Drip
+  drip platform: Drip
+
+  airship: Airship
+  airship platform: Airship
+  urban airship: Airship
+
+  freshworks: Freshworks CRM
+  freshworks crm: Freshworks CRM
+  freshsales suite: Freshworks CRM
+
+  freshsales: Freshsales
+  fresh sales: Freshsales
+  freshsales crm: Freshsales
+  freshsales platform: Freshsales
+
+  leadsquared: Leadsquared
+  lead squared: Leadsquared
+  lead squared crm: Leadsquared
+
+  segment: Segment
+  twilio segment: Segment
+  segment platform: Segment
+  segment cdp: Segment
+
+  tealium: Tealium
+  tealium platform: Tealium
+  tealium cdp: Tealium
+  tealium audience: Tealium
+
+  rudderstack: RudderStack
+  rudder stack: RudderStack
+  rudderstack cdp: RudderStack
+
+  mparticle: mParticle
+  m particle: mParticle
+  mparticle cdp: mParticle
+  mparticle platform: mParticle
+
+  hightouch: Hightouch
+  high touch: Hightouch
+  hightouch platform: Hightouch
+
+  census: Census
+  census data: Census
+  census platform: Census

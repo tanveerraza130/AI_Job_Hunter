@@ -1,0 +1,424 @@
+category:
+  name: crm_concepts
+
+items:
+  - name: "360-Degree View"
+    aliases:
+      - "360 view"
+      - "unified customer view"
+      - "customer 360"
+      - "complete customer profile"
+
+  - name: "Account-Based Marketing"
+    aliases:
+      - "abm"
+      - "account based marketing"
+
+  - name: "Behavioral Targeting"
+    aliases:
+      - "behavior targeting"
+      - "behavioral marketing"
+
+  - name: "Bounce Rate"
+    aliases:
+      - "bounce"
+      - "bounce percentage"
+
+  - name: "Buyer Persona"
+    aliases:
+      - "customer persona"
+      - "persona"
+      - "user persona"
+      - "ideal customer profile"
+
+  - name: "Churn Rate"
+    aliases:
+      - "churn"
+      - "customer churn"
+      - "churn percentage"
+
+  - name: "Click-Through Rate"
+    aliases:
+      - "ctr"
+      - "clickthrough rate"
+      - "click rate"
+
+  - name: "Cohort Analysis"
+    aliases:
+      - "cohorts"
+      - "cohort retention"
+      - "cohort behavior"
+
+  - name: "Consent Management"
+    aliases:
+      - "consent"
+      - "opt-in"
+      - "opt-out"
+      - "consent governance"
+
+  - name: "Conversion Rate"
+    aliases:
+      - "conversion percentage"
+      - "conversion ratio"
+
+  - name: "CRM Analytics"
+    aliases:
+      - "crm analytics"
+      - "customer analytics"
+      - "crm reporting"
+      - "analytics reporting"
+
+  - name: "Cross-Channel Marketing"
+    aliases:
+      - "cross channel"
+      - "integrated marketing"
+      - "channel integration"
+
+  - name: "Customer Acquisition"
+    aliases:
+      - "acquisition"
+      - "customer acquisition strategy"
+
+  - name: "Customer Acquisition Cost"
+    aliases:
+      - "cac"
+      - "acquisition cost"
+
+  - name: "Customer Advocacy"
+    aliases:
+      - "advocacy"
+      - "brand advocacy"
+      - "advocate marketing"
+
+  - name: "Customer Data Platform"
+    aliases:
+      - "cdp"
+      - "data unification"
+
+  - name: "Customer Effort Score"
+    aliases:
+      - "ces"
+      - "effort score"
+
+  - name: "Customer Engagement"
+    aliases:
+      - "engagement"
+      - "customer engagement strategy"
+
+  - name: "Customer Experience"
+    aliases:
+      - "cx"
+      - "experience management"
+
+  - name: "Customer Journey"
+    aliases:
+      - "journey"
+      - "user journey"
+      - "buyer journey"
+
+  - name: "Customer Lifecycle"
+    aliases:
+      - "lifecycle"
+      - "customer life cycle"
+      - "life cycle management"
+
+  - name: "Customer Lifetime Value"
+    aliases:
+      - "clv"
+      - "ltv"
+      - "lifetime value"
+
+  - name: "Customer Loyalty"
+    aliases:
+      - "loyalty program"
+      - "rewards program"
+      - "loyalty management"
+
+  - name: "Customer Retention"
+    aliases:
+      - "retention strategy"
+      - "retention marketing"
+      - "retention management"
+
+  - name: "Customer Retention Rate"
+    aliases:
+      - "retention rate"
+      - "crr"
+      - "retention percentage"
+
+  - name: "Customer Satisfaction"
+    aliases:
+      - "csat"
+      - "satisfaction score"
+
+  - name: "Customer Success"
+    aliases:
+      - "csm"
+      - "customer success management"
+      - "client success"
+
+  - name: "D2C Marketing"
+    aliases:
+      - "d2c"
+      - "direct to consumer"
+      - "dtc"
+
+  - name: "Data Enrichment"
+    aliases:
+      - "enrichment"
+      - "data enhancement"
+      - "data augmentation"
+
+  - name: "Data Management Platform"
+    aliases:
+      - "dmp"
+      - "audience management"
+      - "data marketplace"
+
+  - name: "Digital Experience"
+    aliases:
+      - "digital cx"
+      - "online experience"
+      - "digital engagement"
+
+  - name: "Email Deliverability"
+    aliases:
+      - "deliverability"
+      - "inbox placement"
+      - "email delivery"
+
+  - name: "First-Party Data"
+    aliases:
+      - "1p data"
+      - "owned data"
+      - "direct data"
+
+  - name: "Flywheel Model"
+    aliases:
+      - "flywheel"
+      - "growth flywheel"
+      - "flywheel strategy"
+
+  - name: "Freemium Model"
+    aliases:
+      - "freemium"
+      - "free tier"
+      - "freemium strategy"
+
+  - name: "Funnel Management"
+    aliases:
+      - "sales funnel"
+      - "marketing funnel"
+      - "conversion funnel"
+      - "pipeline"
+
+  - name: "Gamification"
+    aliases:
+      - "game mechanics"
+      - "gamified experience"
+      - "engagement gamification"
+
+  - name: "GDPR Compliance"
+    aliases:
+      - "gdpr"
+      - "general data protection regulation"
+      - "data protection"
+
+  - name: "Hyper-Personalization"
+    aliases:
+      - "hyper personalization"
+      - "individualized marketing"
+
+  - name: "Identity Resolution"
+    aliases:
+      - "identity"
+      - "id resolution"
+      - "customer identity"
+
+  - name: "Intent Data"
+    aliases:
+      - "purchase intent"
+      - "buying intent"
+      - "signal data"
+
+  - name: "Lead Scoring"
+    aliases:
+      - "lead prioritization"
+      - "score leads"
+      - "predictive lead scoring"
+
+  - name: "Lifecycle Marketing"
+    aliases:
+      - "lifecycle marketing"
+      - "customer lifecycle marketing"
+
+  - name: "Lookalike Audience"
+    aliases:
+      - "look-alike"
+      - "similar audience"
+      - "targeting lookalike"
+
+  - name: "LTV:CAC Ratio"
+    aliases:
+      - "ltv cac"
+      - "lifetime value to acquisition cost"
+      - "customer economics"
+
+  - name: "Marketing Attribution"
+    aliases:
+      - "attribution"
+      - "channel attribution"
+
+  - name: "Marketing Mix"
+    aliases:
+      - "4ps"
+      - "product price place promotion"
+      - "promotional mix"
+
+  - name: "Martech Stack"
+    aliases:
+      - "technology stack"
+      - "stack"
+      - "marketing technology stack"
+      - "tool stack"
+
+  - name: "Multi-Channel Marketing"
+    aliases:
+      - "multichannel"
+      - "unified marketing"
+
+  - name: "Multi-Touch Attribution"
+    aliases:
+      - "mta"
+
+  - name: "Net Promoter Score"
+    aliases:
+      - "nps"
+      - "net promoter"
+      - "promoter score"
+      - "nps score"
+
+  - name: "Omnichannel Marketing"
+    aliases:
+      - "omnichannel"
+      - "omni-channel"
+      - "seamless experience"
+
+  - name: "Personalization"
+    aliases:
+      - "personalised"
+      - "personalized"
+      - "1:1"
+      - "one-to-one"
+
+  - name: "Predictive Analytics"
+    aliases:
+      - "predictive modeling"
+      - "forecasting"
+      - "predictive insights"
+
+  - name: "Progressive Profiling"
+    aliases:
+      - "step profiling"
+      - "progressive profiling forms"
+
+  - name: "Recommendation Engine"
+    aliases:
+      - "product recommendations"
+      - "recommendation system"
+
+  - name: "Retargeting"
+    aliases:
+      - "remarketing"
+      - "retarget"
+      - "re-targeting"
+
+  - name: "Revenue Cycle"
+    aliases:
+      - "revenue lifecycle"
+      - "revenue generation"
+
+  - name: "Revenue Operations"
+    aliases:
+      - "revops"
+      - "revenue management"
+
+  - name: "RFM Analysis"
+    aliases:
+      - "recency frequency monetary"
+      - "rfm"
+
+  - name: "ROI Analysis"
+    aliases:
+      - "roi"
+      - "return on investment"
+      - "investment return"
+
+  - name: "Sales Enablement"
+    aliases:
+      - "enablement"
+      - "sales readiness"
+      - "sales productivity"
+
+  - name: "Search Engine Marketing"
+    aliases:
+      - "sem"
+      - "paid search marketing"
+      - "search marketing"
+
+  - name: "Segmentation Strategy"
+    aliases:
+      - "segment strategy"
+      - "audience segmentation"
+
+  - name: "Single Customer View"
+    aliases:
+      - "scv"
+      - "unified customer profile"
+      - "golden record"
+
+  - name: "Social Selling"
+    aliases:
+      - "social sales"
+      - "social commerce"
+
+  - name: "Subscription Economy"
+    aliases:
+      - "subscription model"
+      - "recurring revenue"
+      - "saas economy"
+
+  - name: "Target Audience"
+    aliases:
+      - "target market"
+      - "audience"
+      - "targeting"
+
+  - name: "Third-Party Data"
+    aliases:
+      - "3p data"
+      - "external data"
+      - "third party data"
+
+  - name: "Touchpoint Management"
+    aliases:
+      - "touchpoint"
+      - "touch point"
+      - "customer touchpoint"
+
+  - name: "Value Proposition"
+    aliases:
+      - "proposition"
+      - "customer value proposition"
+      - "uvp"
+
+  - name: "Voice of Customer"
+    aliases:
+      - "voc"
+      - "customer voice"
+      - "voice of the customer"
+
+  - name: "Zero-Party Data"
+    aliases:
+      - "0p data"
+      - "customer-provided data"

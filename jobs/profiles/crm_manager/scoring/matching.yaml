@@ -1,0 +1,250 @@
+version: 3
+mandatory_skills:
+- Lifecycle Marketing
+- Retention
+- Segmentation
+- Campaign Management
+preferred_skills:
+- Personalization
+- Automation
+- Customer Journey
+- Customer Loyalty
+- Churn Reduction
+- Customer Engagement
+- A/B Testing
+skill_mapping:
+  CRM Strategy: CRM Strategy
+  Customer Lifecycle: Customer Lifecycle
+  Lifecycle Marketing: Lifecycle Marketing
+  Customer Engagement: Customer Engagement
+  Customer Journey: Customer Journey
+  Segmentation: Segmentation
+  Personalization: Personalization
+  Retention Marketing: Retention Marketing
+  Retention: Retention
+  Loyalty Programs: Loyalty Programs
+  Journey Builder: Journey Builder
+  Journey Design: Journey Design
+  Journey Orchestration: Journey Orchestration
+  Triggered Campaigns: Triggered Campaigns
+  Onboarding Journeys: Onboarding Journeys
+  Retention Journeys: Retention Journeys
+  Win Back Campaigns: Win Back Campaigns
+  Churn Reduction: Churn Reduction
+  Campaign Management: Campaign Management
+  Multi Channel Campaigns: Campaign Management
+  Campaign Automation: Campaign Automation
+  Automation: Automation
+  A/B Testing: A/B Testing
+  Experimentation: Experimentation
+  CRM Analytics: CRM Analytics
+  Customer Analytics: Customer Analytics
+  Cohort Analysis: Cohort Analysis
+  RFM Analysis: RFM Analysis
+  Customer Lifetime Value: Customer Lifetime Value
+  LTV Analysis: Customer Lifetime Value
+  LTV Optimization: Customer Lifetime Value
+  Marketing ROI Analysis: Marketing ROI Analysis
+  Channel ROI Analysis: Channel ROI Analysis
+  Customer Data Platform: Customer Data Platform
+  CDP Strategy: Customer Data Platform
+  Data Unification: Customer Data Platform
+  Data Analysis: Data Analysis
+  SQL: SQL
+  Dashboarding: Dashboarding
+  Push Notification Strategy: Push Notification Strategy
+  SMS Marketing Strategy: SMS Marketing Strategy
+  WhatsApp Marketing Strategy: WhatsApp Marketing Strategy
+  Omnichannel Communication Strategy: Omnichannel Communication Strategy
+  Customer Journey Mapping: Customer Journey
+job_skill_mapping:
+  Marketing Automation:
+  - Campaign Automation
+  - Automation
+  Campaign Automation:
+  - Campaign Automation
+  - Automation
+  Lead Nurturing:
+  - Customer Lifecycle
+  - Lifecycle Marketing
+  Customer Nurturing:
+  - Customer Lifecycle
+  - Lifecycle Marketing
+  Campaign Management:
+  - Campaign Management
+  Lifecycle Marketing:
+  - Lifecycle Marketing
+  Retention Marketing:
+  - Retention Marketing
+  - Retention
+  Retention:
+  - Retention
+  - Retention Marketing
+  Customer Engagement:
+  - Customer Engagement
+  Customer Journey:
+  - Customer Journey
+  Customer Journey Mapping:
+  - Customer Journey Mapping
+  - Customer Journey
+  Segmentation:
+  - Segmentation
+  Personalization:
+  - Personalization
+  Churn Reduction:
+  - Churn Reduction
+  A/B Testing:
+  - A/B Testing
+  Journey Builder:
+  - Journey Builder
+  Journey Design:
+  - Journey Design
+  Journey Orchestration:
+  - Journey Orchestration
+  - Journey Builder
+  Automation:
+  - Automation
+  Data Analysis:
+  - Data Analysis
+  SQL:
+  - SQL
+  Dashboarding:
+  - Dashboarding
+  Loyalty:
+  - Loyalty
+  - Loyalty Programs
+  Customer Loyalty:
+  - Loyalty
+  - Loyalty Programs
+  Loyalty Programs:
+  - Loyalty Programs
+  - Loyalty
+  Customer Onboarding:
+  - Onboarding Journeys
+  SMS:
+  - SMS Marketing Strategy
+  WhatsApp:
+  - WhatsApp Marketing Strategy
+  Push Notifications:
+  - Push Notification Strategy
+  Omnichannel Marketing:
+  - Omnichannel Communication Strategy
+  Churn Rate:
+  - Churn Reduction
+  Customer Retention:
+  - Retention
+  Segmentation Strategy:
+  - Segmentation
+  Target Audience:
+  - Segmentation
+  ROI Analysis:
+  - Marketing ROI Analysis
+  Customer Lifetime Value:
+  - Customer Lifetime Value
+  Cohort Analysis:
+  - Cohort Analysis
+  RFM Analysis:
+  - RFM Analysis
+  Customer Data Platform:
+  - Customer Data Platform
+  Customer Lifecycle:
+  - Customer Lifecycle
+job_skill_aliases:
+  marketing automation:
+  - Marketing Automation
+  marketing automation platform:
+  - Marketing Automation
+  lead nurturing:
+  - Lead Nurturing
+  lead nurture:
+  - Lead Nurturing
+  customer nurturing:
+  - Customer Nurturing
+  campaign management:
+  - Campaign Management
+  campaign automation:
+  - Campaign Automation
+  multi-channel:
+  - Multi Channel
+  multichannel:
+  - Multi Channel
+evidence_scoring:
+  method: capability_saturation
+  core_evidence_weight: 1.0
+  default_evidence_weight: 0.35
+  saturation_constant: 3.0
+  max_score: 100.0
+  strength_limit: 8
+capability_groups:
+  lifecycle_retention:
+    weight: 1.0
+    minimum_evidence: 1
+    capabilities:
+    - Customer Lifecycle
+    - Lifecycle Marketing
+    - Retention
+    - Retention Marketing
+    - Churn Reduction
+    - Retention Journeys
+    - Win Back Campaigns
+    - Customer Retention
+    - Customer Retention Rate
+  campaign_automation:
+    weight: 1.0
+    minimum_evidence: 1
+    capabilities:
+    - Campaign Management
+    - Campaign Automation
+    - Automation
+    - Journey Builder
+    - Journey Design
+    - Journey Orchestration
+    - Triggered Campaigns
+    - Onboarding Journeys
+    - Marketing Automation
+  customer_engagement:
+    weight: 1.0
+    minimum_evidence: 1
+    capabilities:
+    - Customer Engagement
+    - Customer Journey
+    - Customer Journey Mapping
+    - Personalization
+    - Segmentation
+    - Customer Loyalty
+    - Loyalty Programs
+  customer_data_analytics:
+    weight: 0.9
+    minimum_evidence: 1
+    capabilities:
+    - Customer Analytics
+    - CRM Analytics
+    - Customer Data Platform
+    - CDP Strategy
+    - Data Unification
+    - Cohort Analysis
+    - RFM Analysis
+    - Customer Lifetime Value
+    - LTV Analysis
+    - LTV Optimization
+    - Marketing ROI Analysis
+    - Channel ROI Analysis
+  communication_channels:
+    weight: 0.8
+    minimum_evidence: 1
+    capabilities:
+    - Push Notification Strategy
+    - SMS Marketing Strategy
+    - WhatsApp Marketing Strategy
+    - Omnichannel Communication Strategy
+    - Multi Channel Campaigns
+  crm_strategy:
+    weight: 0.9
+    minimum_evidence: 1
+    capabilities:
+    - CRM Strategy
+    - Customer Lifecycle
+    - Customer Engagement
+    - Customer Journey
+    - Segmentation
+    - Personalization

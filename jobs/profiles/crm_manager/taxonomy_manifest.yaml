@@ -1,0 +1,17 @@
+version: 3.2.0
+schema_version: 2
+build_id: 50bc1b9a
+build_date: '2026-08-08T22:14:41.031956'
+categories:
+- advertising_platforms
+- analytics_tools
+- communication_channels
+- cpaas_providers
+- crm_concepts
+- crm_platforms
+- crm_skills
+- data_platforms
+statistics:
+  canonical_items: 236
+  flatten_depth: 1
+  compiler_version: 3.2.0

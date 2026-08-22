@@ -1,0 +1,356 @@
+# CRM Manager Profile
+# Pure profile data - no system implementation details.
+
+profile_id: crm_manager
+
+profile_name: "CRM Manager"
+
+version: 6
+
+enabled: true
+
+
+search_exclude:
+  - "Database Marketing Manager"
+  - "Customer Value Management"
+  - "CVM"
+  - "Customer Engagement Manager"
+  - "Customer Engagement Lead"
+  - "Behavioral Marketing"
+  - "Campaign Operations Manager"
+  - "MarTech Operations Manager"
+  - "Marketing Technology Manager"
+  - "Airship"
+  - "Blueshift"
+  - "ActiveCampaign"
+  - "Freshworks CRM"
+  - "Freshsales"
+  - "Segment"
+  - "Tealium"
+  - "RudderStack"
+  - "mParticle"
+  - "Hightouch"
+  - "Census"
+
+search_keywords:
+
+# CRM Core Roles
+- "CRM Executive"
+- "CRM Analyst"
+- "CRM Analytics Manager"
+- "CRM Specialist"
+- "CRM Manager"
+- "CRM Lead"
+- "CRM Head"
+- "Head of CRM"
+- "VP CRM"
+- "CRM & Retention Head"
+- "CRM Team Lead"
+
+
+# Lifecycle Marketing
+- "Lifecycle Marketing"
+- "Lifecycle Marketing Executive"
+- "Lifecycle Marketing Specialist"
+- "Lifecycle Marketing Manager"
+- "Lifecycle Marketing Lead"
+- "Customer Lifecycle Manager"
+
+
+# Retention
+- "Retention Manager"
+- "Retention Marketing Manager"
+- "Retention Specialist"
+- "Customer Retention Manager"
+- "Customer Marketing Manager"
+- "Consumer Engagement Manager"
+
+
+# CRM Loyalty / Value
+- "CRM & Loyalty Manager"
+- "Loyalty Marketing Manager"
+- "Database Marketing Manager"
+- "Customer Value Management"
+- "CVM"
+
+
+# Customer Engagement
+- "Customer Engagement Manager"
+- "Customer Engagement Lead"
+
+
+# Marketing Automation
+- "Marketing Automation Manager"
+- "Marketing Automation Specialist"
+- "Marketing Automation Lead"
+- "Behavioral Marketing"
+
+
+# Campaign / Operations
+- "CRM Campaign Manager"
+- "Campaign Manager CRM"
+- "Campaign Operations Manager"
+
+
+# MarTech
+- "MarTech Manager"
+- "MarTech Operations Manager"
+- "Marketing Technology Manager"
+
+
+# Growth CRM
+- "Growth CRM Manager"
+
+
+skills:
+
+# CRM Strategy
+- "CRM Strategy"
+- "Customer Lifecycle"
+- "Lifecycle Marketing"
+- "Retention Marketing"
+- "Customer Engagement"
+- "Customer Journey"
+- "Customer Journey Mapping"
+- "Segmentation"
+- "Personalization"
+- "Loyalty Programs"
+
+
+# Lifecycle & Retention
+- "Journey Builder"
+- "Journey Design"
+- "Journey Orchestration"
+- "Triggered Campaigns"
+- "Onboarding Journeys"
+- "Retention Journeys"
+- "Win Back Campaigns"
+- "Churn Reduction"
+
+
+# Campaign Management
+- "Campaign Management"
+- "Multi Channel Campaigns"
+- "Campaign Automation"
+- "A/B Testing"
+- "Experimentation"
+
+
+# Customer Analytics
+- "CRM Analytics"
+- "Customer Analytics"
+- "Cohort Analysis"
+- "RFM Analysis"
+- "Customer Lifetime Value"
+- "LTV Analysis"
+- "LTV Optimization"
+- "Marketing ROI Analysis"
+- "Channel ROI Analysis"
+
+
+# Data Platform
+- "Customer Data Platform"
+- "CDP Strategy"
+- "Data Unification"
+
+
+# Communication Strategy
+- "Push Notification Strategy"
+- "SMS Marketing Strategy"
+- "WhatsApp Marketing Strategy"
+- "Omnichannel Communication Strategy"
+
+
+
+tools:
+
+# Engagement Platforms
+- "CleverTap"
+- "MoEngage"
+- "WebEngage"
+- "Netcore Cloud"
+- "Braze"
+- "Insider"
+- "Customer.io"
+- "Mailmodo"
+- "Leanplum"
+- "OneSignal"
+
+
+# Marketing Automation
+- "Salesforce Marketing Cloud"
+- "Adobe Experience Cloud"
+- "Adobe Campaign"
+- "Marketo"
+- "Klaviyo"
+- "ActiveCampaign"
+- "HubSpot"
+- "Blueshift"
+- "Airship"
+
+
+# CRM Platforms
+- "Freshworks CRM"
+- "Freshsales"
+- "LeadSquared"
+
+
+# CDP / Data Platforms
+- "Segment"
+- "Tealium"
+- "RudderStack"
+- "mParticle"
+- "Hightouch"
+- "Census"
+
+
+
+whatsapp_ecosystem:
+
+- "WhatsApp Business API"
+- "WhatsApp Cloud API"
+- "WhatsApp Business Platform"
+- "Gupshup"
+- "Infobip"
+- "Route Mobile"
+- "Karix"
+- "Kaleyra"
+- "Netcore Cloud"
+- "Sinch"
+- "Yellow.ai"
+- "Twilio"
+- "WATI"
+- "AiSensy"
+- "Interakt"
+
+
+
+marketing_automation_and_engagement:
+
+- "Customer Engagement Platform"
+- "Marketing Automation Platform"
+- "Journey Orchestration Platform"
+- "Campaign Automation Platform"
+- "Lifecycle Marketing Platform"
+- "Marketing Automation"
+- "Personalization Platform"
+
+
+
+experience_min: null
+experience_max: null
+
+salary_min: null
+salary_max: null
+
+
+work_modes:
+
+- "remote"
+- "hybrid"
+- "onsite"
+
+
+
+negative_titles:
+
+# Confirmed non-CRM role
+- "Key Accounts Manager"
+
+# Sales Noise
+- "Sales Executive"
+- "Sales Manager"
+- "Sales CRM"
+- "Business Development Executive"
+- "Business Development Manager"
+- "BDM"
+- "Inside Sales"
+- "Field Sales"
+- "Telesales"
+
+
+# Support Noise
+- "BPO"
+- "Call Center"
+- "Telecaller"
+- "Customer Support"
+- "Customer Care"
+- "Technical Support"
+- "IT Support"
+- "Helpdesk"
+
+
+# Technical Noise
+- "Salesforce Developer"
+- "Salesforce Administrator"
+- "Salesforce Consultant"
+- "CRM Developer"
+- "CRM Business Analyst"
+- "CRM Implementation Consultant"
+- "CRM Trainer"
+- "Marketing Automation Developer"
+- "MarTech Engineer"
+- "MarTech Architect"
+- "Zoho Developer"
+- "HubSpot Developer"
+- "Dynamics CRM Developer"
+- "Dynamics 365 CRM Functional Consultant"
+- "SAP CRM Consultant"
+
+
+# Marketing Noise
+- "Performance Marketing Manager"
+- "Media Planner"
+- "Digital Marketing Executive"
+- "Growth Hacker"
+
+
+
+negative_keywords:
+
+# Pre-Sales / Lead Gen
+- "pre-sales"
+- "presales"
+- "cold calling"
+- "lead generation"
+- "lead gen"
+- "outbound calling"
+- "outbound sales"
+- "telemarketing"
+- "telesales"
+- "cold call"
+
+
+# BPO / Voice
+- "voice process"
+- "calling executive"
+- "customer support"
+- "call center agent"
+- "bpo"
+
+
+# Business Development
+- "business development"
+- "client acquisition"
+- "new client acquisition"
+- "hunting"
+
+
+# Sales / Marketing Noise
+- "field sales"
+- "inside sales"
+- "door to door"
+- "direct sales"
+- "retail sales"
+
+
+
+locations:
+
+- "Delhi"
+- "Delhi NCR"
+- "Gurgaon"
+- "Gurugram"
+- "Noida"
+- "Greater Noida"
+- "Faridabad"

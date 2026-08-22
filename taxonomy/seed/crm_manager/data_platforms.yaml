@@ -1,0 +1,112 @@
+category:
+  name: data_platforms
+
+items:
+  - name: "Airbyte"
+    aliases:
+      - "airbyte platform"
+
+  - name: "Apache Kylin"
+    aliases:
+      - "kylin"
+      - "apache kylin"
+
+  - name: "Atlan"
+    aliases:
+      - "atlan data"
+      - "atlan platform"
+
+  - name: "BigQuery"
+    aliases:
+      - "google bigquery"
+      - "gcp bigquery"
+      - "bq"
+
+  - name: "ClickHouse"
+    aliases:
+      - "clickhouse database"
+      - "clickhouse analytics"
+
+  - name: "Databricks"
+    aliases:
+      - "databricks platform"
+      - "databricks lakehouse"
+
+  - name: "Datadog"
+    aliases:
+      - "datadog monitoring"
+      - "datadog analytics"
+
+  - name: "dbt"
+    aliases:
+      - "data build tool"
+      - "dbt cloud"
+      - "dbt core"
+
+  - name: "Delta Lake"
+    aliases:
+      - "delta"
+      - "delta lakehouse"
+
+  - name: "DuckDB"
+    aliases:
+      - "duck db"
+      - "duckdb database"
+
+  - name: "Fivetran"
+    aliases:
+      - "fivetran platform"
+      - "fivetran data"
+
+  - name: "Hightouch"
+    aliases:
+      - "hightouch platform"
+      - "hightouch reverse etl"
+
+  - name: "Iceberg"
+    aliases:
+      - "apache iceberg"
+      - "iceberg table"
+
+  - name: "Microsoft Fabric"
+    aliases:
+      - "fabric"
+      - "microsoft fabric"
+      - "ms fabric"
+
+  - name: "Microsoft Synapse"
+    aliases:
+      - "synapse"
+      - "azure synapse"
+      - "ms synapse"
+
+  - name: "Presto"
+    aliases:
+      - "presto sql"
+      - "presto db"
+
+  - name: "Redis"
+    aliases:
+      - "redis cache"
+      - "redis platform"
+
+  - name: "Redshift"
+    aliases:
+      - "amazon redshift"
+      - "aws redshift"
+
+  - name: "RudderStack"
+    aliases:
+      - "rudderstack platform"
+      - "rudderstack cdp"
+
+  - name: "Snowflake"
+    aliases:
+      - "snowflake platform"
+      - "snowflake data"
+      - "snowflake cloud"
+
+  - name: "Trino"
+    aliases:
+      - "trino sql"
+      - "trino db"

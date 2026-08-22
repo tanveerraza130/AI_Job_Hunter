@@ -1,0 +1,88 @@
+category:
+  name: advertising_platforms
+
+items:
+  - name: "Amazon Ads"
+    aliases:
+      - "amazon advertising"
+      - "amazon sponsored"
+      - "amazon ppc"
+
+  - name: "Apple Search Ads"
+    aliases:
+      - "apple ads"
+      - "apple search"
+      - "apple app store ads"
+
+  - name: "Facebook Ads"
+    aliases:
+      - "facebook advertising"
+      - "fb ads"
+
+  - name: "Google Ads"
+    aliases:
+      - "google advertising"
+      - "adwords"
+      - "google search ads"
+      - "ppc"
+
+  - name: "Instagram Ads"
+    aliases:
+      - "instagram advertising"
+      - "ig ads"
+      - "instagram sponsored"
+
+  - name: "LinkedIn Ads"
+    aliases:
+      - "linkedin advertising"
+      - "linkedin sponsored"
+      - "li ads"
+
+  - name: "Meta Business Suite"
+    aliases:
+      - "meta ads"
+      - "facebook business"
+      - "meta business"
+      - "fb business"
+
+  - name: "Microsoft Advertising"
+    aliases:
+      - "bing ads"
+      - "microsoft ads"
+      - "bing advertising"
+
+  - name: "Pinterest Ads"
+    aliases:
+      - "pinterest advertising"
+      - "pinterest promoted"
+      - "pin ads"
+
+  - name: "Reddit Ads"
+    aliases:
+      - "reddit advertising"
+      - "reddit sponsored"
+      - "reddit promoted"
+
+  - name: "Snapchat Ads"
+    aliases:
+      - "snapchat advertising"
+      - "snap ads"
+      - "snapchat sponsored"
+
+  - name: "TikTok Ads"
+    aliases:
+      - "tiktok advertising"
+      - "tiktok sponsored"
+      - "tt ads"
+
+  - name: "Twitter Ads"
+    aliases:
+      - "twitter advertising"
+      - "x ads"
+      - "twitter promoted"
+
+  - name: "YouTube Ads"
+    aliases:
+      - "youtube advertising"
+      - "yt ads"
+      - "youtube video ads"

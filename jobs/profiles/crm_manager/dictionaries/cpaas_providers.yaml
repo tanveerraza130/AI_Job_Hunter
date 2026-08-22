@@ -1,0 +1,96 @@
+category:
+  name: cpaas_providers
+items:
+- name: ACL Mobile
+  aliases:
+  - acl
+- name: Exotel
+  aliases:
+  - exotel platform
+- name: Gupshup
+  aliases:
+  - gupshup messaging
+  - gupshup platform
+- name: Infobip
+  aliases:
+  - infobip messaging
+  - infobip platform
+- name: Kaleyra
+  aliases:
+  - kaleyra platform
+- name: Karix
+  aliases:
+  - karix messaging
+  - karix platform
+- name: MSG91
+  aliases:
+  - msg 91
+  - msg91 platform
+- name: Netcore CPaaS
+  aliases:
+  - netcore communications
+- name: Route Mobile
+  aliases:
+  - route mobile platform
+- name: Sinch
+  aliases:
+  - sinch messaging
+  - sinch platform
+- name: Tata Tele Business
+  aliases:
+  - tata communications
+  - tata tele
+  - ttb
+- name: Textlocal
+  aliases:
+  - textlocal messaging
+  - textlocal platform
+- name: Twilio
+  aliases:
+  - twilio api
+  - twilio messaging
+  - twilio platform
+- name: ValueFirst
+  aliases:
+  - value first
+  - vf
+lookup:
+  acl mobile: ACL Mobile
+  acl: ACL Mobile
+  exotel: Exotel
+  exotel platform: Exotel
+  gupshup: Gupshup
+  gupshup platform: Gupshup
+  gupshup messaging: Gupshup
+  infobip: Infobip
+  infobip platform: Infobip
+  infobip messaging: Infobip
+  kaleyra: Kaleyra
+  kaleyra platform: Kaleyra
+  karix: Karix
+  karix platform: Karix
+  karix messaging: Karix
+  msg91: MSG91
+  msg 91: MSG91
+  msg91 platform: MSG91
+  netcore cpaas: Netcore CPaaS
+  netcore communications: Netcore CPaaS
+  route mobile: Route Mobile
+  route mobile platform: Route Mobile
+  sinch: Sinch
+  sinch platform: Sinch
+  sinch messaging: Sinch
+  tata tele business: Tata Tele Business
+  tata tele: Tata Tele Business
+  ttb: Tata Tele Business
+  tata communications: Tata Tele Business
+  textlocal: Textlocal
+  textlocal platform: Textlocal
+  textlocal messaging: Textlocal
+  twilio: Twilio
+  twilio platform: Twilio
+  twilio messaging: Twilio
+  twilio api: Twilio
+  valuefirst: ValueFirst
+  value first: ValueFirst
+  vf: ValueFirst

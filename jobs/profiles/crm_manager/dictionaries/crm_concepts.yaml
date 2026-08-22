@@ -1,0 +1,441 @@
+
+category:
+  name: crm_concepts
+
+items:
+
+- name: 360-Degree View
+  aliases:
+    - 360 view
+    - complete customer profile
+    - customer 360
+    - unified customer view
+
+- name: Account-Based Marketing
+  aliases:
+    - abm
+
+- name: Behavioral Targeting
+  aliases:
+    - behavior targeting
+    - behavioral marketing
+
+- name: Bounce Rate
+  aliases:
+    - bounce
+    - bounce percentage
+
+- name: Buyer Persona
+  aliases:
+    - customer persona
+    - ideal customer profile
+    - persona
+    - user persona
+
+- name: Churn Rate
+  aliases:
+    - churn
+    - churn percentage
+    - customer churn
+
+- name: Click-Through Rate
+  aliases:
+    - click rate
+    - clickthrough rate
+    - ctr
+
+- name: Cohort Analysis
+  aliases:
+    - cohort behavior
+    - cohort retention
+    - cohorts
+
+- name: Consent Management
+  aliases:
+    - consent
+    - consent governance
+    - opt in
+    - opt out
+
+- name: Conversion Rate
+  aliases:
+    - conversion percentage
+    - conversion ratio
+
+- name: CRM Analytics
+  aliases:
+    - analytics reporting
+    - crm reporting
+    - customer analytics
+
+- name: Cross-Channel Marketing
+  aliases:
+    - channel integration
+    - cross channel
+    - integrated marketing
+
+- name: Customer Acquisition
+  aliases:
+    - acquisition
+    - customer acquisition strategy
+
+- name: Customer Acquisition Cost
+  aliases:
+    - acquisition cost
+    - cac
+
+- name: Customer Advocacy
+  aliases:
+    - advocacy
+    - advocate marketing
+    - brand advocacy
+
+- name: Customer Data Platform
+  aliases:
+    - cdp
+    - data unification
+
+- name: Customer Effort Score
+  aliases:
+    - ces
+    - effort score
+
+- name: Customer Engagement
+  aliases:
+    - customer engagement strategy
+    - engagement
+
+- name: Customer Experience
+  aliases:
+    - cx
+    - experience management
+
+- name: Customer Journey
+  aliases:
+    - buyer journey
+    - journey
+    - user journey
+
+- name: Customer Lifecycle
+  aliases:
+    - customer life cycle
+    - life cycle management
+    - lifecycle
+
+- name: Customer Lifetime Value
+  aliases:
+    - clv
+    - lifetime value
+    - ltv
+
+- name: Customer Loyalty
+  aliases:
+    - loyalty management
+    - loyalty program
+    - rewards program
+
+- name: Customer Retention
+  aliases:
+    - retention management
+    - retention marketing
+    - retention strategy
+
+- name: Customer Retention Rate
+  aliases:
+    - crr
+    - retention percentage
+    - retention rate
+
+- name: Customer Satisfaction
+  aliases:
+    - csat
+    - satisfaction score
+
+- name: Customer Success
+  aliases:
+    - client success
+    - csm
+    - customer success management
+
+- name: D2C Marketing
+  aliases:
+    - d2c
+    - direct to consumer
+    - dtc
+
+- name: Data Enrichment
+  aliases:
+    - data augmentation
+    - data enhancement
+    - enrichment
+
+- name: Data Management Platform
+  aliases:
+    - audience management
+    - data marketplace
+    - dmp
+
+- name: Digital Experience
+  aliases:
+    - digital cx
+    - digital engagement
+    - online experience
+
+- name: Email Deliverability
+  aliases:
+    - deliverability
+    - email delivery
+    - inbox placement
+
+- name: First-Party Data
+  aliases:
+    - 1p data
+    - direct data
+    - owned data
+
+- name: Flywheel Model
+  aliases:
+    - flywheel
+    - flywheel strategy
+    - growth flywheel
+
+- name: Freemium Model
+  aliases:
+    - free tier
+    - freemium
+    - freemium strategy
+
+- name: Funnel Management
+  aliases:
+    - conversion funnel
+    - marketing funnel
+    - pipeline
+    - sales funnel
+
+- name: Gamification
+  aliases:
+    - engagement gamification
+    - game mechanics
+    - gamified experience
+
+- name: GDPR Compliance
+  aliases:
+    - data protection
+    - gdpr
+    - general data protection regulation
+
+- name: Hyper-Personalization
+  aliases:
+    - individualized marketing
+
+- name: Identity Resolution
+  aliases:
+    - customer identity
+    - id resolution
+    - identity
+
+- name: Intent Data
+  aliases:
+    - buying intent
+    - purchase intent
+    - signal data
+
+- name: Lead Scoring
+  aliases:
+    - lead prioritization
+    - predictive lead scoring
+    - score leads
+
+- name: Lead Nurturing
+  aliases:
+    - lead nurture
+    - lead nurturing
+    - lead nurturing workflows
+    - customer nurturing
+
+- name: Lifecycle Marketing
+  aliases:
+    - customer lifecycle marketing
+
+- name: Lookalike Audience
+  aliases:
+    - look alike
+    - similar audience
+    - targeting lookalike
+
+- name: LTV:CAC Ratio
+  aliases:
+    - customer economics
+    - lifetime value to acquisition cost
+    - ltv cac
+
+- name: Marketing Attribution
+  aliases:
+    - attribution
+    - channel attribution
+
+- name: Marketing Automation
+  aliases:
+    - marketing automation
+    - marketing automation platform
+    - marketing automation platforms
+
+- name: Marketing Mix
+  aliases:
+    - 4ps
+    - product price place promotion
+    - promotional mix
+
+- name: Martech Stack
+  aliases:
+    - marketing technology stack
+    - stack
+    - technology stack
+    - tool stack
+
+- name: Multi-Channel Marketing
+  aliases:
+    - multichannel
+    - unified marketing
+
+- name: Multi-Touch Attribution
+  aliases:
+    - mta
+
+- name: Net Promoter Score
+  aliases:
+    - net promoter
+    - nps
+    - nps score
+    - promoter score
+
+- name: Omnichannel Marketing
+  aliases:
+    - omni channel
+    - omnichannel
+    - seamless experience
+
+- name: Personalization
+  aliases:
+    - 1:1
+    - one to one
+    - personalised
+    - personalized
+
+- name: Predictive Analytics
+  aliases:
+    - forecasting
+    - predictive insights
+    - predictive modeling
+
+- name: Progressive Profiling
+  aliases:
+    - progressive profiling forms
+    - step profiling
+
+- name: Recommendation Engine
+  aliases:
+    - product recommendations
+    - recommendation system
+
+- name: Retargeting
+  aliases:
+    - re targeting
+    - remarketing
+    - retarget
+
+- name: Revenue Cycle
+  aliases:
+    - revenue generation
+    - revenue lifecycle
+
+- name: Revenue Operations
+  aliases:
+    - revenue management
+    - revops
+
+- name: RFM Analysis
+  aliases:
+    - recency frequency monetary
+    - rfm
+
+- name: ROI Analysis
+  aliases:
+    - investment return
+    - return on investment
+    - roi
+
+- name: Sales Enablement
+  aliases:
+    - enablement
+    - sales productivity
+    - sales readiness
+
+- name: Search Engine Marketing
+  aliases:
+    - paid search marketing
+    - search marketing
+    - sem
+
+- name: Segmentation Strategy
+  aliases:
+    - audience segmentation
+    - segment strategy
+
+- name: Single Customer View
+  aliases:
+    - golden record
+    - scv
+    - unified customer profile
+
+- name: Social Selling
+  aliases:
+    - social commerce
+    - social sales
+
+- name: Subscription Economy
+  aliases:
+    - recurring revenue
+    - saas economy
+    - subscription model
+
+- name: Target Audience
+  aliases:
+    - audience
+    - target market
+    - targeting
+
+- name: Third-Party Data
+  aliases:
+    - 3p data
+    - external data
+
+- name: Touchpoint Management
+  aliases:
+    - customer touchpoint
+    - touch point
+    - touchpoint
+
+- name: Value Proposition
+  aliases:
+    - customer value proposition
+    - proposition
+    - uvp
+
+- name: Voice of Customer
+  aliases:
+    - customer voice
+    - voc
+    - voice of the customer
+
+- name: Zero-Party Data
+  aliases:
+    - 0p data
+    - customer provided data
+
+- name: Campaign Management
+  aliases:
+    - campaign management
+    - campaign execution
+    - campaign operations
+

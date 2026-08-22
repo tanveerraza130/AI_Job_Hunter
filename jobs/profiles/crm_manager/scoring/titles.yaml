@@ -1,0 +1,74 @@
+# Title Matching Rules for CRM Manager Profile
+#
+# This file defines the title matching rules for the CRM Manager profile.
+# The scoring engine loads these rules from profile configuration.
+#
+# Precedence order:
+#   1. Strong titles (highest priority)
+#   2. Weak titles
+#   3. Pattern matching (fallback)
+#   4. No match → score: 0
+
+version: 1
+
+# Strong titles (highest priority)
+# These are titles that strongly indicate a match.
+strong:
+  score: 100.0
+  titles:
+    - "crm manager"
+    - "crm lead"
+    - "crm head"
+    - "crm retention manager"
+    - "crm retention lead"
+    - "crm campaign manager"
+    - "campaign manager crm"
+    - "martech manager"
+    - "martech lead"
+    - "marketing technology manager"
+    - "customer relationship manager"
+    - "customer lifecycle manager"
+    - "lifecycle marketing manager"
+    - "retention marketing manager"
+    - "marketing automation manager"
+    - "lifecycle marketing manager"
+    - "retention manager"
+    - "marketing automation manager"
+    - "crm director"
+    - "head of crm"
+    - "customer lifecycle manager"
+    - "retention marketing manager"
+    - "vice president crm"
+    - "vp crm"
+
+# Weak titles (checked before generic patterns)
+# These titles are relevant but not as strong as the strong titles.
+weak:
+  score: 25.0
+  titles:
+    - "crm analyst"
+    - "campaign manager"
+    - "crm executive"
+    - "crm specialist"
+
+# Generic patterns (fallback)
+# These patterns catch other titles that contain relevant keywords.
+patterns:
+  - pattern: "crm"
+    score: 90.0
+  - pattern: "lifecycle"
+    score: 85.0
+  - pattern: "retention"
+    score: 85.0
+  - pattern: "customer engagement"
+    score: 80.0
+  - pattern: "marketing automation"
+    score: 80.0
+  - pattern: "campaign"
+    score: 70.0
+  - pattern: "martech"
+    score: 70.0
+  - pattern: "loyalty"
+    score: 70.0
+  - pattern: "customer value"
+    score: 70.0

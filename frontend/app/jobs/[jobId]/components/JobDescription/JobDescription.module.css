@@ -1,0 +1,134 @@
+.section {
+  padding: 32px 36px 26px;
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.header {
+  position: relative;
+  margin-bottom: 24px;
+  padding-left: 58px;
+}
+
+.header::before {
+  content: "▣";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #f0ecff;
+  color: #5138ee;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.eyebrow {
+  display: none;
+}
+
+.header h2 {
+  margin: 0 0 12px;
+  color: #17233f;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.header p {
+  margin: 0;
+  color: #8995aa;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.content {
+  max-width: none;
+}
+
+.content p {
+  margin: 0 0 16px;
+  color: #53627f;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.content p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 800px) {
+
+  /* Independent mobile About the Role */
+
+  .section {
+    width: 100%;
+    padding: 18px 16px;
+
+    background: #ffffff;
+    border: 1px solid #e6eaf0;
+    border-radius: 14px;
+
+    box-shadow: 0 2px 10px rgba(20, 30, 50, 0.035);
+  }
+
+  .header {
+    margin-bottom: 15px;
+    padding-left: 0;
+  }
+
+  .header::before {
+    display: none;
+  }
+
+  .eyebrow {
+    display: none;
+  }
+
+  .header h2 {
+    margin: 0 0 6px;
+
+    color: #17233f;
+    font-size: 18px;
+    line-height: 1.25;
+    font-weight: 750;
+    letter-spacing: -0.015em;
+  }
+
+  .header p {
+    margin: 0;
+
+    color: #8995aa;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .content {
+    width: 100%;
+    max-width: none;
+  }
+
+  .content p {
+    margin: 0 0 11px;
+    padding: 11px 12px;
+
+    color: #46536b;
+    background: #fafbfe;
+
+    border: 1px solid #edf0f5;
+    border-radius: 10px;
+
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .content p:last-child {
+    margin-bottom: 0;
+  }
+}

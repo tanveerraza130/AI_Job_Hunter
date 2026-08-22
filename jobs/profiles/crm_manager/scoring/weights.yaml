@@ -1,0 +1,78 @@
+version: 3
+weights:
+  tool_match: 15.0
+  skill_match: 45.0
+  jd_match: 25.0
+  title_match: 15.0
+  negative_penalty: 20.0
+skill_weights:
+  core: 2.0
+  default: 0.5
+  core_skills:
+  - CRM Strategy
+  - Customer Lifecycle
+  - Lifecycle Marketing
+  - Retention Marketing
+  - Customer Journey Mapping
+  - Loyalty Programs
+  - Journey Builder
+  - Journey Design
+  - Journey Orchestration
+  - Triggered Campaigns
+  - Onboarding Journeys
+  - Retention Journeys
+  - Win Back Campaigns
+  - Churn Reduction
+  - Campaign Automation
+  - Marketing Automation
+  - Customer Lifetime Value
+  - LTV Analysis
+  - Customer Data Platform
+  - CDP Strategy
+  - Data Unification
+  - Push Notification Strategy
+  - SMS Marketing Strategy
+  - WhatsApp Marketing Strategy
+  - Omnichannel Communication Strategy
+jd_config:
+  score_per_concept: 10.0
+  max_score: 100.0
+tool_scoring:
+  mode: any_profile_tool
+  full_match_score: 100.0
+bonus_config:
+  max_bonus: 10.0
+evidence_model:
+  method: profile_evidence_saturation
+  saturation:
+    constant: 8.0
+    max_score: 100.0
+  sources:
+    tools: 1.5
+    skills: 1.0
+    concepts: 0.75
+    channels: 0.5
+    analytics: 0.5
+  frequency:
+    enabled: true
+    additional_weight: 0.15
+    max_frequency_bonus: 0.3
+  core:
+    enabled: true
+    multiplier: 1.5
+  strength_limit: 8
+tool_evidence:
+  method: representative_tool_saturation
+  saturation_constant: 2.5
+  max_score: 100.0
+  minimum_relevance_score: 60.0
+component_calibration:
+  method: capability_first
+  primary_component: skill_match
+  secondary_components:
+  - tool_match
+  - jd_match
+  - title_match
+  primary_weight: 0.6
+  secondary_weight: 0.4
+  minimum_primary_score: 50.0

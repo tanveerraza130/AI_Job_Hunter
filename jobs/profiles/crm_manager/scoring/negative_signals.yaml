@@ -1,0 +1,48 @@
+# Negative Scoring Signals for CRM Manager Profile
+#
+# These signals apply a scoring penalty to jobs that match any pattern.
+# Each matched signal adds penalty_per_signal to the total penalty.
+# Total penalty is capped at max_penalty.
+
+version: 1
+
+penalty_per_signal: 20.0
+max_penalty: 100.0
+
+signals:
+  - "\\bSales\\b"
+  - "\\bBPO\\b"
+  - "\\bTelecalling\\b"
+  - "\\bCustomer Support\\b"
+  - "\\bField Sales\\b"
+  - "\\bSalesforce Developer\\b"
+  - "\\bCRM Developer\\b"
+  - "\\bTechnical Support\\b"
+  - "\\bInside Sales\\b"
+  - "\\bTelesales\\b"
+  - "\\bSales Executive\\b"
+  - "\\bBusiness Development\\b"
+
+# Technical CRM / engineering roles.
+# These remain negative even when a CRM platform/tool is present,
+# because the target profile is CRM/MarTech marketing rather than
+# CRM software engineering/architecture/technical consulting.
+
+technical_signals:
+
+  - '\bCRM Architect\b'
+  - '\bDynamics CRM Architect\b'
+  - '\bArchitect\s*-\s*Dynamics CRM\b'
+  - '\bCRM Developer\b'
+  - '\bDynamics CRM Developer\b'
+  - '\bSalesforce Developer\b'
+  - '\bSAP CRM Developer\b'
+  - '\bCRM Technical Consultant\b'
+  - '\bCRM Technical Lead\b'
+  - '\bAssociate Technical Lead\b'
+  - '\bCRM Technical\b'
+  - '\bDynamics CRM Technical\b'
+  - '\bMicrosoft CRM Technical\b'
+  - '\bMicrosoft Dynamics CRM Technical\b'
+  - '\bCRM DeveloperTester\b'
+  - '\bSAP CRM DeveloperTester\b'

@@ -1,0 +1,254 @@
+category:
+  name: analytics_tools
+items:
+- name: Adobe Analytics
+  aliases:
+  - adobe insights
+  - adobe reporting
+- name: Amplitude
+  aliases:
+  - amplitude analytics
+  - amplitude product
+- name: Chartio
+  aliases:
+  - chartio analytics
+- name: Cognos
+  aliases:
+  - cognos analytics
+  - cognos bi
+  - ibm cognos
+- name: Cube
+  aliases:
+  - cube js
+  - cube platform
+- name: Datameer
+  aliases:
+  - datameer platform
+- name: Datorama
+  aliases:
+  - datorama analytics
+  - salesforce datorama
+- name: Google Analytics
+  aliases:
+  - ga
+  - ga4
+  - google analytics 4
+  - universal analytics
+- name: Google Looker
+  aliases:
+  - looker
+  - looker bi
+  - looker platform
+- name: Heap
+  aliases:
+  - heap analytics
+  - heap platform
+- name: Hex
+  aliases:
+  - hex analytics
+  - hex platform
+- name: Hotjar
+  aliases:
+  - hotjar analytics
+  - hotjar platform
+- name: Kissmetrics
+  aliases:
+  - kissmetrics analytics
+  - km
+- name: Looker Studio
+  aliases:
+  - data studio
+  - google data studio
+  - looker studio reports
+- name: Matomo
+  aliases:
+  - matomo analytics
+  - piwik
+- name: Metabase
+  aliases:
+  - metabase bi
+  - metabase platform
+- name: MicroStrategy
+  aliases:
+  - microstrategy platform
+  - mstr
+- name: Mixpanel
+  aliases:
+  - mixpanel analytics
+  - mixpanel platform
+- name: Mode Analytics
+  aliases:
+  - mode bi
+  - mode platform
+- name: Omni
+  aliases:
+  - omni analytics
+  - omni platform
+- name: Oracle Analytics
+  aliases:
+  - oracle bi
+  - oracle platform
+- name: Power BI
+  aliases:
+  - microsoft power bi
+  - ms power bi
+  - powerbi
+- name: Preset
+  aliases:
+  - preset bi
+  - preset platform
+- name: Qlik
+  aliases:
+  - qlik platform
+  - qlik sense
+  - qlik view
+- name: Redash
+  aliases:
+  - redash bi
+  - redash platform
+- name: Salesforce Analytics
+  aliases:
+  - einstein analytics
+  - salesforce einstein
+  - sf analytics
+- name: SAP Analytics
+  aliases:
+  - sap bi
+  - sap platform
+- name: Sigma Computing
+  aliases:
+  - sigma
+  - sigma platform
+- name: Sisense
+  aliases:
+  - sisense bi
+  - sisense platform
+- name: Superset
+  aliases:
+  - apache superset
+  - superset bi
+- name: Tableau
+  aliases:
+  - salesforce tableau
+  - tableau bi
+  - tableau platform
+- name: ThoughtSpot
+  aliases:
+  - thoughtspot analytics
+  - thoughtspot platform
+- name: TIBCO Spotfire
+  aliases:
+  - spotfire
+  - tibco platform
+- name: Zoho Analytics
+  aliases:
+  - zoho bi
+lookup:
+  adobe analytics: Adobe Analytics
+  adobe reporting: Adobe Analytics
+  adobe insights: Adobe Analytics
+  amplitude: Amplitude
+  amplitude analytics: Amplitude
+  amplitude product: Amplitude
+  chartio: Chartio
+  chartio analytics: Chartio
+  cognos: Cognos
+  ibm cognos: Cognos
+  cognos analytics: Cognos
+  cognos bi: Cognos
+  cube: Cube
+  cube js: Cube
+  cube platform: Cube
+  datorama: Datorama
+  salesforce datorama: Datorama
+  datorama analytics: Datorama
+  datameer: Datameer
+  datameer platform: Datameer
+  google analytics: Google Analytics
+  ga: Google Analytics
+  ga4: Google Analytics
+  universal analytics: Google Analytics
+  google analytics 4: Google Analytics
+  google looker: Google Looker
+  looker: Google Looker
+  looker bi: Google Looker
+  looker platform: Google Looker
+  heap: Heap
+  heap analytics: Heap
+  heap platform: Heap
+  hex: Hex
+  hex platform: Hex
+  hex analytics: Hex
+  hotjar: Hotjar
+  hotjar analytics: Hotjar
+  hotjar platform: Hotjar
+  kissmetrics: Kissmetrics
+  kissmetrics analytics: Kissmetrics
+  km: Kissmetrics
+  looker studio: Looker Studio
+  data studio: Looker Studio
+  google data studio: Looker Studio
+  looker studio reports: Looker Studio
+  matomo: Matomo
+  matomo analytics: Matomo
+  piwik: Matomo
+  metabase: Metabase
+  metabase bi: Metabase
+  metabase platform: Metabase
+  microstrategy: MicroStrategy
+  microstrategy platform: MicroStrategy
+  mstr: MicroStrategy
+  mixpanel: Mixpanel
+  mixpanel analytics: Mixpanel
+  mixpanel platform: Mixpanel
+  mode analytics: Mode Analytics
+  mode platform: Mode Analytics
+  mode bi: Mode Analytics
+  omni: Omni
+  omni analytics: Omni
+  omni platform: Omni
+  oracle analytics: Oracle Analytics
+  oracle bi: Oracle Analytics
+  oracle platform: Oracle Analytics
+  power bi: Power BI
+  powerbi: Power BI
+  microsoft power bi: Power BI
+  ms power bi: Power BI
+  preset: Preset
+  preset bi: Preset
+  preset platform: Preset
+  qlik: Qlik
+  qlik view: Qlik
+  qlik sense: Qlik
+  qlik platform: Qlik
+  redash: Redash
+  redash bi: Redash
+  redash platform: Redash
+  salesforce analytics: Salesforce Analytics
+  einstein analytics: Salesforce Analytics
+  salesforce einstein: Salesforce Analytics
+  sf analytics: Salesforce Analytics
+  sap analytics: SAP Analytics
+  sap bi: SAP Analytics
+  sap platform: SAP Analytics
+  sigma computing: Sigma Computing
+  sigma: Sigma Computing
+  sigma platform: Sigma Computing
+  sisense: Sisense
+  sisense platform: Sisense
+  sisense bi: Sisense
+  superset: Superset
+  apache superset: Superset
+  superset bi: Superset
+  tableau: Tableau
+  salesforce tableau: Tableau
+  tableau platform: Tableau
+  tableau bi: Tableau
+  thoughtspot: ThoughtSpot
+  thoughtspot platform: ThoughtSpot
+  thoughtspot analytics: ThoughtSpot
+  tibco spotfire: TIBCO Spotfire
+  spotfire: TIBCO Spotfire
+  tibco platform: TIBCO Spotfire
+  zoho analytics: Zoho Analytics
+  zoho bi: Zoho Analytics

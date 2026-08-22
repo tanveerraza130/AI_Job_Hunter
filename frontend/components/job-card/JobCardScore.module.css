@@ -1,0 +1,56 @@
+.shell {
+  width: 100%;
+  min-width: 0;
+}
+
+.metric {
+  min-width: 0;
+}
+
+.metricHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.metricHeader span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metricHeader strong {
+  flex: 0 0 auto;
+}
+
+.metricTrack {
+  width: 100%;
+  height: 4px;
+  margin-top: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #edf1f5;
+}
+
+.metricFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #6a4dff;
+  transition: width 180ms ease;
+}
+
+@media (max-width: 700px) {
+  .metricTrack {
+    height: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metricFill {
+    transition: none;
+  }
+}

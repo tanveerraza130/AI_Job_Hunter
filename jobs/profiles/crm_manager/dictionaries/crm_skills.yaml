@@ -1,0 +1,400 @@
+category:
+  name: crm_skills
+items:
+- name: CRM Strategy
+  aliases:
+  - crm strategy
+  - customer relationship management strategy
+- name: Customer Lifecycle
+  aliases:
+  - customer lifecycle
+  - lifecycle management
+  - customer lifecycle management
+- name: Lifecycle Marketing
+  aliases:
+  - lifecycle marketing
+  - customer lifecycle marketing
+- name: Retention Marketing
+  aliases:
+  - retention marketing
+  - customer retention marketing
+- name: Retention
+  aliases:
+  - retention
+  - retention campaigns
+  - retention execution
+  - retention optimization
+  - retention strategy
+- name: Customer Engagement
+  aliases:
+  - customer engagement
+  - consumer engagement
+  - customer engagement strategy
+- name: Customer Journey Mapping
+  aliases:
+  - customer journey mapping
+  - journey mapping
+- name: Segmentation
+  aliases:
+  - segmentation
+  - audience segmentation
+  - audience building
+  - audience creation
+  - segment execution
+  - segment implementation
+  - user segments
+  - customer segments
+  - audience segments
+- name: Loyalty Programs
+  aliases:
+  - loyalty programs
+  - loyalty program management
+  - loyalty marketing
+- name: Customer Loyalty
+  aliases:
+  - customer loyalty
+- name: Journey Builder
+  aliases:
+  - journey builder
+  - customer journey builder
+  - journey automation
+  - journey management
+  - journey orchestration
+  - automated user journeys
+  - automated customer journeys
+- name: Journey Design
+  aliases:
+  - journey design
+  - journey architecture
+  - journey planning
+  - experience design
+- name: Journey Orchestration
+  aliases:
+  - journey orchestration
+  - customer journey orchestration
+- name: Triggered Campaigns
+  aliases:
+  - triggered campaigns
+  - triggered marketing
+  - event triggered campaigns
+  - trigger based campaigns
+- name: Onboarding Journeys
+  aliases:
+  - customer onboarding
+  - onboarding journeys
+  - onboarding
+  - user onboarding
+  - client onboarding
+  - welcome program
+- name: Retention Journeys
+  aliases:
+  - retention journeys
+  - retention journey
+- name: Win Back Campaigns
+  aliases:
+  - win back campaigns
+  - win-back campaigns
+  - winback campaigns
+  - win back
+- name: Churn Reduction
+  aliases:
+  - churn reduction
+  - churn management
+  - churn prevention
+  - churn analysis
+  - attrition reduction
+  - churn trends
+  - churn gaps
+- name: Campaign Management
+  aliases:
+  - campaign management
+  - campaign optimization
+  - campaign planning
+  - campaign strategy
+  - multi channel campaigns
+  - multichannel campaigns
+  - campaign execution
+  - campaign performance
+- name: Multi Channel Campaigns
+  aliases:
+  - multi channel campaigns
+  - multichannel campaigns
+  - omnichannel campaigns
+- name: Campaign Automation
+  aliases:
+  - campaign automation
+  - marketing automation
+  - workflow automation
+- name: Automation
+  aliases:
+  - automation
+  - marketing automation
+  - workflow automation
+  - campaign automation
+- name: A/B Testing
+  aliases:
+  - a/b testing
+  - ab testing
+  - multivariate testing
+  - split testing
+  - experimentation testing
+- name: Experimentation
+  aliases:
+  - experimentation
+  - experiment design
+  - optimization testing
+  - test design
+- name: CRM Analytics
+  aliases:
+  - crm analytics
+  - customer relationship analytics
+- name: Customer Analytics
+  aliases:
+  - customer analytics
+  - customer data analytics
+  - customer behavior analysis
+  - customer behavior
+- name: Cohort Analysis
+  aliases:
+  - cohort analysis
+  - cohort analytics
+- name: RFM Analysis
+  aliases:
+  - rfm analysis
+  - recency frequency monetary analysis
+  - recency frequency monetary
+- name: Customer Lifetime Value
+  aliases:
+  - customer lifetime value
+  - customer ltv
+  - clv
+  - ltv
+- name: LTV Analysis
+  aliases:
+  - ltv analysis
+  - lifetime value analysis
+- name: LTV Optimization
+  aliases:
+  - ltv optimization
+  - lifetime value optimization
+- name: Marketing ROI Analysis
+  aliases:
+  - marketing roi analysis
+  - marketing roi
+  - marketing return on investment
+- name: Channel ROI Analysis
+  aliases:
+  - channel roi analysis
+  - channel roi
+  - channel return on investment
+- name: Customer Data Platform
+  aliases:
+  - customer data platform
+  - cdp
+  - customer data platforms
+- name: CDP Strategy
+  aliases:
+  - cdp strategy
+  - customer data platform strategy
+- name: Data Unification
+  aliases:
+  - data unification
+  - customer data unification
+  - data integration
+- name: Push Notification Strategy
+  aliases:
+  - push notification strategy
+  - push notifications
+  - push notification marketing
+- name: SMS Marketing Strategy
+  aliases:
+  - sms marketing strategy
+  - sms marketing
+  - sms campaigns
+- name: WhatsApp Marketing Strategy
+  aliases:
+  - whatsapp marketing strategy
+  - whatsapp marketing
+  - whatsapp campaigns
+- name: Omnichannel Communication Strategy
+  aliases:
+  - omnichannel communication strategy
+  - omnichannel marketing
+  - omnichannel communication
+  - omnichannel campaigns
+- name: SQL
+  aliases:
+  - sql
+  - sql querying
+  - structured query language
+- name: Dashboarding
+  aliases:
+  - dashboarding
+  - dashboards
+  - dashboard creation
+  - report building
+  - data visualization
+- name: Data Analysis
+  aliases:
+  - data analysis
+  - data analytics
+  - data interpretation
+  - insights generation
+- name: Loyalty
+  aliases:
+  - loyalty
+  - loyalty campaigns
+  - loyalty execution
+  - loyalty optimization
+  - loyalty program management
+- name: Statistical Analysis
+  aliases:
+  - statistical analysis
+  - statistical modeling
+  - quantitative analysis
+  - statistics
+lookup:
+  crm strategy: CRM Strategy
+  customer relationship management strategy: CRM Strategy
+  customer lifecycle: Customer Lifecycle
+  lifecycle management: Customer Lifecycle
+  customer lifecycle management: Customer Lifecycle
+  lifecycle marketing: Lifecycle Marketing
+  customer lifecycle marketing: Lifecycle Marketing
+  retention marketing: Retention Marketing
+  customer retention marketing: Retention Marketing
+  retention: Retention
+  retention campaigns: Retention
+  retention execution: Retention
+  retention optimization: Retention
+  retention strategy: Retention
+  customer engagement: Customer Engagement
+  consumer engagement: Customer Engagement
+  customer engagement strategy: Customer Engagement
+  customer journey: Customer Journey
+  customer journeys: Customer Journey
+  customer journey mapping: Customer Journey Mapping
+  journey mapping: Customer Journey Mapping
+  segmentation: Segmentation
+  audience segmentation: Segmentation
+  audience building: Segmentation
+  audience creation: Segmentation
+  segment execution: Segmentation
+  segment implementation: Segmentation
+  personalization: Personalization
+  customer personalization: Personalization
+  personalized marketing: Personalization
+  loyalty programs: Loyalty Programs
+  loyalty program management: Loyalty Programs
+  loyalty marketing: Loyalty Programs
+  customer loyalty: Customer Loyalty
+  loyalty: Customer Loyalty
+  loyalty campaigns: Customer Loyalty
+  loyalty execution: Customer Loyalty
+  loyalty optimization: Customer Loyalty
+  journey builder: Journey Builder
+  customer journey builder: Journey Builder
+  journey automation: Journey Builder
+  journey management: Journey Builder
+  journey orchestration: Journey Builder
+  journey design: Journey Design
+  journey architecture: Journey Design
+  journey planning: Journey Design
+  experience design: Journey Design
+  customer journey orchestration: Journey Orchestration
+  triggered campaigns: Triggered Campaigns
+  triggered marketing: Triggered Campaigns
+  event triggered campaigns: Triggered Campaigns
+  trigger based campaigns: Triggered Campaigns
+  customer onboarding: Customer Onboarding
+  onboarding journeys: Customer Onboarding
+  onboarding: Customer Onboarding
+  user onboarding: Customer Onboarding
+  client onboarding: Customer Onboarding
+  welcome program: Customer Onboarding
+  retention journeys: Retention Journeys
+  retention journey: Retention Journeys
+  win back campaigns: Win Back Campaigns
+  win-back campaigns: Win Back Campaigns
+  winback campaigns: Win Back Campaigns
+  win back: Win Back Campaigns
+  churn reduction: Churn Reduction
+  churn management: Churn Reduction
+  churn prevention: Churn Reduction
+  churn analysis: Churn Reduction
+  attrition reduction: Churn Reduction
+  campaign management: Campaign Management
+  campaign optimization: Campaign Management
+  campaign planning: Campaign Management
+  campaign strategy: Campaign Management
+  multi channel campaigns: Multi Channel Campaigns
+  multichannel campaigns: Multi Channel Campaigns
+  omnichannel campaigns: Multi Channel Campaigns
+  campaign automation: Campaign Automation
+  marketing automation: Campaign Automation
+  workflow automation: Automation
+  automation: Automation
+  a/b testing: A/B Testing
+  ab testing: A/B Testing
+  multivariate testing: A/B Testing
+  split testing: A/B Testing
+  experimentation testing: A/B Testing
+  experimentation: Experimentation
+  experiment design: Experimentation
+  optimization testing: Experimentation
+  test design: Experimentation
+  crm analytics: CRM Analytics
+  customer relationship analytics: CRM Analytics
+  customer analytics: Customer Analytics
+  customer data analytics: Customer Analytics
+  cohort analysis: Cohort Analysis
+  cohort analytics: Cohort Analysis
+  rfm analysis: RFM Analysis
+  recency frequency monetary analysis: RFM Analysis
+  recency frequency monetary: RFM Analysis
+  customer lifetime value: Customer Lifetime Value
+  customer ltv: Customer Lifetime Value
+  clv: Customer Lifetime Value
+  ltv: Customer Lifetime Value
+  ltv analysis: LTV Analysis
+  lifetime value analysis: LTV Analysis
+  ltv optimization: LTV Optimization
+  lifetime value optimization: LTV Optimization
+  marketing roi analysis: Marketing ROI Analysis
+  marketing roi: Marketing ROI Analysis
+  marketing return on investment: Marketing ROI Analysis
+  channel roi analysis: Channel ROI Analysis
+  channel roi: Channel ROI Analysis
+  channel return on investment: Channel ROI Analysis
+  customer data platform: Customer Data Platform
+  cdp: Customer Data Platform
+  customer data platforms: Customer Data Platform
+  cdp strategy: CDP Strategy
+  customer data platform strategy: CDP Strategy
+  data unification: Data Unification
+  customer data unification: Data Unification
+  data integration: Data Unification
+  push notification strategy: Push Notification Strategy
+  push notifications: Push Notification Strategy
+  push notification marketing: Push Notification Strategy
+  sms marketing strategy: SMS Marketing Strategy
+  sms marketing: SMS Marketing Strategy
+  sms campaigns: SMS Marketing Strategy
+  whatsapp marketing strategy: WhatsApp Marketing Strategy
+  whatsapp marketing: WhatsApp Marketing Strategy
+  whatsapp campaigns: WhatsApp Marketing Strategy
+  omnichannel communication strategy: Omnichannel Communication Strategy
+  omnichannel marketing: Omnichannel Communication Strategy
+  omnichannel communication: Omnichannel Communication Strategy
+  sql: SQL
+  sql querying: SQL
+  structured query language: SQL
+  dashboarding: Dashboarding
+  dashboards: Dashboarding
+  dashboard creation: Dashboarding
+  report building: Dashboarding
+  data visualization: Dashboarding
+  data analysis: Data Analysis
+  data analytics: Data Analysis
+  data interpretation: Data Analysis
+  insights generation: Data Analysis

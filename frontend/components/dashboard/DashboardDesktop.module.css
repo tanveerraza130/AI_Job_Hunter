@@ -1,0 +1,14 @@
+.root {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.container {
+  width: min(1560px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 28px 0 64px;
+}
+
+@media (max-width: 700px) {
+  .container { width: calc(100% - 32px); padding-bottom: 40px; }
+}
