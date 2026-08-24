@@ -1,0 +1,142 @@
+name: Naukri Feasibility Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-naukri:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m venv .test-venv
+          .test-venv/bin/python -m pip install --upgrade pip
+          .test-venv/bin/python -m pip install --no-cache-dir -r requirements.txt
+          .test-venv/bin/python -m playwright install --with-deps chromium chromium-headless-shell
+
+      - name: Restore Naukri session
+        env:
+          NAUKRI_COOKIES_JSON: ${{ secrets.NAUKRI_COOKIES_JSON }}
+        run: |
+          mkdir -p data/sessions
+
+          if [ -z "$NAUKRI_COOKIES_JSON" ]; then
+            echo "❌ NAUKRI_COOKIES_JSON GitHub Secret is missing"
+            exit 1
+          fi
+
+          printf '%s' "$NAUKRI_COOKIES_JSON" > data/sessions/naukri_cookies.json
+
+          .test-venv/bin/python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/sessions/naukri_cookies.json")
+          cookies = json.loads(path.read_text())
+
+          if not isinstance(cookies, list) or not cookies:
+              raise SystemExit("❌ Invalid Naukri cookie secret")
+
+          print(f"✓ Naukri session restored: {len(cookies)} cookies")
+          PY
+
+      - name: Test Naukri access
+        run: |
+          .test-venv/bin/python - <<'PY'
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+
+              context = browser.new_context()
+              page = context.new_page()
+
+              print("===== NAUKRI ACCESS TEST =====")
+
+              response = page.goto(
+                  "https://www.naukri.com",
+                  wait_until="domcontentloaded",
+                  timeout=30000,
+              )
+
+              print("HTTP:", response.status if response else "NO RESPONSE")
+              print("URL:", page.url)
+              print("TITLE:", page.title())
+
+              html = page.content().lower()
+
+              print("ACCESS_DENIED:", "access denied" in html)
+              print("AKAMAI:", "edgesuite.net" in html)
+
+              page.screenshot(
+                  path="naukri-access.png",
+                  full_page=True,
+              )
+
+              browser.close()
+          PY
+
+      - name: Test one Naukri search
+        run: |
+          rm -rf output/naukri_test
+
+          .test-venv/bin/python main.py \
+            --keyword "CRM Manager" \
+            --connector naukri \
+            --exporter duckdb \
+            --output output/naukri_test \
+            --location Gurgaon
+
+      - name: Check test result
+        run: |
+          .test-venv/bin/python - <<'PY'
+          import duckdb
+          from pathlib import Path
+
+          db = Path("output/naukri_test/job_hunter.duckdb")
+
+          if not db.exists():
+              raise SystemExit("❌ TEST FAILED: database was not created")
+
+          con = duckdb.connect(str(db), read_only=True)
+
+          try:
+              jobs = con.execute(
+                  "SELECT COUNT(*) FROM fact_jobs"
+              ).fetchone()[0]
+          except Exception:
+              jobs = 0
+
+          print("=" * 60)
+          print(f"NAUKRI TEST JOB COUNT: {jobs}")
+          print("=" * 60)
+
+          if jobs == 0:
+              raise SystemExit(
+                  "❌ TEST FAILED: Naukri returned zero jobs"
+              )
+
+          print("✅ TEST PASSED: Naukri returned jobs")
+
+          con.close()
+          PY
+
+      - name: Upload diagnostic screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: naukri-feasibility-diagnostics
+          path: |
+            naukri-access.png
+            debug/
+          if-no-files-found: ignore
