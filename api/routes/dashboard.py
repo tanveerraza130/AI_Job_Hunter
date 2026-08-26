@@ -135,6 +135,7 @@ async def get_dashboard_summary(
 
     allowed_relevance = {
         "all",
+        "gte_30",
         "gte_70",
         "50_69",
         "30_49",
@@ -155,7 +156,12 @@ async def get_dashboard_summary(
         relevance_conditions: list[str] = []
 
         for relevance_value in normalized_relevance:
-            if relevance_value == "gte_70":
+            if relevance_value == "gte_30":
+                relevance_conditions.append(
+                    "s.overall_score >= 30"
+                )
+
+            elif relevance_value == "gte_70":
                 relevance_conditions.append(
                     "s.overall_score >= 70"
                 )
