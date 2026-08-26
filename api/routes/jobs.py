@@ -71,10 +71,10 @@ async def list_jobs(
     portal: Optional[str] = Query(None),
     skill: list[str] = Query(default=[]),
     tool: list[str] = Query(default=[]),
-    relevance: list[str] = Query(default=["all"]),
+    relevance: list[str] = Query(default=["gte_30"]),
     posted_date_from: Optional[str] = Query(None),
     posted_date_to: Optional[str] = Query(None),
-    sort: str = Query("score"),
+    sort: str = Query("newest"),
     db: DuckDBPyConnection = Depends(get_db),
 ) -> JobListResponse:
     """
@@ -152,6 +152,7 @@ async def list_jobs(
     allowed_relevance = {
         "all",
         "gte_70",
+        "gte_30",
         "50_69",
         "30_49",
         "lt_30",
@@ -264,6 +265,11 @@ async def list_jobs(
             if relevance_value == "gte_70":
                 relevance_conditions.append(
                     "s.overall_score >= 70"
+                )
+
+            elif relevance_value == "gte_30":
+                relevance_conditions.append(
+                    "s.overall_score >= 30"
                 )
 
             elif relevance_value == "50_69":

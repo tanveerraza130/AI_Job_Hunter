@@ -543,7 +543,9 @@ class NaukriConnector(BaseConnector):
             request.location,
         )
 
-        self.session.load_cookies()
+        if not getattr(self, "_session_initialized", False):
+            self.session.load_cookies()
+            self._session_initialized = True
 
         search_url = self._build_search_url(
             request
