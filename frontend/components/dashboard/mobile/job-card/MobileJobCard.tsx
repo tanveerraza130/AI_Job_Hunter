@@ -115,8 +115,8 @@ function MobileJobCard({
   const breakdown =
     job.score_breakdown;
 
-  const [showMore, setShowMore] =
-    useState(false);
+  const [moreCount, setMoreCount] =
+    useState(0);
 
   const matchedSkills =
     breakdown?.matched_skills ?? [];
@@ -134,19 +134,30 @@ function MobileJobCard({
   const INITIAL_VISIBLE_SKILLS = 2;
   const INITIAL_VISIBLE_TOOLS = 2;
 
-  const visibleSkills = showMore
-    ? matchedSkills
-    : matchedSkills.slice(
-        0,
-        INITIAL_VISIBLE_SKILLS,
-      );
+  const visibleSkills =
+    matchedSkills.slice(
+      0,
+      INITIAL_VISIBLE_SKILLS +
+        Math.min(moreCount, 3),
+    );
 
-  const visibleTools = showMore
-    ? matchedTools
-    : matchedTools.slice(
-        0,
-        INITIAL_VISIBLE_TOOLS,
-      );
+  const visibleTools =
+    matchedTools.slice(
+      0,
+      INITIAL_VISIBLE_TOOLS +
+        Math.max(
+          0,
+          Math.min(
+            moreCount -
+              Math.max(
+                matchedSkills.length -
+                  INITIAL_VISIBLE_SKILLS,
+                0,
+              ),
+            3,
+          ),
+        ),
+    );
 
   const hiddenSkillsCount =
     Math.max(
@@ -162,65 +173,51 @@ function MobileJobCard({
       0,
     );
 
-  const remainingCount =
+  const totalHiddenCount =
     hiddenSkillsCount +
     hiddenToolsCount;
+
+  const revealedCount =
+    Math.min(
+      moreCount,
+      3,
+      totalHiddenCount,
+    );
+
+  const remainingCount =
+    Math.max(
+      totalHiddenCount -
+        revealedCount,
+      0,
+    );
 
   const href =
     `/jobs/${encodeURIComponent(job.job_id)}` +
     `?profile_id=${encodeURIComponent(profileId)}`;
 
   const company =
-    job.company ||
-    "Company unavailable";
+    job.company
+      ? job.company
+          .toLowerCase()
+          .replace(/\b\w/g, (char) =>
+            char.toUpperCase(),
+          )
+      : "Company unavailable";
 
   return (
     <article className={styles.jobCard}>
       <div className={styles.jobCardTop}>
-        <div className={styles.jobRank}>
-          {index + 1}
-        </div>
-
-        <div className={styles.jobMain}>
-          <div className={styles.jobTitleRow}>
-            <Link
-              href={href}
-              className={styles.jobTitle}
-            >
-              {job.title || "Untitled role"}
-            </Link>
-
-            {score != null &&
-              score > 50 && (
-                <span className={styles.bestMatch}>
-                  BEST MATCH
-                </span>
-            )}
+        <div className={styles.jobCardTopLeft}>
+          <div className={styles.jobRank}>
+            {index + 1}
           </div>
 
-          <div className={styles.companyName}>
-            {company}
-          </div>
-
-          <div className={styles.metaRow}>
-            <span>
-              <BriefcaseBusiness size={13} />
-              {experience(
-                job.experience_min,
-                job.experience_max,
-              )}
-            </span>
-
-            <span>
-              <MapPin size={13} />
-              {job.location || "India"}
-            </span>
-
-            <span>
-              <CalendarDays size={13} />
-              Full-time
-            </span>
-          </div>
+          {score != null &&
+            score > 50 && (
+              <span className={styles.bestMatch}>
+                BEST MATCH
+              </span>
+          )}
         </div>
 
         <button
@@ -255,8 +252,43 @@ function MobileJobCard({
         </button>
       </div>
 
-      <div className={styles.jobCardMiddle}>
-        <div className={styles.jobDetails}>
+      <div className={styles.jobMain}>
+        <div className={styles.jobTitleRow}>
+          <Link
+            href={href}
+            className={styles.jobTitle}
+          >
+            {job.title || "Untitled role"}
+          </Link>
+        </div>
+
+        <div className={styles.companyName}>
+          {company}
+        </div>
+
+        <div className={styles.metaRow}>
+          <span>
+            <BriefcaseBusiness size={13} />
+            {experience(
+              job.experience_min,
+              job.experience_max,
+            )}
+          </span>
+
+          <span>
+            <MapPin size={13} />
+            {job.location || "India"}
+          </span>
+
+          <span>
+            <CalendarDays size={13} />
+            Full-time
+          </span>
+        </div>
+      </div>
+
+      <section className={styles.jobCardMatchSection}>
+        <div className={styles.jobCardMatchDetails}>
           {matchedSkills.length > 0 && (
             <div className={styles.detailRow}>
               <span className={styles.detailLabel}>
@@ -297,24 +329,27 @@ function MobileJobCard({
             </div>
           )}
 
-          {remainingCount > 0 && (
-            <button
-              type="button"
-              className={styles.moreButton}
-              onClick={() =>
-                setShowMore((value) => !value)
-              }
-              aria-expanded={showMore}
-            >
-              {showMore
-                ? "Show less"
-                : `+${remainingCount} more`}
-            </button>
-          )}
+          {remainingCount > 0 &&
+            moreCount < 3 && (
+              <button
+                type="button"
+                className={styles.moreButton}
+                onClick={() =>
+                  setMoreCount((value) =>
+                    Math.min(value + 1, 3),
+                  )
+                }
+                aria-expanded={moreCount > 0}
+              >
+                +{remainingCount} more
+              </button>
+            )}
         </div>
 
-        <MobileScore score={score} />
-      </div>
+        <div className={styles.jobCardMatchScore}>
+          <MobileScore score={score} />
+        </div>
+      </section>
 
       <div className={styles.jobCardBottom}>
         <div className={styles.jobBottomLeft}>

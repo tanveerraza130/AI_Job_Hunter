@@ -18,12 +18,20 @@
    ============================================================ */
 
 .jobCardTop {
-  display: grid;
-  grid-template-columns: 30px minmax(0, 1fr) 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 
-  column-gap: 9px;
+  gap: 9px;
+}
 
-  align-items: start;
+.jobCardTopLeft {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  min-width: 0;
+  flex: 0 0 auto;
 }
 
 .jobRank {
@@ -74,10 +82,13 @@
   display: inline-flex;
   vertical-align: middle;
 
-  margin-left: 5px;
+  margin-left: 0;
   margin-bottom: 2px;
 
   padding: 4px 8px;
+
+  width: fit-content;
+  flex: 0 0 auto;
 
   border-radius: 999px;
 
@@ -441,7 +452,7 @@
   }
 
   .jobCardTop {
-    grid-template-columns: 27px minmax(0, 1fr) 30px;
+    grid-template-columns: minmax(0, 1fr) 30px;
     column-gap: 7px;
   }
 
@@ -468,7 +479,7 @@
   }
 
   .jobCardBottom {
-    padding-left: 34px;
+    padding-left: 0;
   }
 
   .applyButton {
@@ -480,4 +491,55 @@
 .jobCardMiddle > :global(.scoreWrap) {
   width: 68px;
   align-self: start;
+}
+
+/* ============================================================
+   ISOLATED MATCH SECTION
+   ONLY Skills / Tools / More / Score
+   ============================================================ */
+
+.jobCardMatchSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 68px;
+  column-gap: 10px;
+  align-items: start;
+
+  width: 100%;
+  min-width: 0;
+
+  margin-top: 8px;
+  padding-top: 10px;
+
+  border-top: 1px solid #e1e5ed;
+}
+
+.jobCardMatchDetails {
+  min-width: 0;
+  width: 100%;
+}
+
+.jobCardMatchScore {
+  width: 68px;
+  min-width: 68px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.jobCardMatchScore > * {
+  width: 58px;
+}
+
+.jobCardMatchDetails .detailRow {
+  margin-bottom: 10px;
+}
+
+.jobCardMatchDetails .detailRow:last-child {
+  margin-bottom: 0;
+}
+
+.jobCardMatchDetails .jobTags {
+  margin-left: 6px;
+  gap: 6px;
 }
