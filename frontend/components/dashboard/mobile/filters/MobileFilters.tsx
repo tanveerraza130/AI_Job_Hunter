@@ -15,6 +15,7 @@ import styles from "./MobileFilters.module.css";
 
 type Relevance =
   | "all"
+  | "gte_30"
   | "gte_70"
   | "50_69"
   | "30_49"
@@ -104,6 +105,10 @@ const relevanceOptions: {
   value: Relevance;
   label: string;
 }[] = [
+  {
+    value: "gte_30",
+    label: "30%+",
+  },
   {
     value: "gte_70",
     label: "70%+",

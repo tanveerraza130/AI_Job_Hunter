@@ -10,7 +10,7 @@ import styles from "./Dashboard.module.css";
 
 const PAGE_SIZE = 20;
 
-type Relevance = "all" | "gte_70" | "50_69" | "30_49" | "lt_30";
+type Relevance = "all" | "gte_30" | "gte_70" | "50_69" | "30_49" | "lt_30";
 type SortMode = "score" | "newest" | "oldest";
 
 
@@ -40,8 +40,8 @@ export default function Dashboard() {
   const [skills, setSkills] = useState<string[]>([]);
   const [tools, setTools] = useState<string[]>([]);
   const [portal, setPortal] = useState("");
-  const [relevance, setRelevance] = useState<Relevance[]>(["gte_70"]);
-  const [sort, setSort] = useState<SortMode>("score");
+  const [relevance, setRelevance] = useState<Relevance[]>(["gte_30"]);
+  const [sort, setSort] = useState<SortMode>("newest");
   const [postedDateFrom, setPostedDateFrom] = useState("");
   const [postedDateTo, setPostedDateTo] = useState("");
 
@@ -301,8 +301,8 @@ export default function Dashboard() {
     setSkills([]);
     setTools([]);
     setPortal("");
-    setRelevance(["gte_70"]);
-    setSort("score");
+    setRelevance(["gte_30"]);
+    setSort("newest");
     setPostedDateFrom("");
     setPostedDateTo("");
 

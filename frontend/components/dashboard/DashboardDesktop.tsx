@@ -23,7 +23,7 @@ export interface DashboardPresentationProps {
   skills: string[];
   tools: string[];
   portal: string;
-  relevance: ("all" | "gte_70" | "50_69" | "30_49" | "lt_30")[];
+  relevance: ("all" | "gte_30" | "gte_70" | "50_69" | "30_49" | "lt_30")[];
   sort: "score" | "newest" | "oldest";
   postedDateFrom: string;
   postedDateTo: string;
@@ -41,7 +41,7 @@ export interface DashboardPresentationProps {
   setPostedDateFrom: Dispatch<SetStateAction<string>>;
   setPostedDateTo: Dispatch<SetStateAction<string>>;
   toggleValue: (value: string, current: string[], setter: (values: string[]) => void) => void;
-  toggleRelevance: (value: "all" | "gte_70" | "50_69" | "30_49" | "lt_30") => void;
+  toggleRelevance: (value: "all" | "gte_30" | "gte_70" | "50_69" | "30_49" | "lt_30") => void;
   datePreset: (mode: "today" | "yesterday" | "two" | "five" | "seven") => void;
   clearFilters: () => void;
   applyMobileFilters: () => void;

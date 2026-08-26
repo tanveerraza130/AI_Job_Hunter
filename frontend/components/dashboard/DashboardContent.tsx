@@ -11,9 +11,9 @@ import JobList from "./JobList";
 import type { DashboardPresentationProps } from "./DashboardDesktop";
 import styles from "./DashboardContent.module.css";
 
-const RELEVANCE_OPTIONS = ["gte_70", "50_69", "30_49", "lt_30", "all"] as const;
+const RELEVANCE_OPTIONS = ["gte_30", "gte_70", "50_69", "30_49", "lt_30", "all"] as const;
 const RELEVANCE_LABELS: Record<(typeof RELEVANCE_OPTIONS)[number], string> = {
-  gte_70: "70%+", "50_69": "50–69%", "30_49": "30–49%", lt_30: "Below 30%", all: "All jobs",
+  gte_30: "30%+", gte_70: "70%+", "50_69": "50–69%", "30_49": "30–49%", lt_30: "Below 30%", all: "All jobs",
 };
 
 export default function DashboardContent(props: DashboardPresentationProps) {

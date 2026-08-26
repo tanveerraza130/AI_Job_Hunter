@@ -136,6 +136,7 @@ export interface GetJobsParams {
   relevance?:
     | (
         | "all"
+        | "gte_30"
         | "gte_70"
         | "50_69"
         | "30_49"
@@ -212,7 +213,7 @@ export async function getJobs(
     query.set("posted_date_to", params.posted_date_to);
   }
 
-  query.set("sort", params?.sort ?? "score");
+  query.set("sort", params?.sort ?? "newest");
 
   return apiRequest<JobListResponse>(
     `/jobs?${query.toString()}`,
