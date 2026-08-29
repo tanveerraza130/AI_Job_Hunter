@@ -1,0 +1,836 @@
+.section {
+  position: relative;
+  min-height: 450px;
+  overflow: hidden;
+  isolation: isolate;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      ellipse 48% 85% at 50% 52%,
+      rgba(111, 72, 241, .18),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 80% 65% at 50% 100%,
+      rgba(78, 48, 175, .10),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #121020 0%,
+      #0d0b17 100%
+    );
+}
+
+/* subtle architectural grid */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      rgba(160, 139, 255, .025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(160, 139, 255, .025) 1px,
+      transparent 1px
+    );
+
+  background-size: 82px 82px;
+
+  mask-image:
+    radial-gradient(
+      ellipse at center,
+      black 0%,
+      rgba(0,0,0,.7) 42%,
+      transparent 82%
+    );
+
+  pointer-events: none;
+}
+
+/* central luxury atmosphere */
+.section::after {
+  content: "";
+
+  position: absolute;
+
+  width: 680px;
+  height: 300px;
+
+  left: 50%;
+  top: 51%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(121, 82, 245, .15) 0%,
+      rgba(121, 82, 245, .065) 38%,
+      transparent 72%
+    );
+
+  filter: blur(26px);
+
+  animation:
+    luxuryGlow 8s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 5;
+
+  width: min(920px, calc(100% - 48px));
+
+  margin: 0 auto;
+
+  padding: 46px 0 40px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  color: #aaa0d0;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  letter-spacing: .17em;
+  text-transform: uppercase;
+
+  animation:
+    reveal .8s ease both;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: #9672ff;
+
+  box-shadow:
+    0 0 0 5px rgba(150,114,255,.08),
+    0 0 18px rgba(150,114,255,.7);
+
+  animation:
+    dotPulse 3.2s ease-in-out infinite;
+}
+
+/* =========================================================
+   HEADLINE
+   ========================================================= */
+
+.inner h2 {
+  max-width: 820px;
+
+  margin: 17px auto 0;
+
+  color: #fff;
+
+  font-size: clamp(42px, 4.45vw, 64px);
+
+  line-height: .99;
+
+  letter-spacing: -.055em;
+
+  font-weight: 850;
+
+  text-wrap: balance;
+
+  animation:
+    revealUp .9s .08s cubic-bezier(.22,1,.36,1) both;
+}
+
+.inner h2 span {
+  color: #9675ff;
+
+  background:
+    linear-gradient(
+      100deg,
+      #8560f5 0%,
+      #a180ff 48%,
+      #8865f5 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================================================
+   BODY COPY
+   ========================================================= */
+
+.inner p {
+  max-width: 680px;
+
+  margin: 20px auto 0;
+
+  color: #9a96a9;
+
+  font-size: 13px;
+
+  line-height: 1.65;
+
+  font-weight: 450;
+
+  text-wrap: balance;
+
+  animation:
+    revealUp .9s .16s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 29px;
+
+  animation:
+    revealUp .9s .24s cubic-bezier(.22,1,.36,1) both;
+}
+
+.primary {
+  position: relative;
+
+  min-width: 214px;
+  height: 56px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  padding: 0 25px;
+
+  color: #fff;
+
+  text-decoration: none;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7b55f3 0%,
+      #633de1 100%
+    );
+
+  border:
+    1px solid rgba(255,255,255,.20);
+
+  box-shadow:
+    0 18px 42px rgba(82,45,210,.34),
+    0 5px 15px rgba(82,45,210,.22),
+    inset 0 1px 0 rgba(255,255,255,.25);
+
+  transition:
+    transform .4s cubic-bezier(.22,1,.36,1),
+    box-shadow .4s ease,
+    filter .4s ease;
+}
+
+/* premium highlight */
+.primary::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 1px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      110deg,
+      rgba(255,255,255,.12),
+      transparent 35%,
+      transparent 70%,
+      rgba(255,255,255,.06)
+    );
+
+  opacity: .8;
+
+  pointer-events: none;
+}
+
+/* soft CTA aura */
+.primary::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -10px;
+
+  z-index: -1;
+
+  border-radius: 16px;
+
+  background:
+    rgba(112,76,239,.20);
+
+  filter: blur(17px);
+
+  opacity: .65;
+
+  animation:
+    ctaAura 3.8s ease-in-out infinite;
+}
+
+.primaryText {
+  position: relative;
+  z-index: 2;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  letter-spacing: -.01em;
+}
+
+.arrow {
+  position: relative;
+  z-index: 2;
+
+  display: inline-flex;
+
+  font-size: 21px;
+  line-height: 1;
+
+  transition:
+    transform .4s cubic-bezier(.22,1,.36,1);
+}
+
+.primary:hover {
+  transform: translateY(-3px);
+
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 23px 50px rgba(82,45,210,.42),
+    0 8px 20px rgba(82,45,210,.25),
+    inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+.primary:hover .arrow {
+  transform: translateX(5px);
+}
+
+/* =========================================================
+   SUPPORTING LINE
+   ========================================================= */
+
+.trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 11px;
+
+  margin-top: 23px;
+
+  color: #646071;
+
+  font-size: 9px;
+
+  font-weight: 650;
+
+  letter-spacing: .045em;
+
+  animation:
+    revealUp .9s .32s cubic-bezier(.22,1,.36,1) both;
+}
+
+.trust i {
+  width: 3px;
+  height: 3px;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: #7956ed;
+
+  box-shadow:
+    0 0 8px rgba(121,86,237,.65);
+}
+
+/* =========================================================
+   SILK MOTION
+   ========================================================= */
+
+.ambient {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+/* wide premium curve */
+.ambient::before {
+  content: "";
+
+  position: absolute;
+
+  width: 125%;
+  height: 145px;
+
+  left: -12.5%;
+  top: 48%;
+
+  border-top:
+    1px solid rgba(143,112,255,.065);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 13px 0 rgba(143,112,255,.032),
+    0 26px 0 rgba(143,112,255,.018);
+
+  transform:
+    translateX(-1%)
+    rotate(-1deg);
+
+  animation:
+    silkFlow 13s ease-in-out infinite;
+}
+
+/* second almost invisible curve */
+.ambient::after {
+  content: "";
+
+  position: absolute;
+
+  width: 118%;
+  height: 110px;
+
+  left: -9%;
+  top: 31%;
+
+  border-top:
+    1px solid rgba(143,112,255,.035);
+
+  border-radius: 50%;
+
+  animation:
+    silkFlowReverse 17s ease-in-out infinite;
+}
+
+/* =========================================================
+   PARTICLES
+   ========================================================= */
+
+.orbOne,
+.orbTwo {
+  position: absolute;
+
+  width: 2px;
+  height: 2px;
+
+  border-radius: 50%;
+
+  background: #a28cff;
+
+  pointer-events: none;
+}
+
+.orbOne {
+  left: 18%;
+  top: 29%;
+
+  box-shadow:
+    230px 48px 0 rgba(162,140,255,.30),
+    470px -25px 0 rgba(162,140,255,.20),
+    650px 72px 0 rgba(162,140,255,.27),
+    -90px 118px 0 rgba(162,140,255,.18);
+
+  animation:
+    particles 6s ease-in-out infinite;
+}
+
+.orbTwo {
+  right: 18%;
+  bottom: 27%;
+
+  box-shadow:
+    -230px -42px 0 rgba(140,108,255,.22),
+    -440px 25px 0 rgba(140,108,255,.17),
+    -650px -15px 0 rgba(140,108,255,.13);
+
+  animation:
+    particles 7.5s 1.2s ease-in-out infinite reverse;
+}
+
+.gridGlow {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 2px;
+  height: 2px;
+
+  border-radius: 50%;
+
+  background: #a38cff;
+
+  box-shadow:
+    0 0 45px 14px rgba(116,83,235,.09);
+
+  animation:
+    corePulse 5.5s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   MOTION
+   ========================================================= */
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes luxuryGlow {
+  0%, 100% {
+    opacity: .42;
+
+    transform:
+      translate(-50%, -50%)
+      scale(.94);
+  }
+
+  50% {
+    opacity: .78;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.08);
+  }
+}
+
+@keyframes ctaAura {
+  0%, 100% {
+    opacity: .45;
+    transform: scale(.94);
+  }
+
+  50% {
+    opacity: .82;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    opacity: .4;
+    transform: scale(.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes silkFlow {
+  0%, 100% {
+    transform:
+      translateX(-2%)
+      rotate(-1deg)
+      scaleX(.98);
+  }
+
+  50% {
+    transform:
+      translateX(2%)
+      rotate(.2deg)
+      scaleX(1.02);
+  }
+}
+
+@keyframes silkFlowReverse {
+  0%, 100% {
+    transform:
+      translateX(2%)
+      scaleX(1);
+  }
+
+  50% {
+    transform:
+      translateX(-2%)
+      scaleX(.975);
+  }
+}
+
+@keyframes particles {
+  0%, 100% {
+    opacity: .18;
+    transform: scale(.7);
+  }
+
+  50% {
+    opacity: .8;
+    transform: scale(1.45);
+  }
+}
+
+@keyframes corePulse {
+  0%, 100% {
+    opacity: .22;
+    transform: scale(.8);
+  }
+
+  50% {
+    opacity: .7;
+    transform: scale(1.4);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .section {
+    min-height: 470px;
+  }
+
+  .inner {
+    width: calc(100% - 32px);
+    padding: 52px 0 46px;
+  }
+
+  .inner h2 {
+    font-size: clamp(38px, 10vw, 52px);
+  }
+
+  .inner p {
+    max-width: 560px;
+    font-size: 12px;
+  }
+
+  .primary {
+    min-width: 210px;
+    height: 54px;
+  }
+}
+
+@media (max-width: 520px) {
+
+  .section {
+    min-height: 490px;
+  }
+
+  .inner {
+    width: calc(100% - 28px);
+  }
+
+  .eyebrow {
+    font-size: 8px;
+    letter-spacing: .13em;
+  }
+
+  .inner h2 {
+    margin-top: 15px;
+    font-size: clamp(35px, 10.8vw, 48px);
+  }
+
+  .inner p {
+    margin-top: 18px;
+    font-size: 11.5px;
+    line-height: 1.65;
+  }
+
+  .actions {
+    margin-top: 25px;
+  }
+
+  .primary {
+    width: min(240px, 100%);
+  }
+
+  .trust {
+    gap: 8px;
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .section::after,
+  .dot,
+  .primary::after,
+  .ambient::before,
+  .ambient::after,
+  .orbOne,
+  .orbTwo,
+  .gridGlow,
+  .eyebrow,
+  .inner h2,
+  .inner p,
+  .actions,
+  .trust {
+    animation: none !important;
+  }
+}
+
+
+/* FINAL TYPOGRAPHY POLISH — 2026 */
+
+@media (min-width: 901px) {
+  .section .inner h2 {
+    font-size: clamp(52px, 4.7vw, 76px);
+  }
+}
+
+/* =========================================================
+   SECTION 6 — CTA PREMIUM ATTENTION MOTION
+   Continuous, soft, non-distracting.
+   ========================================================= */
+
+.primary {
+  position: relative;
+  overflow: hidden;
+
+  box-shadow:
+    0 12px 30px rgba(105, 64, 225, .22);
+
+  animation:
+    ctaBreath 3.8s ease-in-out infinite;
+}
+
+.primary::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -70%;
+
+  width: 45%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      100deg,
+      transparent,
+      rgba(255,255,255,.16),
+      transparent
+    );
+
+  transform: skewX(-18deg);
+
+  animation:
+    ctaShine 5.5s ease-in-out infinite;
+}
+
+.primary span {
+  display: inline-block;
+
+  transition:
+    transform .3s ease;
+}
+
+.primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 38px rgba(105, 64, 225, .34);
+}
+
+.primary:hover span {
+  transform: translateX(4px);
+}
+
+@keyframes ctaBreath {
+
+  0%, 100% {
+    box-shadow:
+      0 12px 30px rgba(105, 64, 225, .20);
+  }
+
+  50% {
+    box-shadow:
+      0 14px 38px rgba(105, 64, 225, .34);
+  }
+}
+
+@keyframes ctaShine {
+
+  0%, 72% {
+    left: -70%;
+  }
+
+  88% {
+    left: 125%;
+  }
+
+  100% {
+    left: 125%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .primary {
+    animation: none !important;
+  }
+
+  .primary::after {
+    animation: none !important;
+  }
+}

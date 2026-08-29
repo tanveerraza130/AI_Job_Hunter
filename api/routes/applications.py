@@ -20,10 +20,12 @@ router = APIRouter(prefix="/applications")
 
 ApplicationStatus = Literal[
     "saved",
+    "pending",
     "applied",
     "interview",
     "rejected",
     "offer",
+    "not_relevant",
 ]
 
 

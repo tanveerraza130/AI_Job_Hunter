@@ -1,0 +1,1 @@
+zsh: command not found: YOUR_COMMAND

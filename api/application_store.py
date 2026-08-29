@@ -164,10 +164,12 @@ def get_application_summary(
 
         summary = {
             "saved": 0,
+            "pending": 0,
             "applied": 0,
             "interview": 0,
             "rejected": 0,
             "offer": 0,
+            "not_relevant": 0,
         }
 
         for status, count in rows:
