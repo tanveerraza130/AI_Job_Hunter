@@ -33,10 +33,12 @@ type MobileProps = DashboardPresentationProps;
 type MobileStatus =
   | "Not Applied"
   | "Saved"
+  | "Pending"
   | "Applied"
   | "Interview"
   | "Rejected"
-  | "Offer";
+  | "Offer"
+  | "Not Relevant";
 
 type MobileTab =
   | "ALL"
@@ -48,10 +50,12 @@ const displayStatus = (
   status?: string,
 ): MobileStatus => {
   if (status === "saved") return "Saved";
+  if (status === "pending") return "Pending";
   if (status === "applied") return "Applied";
   if (status === "interview") return "Interview";
   if (status === "rejected") return "Rejected";
   if (status === "offer") return "Offer";
+  if (status === "not_relevant") return "Not Relevant";
 
   return "Not Applied";
 };
@@ -59,10 +63,12 @@ const displayStatus = (
 const apiStatus = (
   status: MobileStatus,
 ): ApiApplicationStatus => {
+  if (status === "Pending") return "pending";
   if (status === "Applied") return "applied";
   if (status === "Interview") return "interview";
   if (status === "Rejected") return "rejected";
   if (status === "Offer") return "offer";
+  if (status === "Not Relevant") return "not_relevant";
 
   return "saved";
 };

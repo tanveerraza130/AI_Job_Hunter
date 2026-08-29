@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
 
@@ -16,15 +16,18 @@ import {
 import type { Job } from "@/types/job";
 
 import MobileScore from "./MobileScore";
+import JobStatusPrompt from "@/features/job-status/JobStatusPrompt";
 import styles from "./MobileJobCard.module.css";
 
 export type MobileStatus =
   | "Not Applied"
   | "Saved"
+  | "Pending"
   | "Applied"
   | "Interview"
   | "Rejected"
-  | "Offer";
+  | "Offer"
+  | "Not Relevant";
 
 const experience = (
   min?: number | null,
@@ -117,6 +120,45 @@ function MobileJobCard({
 
   const [moreCount, setMoreCount] =
     useState(0);
+
+  const [
+    waitingForApplyReturn,
+    setWaitingForApplyReturn,
+  ] = useState(false);
+
+  const [
+    showApplyPrompt,
+    setShowApplyPrompt,
+  ] = useState(false);
+
+  useEffect(() => {
+    if (!waitingForApplyReturn) {
+      return;
+    }
+
+    const handleReturn = () => {
+      if (document.visibilityState === "visible") {
+        setShowApplyPrompt(true);
+      }
+    };
+
+    window.addEventListener("focus", handleReturn);
+    document.addEventListener(
+      "visibilitychange",
+      handleReturn,
+    );
+
+    return () => {
+      window.removeEventListener(
+        "focus",
+        handleReturn,
+      );
+      document.removeEventListener(
+        "visibilitychange",
+        handleReturn,
+      );
+    };
+  }, [waitingForApplyReturn]);
 
   const matchedSkills =
     breakdown?.matched_skills ?? [];
@@ -367,17 +409,54 @@ function MobileJobCard({
         </div>
 
         {job.job_url && (
-          <a
-            href={job.job_url}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
             className={styles.applyButton}
+            onClick={(event) => {
+              event.preventDefault();
+
+              const applyUrl = job.job_url;
+
+              if (!applyUrl) {
+                return;
+              }
+
+              onStatusChange(
+                job.job_id,
+                "Pending",
+              );
+
+              window.open(
+                applyUrl,
+                "_blank",
+                "noopener,noreferrer",
+              );
+
+              setWaitingForApplyReturn(true);
+            }}
           >
             Apply now
             <ArrowUpRight size={15} />
-          </a>
+          </button>
         )}
       </div>
+
+      {showApplyPrompt && (
+        <JobStatusPrompt
+          onApplied={() => {
+            onStatusChange(
+              job.job_id,
+              "Applied",
+            );
+            setShowApplyPrompt(false);
+            setWaitingForApplyReturn(false);
+          }}
+          onNotYet={() => {
+            setShowApplyPrompt(false);
+            setWaitingForApplyReturn(false);
+          }}
+        />
+      )}
     </article>
   );
 }

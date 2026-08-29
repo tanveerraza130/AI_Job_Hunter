@@ -1,8 +1,5 @@
-import Dashboard from "@/components/Dashboard";
+import HomePage from "@/features/home/HomePage";
 
-
-export default function Home() {
-  return (
-    <Dashboard />
-  );
+export default function Page() {
+  return <HomePage />;
 }

@@ -245,10 +245,12 @@ export async function getJobDetail(
 
 export type ApplicationStatus =
   | "saved"
+  | "pending"
   | "applied"
   | "interview"
   | "rejected"
-  | "offer";
+  | "offer"
+  | "not_relevant";
 
 export interface ApplicationRecord {
   job_id: string;

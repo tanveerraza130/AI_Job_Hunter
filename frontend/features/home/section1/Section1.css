@@ -1,0 +1,1834 @@
+.section1 {
+  position: relative;
+  width: 100%;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171b31}
+body{overflow-x:hidden}
+.hero{
+  width:100%;
+  min-height:760px;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(520px 420px at 74% 49%,rgba(112,72,255,.055),transparent 72%),
+    radial-gradient(360px 300px at 91% 48%,rgba(146,112,255,.035),transparent 72%),
+    linear-gradient(#fff,#fff);
+}
+.grid{
+  position:absolute;inset:0;pointer-events:none;opacity:.34;
+  background-image:
+    linear-gradient(rgba(92,75,180,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(92,75,180,.055) 1px,transparent 1px);
+  background-size:54px 54px;
+  mask-image:linear-gradient(to bottom,transparent 0%,black 12%,black 88%,transparent 100%);
+}
+.wrap{
+  position:relative;
+  width:min(1500px,calc(100% - 120px));
+  min-height:760px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:46.5% 53.5%;
+  align-items:center;
+  padding:54px 0 42px;
+}
+.copy{
+  position:relative;
+  z-index:5;
+  padding-left:8px;
+  padding-top:2px;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  height:42px;padding:0 17px 0 8px;
+  border:1px solid #ddd5ff;border-radius:999px;
+  background:#fff;box-shadow:0 10px 30px rgba(89,61,220,.08);
+  color:#6241e8;font-size:13px;font-weight:750;letter-spacing:.01em
+}
+.badge-icon{
+  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  background:#eee9ff;color:#6847ed;font-size:16px
+}
+h1{
+  margin:31px 0 25px;
+  max-width:650px;
+  font-size:clamp(58px,5.25vw,82px);
+  line-height:.98;
+  letter-spacing:-.055em;
+  font-weight:850;
+}
+h1 .purple{
+  display:block;
+  color:#6539ed;
+  background:linear-gradient(100deg,#5f3bf1 0%,#7345ee 52%,#a044db 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.desc{
+  max-width:650px;margin:0;
+  color:#61708a;font-size:19px;line-height:1.62;letter-spacing:-.01em;
+}
+.ctas{display:flex;gap:20px;margin-top:37px}
+.btn{
+  height:60px;padding:0 31px;border-radius:13px;
+  display:inline-flex;align-items:center;justify-content:center;gap:14px;
+  font-size:15px;font-weight:800;text-decoration:none;white-space:nowrap
+}
+.primary{
+  min-width:208px;color:#fff;
+  background:linear-gradient(135deg,#653cf0,#5b35e9);
+  box-shadow:0 15px 32px rgba(94,58,232,.22)
+}
+.secondary{
+  min-width:242px;color:#6343e7;background:#fff;border:1px solid #ddd6f8;
+}
+.play{
+  width:27px;height:27px;border:1px solid #d9d0ff;border-radius:50%;
+  display:grid;place-items:center;font-size:11px;color:#7049ef
+}
+.sources{margin-top:42px}
+.sources-label{font-size:13px;color:#71809a;margin-bottom:16px}
+.source-row{display:flex;align-items:center;gap:34px;color:#19243a}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.035em;white-space:nowrap}
+.naukri,.linkedin,.indeed{color:#0869c9}
+.iim{font-size:19px}
+.shine{font-size:21px}
+.more{color:#78849a;font-size:16px;font-weight:700}
+
+.visual{
+  position:relative;
+  height:610px;
+  min-width:0;
+}
+.source-panel,.result-panel{
+  position:absolute;
+  top:93px;
+  width:210px;
+  height:505px;
+  border:1px solid #e4ddf7;
+  border-radius:20px;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 22px 55px rgba(63,45,120,.075);
+  z-index:4;
+}
+.source-panel{left:26px;padding:31px 18px 18px}
+.result-panel{right:3px;padding:31px 18px 17px}
+.panel-title{
+  text-align:center;font-size:18px;line-height:1.18;font-weight:850;
+  letter-spacing:-.03em
+}
+.panel-sub{
+  text-align:center;margin-top:14px;color:#8994a9;font-size:12px;line-height:1.42
+}
+.source-list{margin-top:22px;display:grid;gap:8px}
+.source{
+  height:47px;border:1px solid #e8e4f2;border-radius:10px;
+  display:flex;align-items:center;gap:10px;padding:0 12px;background:#fff;
+  box-shadow:0 4px 12px rgba(60,50,100,.035)
+}
+.source .mark{
+  width:27px;height:27px;border-radius:7px;display:grid;place-items:center;
+  color:#fff;font-size:12px;font-weight:900
+}
+.mark.blue{background:#0b73d0}.mark.black{background:#242424}
+.source b{font-size:14px;letter-spacing:-.02em}
+.more-source{
+  justify-content:center;color:#777292;font-size:12px;font-weight:800;
+  background:#fcfbff
+}
+
+.ai-understands{
+  position:absolute;top:1px;left:356px;z-index:6;
+  width:154px;
+}
+.ai-understands h3{
+  margin:0 0 14px;color:#6744e8;font-size:18px;font-weight:850;
+  letter-spacing:-.025em
+}
+.checks{display:grid;gap:12px}
+.check{display:flex;align-items:center;gap:9px;color:#77839a;font-size:12px}
+.check i{
+  width:22px;height:22px;border:2px solid #8d6cff;border-radius:50%;
+  display:grid;place-items:center;color:#7654f0;font-style:normal;font-size:12px;font-weight:900
+}
+
+.ai-core{
+  position:absolute;left:328px;top:294px;width:150px;height:150px;z-index:5;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 40%,#8d64ff 0%,#7043ed 45%,#5b31e5 72%,#5029d8 100%);
+  box-shadow:
+    0 0 0 17px rgba(112,72,241,.055),
+    0 0 0 34px rgba(112,72,241,.025),
+    0 22px 48px rgba(93,55,224,.25);
+  display:grid;place-items:center;
+}
+.ai-core:before{
+  content:"";position:absolute;inset:14px;border:1px solid rgba(255,255,255,.26);border-radius:50%
+}
+.spark{
+  position:relative;width:54px;height:54px;transform:rotate(45deg)
+}
+.spark:before,.spark:after{content:"";position:absolute;background:#fff;border-radius:8px}
+.spark:before{width:22px;height:54px;left:16px;top:0}
+.spark:after{width:54px;height:22px;left:0;top:16px}
+.ai-label{
+  position:absolute;left:301px;top:456px;width:204px;text-align:center;
+  color:#6340e6;font-size:18px;font-weight:850;z-index:6
+}
+.glow{
+  position:absolute;left:270px;top:170px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(112,72,241,.13),rgba(112,72,241,.035) 48%,transparent 72%);
+  filter:blur(2px)
+}
+
+.connectors{position:absolute;inset:0;z-index:3;pointer-events:none}
+.connectors svg{width:100%;height:100%;overflow:visible}
+.in{
+  fill:none;stroke:#9b7cff;stroke-width:2.2;stroke-dasharray:6 8;opacity:.72
+}
+.out{
+  fill:none;stroke:#7954ec;stroke-width:2.5;opacity:.9
+}
+.dot{fill:#8c6cf6}
+
+.result-panel .panel-sub{margin-bottom:21px}
+.jobs{display:grid;gap:9px}
+.job{
+  position:relative;height:105px;border:1px solid #e8e4f2;border-radius:12px;
+  padding:17px 12px 10px 49px;background:#fff;
+  box-shadow:0 4px 14px rgba(60,50,100,.035)
+}
+.rank{
+  position:absolute;left:11px;top:17px;width:28px;height:28px;border-radius:7px;
+  display:grid;place-items:center;color:#fff;font-size:13px;font-weight:900
+}
+.rank.r1{background:#1478ce}.rank.r2{background:#ff8c1d}.rank.r3{background:#f04a43}
+.job-title{font-size:12px;font-weight:850;line-height:1.2;white-space:nowrap}
+.company{margin-top:5px;color:#8290a6;font-size:10px}
+.meta{margin-top:6px;color:#8290a6;font-size:9px}
+.match{
+  position:absolute;right:9px;top:17px;text-align:right;color:#389b75;font-size:16px;font-weight:900
+}
+.match small{display:block;font-size:8px;margin-top:1px}
+.more-jobs{
+  height:47px;border:1px solid #e8e4f2;border-radius:10px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 14px;
+  margin-top:1px;color:#586277;font-size:12px;font-weight:800
+}
+.more-jobs span:last-child{color:#7650ec;font-size:18px}
+
+@media(max-width:1250px){
+  .wrap{width:min(1160px,calc(100% - 56px));grid-template-columns:45% 55%}
+  h1{font-size:clamp(52px,5.1vw,68px)}
+  .desc{font-size:17px}
+  .visual{transform:scale(.9);transform-origin:center right}
+}
+@media(max-width:900px){
+  .hero{min-height:auto}
+  .wrap{display:block;width:calc(100% - 32px);padding:65px 0 55px}
+  .copy{padding:0;text-align:center}
+  .badge{margin:auto}
+  h1{font-size:clamp(48px,11vw,68px);max-width:680px;margin:28px auto 22px}
+  .desc{margin:auto;font-size:16px;max-width:620px}
+  .ctas{justify-content:center;flex-wrap:wrap}
+  .sources{text-align:center}
+  .source-row{justify-content:center;flex-wrap:wrap;gap:18px 25px}
+  .visual{margin:35px auto 0;width:760px;max-width:100%;height:560px;transform:none}
+  .source-panel{left:0}.result-panel{right:0}
+  .ai-understands{left:50%;transform:translateX(-50%);top:0}
+  .ai-core{left:50%;transform:translateX(-50%);top:285px}
+  .ai-label{left:50%;transform:translateX(-50%);top:447px}
+  .glow{left:50%;transform:translateX(-50%);top:160px}
+}
+@media(max-width:620px){
+  .visual{height:780px;width:100%}
+  .source-panel,.result-panel{position:absolute;width:calc(50% - 7px);top:130px;height:485px}
+  .source-panel{left:0}.result-panel{right:0}
+  .source{height:44px;padding:0 8px}.source b{font-size:11px}
+  .source .mark{width:23px;height:23px;font-size:10px}
+  .panel-title{font-size:15px}.panel-sub{font-size:10px}
+  .ai-understands{top:0;width:150px}
+  .ai-core{top:410px;width:120px;height:120px}
+  .ai-label{top:535px;font-size:15px}
+  .glow{top:320px;width:230px;height:230px}
+  .connectors{display:none}
+  .job{padding-left:43px}.job-title{font-size:10px}.match{font-size:13px}
+  .meta,.company{font-size:8px}
+  .ctas{gap:10px}.btn{width:100%;max-width:280px}
+}
+
+/* =========================================================
+   APPROVED DESKTOP GEOMETRY — V3
+   40% copy / 60% visual
+   Everything stays inside one viewport.
+   ========================================================= */
+.hero{
+  min-height:100vh;
+  height:100vh;
+  max-height:900px;
+  overflow:hidden;
+}
+.wrap{
+  width:min(1540px,calc(100% - 96px));
+  height:100%;
+  min-height:0;
+  grid-template-columns:40% 60%;
+  align-items:center;
+  padding:34px 0 30px;
+}
+.copy{
+  min-width:0;
+  padding:0 18px 0 0;
+}
+.badge{
+  height:40px;
+  padding-right:15px;
+  font-size:12px;
+}
+.badge-icon{width:28px;height:28px}
+
+h1{
+  max-width:590px;
+  margin:27px 0 22px;
+  font-size:clamp(48px,4.55vw,70px);
+  line-height:.99;
+  letter-spacing:-.055em;
+}
+.desc{
+  max-width:600px;
+  font-size:17px;
+  line-height:1.58;
+}
+.ctas{
+  gap:16px;
+  margin-top:30px;
+}
+.btn{
+  height:56px;
+  border-radius:12px;
+}
+.primary{min-width:190px}
+.secondary{min-width:225px}
+.sources{margin-top:32px}
+.source-row{gap:27px}
+.logo{font-size:17px}
+.shine{font-size:18px}
+
+.visual{
+  width:100%;
+  height:590px;
+  min-width:0;
+  position:relative;
+  transform:none;
+}
+
+/* Keep the entire right composition inside the 60% column */
+.source-panel{
+  left:8px;
+  top:82px;
+  width:190px;
+  height:470px;
+  padding:28px 15px 15px;
+}
+.result-panel{
+  right:0;
+  top:82px;
+  width:190px;
+  height:470px;
+  padding:28px 15px 15px;
+}
+.panel-title{font-size:16px}
+.panel-sub{font-size:11px;margin-top:11px}
+.source-list{margin-top:19px;gap:7px}
+.source{height:43px;padding:0 10px}
+.source .mark{width:25px;height:25px;font-size:11px}
+.source b{font-size:13px}
+
+.ai-understands{
+  top:0;
+  left:50%;
+  width:145px;
+  transform:translateX(-50%);
+}
+.ai-understands h3{font-size:17px;margin-bottom:12px}
+.checks{gap:9px}
+.check{font-size:11px}
+.check i{width:21px;height:21px}
+
+.glow{
+  left:50%;
+  top:165px;
+  width:245px;
+  height:245px;
+  transform:translateX(-50%);
+}
+.ai-core{
+  left:50%;
+  top:284px;
+  width:142px;
+  height:142px;
+  transform:translateX(-50%);
+}
+.ai-label{
+  left:50%;
+  top:438px;
+  width:180px;
+  transform:translateX(-50%);
+  font-size:17px;
+}
+
+.result-panel .panel-sub{margin-bottom:17px}
+.jobs{gap:7px}
+.job{
+  height:94px;
+  padding:14px 9px 8px 43px;
+}
+.rank{
+  left:9px;
+  top:14px;
+  width:27px;
+  height:27px;
+}
+.job-title{
+  font-size:10.5px;
+  padding-right:34px;
+}
+.company{margin-top:4px;font-size:9px}
+.meta{margin-top:5px;font-size:8px}
+.match{top:14px;right:8px;font-size:14px}
+.match small{font-size:7px}
+.more-jobs{height:43px;font-size:10px}
+
+.connectors svg{
+  width:100%;
+  height:100%;
+}
+
+/* At common laptop/desktop widths, scale the complete visual
+   as one unit rather than allowing individual pieces to overflow. */
+@media (min-width:901px) and (max-width:1350px){
+  .wrap{width:calc(100% - 56px)}
+  h1{font-size:clamp(44px,4.6vw,61px)}
+  .desc{font-size:15px}
+  .source-panel,.result-panel{width:174px}
+  .source-panel{left:0}
+  .source-panel,.result-panel{height:440px}
+  .source{height:39px}
+  .ai-core{width:125px;height:125px}
+  .ai-label{top:427px;font-size:15px}
+  .visual{height:555px}
+}
+
+/* Never let the desktop design create horizontal scrolling. */
+@media (min-width:901px){
+  .hero,.wrap,.visual{overflow:hidden}
+}
+
+/* =========================================================
+   V4 — COMPACT SINGLE-SCREEN DESKTOP
+   Approved composition: 40% copy / 60% visual.
+   Deliberately smaller so the entire visual breathes on
+   laptop screens without clipping.
+   ========================================================= */
+
+.hero{
+  height:100vh;
+  min-height:680px;
+  max-height:900px;
+  overflow:hidden;
+}
+
+.wrap{
+  width:min(1480px,calc(100% - 72px));
+  height:100%;
+  min-height:0;
+  grid-template-columns:40% 60%;
+  padding:28px 0 24px;
+  align-items:center;
+}
+
+.copy{
+  padding:0 18px 0 0;
+}
+
+.badge{
+  height:38px;
+  padding:0 14px 0 7px;
+  font-size:11px;
+}
+.badge-icon{width:27px;height:27px;font-size:14px}
+
+h1{
+  max-width:525px;
+  margin:23px 0 18px;
+  font-size:clamp(43px,4.0vw,62px);
+  line-height:1;
+}
+.desc{
+  max-width:555px;
+  font-size:15px;
+  line-height:1.52;
+}
+.ctas{
+  gap:12px;
+  margin-top:24px;
+}
+.btn{
+  height:52px;
+  border-radius:11px;
+  padding:0 24px;
+  font-size:14px;
+}
+.primary{min-width:175px}
+.secondary{min-width:205px}
+.sources{margin-top:27px}
+.sources-label{font-size:11px;margin-bottom:12px}
+.source-row{gap:23px}
+.logo{font-size:15px}
+.iim{font-size:14px}
+.shine{font-size:16px}
+.more{font-size:13px}
+
+/* RIGHT SIDE: one compact 670 × 520 composition */
+.visual{
+  width:670px;
+  max-width:100%;
+  height:520px;
+  justify-self:end;
+  position:relative;
+  overflow:visible;
+}
+
+/* Search / result cards */
+.source-panel,
+.result-panel{
+  top:75px;
+  width:160px;
+  height:390px;
+  border-radius:17px;
+}
+.source-panel{
+  left:0;
+  padding:24px 12px 12px;
+}
+.result-panel{
+  right:0;
+  padding:24px 12px 12px;
+}
+
+.panel-title{
+  font-size:15px;
+  line-height:1.16;
+}
+.panel-sub{
+  margin-top:10px;
+  font-size:10px;
+  line-height:1.35;
+}
+.source-list{
+  margin-top:16px;
+  gap:6px;
+}
+.source{
+  height:36px;
+  border-radius:9px;
+  gap:7px;
+  padding:0 8px;
+}
+.source .mark{
+  width:22px;
+  height:22px;
+  border-radius:6px;
+  font-size:9px;
+}
+.source b{font-size:11px}
+.more-source{font-size:10px}
+
+/* AI understands sits above the matching core */
+.ai-understands{
+  top:0;
+  left:335px;
+  width:135px;
+  transform:translateX(-50%);
+}
+.ai-understands h3{
+  font-size:15px;
+  margin-bottom:9px;
+}
+.checks{gap:7px}
+.check{
+  font-size:10px;
+  gap:7px;
+}
+.check i{
+  width:19px;
+  height:19px;
+  font-size:10px;
+}
+
+/* Matching core centered between both panels */
+.glow{
+  left:335px;
+  top:205px;
+  width:190px;
+  height:190px;
+  transform:translateX(-50%);
+}
+.ai-core{
+  left:335px;
+  top:242px;
+  width:120px;
+  height:120px;
+  transform:translateX(-50%);
+}
+.ai-core:before{inset:11px}
+.spark{
+  width:43px;
+  height:43px;
+}
+.spark:before{
+  width:18px;
+  height:43px;
+  left:13px;
+}
+.spark:after{
+  width:43px;
+  height:18px;
+  left:0;
+  top:13px;
+}
+.ai-label{
+  left:335px;
+  top:370px;
+  width:160px;
+  transform:translateX(-50%);
+  font-size:15px;
+}
+
+/* Result cards */
+.result-panel .panel-sub{
+  margin-bottom:13px;
+}
+.jobs{gap:6px}
+.job{
+  height:72px;
+  border-radius:10px;
+  padding:11px 8px 7px 35px;
+}
+.rank{
+  left:8px;
+  top:11px;
+  width:23px;
+  height:23px;
+  border-radius:6px;
+  font-size:11px;
+}
+.job-title{
+  font-size:9px;
+  line-height:1.15;
+  padding-right:27px;
+}
+.company{
+  margin-top:3px;
+  font-size:8px;
+}
+.meta{
+  margin-top:3px;
+  font-size:7px;
+}
+.match{
+  top:11px;
+  right:7px;
+  font-size:12px;
+}
+.match small{font-size:6px}
+.more-jobs{
+  height:34px;
+  border-radius:9px;
+  padding:0 10px;
+  font-size:9px;
+}
+.more-jobs span:last-child{font-size:14px}
+
+/* Keep connector paths behind the cards/core. */
+.connectors{
+  inset:0;
+  z-index:3;
+}
+.connectors svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+/* Laptop: scale the entire right composition rather than clipping it. */
+@media (min-width:901px) and (max-width:1250px){
+  .wrap{
+    width:calc(100% - 42px);
+    grid-template-columns:39% 61%;
+  }
+  h1{font-size:clamp(39px,4.0vw,52px);max-width:485px}
+  .desc{font-size:14px;max-width:500px}
+  .visual{
+    width:620px;
+    height:500px;
+    transform:scale(.88);
+    transform-origin:center right;
+  }
+  .source-panel{left:0}
+  .result-panel{right:0}
+}
+
+/* Prevent any horizontal page overflow. */
+@media (min-width:901px){
+  .hero,.wrap{overflow:hidden}
+}
+
+/* V5 — compact, balanced single-screen composition */
+.hero{
+  min-height:0;
+  height:100vh;
+  max-height:900px;
+}
+.wrap{
+  width:min(1480px,calc(100% - 80px));
+  min-height:0;
+  height:100%;
+  grid-template-columns:40% 60%;
+  padding:22px 0 20px;
+  align-items:center;
+}
+
+/* LEFT = 40% */
+.copy{padding-left:0;padding-right:12px}
+.badge{height:36px;padding-right:13px;gap:8px;font-size:10px}
+.badge-icon{width:25px;height:25px;font-size:13px}
+h1{
+  max-width:555px;
+  margin:22px 0 18px;
+  font-size:clamp(42px,3.7vw,58px);
+  line-height:1.01;
+  letter-spacing:-.055em;
+}
+.desc{
+  max-width:560px;
+  font-size:14px;
+  line-height:1.55;
+}
+.ctas{gap:12px;margin-top:22px}
+.btn{height:48px;border-radius:10px;padding:0 20px;font-size:13px;gap:10px}
+.primary{min-width:168px}
+.secondary{min-width:190px}
+.sources{margin-top:24px}
+.sources-label{font-size:10px;margin-bottom:10px}
+.source-row{gap:22px}
+.logo{font-size:15px}
+.iim{font-size:14px}
+.shine{font-size:16px}
+.more{font-size:12px}
+
+/* RIGHT = compact 620px composition */
+.visual{
+  width:620px;
+  max-width:100%;
+  height:500px;
+  justify-self:end;
+  overflow:visible;
+}
+
+/* Panels */
+.source-panel,.result-panel{
+  top:86px;
+  width:155px;
+  height:390px;
+  border-radius:16px;
+}
+.source-panel{left:0;padding:22px 10px 10px}
+.result-panel{right:0;padding:22px 10px 10px}
+.panel-title{font-size:14px;line-height:1.14}
+.panel-sub{margin-top:9px;font-size:9px;line-height:1.35}
+.source-list{margin-top:15px;gap:6px}
+.source{
+  height:35px;
+  border-radius:9px;
+  gap:7px;
+  padding:0 8px;
+}
+.source .mark{width:22px;height:22px;border-radius:6px;font-size:9px}
+.source b{font-size:10px}
+.more-source{font-size:9px}
+
+/* AI understands — centered above matching */
+.ai-understands{
+  top:0;
+  left:310px;
+  width:132px;
+  transform:translateX(-50%);
+}
+.ai-understands h3{font-size:14px;margin-bottom:8px}
+.checks{gap:6px}
+.check{font-size:9px;gap:6px}
+.check i{width:18px;height:18px;font-size:9px}
+
+/* Matching core — exactly between panels */
+.glow{
+  left:310px;
+  top:202px;
+  width:175px;
+  height:175px;
+  transform:translateX(-50%);
+}
+.ai-core{
+  left:310px;
+  top:235px;
+  width:112px;
+  height:112px;
+  transform:translateX(-50%);
+}
+.ai-core:before{inset:10px}
+.spark{width:39px;height:39px}
+.spark:before{width:17px;height:39px;left:11px}
+.spark:after{width:39px;height:17px;left:0;top:11px}
+.ai-label{
+  left:310px;
+  top:351px;
+  width:145px;
+  transform:translateX(-50%);
+  font-size:14px;
+}
+
+/* Results — compact and never overflow horizontally */
+.result-panel .panel-sub{margin-bottom:12px}
+.jobs{gap:6px}
+.job{
+  height:70px;
+  border-radius:10px;
+  padding:10px 8px 7px 33px;
+  overflow:hidden;
+}
+.rank{
+  left:8px;top:10px;
+  width:22px;height:22px;
+  border-radius:6px;
+  font-size:10px;
+}
+.job-title{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  font-size:8px;
+  line-height:1.12;
+  padding-right:25px;
+}
+.company{
+  margin-top:3px;
+  font-size:7px;
+}
+.meta{
+  margin-top:2px;
+  font-size:6.5px;
+}
+.match{
+  top:10px;right:6px;
+  font-size:11px;
+}
+.match small{font-size:5.5px}
+.more-jobs{
+  height:34px;
+  border-radius:9px;
+  padding:0 9px;
+  font-size:8px;
+}
+.more-jobs span:last-child{font-size:12px}
+
+/* Connector geometry for 620px visual */
+.connectors{inset:0;z-index:3}
+.connectors svg{width:100%;height:100%;overflow:visible}
+
+/* Smaller laptop widths: scale the WHOLE right composition,
+   keeping its internal alignment intact. */
+@media (min-width:901px) and (max-width:1250px){
+  .wrap{width:calc(100% - 40px);grid-template-columns:39% 61%}
+  h1{font-size:clamp(38px,3.8vw,50px);max-width:500px}
+  .desc{font-size:13px;max-width:485px}
+  .visual{
+    width:620px;
+    transform:scale(.84);
+    transform-origin:center right;
+  }
+}
+
+/* =========================================================
+   V6 — FINAL ALIGNMENT + FLOW MOTION
+   Keeps the approved 40/60 composition and makes the right
+   visual read as one compact system.
+   ========================================================= */
+
+/* Right visual geometry */
+.visual{
+  width:620px;
+  height:500px;
+  position:relative;
+  justify-self:end;
+}
+
+/* Put AI understands on the same visual axis as the core,
+   slightly left of the result panel, as in the approved ref. */
+.ai-understands{
+  top:0;
+  left:310px;
+  width:128px;
+  transform:translateX(-50%);
+}
+.ai-understands h3{
+  margin:0 0 9px;
+  font-size:14px;
+  line-height:1.1;
+}
+.checks{gap:6px}
+.check{
+  min-height:19px;
+  font-size:9px;
+  line-height:1;
+}
+.check i{
+  flex:0 0 18px;
+  width:18px;height:18px;
+  font-size:9px;
+}
+
+/* Keep both panels on the same horizontal baseline. */
+.source-panel,
+.result-panel{
+  top:86px;
+  height:390px;
+}
+.source-panel{left:0}
+.result-panel{right:0}
+
+/* Result heading / score area */
+.result-panel .panel-title{
+  font-size:14px;
+  line-height:1.12;
+}
+.result-panel .panel-sub{
+  margin-top:9px;
+  margin-bottom:12px;
+  font-size:9px;
+  line-height:1.3;
+}
+
+/* Give each job a real two-column text/score area.
+   This removes the 94%/91%/88% collision seen in the screenshot. */
+.job{
+  position:relative;
+  height:70px;
+  padding:10px 39px 7px 34px;
+  overflow:hidden;
+}
+.job-title{
+  width:100%;
+  max-width:78px;
+  padding:0;
+  font-size:8px;
+  line-height:1.12;
+  white-space:normal;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+.company{
+  margin-top:3px;
+  font-size:7px;
+}
+.meta{
+  margin-top:2px;
+  font-size:6.5px;
+}
+.match{
+  position:absolute;
+  top:10px;
+  right:7px;
+  width:27px;
+  font-size:11px;
+  line-height:1;
+  text-align:right;
+}
+.match small{
+  margin-top:2px;
+  font-size:5.5px;
+}
+
+/* Core is vertically centered between the two panels. */
+.glow{
+  left:310px;
+  top:202px;
+  width:175px;
+  height:175px;
+  transform:translateX(-50%);
+}
+.ai-core{
+  left:310px;
+  top:235px;
+  width:112px;
+  height:112px;
+  transform:translateX(-50%);
+}
+.ai-label{
+  left:310px;
+  top:351px;
+  width:145px;
+  transform:translateX(-50%);
+  font-size:14px;
+}
+
+/* Flow layer */
+.connectors{
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+}
+.connectors svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+/* Existing paths become softly animated "energy tracks". */
+.in{
+  stroke-dasharray:6 8;
+  animation:flowIn 2.4s linear infinite;
+}
+.out{
+  stroke-dasharray:10 7;
+  animation:flowOut 2.0s linear infinite;
+}
+@keyframes flowIn{
+  to{stroke-dashoffset:-28}
+}
+@keyframes flowOut{
+  to{stroke-dashoffset:-34}
+}
+
+/* Traveling particles: source portals -> AI -> result cards. */
+.flow-dot{
+  fill:#7650ef;
+  filter:drop-shadow(0 0 4px rgba(118,80,239,.45));
+}
+.flow-dot.in-dot{fill:#9b7cff}
+.flow-dot.out-dot{fill:#7954ec}
+
+@keyframes pulseCore{
+  0%,100%{transform:translateX(-50%) scale(1)}
+  50%{transform:translateX(-50%) scale(1.025)}
+}
+.ai-core{
+  animation:pulseCore 2.8s ease-in-out infinite;
+}
+
+/* Subtle glow breathing */
+.glow{
+  animation:glowPulse 2.8s ease-in-out infinite;
+}
+@keyframes glowPulse{
+  0%,100%{opacity:.78}
+  50%{opacity:1}
+}
+
+/* Keep motion accessible. */
+@media (prefers-reduced-motion:reduce){
+  .in,.out,.flow-dot,.ai-core,.glow{animation:none!important}
+}
+
+/* Common laptop width: scale the whole visual, not individual pieces. */
+@media (min-width:901px) and (max-width:1250px){
+  .visual{
+    width:620px;
+    height:500px;
+    transform:scale(.84);
+    transform-origin:center right;
+  }
+}
+
+/* =========================================================
+   SVG particle motion
+   ========================================================= */
+.flow-dot{
+  opacity:0;
+}
+.flow-dot.animate{
+  animation:dotFade .05s linear forwards;
+}
+@keyframes dotFade{
+  to{opacity:.95}
+}
+
+/* V7 — ONLY requested fixes:
+   1) AI understands centered directly above AI Matching circle.
+   2) Both cards widened.
+   3) Job title / score spacing corrected.
+   No other composition or motion changes. */
+
+.visual{
+  width:700px;
+}
+
+/* Wider cards, keeping the same vertical geometry. */
+.source-panel,
+.result-panel{
+  width:190px;
+}
+.source-panel{left:0}
+.result-panel{right:0}
+
+/* AI understands: centered on the AI circle, directly above it. */
+.ai-understands{
+  left:350px;
+  width:150px;
+  transform:translateX(-50%);
+}
+
+/* AI core / label stay on the same center axis. */
+.glow,
+.ai-core,
+.ai-label{
+  left:350px;
+}
+.ai-core,
+.glow,
+.ai-label{
+  transform:translateX(-50%);
+}
+
+/* Wider result card content area and clean score column. */
+.job{
+  padding-left:35px;
+  padding-right:48px;
+}
+.job-title{
+  max-width:100%;
+  padding-right:0;
+  font-size:8.5px;
+  line-height:1.15;
+}
+.company{
+  font-size:7.5px;
+}
+.meta{
+  font-size:7px;
+}
+.match{
+  right:9px;
+  width:34px;
+  top:10px;
+  font-size:12px;
+}
+.match small{
+  font-size:6px;
+}
+
+/* Connector SVG follows the wider visual coordinate system.
+   Paths are extended only horizontally to meet the wider cards. */
+.connectors svg{
+  viewBox:0 0 700 520;
+}
+
+/* V8 — requested position fix only.
+   Move "AI understands" into the marked area directly above
+   the AI Matching circle, centered on the circle. */
+.ai-understands{
+  top:72px;
+  left:385px;
+  width:150px;
+  transform:translateX(-50%);
+}
+
+/* =========================================================
+   V9 — LUXURY MOTION + RESULT CARD POLISH
+   Keeps the approved composition intact.
+   Only improves motion, hierarchy and score/title alignment.
+   ========================================================= */
+
+/* --- Premium motion language: slow, restrained, intentional --- */
+.source-panel,
+.result-panel{
+  transition:
+    transform .55s cubic-bezier(.22,1,.36,1),
+    box-shadow .55s cubic-bezier(.22,1,.36,1),
+    border-color .4s ease;
+  will-change:transform;
+}
+
+.source-panel:hover,
+.result-panel:hover{
+  transform:translateY(-3px);
+  border-color:#d9ceff;
+  box-shadow:0 28px 65px rgba(63,45,120,.11);
+}
+
+.source{
+  position:relative;
+  overflow:hidden;
+  transition:
+    transform .42s cubic-bezier(.22,1,.36,1),
+    box-shadow .42s ease,
+    border-color .35s ease;
+}
+.source:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255,255,255,.72) 46%,
+    transparent 66%
+  );
+  transform:translateX(-130%);
+  pointer-events:none;
+}
+.source:hover{
+  transform:translateX(3px);
+  border-color:#ddd4fb;
+  box-shadow:0 9px 22px rgba(83,58,170,.08);
+}
+.source:hover:after{
+  animation:cardSheen .85s ease forwards;
+}
+@keyframes cardSheen{
+  to{transform:translateX(130%)}
+}
+
+/* Staggered source breathing keeps the flow alive without looking busy. */
+.source-list .source:nth-child(1){animation:sourceBreath 4.8s ease-in-out infinite .0s}
+.source-list .source:nth-child(2){animation:sourceBreath 4.8s ease-in-out infinite .45s}
+.source-list .source:nth-child(3){animation:sourceBreath 4.8s ease-in-out infinite .9s}
+.source-list .source:nth-child(4){animation:sourceBreath 4.8s ease-in-out infinite 1.35s}
+.source-list .source:nth-child(5){animation:sourceBreath 4.8s ease-in-out infinite 1.8s}
+@keyframes sourceBreath{
+  0%,84%,100%{box-shadow:0 4px 12px rgba(60,50,100,.035)}
+  90%{box-shadow:0 7px 20px rgba(112,72,241,.10)}
+}
+
+/* AI understands: elegant sequential emphasis. */
+.ai-understands h3{
+  animation:understandTitle 3.6s ease-in-out infinite;
+}
+.check{
+  opacity:.72;
+  animation:checkReveal 3.6s ease-in-out infinite;
+}
+.check:nth-child(1){animation-delay:.15s}
+.check:nth-child(2){animation-delay:.35s}
+.check:nth-child(3){animation-delay:.55s}
+.check:nth-child(4){animation-delay:.75s}
+.check:nth-child(5){animation-delay:.95s}
+
+@keyframes understandTitle{
+  0%,72%,100%{opacity:1}
+  78%{opacity:.82}
+}
+@keyframes checkReveal{
+  0%,72%,100%{opacity:.72;transform:translateX(0)}
+  78%{opacity:1;transform:translateX(2px)}
+  86%{opacity:.82;transform:translateX(0)}
+}
+
+/* Core: subtle breathing only — no distracting spin. */
+.ai-core{
+  animation:
+    pulseCore 2.8s ease-in-out infinite,
+    coreLuxury 5.6s ease-in-out infinite;
+}
+@keyframes coreLuxury{
+  0%,100%{filter:brightness(1) saturate(1)}
+  50%{filter:brightness(1.045) saturate(1.04)}
+}
+.glow{
+  animation:
+    glowPulse 2.8s ease-in-out infinite,
+    glowLuxury 5.6s ease-in-out infinite;
+}
+@keyframes glowLuxury{
+  0%,100%{transform:translateX(-50%) scale(1)}
+  50%{transform:translateX(-50%) scale(1.045)}
+}
+.ai-label{
+  animation:labelFloat 3.8s ease-in-out infinite;
+}
+@keyframes labelFloat{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(-2px)}
+}
+
+/* --- Result cards: fixed title column + dedicated score column --- */
+.job{
+  padding-left:35px;
+  padding-right:49px;
+}
+.job-title{
+  width:calc(100% - 1px);
+  max-width:88px;
+  min-height:29px;
+  padding:0;
+  margin:0;
+  white-space:normal;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  font-size:8.5px;
+  line-height:1.16;
+  letter-spacing:-.012em;
+  text-align:left;
+}
+.company{
+  margin-top:3px;
+  text-align:left;
+}
+.meta{
+  margin-top:2px;
+  text-align:left;
+}
+.match{
+  top:11px;
+  right:8px;
+  width:34px;
+  text-align:center;
+  line-height:1;
+  transform:none;
+  animation:scorePulse 3.4s ease-in-out infinite;
+}
+.job:nth-child(2) .match{animation-delay:.55s}
+.job:nth-child(3) .match{animation-delay:1.1s}
+.match small{
+  margin-top:3px;
+  line-height:1;
+  text-align:center;
+}
+@keyframes scorePulse{
+  0%,78%,100%{transform:translateY(0);opacity:1}
+  84%{transform:translateY(-1px);opacity:.88}
+}
+
+/* Job cards receive a restrained luxury hover state. */
+.job{
+  transition:
+    transform .45s cubic-bezier(.22,1,.36,1),
+    box-shadow .45s ease,
+    border-color .35s ease;
+}
+.job:hover{
+  transform:translateY(-2px);
+  border-color:#ddd4fb;
+  box-shadow:0 10px 25px rgba(83,58,170,.09);
+}
+
+/* More row gets the same interaction language. */
+.more-jobs{
+  transition:
+    transform .4s cubic-bezier(.22,1,.36,1),
+    border-color .35s ease,
+    box-shadow .4s ease;
+}
+.more-jobs:hover{
+  transform:translateY(-2px);
+  border-color:#ddd4fb;
+  box-shadow:0 8px 20px rgba(83,58,170,.07);
+}
+
+/* Keep the existing connector motion, but make it feel continuous
+   rather than like a rapid loading animation. */
+.in{
+  animation:flowIn 3.0s linear infinite;
+}
+.out{
+  animation:flowOut 2.6s linear infinite;
+}
+.flow-dot{
+  filter:drop-shadow(0 0 5px rgba(118,80,239,.42));
+}
+
+/* Respect accessibility preferences. */
+@media (prefers-reduced-motion:reduce){
+  .source-panel,.result-panel,
+  .source,.source-list .source,
+  .ai-understands h3,.check,
+  .ai-core,.glow,.ai-label,
+  .match,.job,.more-jobs,
+  .in,.out,.flow-dot{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}
+
+/* =========================================================
+   V10 — REQUESTED FIXES ONLY
+   1. Restore approved header/menu.
+   2. Keep both panel headings on one line.
+   3. Make source/result brands more polished with logo-like marks.
+   ========================================================= */
+
+/* ---------- APPROVED HEADER ---------- */
+.site-header{
+  position:relative;
+  z-index:20;
+  height:92px;
+  border-bottom:1px solid #eeeaf7;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(16px);
+}
+.header-inner{
+  width:min(1480px,calc(100% - 80px));
+  height:100%;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:260px 1fr 300px;
+  align-items:center;
+  gap:24px;
+}
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:11px;
+  color:#171b31;
+  text-decoration:none;
+  width:max-content;
+}
+.brand-mark{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  color:#6841ee;
+  font-size:27px;
+  line-height:1;
+  filter:drop-shadow(0 4px 10px rgba(104,65,238,.18));
+}
+.brand-copy{
+  display:flex;
+  flex-direction:column;
+  line-height:1;
+}
+.brand-copy strong{
+  font-size:18px;
+  font-weight:850;
+  letter-spacing:-.035em;
+}
+.brand-copy small{
+  margin-top:5px;
+  color:#8290a6;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.01em;
+}
+.main-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:54px;
+}
+.main-nav a{
+  color:#273047;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:650;
+  white-space:nowrap;
+  transition:color .25s ease;
+}
+.main-nav a:hover{color:#6540eb}
+.header-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:18px;
+}
+.signin,
+.header-cta{
+  height:48px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.signin{
+  min-width:100px;
+  color:#22283b;
+  background:#fff;
+  border:1px solid #e4e0ef;
+  box-shadow:0 5px 18px rgba(60,50,100,.035);
+}
+.header-cta{
+  min-width:160px;
+  gap:11px;
+  color:#fff;
+  background:linear-gradient(135deg,#6540f1,#5a34e8);
+  box-shadow:0 12px 26px rgba(94,58,232,.20);
+}
+.header-cta span{
+  font-size:18px;
+  line-height:1;
+  transform:translateY(-1px);
+}
+
+/* The hero now follows the header, while preserving the single-screen composition. */
+.hero{
+  height:calc(100vh - 92px);
+  min-height:588px;
+}
+
+/* ---------- ONE-LINE PANEL TITLES ---------- */
+.panel-title{
+  white-space:nowrap;
+  font-size:13px;
+  line-height:1.15;
+  letter-spacing:-.035em;
+}
+.source-panel .panel-title,
+.result-panel .panel-title{
+  white-space:nowrap;
+}
+.source-panel .panel-title br,
+.result-panel .panel-title br{
+  display:none;
+}
+
+/* Give the panels a little more usable width without changing their
+   overall right-side composition. */
+.source-panel,
+.result-panel{
+  width:190px;
+}
+
+/* ---------- POLISHED BRAND MARKS ---------- */
+.source .mark{
+  position:relative;
+  flex:0 0 24px;
+  width:24px;
+  height:24px;
+  border-radius:7px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+.mark.naukri-logo{
+  background:#0876d1;
+  font-size:13px;
+}
+.mark.linkedin-logo{
+  background:#0a73c9;
+  font-size:10px;
+}
+.mark.iim-logo{
+  background:#242424;
+  font-size:9px;
+}
+.mark.indeed-logo{
+  background:#216fd1;
+  font-size:12px;
+}
+.mark.shine-logo{
+  background:#202020;
+  font-size:8px;
+}
+
+/* Branded source row under the hero copy. */
+.source-row .logo{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+.source-row .logo::first-letter{
+  font-weight:900;
+}
+
+/* ---------- RESULT CARD: cleaner title/score columns ---------- */
+.job{
+  padding-left:35px;
+  padding-right:47px;
+}
+.job-title{
+  max-width:calc(100% - 1px);
+  min-height:28px;
+  padding-right:0;
+  font-size:8.5px;
+  line-height:1.14;
+  white-space:normal;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+}
+.match{
+  right:8px;
+  width:34px;
+  text-align:center;
+}
+
+/* ---------- RESPONSIVE HEADER ---------- */
+@media (max-width:1050px){
+  .header-inner{
+    width:calc(100% - 40px);
+    grid-template-columns:210px 1fr 250px;
+    gap:12px;
+  }
+  .main-nav{gap:28px}
+  .main-nav a{font-size:12px}
+}
+@media (max-width:900px){
+  .site-header{height:auto;min-height:76px}
+  .header-inner{
+    width:calc(100% - 28px);
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+      "brand actions"
+      "nav nav";
+    padding:12px 0;
+    row-gap:12px;
+  }
+  .brand{grid-area:brand}
+  .header-actions{grid-area:actions}
+  .main-nav{
+    grid-area:nav;
+    justify-content:flex-start;
+    gap:22px;
+    overflow-x:auto;
+    padding-bottom:2px;
+    scrollbar-width:none;
+  }
+  .main-nav::-webkit-scrollbar{display:none}
+  .main-nav a{font-size:12px}
+  .signin{min-width:76px;height:40px;font-size:12px}
+  .header-cta{min-width:122px;height:40px;font-size:12px}
+  .hero{
+    height:auto;
+    min-height:0;
+  }
+}
+@media (max-width:620px){
+  .header-actions{gap:7px}
+  .header-cta{min-width:108px}
+  .brand-copy strong{font-size:16px}
+  .brand-copy small{font-size:9px}
+  .main-nav{gap:18px}
+  .main-nav a{font-size:11px}
+  .panel-title{font-size:13px}
+}
+
+/* =========================================================
+   V10.1 — MINOR SIZE FIX ONLY
+   Based directly on approved V10.
+   Goal: keep the exact V10 composition, but make the desktop
+   presentation slightly smaller so ALL approved elements,
+   including "Jobs from 20+ trusted sources", fit at 100%.
+   No redesign / no geometry rewrite.
+   ========================================================= */
+
+@media (min-width:901px){
+
+  /* Give the hero the real space left after the header. */
+  .site-header{height:84px}
+  .hero{
+    height:calc(100vh - 84px);
+    min-height:0;
+    max-height:none;
+  }
+
+  .wrap{
+    width:min(1480px,calc(100% - 72px));
+    height:100%;
+    min-height:0;
+    padding:16px 0 14px;
+  }
+
+  /* Keep V10 typography, just ~5–7% tighter. */
+  .badge{
+    height:35px;
+    padding:0 13px 0 7px;
+    font-size:10px;
+  }
+  .badge-icon{
+    width:24px;
+    height:24px;
+    font-size:12px;
+  }
+
+  h1{
+    max-width:525px;
+    margin:20px 0 16px;
+    font-size:clamp(41px,3.65vw,57px);
+    line-height:1;
+  }
+
+  .desc{
+    max-width:545px;
+    font-size:13.5px;
+    line-height:1.5;
+  }
+
+  .ctas{
+    gap:11px;
+    margin-top:20px;
+  }
+  .btn{
+    height:46px;
+    border-radius:10px;
+    padding:0 19px;
+    font-size:12.5px;
+    gap:9px;
+  }
+  .primary{min-width:164px}
+  .secondary{min-width:190px}
+  .play{
+    width:25px;
+    height:25px;
+    font-size:10px;
+  }
+
+  /* This is the key: bring the source strip up without
+     changing its content. */
+  .sources{
+    margin-top:18px;
+  }
+  .sources-label{
+    font-size:10px;
+    margin-bottom:8px;
+  }
+  .source-row{
+    gap:19px;
+  }
+  .logo{font-size:14px}
+  .iim{font-size:13px}
+  .shine{font-size:15px}
+  .more{font-size:11px}
+
+  /* Right side remains the V10 composition, only slightly
+     reduced as a single unit. */
+  .visual{
+    transform:scale(.96);
+    transform-origin:center right;
+  }
+
+  /* Header remains the same design, only slightly shorter. */
+  .header-inner{
+    width:min(1480px,calc(100% - 72px));
+  }
+  .brand-mark{
+    width:32px;
+    height:32px;
+    font-size:25px;
+  }
+  .brand-copy strong{font-size:17px}
+  .brand-copy small{font-size:9px}
+  .main-nav{gap:50px}
+  .main-nav a{font-size:13px}
+  .signin,.header-cta{
+    height:45px;
+    font-size:13px;
+  }
+  .signin{min-width:96px}
+  .header-cta{min-width:154px}
+}
+
+/* 1366×768-class screens: only another small reduction.
+   This targets the exact problem rather than changing V10. */
+@media (min-width:901px) and (max-height:820px){
+  .site-header{height:80px}
+  .hero{
+    height:calc(100vh - 80px);
+  }
+
+  .header-inner{
+    width:calc(100% - 48px);
+  }
+  .main-nav{gap:38px}
+  .main-nav a{font-size:12.5px}
+
+  .wrap{
+    width:calc(100% - 48px);
+    padding:12px 0 10px;
+  }
+
+  .copy{
+    padding-right:8px;
+  }
+
+  .badge{
+    height:33px;
+    font-size:9.5px;
+  }
+  .badge-icon{
+    width:23px;
+    height:23px;
+  }
+
+  h1{
+    max-width:500px;
+    margin:17px 0 13px;
+    font-size:clamp(38px,3.65vw,51px);
+    line-height:.99;
+  }
+
+  .desc{
+    max-width:505px;
+    font-size:12.5px;
+    line-height:1.46;
+  }
+
+  .ctas{
+    margin-top:16px;
+    gap:10px;
+  }
+  .btn{
+    height:43px;
+    font-size:12px;
+    padding:0 17px;
+  }
+  .primary{min-width:154px}
+  .secondary{min-width:176px}
+
+  .sources{
+    margin-top:13px;
+  }
+  .sources-label{
+    font-size:9px;
+    margin-bottom:6px;
+  }
+  .source-row{gap:16px}
+  .logo{font-size:13px}
+  .iim{font-size:12px}
+  .shine{font-size:14px}
+  .more{font-size:10px}
+
+  .visual{
+    transform:scale(.90);
+    transform-origin:center right;
+  }
+}
+
+/* 1024-ish desktop/laptop widths: preserve the same V10 look,
+   but prevent either column from squeezing the other. */
+@media (min-width:901px) and (max-width:1150px){
+  .wrap{
+    width:calc(100% - 32px);
+    grid-template-columns:39% 61%;
+  }
+  h1{
+    font-size:clamp(36px,3.75vw,46px);
+    max-width:460px;
+  }
+  .desc{font-size:12px}
+  .visual{transform:scale(.82);transform-origin:center right}
+}
