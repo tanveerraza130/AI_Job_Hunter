@@ -8,6 +8,7 @@ import {
   ChevronDown,
   LogOut,
 } from "lucide-react";
+import { useState } from "react";
 import styles from "./DesktopHeader.module.css";
 
 interface DesktopHeaderProps {
@@ -31,6 +32,8 @@ const navigation = [
 export default function DesktopHeader({
   profileId,
 }: DesktopHeaderProps) {
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+
   function openProfile() {
     window.location.href = "/profile";
   }
@@ -113,8 +116,9 @@ export default function DesktopHeader({
             <button
               type="button"
               className={styles.profileTrigger}
-              onClick={openProfile}
-              aria-label="Open profile management"
+              onClick={() => setProfileMenuOpen((open) => !open)}
+              aria-expanded={profileMenuOpen}
+              aria-label="Open profile menu"
               title="Manage your profile"
             >
               <span className={styles.profileAvatar}>
@@ -133,7 +137,7 @@ export default function DesktopHeader({
                 <span className={styles.profileValue}>
                   {profileId
                     ? formatProfile(profileId)
-                    : "Loading profile…"}
+                    : "Your profile"}
                 </span>
               </span>
 
@@ -145,7 +149,11 @@ export default function DesktopHeader({
               />
             </button>
 
-            <div className={styles.profileActions}>
+            <div
+              className={`${styles.profileActions} ${
+                profileMenuOpen ? styles.profileActionsOpen : ""
+              }`}
+            >
               <button
                 type="button"
                 className={styles.profileAction}

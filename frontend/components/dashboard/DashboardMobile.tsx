@@ -250,7 +250,7 @@ export default function DashboardMobile(
 
   return (
     <main className={styles.root}>
-      <MobileHeader profileId={props.profileId} />
+      <MobileHeader />
 
       <MobileHero />
 
@@ -489,6 +489,10 @@ export default function DashboardMobile(
         <button
           type="button"
           className={styles.bottomNavItem}
+          onClick={() => {
+            window.location.href = "/profile";
+          }}
+          aria-label="Manage profile"
         >
           <UserRound size={19} />
           <span>Profile</span>

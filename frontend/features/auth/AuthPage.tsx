@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   BriefcaseBusiness,
@@ -149,6 +151,7 @@ type AuthPageProps = {
 export default function AuthPage({
   initialMode = "signup",
 }: AuthPageProps) {
+  const router = useRouter();
   const [step, setStep] = useState<Step>(
     initialMode === "signin" ? "login" : "account",
   );
