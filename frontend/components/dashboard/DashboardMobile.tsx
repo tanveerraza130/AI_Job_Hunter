@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 
 import {
+  deleteApplication,
   getApplicationsBulk,
   updateApplication,
 } from "@/lib/api";
@@ -114,7 +115,6 @@ export default function DashboardMobile(
             props.jobs.map(
               (job) => job.job_id,
             ),
-            props.profileId,
           );
 
         if (cancelled) return;
@@ -158,20 +158,38 @@ export default function DashboardMobile(
     status: MobileStatus,
   ) {
     try {
-      await updateApplication(
+      if (status === "Not Applied") {
+        await deleteApplication(jobId);
+
+        setStatusMap((current) => {
+          const next = { ...current };
+          delete next[jobId];
+          return next;
+        });
+
+        return;
+      }
+
+      const response = await updateApplication(
         jobId,
         {
-          profile_id: props.profileId,
           status: apiStatus(status),
+          applied_at:
+            status === "Applied"
+              ? new Date().toISOString()
+              : null,
         },
       );
 
-      setStatusMap(
-        (current) => ({
+      const savedStatus =
+        response.application?.status;
+
+      if (savedStatus) {
+        setStatusMap((current) => ({
           ...current,
-          [jobId]: status,
-        }),
-      );
+          [jobId]: displayStatus(savedStatus),
+        }));
+      }
     } catch (error) {
       console.error(
         "Failed to update mobile application status:",

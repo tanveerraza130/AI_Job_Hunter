@@ -9,17 +9,29 @@ import {
   CalendarDays,
   MapPin,
 } from "lucide-react";
-import { getApplicationsBulk, updateApplication } from "@/lib/api";
+import { deleteApplication, getApplicationsBulk, updateApplication } from "@/lib/api";
 import type { Job } from "@/types/job";
 import { formatDisplayText } from "@/lib/display";
 
 type ApplicationStatus =
   | "Not Applied"
   | "Saved"
+  | "Pending"
   | "Applied"
   | "Interview"
   | "Rejected"
-  | "Offer";
+  | "Offer"
+  | "Not Relevant";
+
+type ApiApplicationStatus =
+  | "saved"
+  | "pending"
+  | "applied"
+  | "interview"
+  | "rejected"
+  | "offer"
+  | "not_relevant";
+
 
 interface Props {
   jobs: Job[];
@@ -29,23 +41,29 @@ interface Props {
 
 const displayStatus = (status?: string): ApplicationStatus => {
   if (status === "saved") return "Saved";
+  if (status === "pending") return "Pending";
   if (status === "applied") return "Applied";
   if (status === "interview") return "Interview";
   if (status === "rejected") return "Rejected";
   if (status === "offer") return "Offer";
+  if (status === "not_relevant") return "Not Relevant";
   return "Not Applied";
 };
 
-const apiStatus = (status: ApplicationStatus) =>
-  status === "Applied"
-    ? "applied"
-    : status === "Interview"
-      ? "interview"
-      : status === "Rejected"
-        ? "rejected"
-        : status === "Offer"
-          ? "offer"
-          : "saved";
+const apiStatus = (
+  status: ApplicationStatus,
+): ApiApplicationStatus => {
+  if (status === "Saved") return "saved";
+  if (status === "Pending") return "pending";
+  if (status === "Applied") return "applied";
+  if (status === "Interview") return "interview";
+  if (status === "Rejected") return "rejected";
+  if (status === "Offer") return "offer";
+  if (status === "Not Relevant") return "not_relevant";
+
+  return "saved";
+};
+
 
 const formatDate = (value?: string | null) => {
   if (!value) return "Date unavailable";
@@ -148,6 +166,32 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
     "ALL" | "Saved" | "Applied" | "Interview"
   >("ALL");
 
+  const [waitingForApplyReturn, setWaitingForApplyReturn] = useState<
+    string | null
+  >(null);
+
+  const [showApplyPrompt, setShowApplyPrompt] = useState<
+    string | null
+  >(null);
+
+  useEffect(() => {
+    if (!waitingForApplyReturn) return;
+
+    const handleReturn = () => {
+      if (document.visibilityState === "visible") {
+        setShowApplyPrompt(waitingForApplyReturn);
+      }
+    };
+
+    window.addEventListener("focus", handleReturn);
+    document.addEventListener("visibilitychange", handleReturn);
+
+    return () => {
+      window.removeEventListener("focus", handleReturn);
+      document.removeEventListener("visibilitychange", handleReturn);
+    };
+  }, [waitingForApplyReturn]);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -164,7 +208,6 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
               (job) =>
                 job.job_id,
             ),
-            profileId,
           );
 
         if (cancelled) {
@@ -211,14 +254,31 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
     status: ApplicationStatus,
   ) {
     try {
-      await updateApplication(jobId, {
-        profile_id: profileId,
-        status: apiStatus(status) as never,
+      if (status === "Not Applied") {
+        await deleteApplication(jobId);
+
+        setStatusMap((current) => {
+          const next = { ...current };
+          delete next[jobId];
+          return next;
+        });
+
+        return;
+      }
+
+      const response = await updateApplication(jobId, {
+        status: apiStatus(status),
+        applied_at:
+          status === "Applied"
+            ? new Date().toISOString()
+            : null,
       });
 
       setStatusMap((current) => ({
         ...current,
-        [jobId]: status,
+        [jobId]: displayStatus(
+          response.application?.status,
+        ),
       }));
     } catch (error) {
       console.error(
@@ -539,16 +599,14 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
                     Not Applied
                   </option>
                   <option value="Saved">Saved</option>
-                  <option value="Applied">
-                    Applied
-                  </option>
-                  <option value="Interview">
-                    Interview
-                  </option>
-                  <option value="Rejected">
-                    Rejected
-                  </option>
+                  <option value="Pending">Pending</option>
+                  <option value="Applied">Applied</option>
+                  <option value="Interview">Interview</option>
+                  <option value="Rejected">Rejected</option>
                   <option value="Offer">Offer</option>
+                  <option value="Not Relevant">
+                    Not Relevant
+                  </option>
                 </select>
 
                 <Link
@@ -562,15 +620,77 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
                 </Link>
 
                 {job.job_url && (
-                  <a
+                  <button
+                    type="button"
                     className="mj-apply"
-                    href={job.job_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={(event) => {
+                      event.preventDefault();
+
+                      if (!job.job_url) return;
+
+                      updateStatus(job.job_id, "Pending");
+
+                      window.open(
+                        job.job_url,
+                        "_blank",
+                        "noopener,noreferrer",
+                      );
+
+                      setWaitingForApplyReturn(job.job_id);
+                    }}
                   >
                     Apply now
                     <ArrowUpRight size={15} />
-                  </a>
+                  </button>
+                )}
+
+                {showApplyPrompt === job.job_id && (
+                  <div
+                    className="mj-apply-prompt"
+                    role="dialog"
+                    aria-label="Application status"
+                  >
+                    <div className="mj-apply-prompt-title">
+                      Did you apply for this job?
+                    </div>
+
+                    <div className="mj-apply-prompt-actions">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateStatus(job.job_id, "Applied");
+                          setShowApplyPrompt(null);
+                          setWaitingForApplyReturn(null);
+                        }}
+                      >
+                        ✓ Yes, Applied
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowApplyPrompt(null);
+                          setWaitingForApplyReturn(null);
+                        }}
+                      >
+                        Not Yet
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateStatus(
+                            job.job_id,
+                            "Not Relevant",
+                          );
+                          setShowApplyPrompt(null);
+                          setWaitingForApplyReturn(null);
+                        }}
+                      >
+                        Not Relevant
+                      </button>
+                    </div>
+                  </div>
                 )}
               </div>
             </article>

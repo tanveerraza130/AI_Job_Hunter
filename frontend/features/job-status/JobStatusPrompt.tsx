@@ -3,11 +3,13 @@ import styles from "./jobStatus.module.css";
 type Props = {
   onApplied: () => void;
   onNotYet: () => void;
+  onNotRelevant: () => void;
 };
 
 export default function JobStatusPrompt({
   onApplied,
   onNotYet,
+  onNotRelevant,
 }: Props) {
   return (
     <div className={styles.prompt} role="dialog" aria-label="Application status">
@@ -30,6 +32,14 @@ export default function JobStatusPrompt({
           onClick={onNotYet}
         >
           Not Yet
+        </button>
+
+        <button
+          type="button"
+          className={styles.notYetButton}
+          onClick={onNotRelevant}
+        >
+          Not Relevant
         </button>
       </div>
     </div>

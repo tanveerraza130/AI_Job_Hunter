@@ -452,6 +452,18 @@ function MobileJobCard({
             setWaitingForApplyReturn(false);
           }}
           onNotYet={() => {
+            onStatusChange(
+              job.job_id,
+              "Pending",
+            );
+            setShowApplyPrompt(false);
+            setWaitingForApplyReturn(false);
+          }}
+          onNotRelevant={() => {
+            onStatusChange(
+              job.job_id,
+              "Not Relevant",
+            );
             setShowApplyPrompt(false);
             setWaitingForApplyReturn(false);
           }}

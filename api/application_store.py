@@ -1,12 +1,16 @@
 """
-Persistent application tracking store.
+Persistent per-user application/job-status tracking.
 
 Job data remains in the read-only job_hunter.duckdb.
-Application state is intentionally stored separately.
+Application state is stored separately in data/application.duckdb.
+
+Ownership is enforced by (user_id, job_id).
 """
 
-from pathlib import Path
+from __future__ import annotations
+
 from datetime import datetime
+from pathlib import Path
 
 import duckdb
 
@@ -15,34 +19,28 @@ DB_PATH = Path("data/application.duckdb")
 
 
 def _connect() -> duckdb.DuckDBPyConnection:
+    """
+    Open the application database.
+
+    IMPORTANT:
+    No schema-changing DDL is performed here.
+    The database schema is initialized/migrated separately.
+    """
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    connection = duckdb.connect(str(DB_PATH))
-
-    connection.execute(
-        """
-        CREATE TABLE IF NOT EXISTS applications (
-            job_id VARCHAR PRIMARY KEY,
-            profile_id VARCHAR NOT NULL,
-            status VARCHAR NOT NULL DEFAULT 'saved',
-            applied_at TIMESTAMP,
-            notes VARCHAR NOT NULL DEFAULT '',
-            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-        )
-        """
-    )
-
-    return connection
+    return duckdb.connect(str(DB_PATH))
 
 
-def get_application(job_id: str, profile_id: str) -> dict | None:
+def get_application(
+    user_id: str,
+    job_id: str,
+) -> dict | None:
     connection = _connect()
 
     try:
         row = connection.execute(
             """
             SELECT
+                user_id,
                 job_id,
                 profile_id,
                 status,
@@ -51,16 +49,17 @@ def get_application(job_id: str, profile_id: str) -> dict | None:
                 updated_at,
                 created_at
             FROM applications
-            WHERE job_id = ?
-              AND profile_id = ?
+            WHERE user_id = ?
+              AND job_id = ?
             """,
-            [job_id, profile_id],
+            [user_id, job_id],
         ).fetchone()
 
         if row is None:
             return None
 
         columns = [
+            "user_id",
             "job_id",
             "profile_id",
             "status",
@@ -76,7 +75,68 @@ def get_application(job_id: str, profile_id: str) -> dict | None:
         connection.close()
 
 
+def get_applications(
+    user_id: str,
+    job_ids: list[str],
+) -> dict[str, dict]:
+    """
+    Return application records for one authenticated user.
+
+    Only requested job IDs are returned.
+    Missing jobs are intentionally omitted.
+    """
+    if not job_ids:
+        return {}
+
+    unique_job_ids = list(dict.fromkeys(job_ids))
+
+    connection = _connect()
+
+    try:
+        placeholders = ", ".join(
+            "?" for _ in unique_job_ids
+        )
+
+        rows = connection.execute(
+            f"""
+            SELECT
+                user_id,
+                job_id,
+                profile_id,
+                status,
+                applied_at,
+                notes,
+                updated_at,
+                created_at
+            FROM applications
+            WHERE user_id = ?
+              AND job_id IN ({placeholders})
+            """,
+            [user_id, *unique_job_ids],
+        ).fetchall()
+
+        columns = [
+            "user_id",
+            "job_id",
+            "profile_id",
+            "status",
+            "applied_at",
+            "notes",
+            "updated_at",
+            "created_at",
+        ]
+
+        return {
+            row[1]: dict(zip(columns, row))
+            for row in rows
+        }
+
+    finally:
+        connection.close()
+
+
 def upsert_application(
+    user_id: str,
     job_id: str,
     profile_id: str,
     status: str,
@@ -91,6 +151,7 @@ def upsert_application(
         connection.execute(
             """
             INSERT INTO applications (
+                user_id,
                 job_id,
                 profile_id,
                 status,
@@ -98,8 +159,8 @@ def upsert_application(
                 notes,
                 updated_at
             )
-            VALUES (?, ?, ?, ?, ?, ?)
-            ON CONFLICT (job_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT (user_id, job_id)
             DO UPDATE SET
                 profile_id = excluded.profile_id,
                 status = excluded.status,
@@ -108,6 +169,7 @@ def upsert_application(
                 updated_at = excluded.updated_at
             """,
             [
+                user_id,
                 job_id,
                 profile_id,
                 status,
@@ -117,17 +179,25 @@ def upsert_application(
             ],
         )
 
-        return get_application(
+        application = get_application(
+            user_id,
             job_id,
-            profile_id,
         )
+
+        if application is None:
+            raise RuntimeError(
+                "Application was saved but could not be reloaded."
+            )
+
+        return application
 
     finally:
         connection.close()
 
+
 def delete_application(
+    user_id: str,
     job_id: str,
-    profile_id: str,
 ) -> None:
     connection = _connect()
 
@@ -135,17 +205,18 @@ def delete_application(
         connection.execute(
             """
             DELETE FROM applications
-            WHERE job_id = ?
-              AND profile_id = ?
+            WHERE user_id = ?
+              AND job_id = ?
             """,
-            [job_id, profile_id],
+            [user_id, job_id],
         )
+
     finally:
         connection.close()
 
 
 def get_application_summary(
-    profile_id: str,
+    user_id: str,
 ) -> dict:
     connection = _connect()
 
@@ -156,10 +227,10 @@ def get_application_summary(
                 status,
                 COUNT(*) AS count
             FROM applications
-            WHERE profile_id = ?
+            WHERE user_id = ?
             GROUP BY status
             """,
-            [profile_id],
+            [user_id],
         ).fetchall()
 
         summary = {

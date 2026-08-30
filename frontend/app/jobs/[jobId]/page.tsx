@@ -90,7 +90,6 @@ export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>
         try {
           const application = await getApplication(
             data.job_id,
-            authenticatedProfile,
           );
 
           if (application.application) {
@@ -129,7 +128,7 @@ export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>
       cancelled = true;
     };
   }, [jobId]);
-  async function saveApplication(nextStatus:ApplicationStatus=status){if(!job||!profileId||saving)return;try{setSaving(true);const r=await updateApplication(job.job_id,{profile_id:profileId,status:nextStatus,applied_at:nextStatus==="applied"?new Date().toISOString():undefined,notes});setStatus(r.application.status);setNotes(r.application.notes||"");}catch(e){console.error(e);setError("Unable to save application changes.");}finally{setSaving(false);}}
+  async function saveApplication(nextStatus:ApplicationStatus=status){if(!job||!profileId||saving)return;try{setSaving(true);const r=await updateApplication(job.job_id,{status:nextStatus,applied_at:nextStatus==="applied"?new Date().toISOString():undefined,notes});setStatus(r.application.status);setNotes(r.application.notes||"");}catch(e){console.error(e);setError("Unable to save application changes.");}finally{setSaving(false);}}
   const score=job?.score; const breakdown:ScoreBreakdown|null=score?.score_breakdown??job?.score_breakdown??null; const paragraphs=useMemo(()=>splitDescription(job?.description),[job?.description]);
   if (loading || !profileId) {
     return (

@@ -13,12 +13,12 @@ async function apiRequest<T>(
   const response = await fetch(
     `${API_BASE_URL}${endpoint}`,
     {
+      ...options,
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
         ...(options.headers || {}),
       },
-      ...options,
     },
   );
 
@@ -311,6 +311,7 @@ export type ApplicationStatus =
   | "not_relevant";
 
 export interface ApplicationRecord {
+  user_id: string;
   job_id: string;
   profile_id: string;
   status: ApplicationStatus;
@@ -320,26 +321,40 @@ export interface ApplicationRecord {
   created_at: string;
 }
 
+type ApplicationsBulkResponse = {
+  applications: Record<string, ApplicationRecord>;
+};
+
+function getApplicationAuthHeaders(): HeadersInit {
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("ai_job_hunter_token")
+      : null;
+
+  if (!token) {
+    throw new Error("Authentication required");
+  }
+
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+}
+
 export async function getApplication(
   jobId: string,
-  profileId: string,
 ): Promise<{ application: ApplicationRecord | null }> {
-  const query = new URLSearchParams();
-  query.set("profile_id", profileId);
-
   return apiRequest(
-    `/applications/${encodeURIComponent(jobId)}?${query.toString()}`,
+    `/applications/${encodeURIComponent(jobId)}`,
+    {
+      headers: getApplicationAuthHeaders(),
+    },
   );
 }
 
 export async function getApplicationsBulk(
   jobIds: string[],
-  profileId: string,
-): Promise<{
-  applications: Record<string, ApplicationRecord>;
-}> {
+): Promise<ApplicationsBulkResponse> {
   const query = new URLSearchParams();
-  query.set("profile_id", profileId);
 
   for (const jobId of jobIds) {
     query.append("job_id", jobId);
@@ -347,13 +362,15 @@ export async function getApplicationsBulk(
 
   return apiRequest(
     `/applications?${query.toString()}`,
+    {
+      headers: getApplicationAuthHeaders(),
+    },
   );
 }
 
 export async function updateApplication(
   jobId: string,
   payload: {
-    profile_id: string;
     status: ApplicationStatus;
     applied_at?: string | null;
     notes?: string;
@@ -363,6 +380,7 @@ export async function updateApplication(
     `/applications/${encodeURIComponent(jobId)}`,
     {
       method: "PUT",
+      headers: getApplicationAuthHeaders(),
       body: JSON.stringify(payload),
     },
   );
@@ -370,15 +388,12 @@ export async function updateApplication(
 
 export async function deleteApplication(
   jobId: string,
-  profileId: string,
 ): Promise<{ success: boolean }> {
-  const query = new URLSearchParams();
-  query.set("profile_id", profileId);
-
   return apiRequest(
-    `/applications/${encodeURIComponent(jobId)}?${query.toString()}`,
+    `/applications/${encodeURIComponent(jobId)}`,
     {
       method: "DELETE",
+      headers: getApplicationAuthHeaders(),
     },
   );
 }
