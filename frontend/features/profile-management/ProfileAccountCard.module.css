@@ -1,116 +1,126 @@
 .card {
-  border: 1px solid #e7eaf1;
-  border-radius: 22px;
-  background: linear-gradient(145deg, #ffffff, #fafaff);
-  box-shadow: 0 14px 38px rgba(36, 29, 72, 0.06);
-  padding: 26px;
+  padding: 20px;
+  border: 1px solid #e4e6eb;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(23, 29, 45, .035);
 }
 
 .heading {
   display: flex;
-  justify-content: space-between;
-  gap: 24px;
   align-items: flex-start;
-  margin-bottom: 24px;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
 }
 
 .eyebrow {
   display: block;
-  color: #7257e8;
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: .14em;
+  color: #6b54d7;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  margin-bottom: 6px;
 }
 
 .heading h2 {
-  margin: 7px 0 5px;
-  color: #171b27;
-  font-size: 20px;
-  letter-spacing: -.025em;
+  margin: 0;
+  color: #202532;
+  font-size: 16px;
+  letter-spacing: -.02em;
 }
 
 .heading p {
-  margin: 0;
-  color: #8991a3;
-  font-size: 12px;
-  line-height: 1.5;
+  margin: 5px 0 0;
+  color: #747b88;
+  font-size: 10px;
 }
 
 .lockBadge {
+  padding: 6px 9px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  flex: none;
-  padding: 7px 10px;
-  border: 1px solid #e7e4f8;
+  gap: 5px;
   border-radius: 999px;
-  background: #f8f6ff;
-  color: #6d58d9;
-  font-size: 10px;
-  font-weight: 800;
+  color: #5b3cd0;
+  background: #f0edff;
+  font-size: 9px;
+  font-weight: 750;
+  white-space: nowrap;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.field {
-  display: grid;
-  gap: 7px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .field > span {
-  color: #717b8f;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  color: #606876;
+  font-size: 9px;
+  font-weight: 650;
 }
 
 .readOnly {
-  min-height: 48px;
+  min-height: 43px;
+  padding: 0 11px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-  border: 1px solid #e4e7ee;
-  border-radius: 12px;
-  background: #f5f6f9;
-  color: #7b8496;
+  gap: 8px;
+  border: 1px solid #e2e4e9;
+  border-radius: 8px;
+  color: #6c7380;
+  background: #f8f9fb;
 }
 
 .readOnly strong {
-  flex: 1;
   min-width: 0;
+  flex: 1;
   overflow: hidden;
+  color: #313744;
+  font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #414a5d;
-  font-size: 13px;
 }
 
-.readOnly svg:first-child {
-  color: #7a6ae0;
+.readOnly > svg:last-child {
+  color: #9ba1ac;
 }
 
-.readOnly svg:last-child {
-  color: #a1a8b6;
+.securityNote {
+  margin-top: 13px;
+  padding: 10px 11px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 7px;
+  color: #657080;
+  background: #f7f5ff;
+  font-size: 9px;
+  line-height: 1.45;
 }
 
-@media (max-width: 700px) {
+.securityNote svg {
+  flex: 0 0 auto;
+  color: #6245d2;
+}
+
+@media (max-width: 560px) {
   .card {
-    padding: 20px;
-    border-radius: 18px;
-  }
-
-  .heading {
-    flex-direction: column;
-    gap: 12px;
+    padding: 15px;
   }
 
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .heading {
+    display: block;
+  }
+
+  .lockBadge {
+    margin-top: 10px;
   }
 }
