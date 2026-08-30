@@ -10,7 +10,7 @@ import Company from "./components/Company/Company";
 import SimilarJobs from "./components/SimilarJobs/SimilarJobs";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { getApplication, getJobDetail, updateApplication } from "@/lib/api";
+import { getApplication, getJobDetail, getMyProfile, updateApplication } from "@/lib/api";
 import type { ApplicationStatus } from "@/lib/api";
 import type { JobDetail, ScoreBreakdown } from "@/types/job";
 
@@ -23,8 +23,9 @@ function splitDescription(text?:string|null){
   if(typeof window !== "undefined") { const div=document.createElement("div"); div.innerHTML=normalized; return (div.textContent||"").replace(/\r/g,"").split(/\n+/).map(s=>s.replace(/\s+/g," ").trim()).filter(Boolean); }
   return normalized.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim().split(/\n+/).filter(Boolean);
 }
-export default function JobDetailPage({ params, searchParams }:{params:Promise<{jobId:string}>;searchParams:Promise<{profile_id?:string}>}){
-  const {jobId}=use(params); const {profile_id:profileId}=use(searchParams);
+export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>}){
+  const {jobId}=use(params);
+  const [profileId,setProfileId]=useState<string | null>(null);
   const [job,setJob]=useState<JobDetail|null>(null); const [loading,setLoading]=useState(true); const [error,setError]=useState<string|null>(null);
   const [status,setStatus]=useState<ApplicationStatus>("saved");
   const [openMobileSection, setOpenMobileSection] =
@@ -36,10 +37,109 @@ export default function JobDetailPage({ params, searchParams }:{params:Promise<{
     );
   }
  const [notes,setNotes]=useState(""); const [saving,setSaving]=useState(false);
-  useEffect(()=>{let cancelled=false;(async()=>{try{setLoading(true);setError(null);const data=await getJobDetail(decodeURIComponent(jobId),profileId||"");if(cancelled)return;setJob(data);if(profileId){try{const a=await getApplication(data.job_id,profileId);if(a.application){setStatus(a.application.status);setNotes(a.application.notes||"");}}catch(e){console.error(e);}}}catch(e){console.error(e);if(!cancelled)setError("Unable to load this job.");}finally{if(!cancelled)setLoading(false);}})();return()=>{cancelled=true;}},[jobId,profileId]);
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadJob() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const token = localStorage.getItem("ai_job_hunter_token");
+
+        if (!token) {
+          window.location.href = "/login";
+          return;
+        }
+
+        /*
+         * SECURITY / CONSISTENCY RULE:
+         *
+         * The authenticated user's saved profile is the
+         * ONLY source of truth.
+         *
+         * Never use:
+         * - URL profile_id
+         * - client-selected profile
+         * - hardcoded profile fallback
+         */
+        const profileResponse = await getMyProfile(token);
+
+        if (cancelled) return;
+
+        const authenticatedProfile =
+          profileResponse.profile?.profile_id?.trim();
+
+        if (!authenticatedProfile) {
+          throw new Error(
+            "Your account does not have an assigned job profile.",
+          );
+        }
+
+        setProfileId(authenticatedProfile);
+
+        const data = await getJobDetail(
+          decodeURIComponent(jobId),
+          authenticatedProfile,
+        );
+
+        if (cancelled) return;
+
+        setJob(data);
+
+        try {
+          const application = await getApplication(
+            data.job_id,
+            authenticatedProfile,
+          );
+
+          if (application.application) {
+            setStatus(application.application.status);
+            setNotes(application.application.notes || "");
+          }
+        } catch (applicationError) {
+          console.error(
+            "Failed to load application status:",
+            applicationError,
+          );
+        }
+      } catch (loadError) {
+        console.error(
+          "Failed to load authenticated job detail:",
+          loadError,
+        );
+
+        if (!cancelled) {
+          setError(
+            loadError instanceof Error
+              ? loadError.message
+              : "Unable to load this job.",
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadJob();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [jobId]);
   async function saveApplication(nextStatus:ApplicationStatus=status){if(!job||!profileId||saving)return;try{setSaving(true);const r=await updateApplication(job.job_id,{profile_id:profileId,status:nextStatus,applied_at:nextStatus==="applied"?new Date().toISOString():undefined,notes});setStatus(r.application.status);setNotes(r.application.notes||"");}catch(e){console.error(e);setError("Unable to save application changes.");}finally{setSaving(false);}}
   const score=job?.score; const breakdown:ScoreBreakdown|null=score?.score_breakdown??job?.score_breakdown??null; const paragraphs=useMemo(()=>splitDescription(job?.description),[job?.description]);
-  if(loading)return <main className="detail-shell"><div className="loading-panel">Loading job details…</div></main>;
+  if (loading || !profileId) {
+    return (
+      <main className="detail-shell">
+        <div className="loading-panel">
+          Loading job details…
+        </div>
+      </main>
+    );
+  }
   if(error||!job)return <main className="detail-shell"><div className="error-card"><h2>{error||"Job not found"}</h2><Link className="apply-now" href="/">Back to jobs</Link></div></main>;
   return (
     <main className="detail-shell">
@@ -408,7 +508,7 @@ export default function JobDetailPage({ params, searchParams }:{params:Promise<{
 
       <SimilarJobs
         currentJob={job}
-        profileId={profileId || "crm_manager"}
+        profileId={profileId}
       />
 
       <div className="mobile-bottom-actions">

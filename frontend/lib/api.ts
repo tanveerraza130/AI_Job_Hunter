@@ -94,7 +94,7 @@ export async function getMyProfile(
 }
 
 export async function getDashboardSummary(
-  profileId = "crm_manager",
+  profileId: string,
   filters?: GetJobsParams,
 ): Promise<DashboardSummary> {
   const query = new URLSearchParams();
@@ -291,7 +291,7 @@ export async function getJobFilterOptions(
 
 export async function getJobDetail(
   jobId: string,
-  profileId = "crm_manager",
+  profileId: string,
 ): Promise<JobDetail> {
   const query = new URLSearchParams();
   query.set("profile_id", profileId);
