@@ -250,7 +250,7 @@ export default function DashboardMobile(
 
   return (
     <main className={styles.root}>
-      <MobileHeader />
+      <MobileHeader profileId={props.profileId} />
 
       <MobileHero />
 

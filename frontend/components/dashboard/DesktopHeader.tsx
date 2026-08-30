@@ -4,6 +4,9 @@ import {
   History,
   Moon,
   Sparkles,
+  UserRound,
+  ChevronDown,
+  LogOut,
 } from "lucide-react";
 import styles from "./DesktopHeader.module.css";
 
@@ -28,6 +31,15 @@ const navigation = [
 export default function DesktopHeader({
   profileId,
 }: DesktopHeaderProps) {
+  function openProfile() {
+    window.location.href = "/profile";
+  }
+
+  function logout() {
+    localStorage.removeItem("ai_job_hunter_token");
+    window.location.href = "/login";
+  }
+
   return (
     <div className={styles.header}>
       <div className={styles.inner}>
@@ -97,22 +109,61 @@ export default function DesktopHeader({
             />
           </button>
 
-          <div
-            className={styles.profileSelect}
-            aria-label="Current job profile"
-            title="Your assigned job profile"
-          >
-            <BriefcaseBusiness
-              size={14}
-              strokeWidth={1.8}
-              aria-hidden="true"
-            />
+          <div className={styles.profileMenu}>
+            <button
+              type="button"
+              className={styles.profileTrigger}
+              onClick={openProfile}
+              aria-label="Open profile management"
+              title="Manage your profile"
+            >
+              <span className={styles.profileAvatar}>
+                <UserRound
+                  size={16}
+                  strokeWidth={1.9}
+                  aria-hidden="true"
+                />
+              </span>
 
-            <span className={styles.profileValue}>
-              {profileId
-                ? formatProfile(profileId)
-                : "Loading profile…"}
-            </span>
+              <span className={styles.profileTriggerCopy}>
+                <span className={styles.profileTriggerLabel}>
+                  PROFILE
+                </span>
+
+                <span className={styles.profileValue}>
+                  {profileId
+                    ? formatProfile(profileId)
+                    : "Loading profile…"}
+                </span>
+              </span>
+
+              <ChevronDown
+                size={15}
+                strokeWidth={1.8}
+                className={styles.profileChevron}
+                aria-hidden="true"
+              />
+            </button>
+
+            <div className={styles.profileActions}>
+              <button
+                type="button"
+                className={styles.profileAction}
+                onClick={openProfile}
+              >
+                <UserRound size={15} />
+                <span>Manage profile</span>
+              </button>
+
+              <button
+                type="button"
+                className={`${styles.profileAction} ${styles.logoutAction}`}
+                onClick={logout}
+              >
+                <LogOut size={15} />
+                <span>Sign out</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
