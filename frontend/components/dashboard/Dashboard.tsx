@@ -2,7 +2,7 @@
 import "./DashboardTokens.css";
 
 import { useEffect, useRef, useState } from "react";
-import { getDashboardSummary, getJobFilterOptions, getJobs, getProfiles } from "@/lib/api";
+import { getDashboardSummary, getJobFilterOptions, getJobs, getMyProfile } from "@/lib/api";
 import type { DashboardSummary, Job, JobFilterOptions } from "@/types/job";
 import DashboardMobile from "./DashboardMobile";
 import DashboardDesktop from "./DashboardDesktop";
@@ -22,8 +22,8 @@ function localDate(value: Date): string {
 export default function Dashboard() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [profiles, setProfiles] = useState<string[]>([]);
   const [profileId, setProfileId] = useState("");
+  const [profileReady, setProfileReady] = useState(false);
   const [filterOptions, setFilterOptions] = useState<JobFilterOptions>({
     locations: [], skills: [], tools: [], portals: [], companies: [],
   });
@@ -54,28 +54,112 @@ export default function Dashboard() {
   const [mobileLoadingMore, setMobileLoadingMore] =
     useState(false);
   useEffect(() => {
-    async function loadProfiles() {
+    let cancelled = false;
+
+    async function resolveAuthenticatedProfile() {
+      const token = localStorage.getItem(
+        "ai_job_hunter_token",
+      );
+
+      if (!token) {
+        if (!cancelled) {
+          setProfileId("");
+          setProfileReady(false);
+          setLoading(false);
+        }
+        return;
+      }
+
       try {
-        const data = await getProfiles();
-        const next = data.profiles || [];
-        setProfiles(next);
-        if (next.length) setProfileId((current) => current || next[0]);
+        /*
+         * HARD RULE:
+         * The authenticated account's saved profile is the
+         * only source of truth.
+         *
+         * URL profile_id is NEVER read as the active profile.
+         */
+        const response = await getMyProfile(token);
+
+        if (cancelled) return;
+
+        const authenticatedProfile =
+          response.profile?.profile_id?.trim();
+
+        if (!authenticatedProfile) {
+          console.error(
+            "Authenticated user has no saved job profile.",
+          );
+
+          setProfileId("");
+          setProfileReady(false);
+          setLoading(false);
+          return;
+        }
+
+        /*
+         * Resolve the profile BEFORE allowing any dashboard
+         * data request to run.
+         */
+        setProfileId(authenticatedProfile);
+
+        /*
+         * Canonicalize only the URL.
+         * Do NOT reload the page.
+         */
+        const url = new URL(window.location.href);
+
+        if (
+          url.searchParams.get("profile_id") !==
+          authenticatedProfile
+        ) {
+          url.searchParams.set(
+            "profile_id",
+            authenticatedProfile,
+          );
+
+          window.history.replaceState(
+            {},
+            "",
+            `${url.pathname}?${url.searchParams.toString()}`,
+          );
+        }
+
+        /*
+         * This is deliberately the final step.
+         * Dashboard data effects are blocked until this becomes true.
+         */
+        setProfileReady(true);
       } catch (error) {
-        console.error("Failed to load profiles:", error);
+        if (!cancelled) {
+          console.error(
+            "Failed to load authenticated profile:",
+            error,
+          );
+
+          setProfileId("");
+          setProfileReady(false);
+          setLoading(false);
+        }
       }
     }
-    loadProfiles();
+
+    resolveAuthenticatedProfile();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
-    if (!profileId) return;
+    if (!profileReady || !profileId) return;
+
     getJobFilterOptions(profileId)
       .then(setFilterOptions)
       .catch((error) => console.error("Failed to load filter options:", error));
-  }, [profileId]);
+  }, [profileReady, profileId]);
 
   async function loadDashboard(isRefresh = false) {
-    if (!profileId) return;
+    if (!profileReady || !profileId) return;
     const currentId = ++requestId.current;
     if (hasLoadedOnceRef.current || isRefresh) {
       setRefreshing(true);
@@ -137,7 +221,7 @@ export default function Dashboard() {
   }
 
   async function loadMoreJobs() {
-    if (!profileId) return;
+    if (!profileReady || !profileId) return;
 
     if (mobileLoadingRef.current) {
       return;
@@ -254,7 +338,7 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    if (!profileId) return;
+    if (!profileReady || !profileId) return;
 
     const timer = window.setTimeout(
       () => loadDashboard(false),
@@ -265,7 +349,7 @@ export default function Dashboard() {
       window.clearTimeout(timer);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileId, page, search, filterRevision]);
+  }, [profileReady, profileId, page, search, filterRevision]);
 
   useEffect(() => {
     if (previousPageRef.current === page) return;
@@ -368,10 +452,57 @@ export default function Dashboard() {
 
   const totalPages = Math.max(1, Math.ceil(totalJobs / PAGE_SIZE));
 
+  /*
+   * SECURITY / CONSISTENCY GATE
+   *
+   * Never render the dashboard's job data while the
+   * authenticated profile is unresolved.
+   *
+   * This prevents a manually supplied URL such as:
+   * /dashboard?profile_id=crm_manager
+   *
+   * from ever triggering CRM Manager dashboard requests
+   * for a Data Analyst account.
+   */
+  if (!profileReady || !profileId) {
+    return (
+      <main className={styles.root}>
+        <div
+          style={{
+            minHeight: "60vh",
+            display: "grid",
+            placeItems: "center",
+            padding: "40px 20px",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              color: "var(--ajh-color-text-muted)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "14px",
+                fontWeight: 600,
+                color: "var(--ajh-color-text-primary)",
+                marginBottom: "6px",
+              }}
+            >
+              Preparing your dashboard
+            </div>
+
+            <div style={{ fontSize: "12px" }}>
+              Loading your assigned job profile…
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   const presentationProps = {
     profileId,
-    profiles,
-    onProfileChange: setProfileId,
     totalJobs,
     summary,
     jobs,

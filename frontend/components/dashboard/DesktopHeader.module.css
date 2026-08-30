@@ -6,14 +6,18 @@
 
 .inner {
   width: 100%;
-  min-height: 68px;
+  min-height: 72px;
   padding: 0 var(--ajh-page-padding-desktop);
 
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto minmax(220px, 1fr);
+  grid-template-columns: minmax(220px, 1fr) auto minmax(250px, 1fr);
   align-items: center;
-  gap: 24px;
+  gap: 28px;
 }
+
+/* ============================================================
+   BRAND
+   ============================================================ */
 
 .brand {
   min-width: 0;
@@ -62,18 +66,22 @@
   white-space: nowrap;
 }
 
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+
 .navigation {
-  height: 68px;
+  height: 72px;
 
   display: flex;
   align-items: stretch;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .navItem {
   position: relative;
-  height: 68px;
+  height: 72px;
   padding: 0 15px;
 
   display: inline-flex;
@@ -92,6 +100,10 @@
 
   cursor: pointer;
   white-space: nowrap;
+
+  transition:
+    color 140ms ease,
+    background 140ms ease;
 }
 
 .navItem:hover {
@@ -100,7 +112,7 @@
 
 .navItemActive {
   color: var(--ajh-color-brand);
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .navItemActive::after {
@@ -116,13 +128,17 @@
   background: var(--ajh-color-brand);
 }
 
+/* ============================================================
+   RIGHT SIDE
+   ============================================================ */
+
 .profileArea {
   min-width: 0;
 
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
 }
 
 .themeButton {
@@ -141,6 +157,11 @@
   background: var(--ajh-color-surface);
 
   cursor: pointer;
+
+  transition:
+    color 140ms ease,
+    border-color 140ms ease,
+    background 140ms ease;
 }
 
 .themeButton:hover {
@@ -149,14 +170,182 @@
   background: var(--ajh-color-brand-subtle);
 }
 
-.profileSelect {
-  position: relative;
+/* ============================================================
+   LOCKED PROFILE IDENTITY
+   ============================================================ */
 
-  width: 172px;
-  height: 46px;
-  padding: 0 34px 0 12px;
+.profileIdentity {
+  min-width: 190px;
+  height: 48px;
+  padding: 0 12px;
 
   display: flex;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px solid var(--ajh-color-border);
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--ajh-color-surface) 0%,
+      #fafafe 100%
+    );
+
+  box-shadow:
+    0 1px 2px rgba(20, 24, 40, 0.03);
+
+  cursor: default;
+  user-select: none;
+}
+
+.profileIcon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #ddd7ff;
+  border-radius: 9px;
+
+  color: var(--ajh-color-brand);
+  background: var(--ajh-color-brand-subtle);
+}
+
+.profileIdentityCopy {
+  min-width: 0;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.profileLabel {
+  color: var(--ajh-color-text-muted);
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: 0.11em;
+}
+
+.profileValue {
+  overflow: hidden;
+
+  color: var(--ajh-color-text-primary);
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profileLock {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--ajh-color-brand);
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  .inner {
+    grid-template-columns: minmax(190px, 1fr) auto minmax(220px, 1fr);
+    gap: 18px;
+  }
+
+  .navItem {
+    padding-inline: 11px;
+    font-size: 12px;
+  }
+
+  .profileIdentity {
+    min-width: 175px;
+  }
+}
+
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr auto;
+  }
+
+  .navigation {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .inner {
+    min-height: 64px;
+    padding: 0 14px;
+    gap: 10px;
+  }
+
+  .brandSubtitle {
+    display: none;
+  }
+
+  .brandName {
+    font-size: 15px;
+  }
+
+  .brandMark {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+
+  .themeButton {
+    display: none;
+  }
+
+  .profileIdentity {
+    min-width: 0;
+    width: auto;
+    max-width: 165px;
+    height: 42px;
+    padding-inline: 8px;
+    gap: 7px;
+  }
+
+  .profileIcon {
+    width: 27px;
+    height: 27px;
+    flex-basis: 27px;
+  }
+
+  .profileLabel {
+    font-size: 7px;
+  }
+
+  .profileValue {
+    font-size: 11px;
+  }
+}
+
+/* Authenticated job profile — read only */
+.profileDisplay {
+  min-width: 172px;
+  height: 46px;
+  padding: 0 13px;
+
+  display: inline-flex;
   align-items: center;
   gap: 8px;
 
@@ -166,79 +355,26 @@
   color: var(--ajh-color-text-secondary);
   background: var(--ajh-color-surface);
 
-  transition:
-    border-color 120ms ease,
-    box-shadow 120ms ease;
+  user-select: none;
+  cursor: default;
 }
 
-.profileSelect:hover {
-  border-color: #c9ced6;
-}
-
-.profileSelect:focus-within {
-  border-color: var(--ajh-color-brand);
-  box-shadow: 0 0 0 3px var(--ajh-color-brand-subtle);
-}
-
-.profileSelect select {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-
-  border: 0;
-  outline: 0;
-  appearance: none;
+.profileLabel {
+  min-width: 0;
+  overflow: hidden;
 
   color: var(--ajh-color-text-primary);
-  background: transparent;
-
-  font: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-
-  cursor: pointer;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.chevron {
-  position: absolute;
-  right: 11px;
-  pointer-events: none;
+.profileLock {
+  margin-left: auto;
   color: var(--ajh-color-text-muted);
+  font-size: 14px;
+  line-height: 1;
 }
 
-@media (max-width: 1180px) {
-  .inner {
-    grid-template-columns: auto 1fr auto;
-    padding: 0 24px;
-  }
-
-  .navigation {
-    justify-content: flex-start;
-  }
-
-  .navItem {
-    padding: 0 10px;
-  }
-
-  .brandSubtitle {
-    display: none;
-  }
-}
-
-@media (max-width: 900px) {
-  .navigation {
-    gap: 0;
-  }
-
-  .navItem {
-    padding: 0 8px;
-  }
-
-  .navItem span {
-    display: none;
-  }
-
-  .profileSelect {
-    width: 150px;
-  }
-}

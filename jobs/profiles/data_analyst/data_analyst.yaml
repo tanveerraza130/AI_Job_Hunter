@@ -1,0 +1,176 @@
+# Data Analyst Profile
+# Pure profile data - no system implementation details.
+
+profile_id: data_analyst
+
+profile_name: "Data Analyst"
+
+version: 1
+
+enabled: true
+
+search_exclude:
+  - "Data Entry"
+  - "Data Entry Operator"
+  - "Data Entry Executive"
+  - "MIS Executive"
+  - "MIS Coordinator"
+  - "Sales Analyst"
+  - "Business Development Analyst"
+  - "Financial Analyst"
+  - "Investment Analyst"
+  - "Risk Analyst"
+  - "Data Engineer"
+  - "Data Scientist"
+  - "Machine Learning Engineer"
+
+search_keywords:
+
+# Core Data Analyst Roles
+- "Data Analyst"
+- "Senior Data Analyst"
+- "Data Analytics"
+- "Data Analytics Analyst"
+- "Business Data Analyst"
+- "Product Data Analyst"
+- "Marketing Data Analyst"
+- "Customer Data Analyst"
+- "Reporting Analyst"
+- "BI Analyst"
+- "Business Intelligence Analyst"
+
+# Analytics / Insights
+- "Data Insights Analyst"
+- "Insights Analyst"
+- "Analytics Specialist"
+- "Decision Science Analyst"
+- "Reporting & Analytics Analyst"
+
+skills:
+
+# Core Analytics
+- "Data Analysis"
+- "Data Analytics"
+- "Data Interpretation"
+- "Data Visualization"
+- "Data Cleaning"
+- "Data Validation"
+- "Data Reporting"
+- "Dashboard Development"
+
+# SQL / Databases
+- "SQL"
+- "Advanced SQL"
+- "Data Extraction"
+- "Data Querying"
+- "Relational Databases"
+
+# Statistics
+- "Statistics"
+- "Descriptive Statistics"
+- "Statistical Analysis"
+- "Trend Analysis"
+- "Correlation Analysis"
+
+# Business Analytics
+- "Business Analysis"
+- "Business Insights"
+- "KPI Analysis"
+- "Performance Analysis"
+- "Root Cause Analysis"
+
+tools:
+
+# BI / Visualization
+- "Power BI"
+- "Tableau"
+- "Looker"
+- "Qlik Sense"
+
+# Data / Programming
+- "Excel"
+- "Advanced Excel"
+- "Python"
+- "Pandas"
+- "Jupyter"
+
+# Databases
+- "MySQL"
+- "PostgreSQL"
+- "SQL Server"
+- "Oracle"
+
+# Analytics Platforms
+- "Google Analytics"
+- "Google BigQuery"
+
+experience_min: null
+experience_max: null
+
+salary_min: null
+salary_max: null
+
+work_modes:
+- "remote"
+- "hybrid"
+- "onsite"
+
+negative_titles:
+
+# Non-Analyst / Data Operations Noise
+- "Data Entry"
+- "Data Entry Operator"
+- "Data Entry Executive"
+- "MIS Executive"
+- "MIS Coordinator"
+
+# Engineering / Science Noise
+- "Data Engineer"
+- "Data Scientist"
+- "Machine Learning Engineer"
+- "ML Engineer"
+- "AI Engineer"
+
+# Finance Noise
+- "Financial Analyst"
+- "Investment Analyst"
+- "Risk Analyst"
+- "Credit Analyst"
+
+# Sales Noise
+- "Sales Analyst"
+- "Sales Operations Analyst"
+- "Business Development Analyst"
+
+negative_keywords:
+
+# Data Entry / Operations
+- "data entry"
+- "data entry operator"
+- "data entry executive"
+- "back office data entry"
+
+# Engineering
+- "data engineering"
+- "data engineer"
+- "machine learning"
+- "machine learning engineer"
+- "ml engineer"
+
+# Sales / Business Development
+- "business development"
+- "lead generation"
+- "cold calling"
+- "inside sales"
+- "field sales"
+- "client acquisition"
+
+locations:
+- "Delhi"
+- "Delhi NCR"
+- "Gurgaon"
+- "Gurugram"
+- "Noida"
+- "Greater Noida"
+- "Faridabad"
+

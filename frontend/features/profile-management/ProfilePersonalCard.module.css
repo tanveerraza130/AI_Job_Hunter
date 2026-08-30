@@ -1,0 +1,98 @@
+.card {
+  border: 1px solid #e7eaf1;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(36, 29, 72, 0.05);
+  padding: 26px;
+}
+
+.heading {
+  margin-bottom: 23px;
+}
+
+.eyebrow {
+  color: #7257e8;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .14em;
+}
+
+.heading h2 {
+  margin: 7px 0 5px;
+  color: #171b27;
+  font-size: 20px;
+  letter-spacing: -.025em;
+}
+
+.heading p {
+  margin: 0;
+  color: #8991a3;
+  font-size: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field > span {
+  color: #717b8f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.inputWrap {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  border: 1px solid #e0e4eb;
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.inputWrap:focus-within {
+  border-color: #8068e8;
+  box-shadow: 0 0 0 3px rgba(114, 87, 232, .1);
+}
+
+.inputWrap svg {
+  flex: none;
+  color: #8a78df;
+}
+
+.inputWrap input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #252b39;
+  font: inherit;
+  font-size: 13px;
+}
+
+.inputWrap input::placeholder {
+  color: #a3aab7;
+}
+
+@media (max-width: 700px) {
+  .card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

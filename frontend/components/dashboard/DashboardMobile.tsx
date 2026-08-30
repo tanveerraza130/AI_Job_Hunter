@@ -73,6 +73,14 @@ const apiStatus = (
   return "saved";
 };
 
+    
+function formatProfileName(profileId: string) {
+  return profileId
+    .replace(/[_-]+/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+
 export default function DashboardMobile(
   props: MobileProps,
 ) {
@@ -359,15 +367,46 @@ export default function DashboardMobile(
           <div className={styles.loading}>
             Loading your matches…
           </div>
-        ) : filteredJobs.length === 0 ? (
+        ) : props.totalJobs === 0 ? (
+
           <div className={styles.empty}>
+
             <strong>
-              No matching jobs
+
+              We’re working on it 🚀
+
             </strong>
 
+        
+
             <span>
-              Try another tab or filter.
+
+              We don’t have {formatProfileName(props.profileId)} jobs available yet.
+
+              We’re working to add relevant opportunities for this profile soon.
+
             </span>
+
+          </div>
+
+        ) : filteredJobs.length === 0 ? (
+
+          <div className={styles.empty}>
+
+            <strong>
+
+              No matching jobs
+
+            </strong>
+
+        
+
+            <span>
+
+              Try another tab or filter.
+
+            </span>
+
           </div>
         ) : (
           filteredJobs.map(

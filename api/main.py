@@ -8,7 +8,7 @@ from api.s3_refresh import refresh_loop
 import asyncio
 
 from api.config import settings
-from api.routes import applications, dashboard, jobs, profiles
+from api.routes import applications, auth, dashboard, jobs, profile, profiles
 
 app = FastAPI(
     title="AI Job Hunter API",
@@ -38,6 +38,8 @@ app.include_router(dashboard.router, prefix="/api/v1", tags=["Dashboard"])
 app.include_router(jobs.router, prefix="/api/v1", tags=["Jobs"])
 app.include_router(profiles.router, prefix="/api/v1", tags=["Profiles"])
 app.include_router(applications.router, prefix="/api/v1", tags=["Applications"])
+app.include_router(auth.router, prefix="/api/v1", tags=["Authentication"])
+app.include_router(profile.router, prefix="/api/v1", tags=["Profile"])
 
 
 @app.get("/")

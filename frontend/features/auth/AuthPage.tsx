@@ -1,0 +1,2224 @@
+"use client";
+
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {
+  BriefcaseBusiness,
+  Check,
+  ChevronDown,
+  FileText,
+  Mail,
+  MapPin,
+  Phone,
+  ShieldCheck,
+  Sparkles,
+  Upload,
+  UserRound,
+  Zap,
+} from "lucide-react";
+import styles from "./AuthPage.module.css";
+
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/v1";
+
+
+type Step = "account" | "password" | "profile" | "complete" | "login";
+
+type ProfileForm = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  fullName: string;
+  phone: string;
+  jobProfile: string;
+  preferredLocation: string;
+  roleLevel: string;
+  experienceYears: string;
+  noticePeriod: string;
+  currentCtcLpa: string;
+  expectedCtcLpa: string;
+  resumeName: string;
+};
+
+const LOCATION_OPTIONS = [
+  "Delhi NCR",
+  "Bengaluru",
+  "Mumbai",
+  "Hyderabad",
+  "Pune",
+  "Chennai",
+  "Kolkata",
+  "Gurugram",
+  "Noida",
+  "Ahmedabad",
+  "Remote / Anywhere",
+  "Other",
+];
+
+const ROLE_OPTIONS = [
+  "Executive",
+  "Senior Executive",
+  "Assistant Manager",
+  "Manager",
+  "Senior Manager",
+  "Associate Director",
+  "Director",
+  "Senior Director",
+  "Vice President",
+  "Senior Vice President",
+  "Head",
+  "CRM Head",
+  "Chief / CXO",
+];
+
+const EXPERIENCE_OPTIONS = [
+  "0–2 years",
+  "3–5 years",
+  "6–8 years",
+  "9–12 years",
+  "13–15 years",
+  "16–20 years",
+  "20+ years",
+];
+
+const NOTICE_PERIOD_OPTIONS = [
+  "Immediate",
+  "15 days",
+  "30 days",
+  "45 days",
+  "60 days",
+  "90 days",
+  "90+ days",
+];
+
+function GoogleLogo() {
+  return (
+    <svg
+      className={styles.googleLogo}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path
+        fill="#4285F4"
+        d="M21.35 12.27c0-.71-.06-1.39-.18-2.04H12v3.86h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.21Z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 21.9c2.63 0 4.84-.87 6.45-2.42l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.55 0-4.71-1.72-5.49-4.03H3.27v2.53A9.75 9.75 0 0 0 12 21.9Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M6.51 13.92A5.86 5.86 0 0 1 6.2 12c0-.67.12-1.32.31-1.92V7.55H3.27A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.05 1.02 4.45l3.24-2.53Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 6.05c1.43 0 2.71.49 3.72 1.46l2.79-2.79C16.83 3.1 14.62 2.1 12 2.1a9.75 9.75 0 0 0-8.73 5.45l3.24 2.53C7.29 7.77 9.45 6.05 12 6.05Z"
+      />
+    </svg>
+  );
+}
+
+function Benefit({
+  number,
+  title,
+  description,
+  icon,
+}: {
+  number: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <div className={styles.benefit}>
+      <div className={styles.benefitIcon}>{icon}</div>
+
+      <div className={styles.benefitNumber}>{number}</div>
+
+      <div className={styles.benefitCopy}>
+        <strong>{title}</strong>
+        <span>{description}</span>
+      </div>
+    </div>
+  );
+}
+
+type AuthPageProps = {
+  initialMode?: "signup" | "signin";
+};
+
+export default function AuthPage({
+  initialMode = "signup",
+}: AuthPageProps) {
+  const [step, setStep] = useState<Step>(
+    initialMode === "signin" ? "login" : "account",
+  );
+
+  const [authMethod, setAuthMethod] = useState<
+    "google" | "email" | null
+  >(null);
+
+  const [authMode, setAuthMode] = useState<"signup" | "signin">(
+    initialMode,
+  );
+
+  const [loginError, setLoginError] = useState("");
+  const [googleError, setGoogleError] = useState("");
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const [forgotPasswordMessage, setForgotPasswordMessage] = useState("");
+  const [forgotPasswordError, setForgotPasswordError] = useState("");
+  const [resetToken, setResetToken] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [profileCompletionRequired, setProfileCompletionRequired] =
+    useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const googleSuccess = params.get("google_success");
+    const googleToken = params.get("token");
+    const googleEmail = params.get("email");
+    const googleAccountCreated = params.get("account_created");
+    const googleProfileComplete = params.get("profile_complete");
+
+    const googleErrorParam = params.get("google_error");
+
+    if (googleEmail) {
+      setForm((current) => ({
+        ...current,
+        email: googleEmail,
+      }));
+    }
+
+    if (googleErrorParam === "account_exists") {
+      setAuthMode("signup");
+      setStep("account");
+      setAuthMethod(null);
+
+      setGoogleError(
+        "An account with this email already exists. Please sign in instead.",
+      );
+
+      setLoginError("");
+    }
+
+    if (googleErrorParam === "account_not_found") {
+      setAuthMode("signin");
+      setStep("login");
+      setAuthMethod(null);
+
+      setGoogleError(
+        "No account found with this email. Please create an account first.",
+      );
+
+      setLoginError("");
+    }
+
+    if (googleErrorParam) {
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname,
+      );
+    }
+
+    if (googleSuccess === "1" && googleToken) {
+      localStorage.setItem(
+        "ai_job_hunter_token",
+        googleToken,
+      );
+
+      setAuthMethod("google");
+
+      if (googleAccountCreated === "1") {
+        setAuthMode("signup");
+        setStep("profile");
+      } else if (googleProfileComplete === "0") {
+        setAuthMode("signin");
+        setStep("profile");
+      } else {
+        setAuthMode("signin");
+        continueAfterAuthentication(true);
+      }
+
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname,
+      );
+    }
+  }, []);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
+
+  const [form, setForm] = useState<ProfileForm>({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    fullName: "",
+    phone: "",
+    jobProfile: "",
+    preferredLocation: "",
+    roleLevel: "",
+    experienceYears: "",
+    noticePeriod: "",
+    currentCtcLpa: "",
+    expectedCtcLpa: "",
+    resumeName: "",
+  });
+
+  const [jobProfiles, setJobProfiles] = useState<string[]>([]);
+  const [jobProfilesLoading, setJobProfilesLoading] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadJobProfiles() {
+      setJobProfilesLoading(true);
+
+      try {
+        const response = await fetch(`${API_BASE}/profiles`);
+
+        if (!response.ok) {
+          throw new Error("Unable to load job profiles");
+        }
+
+        const data = await response.json();
+        const profiles = Array.isArray(data.profiles)
+          ? data.profiles.filter(
+              (profile: unknown): profile is string =>
+                typeof profile === "string" && profile.trim().length > 0,
+            )
+          : [];
+
+        if (!cancelled) {
+          setJobProfiles(profiles);
+        }
+      } catch {
+        if (!cancelled) {
+          setJobProfiles([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setJobProfilesLoading(false);
+        }
+      }
+    }
+
+    loadJobProfiles();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const update = <K extends keyof ProfileForm>(
+    field: K,
+    value: ProfileForm[K],
+  ) => {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  };
+
+  const continueAfterAuthentication = (
+    profileComplete: boolean,
+  ) => {
+    if (profileComplete) {
+      setProfileCompletionRequired(false);
+      window.location.href = "/dashboard";
+      return;
+    }
+
+    setProfileCompletionRequired(true);
+    setStep("profile");
+  };
+
+  /*
+   * TEMPORARY GOOGLE FLOW
+   *
+   * This is only the UI/state flow.
+   * Real Google OAuth will be connected to the backend separately.
+   *
+   * IMPORTANT:
+   * Do not treat this as authentication.
+   */
+  const handleLogin = async (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+
+    const email = form.email.trim().toLowerCase();
+    const password = form.password;
+
+    setLoginError("");
+
+    if (!email || !password) return;
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setLoginError(
+          data.detail ||
+          "Invalid email or password.",
+        );
+        return;
+      }
+
+      localStorage.setItem(
+        "ai_job_hunter_token",
+        data.access_token,
+      );
+
+      setAuthMethod("email");
+      continueAfterAuthentication(
+        Boolean(data.profile_complete),
+      );
+
+    } catch {
+      alert("Unable to connect to AI Job Hunter.");
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    const email = form.email.trim().toLowerCase();
+
+    setForgotPasswordMessage("");
+    setForgotPasswordError("");
+
+    if (!email) {
+      setForgotPasswordError(
+        "Enter your email address first.",
+      );
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/auth/forgot-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setForgotPasswordError(
+          data.detail || "Unable to start password recovery.",
+        );
+        return;
+      }
+
+      if (data.status === "account_not_found") {
+        setForgotPasswordError(
+          "No account found with this email. Please create an account first.",
+        );
+        return;
+      }
+
+      if (data.status === "google_account") {
+        setForgotPasswordError(
+          "This account uses Google sign-in. Please continue with Google.",
+        );
+        return;
+      }
+
+      setResetToken(data.reset_token || "");
+
+      setForgotPasswordMessage(
+        "Password reset link created. For local testing, use the reset link shown below.",
+      );
+    } catch {
+      setForgotPasswordError(
+        "Unable to connect to AI Job Hunter.",
+      );
+    }
+  };
+
+  const handleGoogle = () => {
+    window.location.href =
+      `${API_BASE}/auth/google/start?mode=${authMode}`;
+  };
+
+  const handleEmail = async (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+
+    const email = form.email.trim().toLowerCase();
+
+    if (!email) return;
+
+    setLoginError("");
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/auth/check-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setLoginError(
+          data.detail || "Unable to check this email.",
+        );
+        return;
+      }
+
+      if (authMode === "signin" && !data.exists) {
+        setLoginError(
+          "No account found with this email. Please create an account first.",
+        );
+        return;
+      }
+
+      if (authMode === "signup" && data.exists) {
+        setLoginError(
+          "An account with this email already exists. Please sign in instead.",
+        );
+        return;
+      }
+
+      setLoginError("");
+      setAuthMethod("email");
+      setStep("password");
+    } catch {
+      setLoginError(
+        "Unable to connect to AI Job Hunter.",
+      );
+    }
+  };
+
+  const handlePassword = async (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+
+    if (form.password.length < 8) return;
+
+    if (
+      authMode === "signup" &&
+      form.password !== form.confirmPassword
+    ) {
+      return;
+    }
+
+    try {
+      const endpoint =
+        authMode === "signin"
+          ? `${API_BASE}/auth/login`
+          : `${API_BASE}/auth/register`;
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.detail || "Unable to authenticate.");
+        return;
+      }
+
+      localStorage.setItem(
+        "ai_job_hunter_token",
+        data.access_token,
+      );
+
+      if (authMode === "signin") {
+        setAuthMethod("email");
+        continueAfterAuthentication(
+          Boolean(data.profile_complete),
+        );
+        return;
+      }
+
+      setAuthMethod("email");
+      setStep("profile");
+    } catch {
+      alert("Unable to connect to AI Job Hunter.");
+    }
+  };
+
+  const handleResume = (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      return;
+    }
+
+    update("resumeName", file.name);
+  };
+
+  const handleProfile = async (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+
+    if (!form.fullName.trim()) return;
+    if (!form.jobProfile) return;
+    if (!form.preferredLocation) return;
+    if (!form.roleLevel) return;
+    if (!form.experienceYears) return;
+    if (!form.noticePeriod) return;
+    if (!form.currentCtcLpa) return;
+    if (!form.expectedCtcLpa) return;
+
+    const currentCtc = Number(form.currentCtcLpa);
+    const expectedCtc = Number(form.expectedCtcLpa);
+
+    if (!Number.isFinite(currentCtc) || currentCtc < 0) {
+      return;
+    }
+
+    if (!Number.isFinite(expectedCtc) || expectedCtc < 0) {
+      return;
+    }
+
+    if (expectedCtc < currentCtc) {
+      alert("Expected CTC cannot be lower than current CTC.");
+      return;
+    }
+
+    const token = localStorage.getItem(
+      "ai_job_hunter_token",
+    );
+
+    if (!token) {
+      alert("Your session has expired. Please sign in again.");
+      setStep("account");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/profile`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            full_name: form.fullName.trim(),
+            phone: form.phone.trim() || null,
+            profile_id: form.jobProfile,
+            preferred_location: form.preferredLocation,
+            role_level: form.roleLevel,
+            experience_years: form.experienceYears,
+            notice_period: form.noticePeriod,
+            current_ctc_lpa: currentCtc,
+            expected_ctc_lpa: expectedCtc,
+            resume_path: form.resumeName || null,
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.detail || "Unable to save your profile.");
+        return;
+      }
+
+      window.location.href = "/dashboard";
+    } catch {
+      alert("Unable to connect to AI Job Hunter.");
+    }
+  };
+
+  const currentStep =
+    step === "account" || step === "password"
+      ? 1
+      : step === "profile"
+        ? 2
+        : 3;
+
+  return (
+    <main className={styles.page}>
+
+      {/* =====================================================
+          LEFT BRAND STORY
+      ===================================================== */}
+
+      <section className={styles.intro}>
+        <div
+          className={`${styles.orbit} ${styles.orbitOne}`}
+        />
+
+        <div
+          className={`${styles.orbit} ${styles.orbitTwo}`}
+        />
+
+        <div
+          className={`${styles.glow} ${styles.glowOne}`}
+        />
+
+        <div
+          className={`${styles.glow} ${styles.glowTwo}`}
+        />
+
+        <div className={styles.introInner}>
+
+          <div className={styles.brand}>
+            <span className={styles.brandMark}>✦</span>
+            <span>AI JOB HUNTER</span>
+          </div>
+
+          <div className={styles.introContent}>
+
+            <div className={styles.introEyebrow}>
+              INTELLIGENT JOB DISCOVERY
+            </div>
+
+            <h1>
+              Your next role,
+              <em>without the search.</em>
+            </h1>
+
+            <div className={styles.introRule}>
+              <span />
+            </div>
+
+            <p className={styles.introDescription}>
+              Stop spending hours searching, filtering and
+              comparing. AI Job Hunter finds relevant
+              opportunities, understands your profile and
+              brings the ones worth your attention into one
+              place.
+            </p>
+
+            <div className={styles.benefits}>
+
+              <Benefit
+                number="01"
+                title="Profile-based matching"
+                description="Jobs are evaluated against your professional profile."
+                icon={<UserRound size={14} strokeWidth={1.5} />}
+              />
+
+              <Benefit
+                number="02"
+                title="Fresh opportunities"
+                description="Relevant opportunities brought together from supported sources."
+                icon={<Sparkles size={14} strokeWidth={1.5} />}
+              />
+
+              <Benefit
+                number="03"
+                title="Application tracking"
+                description="Keep track of what you have applied to and what comes next."
+                icon={<Zap size={14} strokeWidth={1.5} />}
+              />
+
+            </div>
+          </div>
+
+          <div className={styles.introFooter}>
+            <span>INTELLIGENT JOB DISCOVERY</span>
+            <i />
+            <span>BUILT AROUND YOU</span>
+          </div>
+
+        </div>
+      </section>
+
+
+      {/* =====================================================
+          RIGHT AUTH AREA
+      ===================================================== */}
+
+      <section className={styles.authArea}>
+
+        <div className={styles.authNav}>
+          <button
+            type="button"
+            className={
+              authMode === "signin"
+                ? styles.authNavActive
+                : styles.authNavButton
+            }
+            onClick={() => {
+              setAuthMode("signin");
+              setStep("login");
+              setAuthMethod(null);
+              setGoogleError("");
+              setLoginError("");
+              update("password", "");
+            }}
+          >
+            Log in
+          </button>
+
+          <button
+            type="button"
+            className={
+              authMode === "signup"
+                ? styles.authNavActive
+                : styles.authNavButton
+            }
+            onClick={() => {
+              setAuthMode("signup");
+              setStep("account");
+              setAuthMethod(null);
+              setGoogleError("");
+              setLoginError("");
+            }}
+          >
+            Sign up
+          </button>
+        </div>
+
+        <div className={styles.authPanel}>
+
+          <div className={styles.panelGlow} />
+
+          {/* =================================================
+              PROGRESS
+          ================================================= */}
+
+          <div className={styles.progress}>
+
+            <div
+              className={`${styles.progressStep} ${
+                currentStep >= 1
+                  ? styles.progressActive
+                  : ""
+              }`}
+            >
+              <span>01</span>
+              <small>ACCOUNT</small>
+            </div>
+
+            <div
+              className={`${styles.progressLine} ${
+                currentStep >= 2
+                  ? styles.progressLineActive
+                  : ""
+              }`}
+            />
+
+            <div
+              className={`${styles.progressStep} ${
+                currentStep >= 2
+                  ? styles.progressActive
+                  : ""
+              }`}
+            >
+              <span>02</span>
+              <small>PROFILE</small>
+            </div>
+
+            <div
+              className={`${styles.progressLine} ${
+                currentStep >= 3
+                  ? styles.progressLineActive
+                  : ""
+              }`}
+            />
+
+            <div
+              className={`${styles.progressStep} ${
+                currentStep >= 3
+                  ? styles.progressActive
+                  : ""
+              }`}
+            >
+              <span>03</span>
+              <small>READY</small>
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              LOGIN
+          ================================================= */}
+
+          {step === "login" && !forgotPassword && (
+            <div className={styles.loginState}>
+
+              <div className={styles.heading}>
+
+                <span className={styles.kicker}>
+                  WELCOME BACK
+                </span>
+
+                <h2>
+                  Log in to continue.
+                </h2>
+
+                <p>
+                  Access your account and continue
+                  your job search.
+                </p>
+
+              </div>
+
+              <button
+                type="button"
+                className={styles.googleButton}
+                onClick={handleGoogle}
+              >
+                <GoogleLogo />
+
+                <span>
+                  Log in with Google
+                </span>
+              </button>
+
+              {googleError && (
+                <div
+                  className={styles.loginError}
+                  role="alert"
+                >
+                  {googleError}
+                </div>
+              )}
+
+              <div className={styles.divider}>
+                <span />
+                <small>OR</small>
+                <span />
+              </div>
+
+              <form
+                className={styles.form}
+                onSubmit={handleLogin}
+              >
+
+                <label htmlFor="loginEmail">
+                  Email address
+                </label>
+
+                <div className={styles.inputWrap}>
+                  <Mail
+                    size={17}
+                    strokeWidth={1.6}
+                  />
+
+                  <input
+                    id="loginEmail"
+                    type="email"
+                    value={form.email}
+                    onChange={(event) =>
+                      update(
+                        "email",
+                        event.target.value,
+                      )
+                    }
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+
+                <label htmlFor="loginPassword">
+                  Password
+                </label>
+
+                <div className={styles.inputWrap}>
+
+                  <input
+                    id="loginPassword"
+                    type={
+                      showPassword
+                        ? "text"
+                        : "password"
+                    }
+                    value={form.password}
+                    onChange={(event) =>
+                      update(
+                        "password",
+                        event.target.value,
+                      )
+                    }
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                    required
+                  />
+
+                  <button
+                    type="button"
+                    className={styles.passwordToggle}
+                    onClick={() =>
+                      setShowPassword(
+                        (current) => !current,
+                      )
+                    }
+                    aria-label={
+                      showPassword
+                        ? "Hide password"
+                        : "Show password"
+                    }
+                  >
+                    {showPassword ? "○" : "●"}
+                  </button>
+
+                </div>
+
+                <div className={styles.loginOptions}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setForgotPassword(true);
+                      setForgotPasswordMessage("");
+                      setForgotPasswordError("");
+                    }}
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+
+                {loginError && (
+                  <div
+                    className={styles.loginError}
+                    role="alert"
+                  >
+                    {loginError}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className={styles.primaryButton}
+                >
+                  <span>Log in</span>
+
+                  <span
+                    className={styles.buttonArrow}
+                  >
+                    →
+                  </span>
+                </button>
+
+              </form>
+
+              <div className={styles.loginSwitch}>
+                <span>
+                  Don&apos;t have an account?
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMode("signup");
+                    setStep("account");
+                    setAuthMethod(null);
+                    update("email", "");
+                    update("password", "");
+                    update("confirmPassword", "");
+                  }}
+                >
+                  Create account
+                </button>
+              </div>
+
+            </div>
+          )}
+
+
+          {/* =================================================
+              ACCOUNT
+          ================================================= */}
+
+          {forgotPassword && step === "login" && (
+            <div className={styles.recoveryContent}>
+              <div className={styles.heading}>
+                <span className={styles.kicker}>
+                  ACCOUNT RECOVERY
+                </span>
+
+                <h2>
+                  Reset your
+                  <br />
+                  password.
+                </h2>
+
+                <p>
+                  Enter the email address associated with your
+                  AI Job Hunter account.
+                </p>
+              </div>
+
+              <form
+                className={styles.form}
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleForgotPassword();
+                }}
+              >
+                <label htmlFor="forgotEmail">
+                  Email address
+                </label>
+
+                <div className={styles.inputWrap}>
+                  <Mail
+                    size={17}
+                    strokeWidth={1.6}
+                  />
+
+                  <input
+                    id="forgotEmail"
+                    type="email"
+                    value={form.email}
+                    onChange={(event) =>
+                      update("email", event.target.value)
+                    }
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+
+                {forgotPasswordError && (
+                  <div
+                    className={styles.loginError}
+                    role="alert"
+                  >
+                    {forgotPasswordError}
+                  </div>
+                )}
+
+                {forgotPasswordMessage && (
+                  <div
+                    className={styles.securityNote}
+                    role="status"
+                  >
+                    <ShieldCheck
+                      size={17}
+                      strokeWidth={1.5}
+                    />
+
+                    <div>
+                      <strong>Password reset started.</strong>
+                      <span>
+                        {forgotPasswordMessage}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {resetToken && (
+                  <div className={styles.resetLinkCard}>
+                    <div className={styles.resetLinkIcon}>
+                      <Mail
+                        size={17}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+
+                    <div className={styles.resetLinkContent}>
+                      <strong>Reset link ready</strong>
+
+                      <span>
+                        Your password reset link has been created.
+                      </span>
+
+                      <a
+                        href={`/reset-password?token=${encodeURIComponent(resetToken)}`}
+                        className={styles.resetLinkButton}
+                      >
+                        Open password reset
+                        <span>→</span>
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {!resetToken && (
+                  <button
+                    type="submit"
+                    className={styles.primaryButton}
+                  >
+                    <span>Send reset link</span>
+
+                    <span className={styles.buttonArrow}>
+                      →
+                    </span>
+                  </button>
+                )}
+              </form>
+
+              <div className={styles.loginSwitch}>
+                <span>
+                  Remember your password?
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setForgotPassword(false);
+                    setForgotPasswordMessage("");
+                    setForgotPasswordError("");
+                    setResetToken("");
+                  }}
+                >
+                  Back to login
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === "account" && (
+            <>
+
+              <div className={styles.heading}>
+
+                <span className={styles.kicker}>
+                  {authMode === "signin"
+                    ? "WELCOME BACK"
+                    : "GET STARTED"}
+                </span>
+
+                <h2>
+                  {authMode === "signin" ? (
+                    <>
+                      Welcome
+                      <br />
+                      back.
+                    </>
+                  ) : (
+                    <>
+                      Find the right opportunity.
+                    </>
+                  )}
+                </h2>
+
+                <p>
+                  {authMode === "signin"
+                    ? "Sign in to continue to your AI Job Hunter account."
+                    : "Create your account once. We&apos;ll take care of the search from there."}
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                className={styles.googleButton}
+                onClick={handleGoogle}
+              >
+                <GoogleLogo />
+
+                <span>
+                  Continue with Google
+                </span>
+              </button>
+
+              {googleError && (
+                <div
+                  className={styles.loginError}
+                  role="alert"
+                >
+                  {googleError}
+                </div>
+              )}
+
+
+              <div className={styles.divider}>
+                <span />
+                <small>OR</small>
+                <span />
+              </div>
+
+
+              <form
+                className={styles.form}
+                onSubmit={handleEmail}
+              >
+
+                <label htmlFor="email">
+                  Email address
+                </label>
+
+                <div className={styles.inputWrap}>
+                  <Mail size={17} strokeWidth={1.6} />
+
+                  <input
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    onChange={(event) =>
+                      update("email", event.target.value)
+                    }
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className={styles.primaryButton}
+                >
+                  <span>
+                    {authMode === "signin"
+                      ? "Sign in with email"
+                      : "Continue with email"}
+                  </span>
+                  <span className={styles.buttonArrow}>
+                    →
+                  </span>
+                </button>
+
+              </form>
+
+              {loginError && (
+                <div className={styles.authError}>
+                  {loginError}
+                </div>
+              )}
+
+              <div className={styles.legal}>
+                By continuing, you agree to our
+                <a href="#">Terms</a>
+                <span>and</span>
+                <a href="#">Privacy Policy</a>.
+              </div>
+
+
+              <div className={styles.trustStrip}>
+
+                <div className={styles.trustItem}>
+                  <ShieldCheck
+                    size={17}
+                    strokeWidth={1.5}
+                  />
+
+                  <div>
+                    <strong>Private by design</strong>
+                    <span>Your information stays protected.</span>
+                  </div>
+                </div>
+
+                <div className={styles.trustItem}>
+                  <Sparkles
+                    size={17}
+                    strokeWidth={1.5}
+                  />
+
+                  <div>
+                    <strong>Smarter matching</strong>
+                    <span>Built around your profile.</span>
+                  </div>
+                </div>
+
+                <div className={styles.trustItem}>
+                  <Zap
+                    size={17}
+                    strokeWidth={1.5}
+                  />
+
+                  <div>
+                    <strong>Save valuable time</strong>
+                    <span>Focus on opportunities that matter.</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </>
+          )}
+
+
+          {/* =================================================
+              PASSWORD
+          ================================================= */}
+
+          {step === "password" && (
+            <>
+
+              <div className={styles.heading}>
+
+                <span className={styles.kicker}>
+                  {authMode === "signin"
+                    ? "SECURE SIGN IN"
+                    : "SECURE YOUR ACCOUNT"}
+                </span>
+
+                <h2>
+                  {authMode === "signin" ? (
+                    <>
+                      Sign in to
+                      <br />
+                      continue.
+                    </>
+                  ) : (
+                    <>
+                      Set your
+                      <br />
+                      password.
+                    </>
+                  )}
+                </h2>
+
+                <p>
+                  {authMode === "signin"
+                    ? "Enter your password to access your account."
+                    : "Use at least 8 characters to keep your account secure."}
+                </p>
+
+              </div>
+
+
+              <div className={styles.accountEmail}>
+                <Mail size={15} strokeWidth={1.6} />
+
+                <span>{form.email}</span>
+              </div>
+
+
+              <form
+                className={styles.form}
+                onSubmit={handlePassword}
+              >
+
+                <label htmlFor="password">
+                  Password
+                </label>
+
+                <div className={styles.inputWrap}>
+
+                  <input
+                    id="password"
+                    type={
+                      showPassword
+                        ? "text"
+                        : "password"
+                    }
+                    value={form.password}
+                    onChange={(event) =>
+                      update(
+                        "password",
+                        event.target.value,
+                      )
+                    }
+                    placeholder="Create a password"
+                    autoComplete="new-password"
+                    required
+                    minLength={8}
+                  />
+
+                  <button
+                    type="button"
+                    className={styles.passwordToggle}
+                    onClick={() =>
+                      setShowPassword(
+                        (current) => !current,
+                      )
+                    }
+                    aria-label={
+                      showPassword
+                        ? "Hide password"
+                        : "Show password"
+                    }
+                  >
+                    {showPassword ? "○" : "●"}
+                  </button>
+
+                </div>
+
+
+                <label htmlFor="confirmPassword">
+                  Confirm password
+                </label>
+
+                <div className={styles.inputWrap}>
+
+                  <input
+                    id="confirmPassword"
+                    type={
+                      showConfirmPassword
+                        ? "text"
+                        : "password"
+                    }
+                    value={form.confirmPassword}
+                    onChange={(event) =>
+                      update(
+                        "confirmPassword",
+                        event.target.value,
+                      )
+                    }
+                    placeholder="Repeat your password"
+                    autoComplete="new-password"
+                    required
+                    minLength={8}
+                  />
+
+                  <button
+                    type="button"
+                    className={styles.passwordToggle}
+                    onClick={() =>
+                      setShowConfirmPassword(
+                        (current) => !current,
+                      )
+                    }
+                    aria-label={
+                      showConfirmPassword
+                        ? "Hide password"
+                        : "Show password"
+                    }
+                  >
+                    {showConfirmPassword ? "○" : "●"}
+                  </button>
+
+                </div>
+
+
+                {form.password &&
+                  form.confirmPassword &&
+                  form.password !==
+                    form.confirmPassword && (
+                    <p className={styles.error}>
+                      Passwords do not match.
+                    </p>
+                  )}
+
+
+                <button
+                  type="submit"
+                  className={styles.primaryButton}
+                >
+                  <span>Continue to profile</span>
+                  <span className={styles.buttonArrow}>
+                    →
+                  </span>
+                </button>
+
+              </form>
+
+
+              <div className={styles.securityNote}>
+                <ShieldCheck
+                  size={17}
+                  strokeWidth={1.5}
+                />
+
+                <div>
+                  <strong>Your account is protected.</strong>
+                  <span>
+                    Your password is only used to secure
+                    your AI Job Hunter account.
+                  </span>
+                </div>
+              </div>
+
+            </>
+          )}
+
+
+          {/* =================================================
+              PROFILE
+          ================================================= */}
+
+          {step === "profile" && (
+            <>
+
+              <div className={styles.profileHeading}>
+
+                <h2>
+                  Complete your profile to continue.
+                </h2>
+
+                <p>
+                  Your profile isn’t complete. Please finish the form to access your dashboard.
+                </p>
+
+              </div>
+
+
+              <form
+                className={styles.profileForm}
+                onSubmit={handleProfile}
+              >
+
+                {/* NAME + EMAIL */}
+
+                <div className={styles.fieldGrid}>
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="fullName">
+                      Full name
+                    </label>
+
+                    <div className={styles.inputWrap}>
+
+                      <UserRound
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                      <input
+                        id="fullName"
+                        type="text"
+                        value={form.fullName}
+                        onChange={(event) =>
+                          update(
+                            "fullName",
+                            event.target.value,
+                          )
+                        }
+                        placeholder="Your full name"
+                        autoComplete="name"
+                        required
+                      />
+
+                    </div>
+
+                  </div>
+
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="profileEmail">
+                      Email address
+
+                      <span className={styles.fieldBadge}>
+                        VERIFIED
+                      </span>
+
+                      <Check
+                        className={styles.verifiedIcon}
+                        size={16}
+                        strokeWidth={1.8}
+                      />
+                    </label>
+
+                    <div
+                      className={`${styles.inputWrap} ${styles.readonly}`}
+                    >
+
+                      <Mail
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                      <input
+                        id="profileEmail"
+                        type="email"
+                        value={form.email}
+                        readOnly
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                {/* PHONE + LOCATION */}
+
+                <div className={styles.fieldGrid}>
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="phone">
+                      Phone number
+
+                      <span className={styles.fieldHint}>
+                        OPTIONAL
+                      </span>
+                    </label>
+
+                    <div className={styles.inputWrap}>
+
+                      <Phone
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                      <input
+                        id="phone"
+                        type="tel"
+                        value={form.phone}
+                        onChange={(event) =>
+                          update(
+                            "phone",
+                            event.target.value,
+                          )
+                        }
+                        placeholder="+91 98765 43210"
+                        autoComplete="tel"
+                      />
+
+                    </div>
+
+                  </div>
+
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="jobProfile">
+                      Job profile
+                    </label>
+
+                    <div className={styles.selectWrap}>
+
+                      <BriefcaseBusiness
+                        className={styles.selectIcon}
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                      <select
+                        id="jobProfile"
+                        value={form.jobProfile}
+                        onChange={(event) =>
+                          update(
+                            "jobProfile",
+                            event.target.value,
+                          )
+                        }
+                        required
+                        disabled={jobProfilesLoading}
+                      >
+                        <option value="" disabled>
+                          {jobProfilesLoading
+                            ? "Loading profiles…"
+                            : "Select job profile"}
+                        </option>
+
+                        {jobProfiles.map(
+                          (profile) => (
+                            <option
+                              key={profile}
+                              value={profile}
+                            >
+                              {profile
+                                .replace(/[_-]+/g, " ")
+                                .replace(/\b\w/g, (char) =>
+                                  char.toUpperCase(),
+                                )}
+                            </option>
+                          ),
+                        )}
+                      </select>
+
+                      <ChevronDown
+                        className={styles.selectChevron}
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                {/* ROLE + EXPERIENCE */}
+
+                <div className={styles.fieldGrid}>
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="roleLevel">
+                      Role level
+                    </label>
+
+                    <div className={styles.selectWrap}>
+
+                      <select
+                        id="roleLevel"
+                        value={form.roleLevel}
+                        onChange={(event) =>
+                          update(
+                            "roleLevel",
+                            event.target.value,
+                          )
+                        }
+                        required
+                      >
+                        <option value="" disabled>
+                          Select role level
+                        </option>
+
+                        {ROLE_OPTIONS.map(
+                          (role) => (
+                            <option
+                              key={role}
+                              value={role}
+                            >
+                              {role}
+                            </option>
+                          ),
+                        )}
+                      </select>
+
+                      <ChevronDown
+                        className={styles.selectChevron}
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                    </div>
+
+                  </div>
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="experienceYears">
+                      Experience
+                    </label>
+
+                    <div className={styles.selectWrap}>
+
+                      <select
+                        id="experienceYears"
+                        value={form.experienceYears}
+                        onChange={(event) =>
+                          update(
+                            "experienceYears",
+                            event.target.value,
+                          )
+                        }
+                        required
+                      >
+                        <option value="" disabled>
+                          Select experience
+                        </option>
+
+                        {EXPERIENCE_OPTIONS.map(
+                          (experience) => (
+                            <option
+                              key={experience}
+                              value={experience}
+                            >
+                              {experience}
+                            </option>
+                          ),
+                        )}
+                      </select>
+
+                      <ChevronDown
+                        className={styles.selectChevron}
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                {/* LOCATION + NOTICE PERIOD */}
+
+                <div className={styles.fieldGrid}>
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="preferredLocation">
+                      Preferred location
+                    </label>
+
+                    <div className={styles.selectWrap}>
+
+                      <MapPin
+                        className={styles.selectIcon}
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                      <select
+                        id="preferredLocation"
+                        value={form.preferredLocation}
+                        onChange={(event) =>
+                          update(
+                            "preferredLocation",
+                            event.target.value,
+                          )
+                        }
+                        required
+                      >
+                        <option value="" disabled>
+                          Select location
+                        </option>
+
+                        {LOCATION_OPTIONS.map(
+                          (location) => (
+                            <option
+                              key={location}
+                              value={location}
+                            >
+                              {location}
+                            </option>
+                          ),
+                        )}
+                      </select>
+
+                      <ChevronDown
+                        className={styles.selectChevron}
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                    </div>
+
+                  </div>
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="noticePeriod">
+                      Notice period
+                    </label>
+
+                    <div className={styles.selectWrap}>
+
+                      <select
+                        id="noticePeriod"
+                        value={form.noticePeriod}
+                        onChange={(event) =>
+                          update(
+                            "noticePeriod",
+                            event.target.value,
+                          )
+                        }
+                        required
+                      >
+                        <option value="" disabled>
+                          Select notice period
+                        </option>
+
+                        {NOTICE_PERIOD_OPTIONS.map(
+                          (noticePeriod) => (
+                            <option
+                              key={noticePeriod}
+                              value={noticePeriod}
+                            >
+                              {noticePeriod}
+                            </option>
+                          ),
+                        )}
+                      </select>
+
+                      <ChevronDown
+                        className={styles.selectChevron}
+                        size={17}
+                        strokeWidth={1.6}
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                {/* CTC */}
+
+                <div className={styles.fieldGrid}>
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="currentCtc">
+                      Current CTC
+                      <span className={styles.fieldHint}>
+                        ₹ LPA
+                      </span>
+                    </label>
+
+                    <div className={styles.ctcInput}>
+
+                      <span>₹</span>
+
+                      <input
+                        id="currentCtc"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        inputMode="decimal"
+                        value={form.currentCtcLpa}
+                        onChange={(event) =>
+                          update(
+                            "currentCtcLpa",
+                            event.target.value,
+                          )
+                        }
+                        placeholder="e.g. 18"
+                        required
+                      />
+
+                      <small>LPA</small>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className={styles.field}>
+
+                    <label htmlFor="expectedCtc">
+                      Expected CTC
+                      <span className={styles.fieldHint}>
+                        ₹ LPA
+                      </span>
+                    </label>
+
+                    <div className={styles.ctcInput}>
+
+                      <span>₹</span>
+
+                      <input
+                        id="expectedCtc"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        inputMode="decimal"
+                        value={form.expectedCtcLpa}
+                        onChange={(event) =>
+                          update(
+                            "expectedCtcLpa",
+                            event.target.value,
+                          )
+                        }
+                        placeholder="e.g. 24"
+                        required
+                      />
+
+                      <small>LPA</small>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                {/* RESUME */}
+
+                <div className={styles.field}>
+
+                  <label htmlFor="resume">
+                    Resume
+
+                    <span className={styles.fieldHint}>
+                      PDF / DOC / DOCX
+                    </span>
+                  </label>
+
+                  <label
+                    htmlFor="resume"
+                    className={styles.resumeUpload}
+                  >
+
+                    <input
+                      id="resume"
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleResume}
+                    />
+
+                    <div className={styles.resumeIcon}>
+                      {form.resumeName ? (
+                        <FileText
+                          size={18}
+                          strokeWidth={1.6}
+                        />
+                      ) : (
+                        <Upload
+                          size={18}
+                          strokeWidth={1.6}
+                        />
+                      )}
+                    </div>
+
+                    <div className={styles.resumeText}>
+
+                      <strong>
+                        {form.resumeName ||
+                          "Upload your resume"}
+                      </strong>
+
+                      <span>
+                        {form.resumeName
+                          ? "Resume selected"
+                          : "Drag & drop or click to browse"}
+                      </span>
+
+                    </div>
+
+                    <span className={styles.browseButton}>
+                      {form.resumeName
+                        ? "Change"
+                        : "Browse"}
+                    </span>
+
+                  </label>
+
+                </div>
+
+
+                {/* COMPLETE */}
+
+                <button
+                  type="submit"
+                  className={styles.primaryButton}
+                >
+                  <span>Complete my profile</span>
+
+                  <span className={styles.buttonArrow}>
+                    →
+                  </span>
+                </button>
+
+                <div className={styles.profilePrivacy}>
+                  <ShieldCheck
+                    size={14}
+                    strokeWidth={1.5}
+                  />
+
+                  <span>
+                    Your information is used only to
+                    personalise your job search.
+                  </span>
+                </div>
+
+              </form>
+
+            </>
+          )}
+
+
+          {/* =================================================
+              COMPLETE
+          ================================================= */}
+
+          {step === "complete" && (
+            <div className={styles.completeState}>
+
+              <div className={styles.completeMark}>
+                <Check
+                  size={27}
+                  strokeWidth={1.7}
+                />
+              </div>
+
+              <div className={styles.heading}>
+
+                <span className={styles.kicker}>
+                  PROFILE COMPLETE
+                </span>
+
+                <h2>
+                  You&apos;re ready
+                  <br />
+                  to find your next role.
+                </h2>
+
+                <p>
+                  Your account and professional profile are
+                  ready. AI Job Hunter can now start matching
+                  opportunities to you.
+                </p>
+
+              </div>
+
+
+              <div className={styles.confirmations}>
+
+                <div>
+                  <span>
+                    <Check size={12} />
+                  </span>
+
+                  <p>
+                    <strong>Account created</strong>
+                    <span>
+                      {authMethod === "google"
+                        ? "Google account verified"
+                        : "Email account secured"}
+                    </span>
+                  </p>
+                </div>
+
+
+                <div>
+                  <span>
+                    <Check size={12} />
+                  </span>
+
+                  <p>
+                    <strong>Profile ready</strong>
+                    <span>
+                      Your career preferences are saved.
+                    </span>
+                  </p>
+                </div>
+
+              </div>
+
+
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={() => {
+                  window.location.href = "/dashboard";
+                }}
+              >
+                <span>Go to my dashboard</span>
+
+                <span className={styles.buttonArrow}>
+                  →
+                </span>
+              </button>
+
+            </div>
+          )}
+
+        </div>
+
+      </section>
+
+    </main>
+  );
+}

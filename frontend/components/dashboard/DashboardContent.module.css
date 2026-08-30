@@ -324,3 +324,202 @@
     flex: 1 1 auto;
   }
 }
+
+
+/* ============================================================
+   PROFILE EMPTY STATE
+   Desktop profile-specific empty state.
+   Compact, balanced and vertically aligned.
+   ============================================================ */
+
+.profileEmptyState {
+  width: 100%;
+  min-height: 190px;
+
+  display: grid;
+  grid-template-columns: 58px minmax(0, 680px);
+  align-items: center;
+  justify-content: center;
+
+  column-gap: 22px;
+
+  padding: 34px 48px;
+  box-sizing: border-box;
+
+  border: 1px solid #e1e5ed;
+  border-radius: 18px;
+
+  background:
+    radial-gradient(
+      circle at 12% 50%,
+      rgba(91, 66, 223, 0.055),
+      transparent 28%
+    ),
+    #ffffff;
+
+  box-shadow:
+    0 8px 26px rgba(35, 42, 58, 0.045);
+
+  text-align: left;
+}
+
+.profileEmptyIcon {
+  width: 58px;
+  height: 58px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid #ddd7ff;
+  border-radius: 16px;
+
+  background: #f6f3ff;
+
+  color: #5b42df;
+
+  box-shadow:
+    0 7px 18px rgba(91, 66, 223, 0.09);
+}
+
+.profileEmptyIcon span {
+  display: block;
+
+  font-size: 24px;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.profileEmptyContent {
+  min-width: 0;
+  max-width: 680px;
+}
+
+.profileEmptyEyebrow {
+  margin: 0 0 7px;
+
+  color: #5b42df;
+
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 850;
+
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.profileEmptyState h2 {
+  margin: 0;
+
+  color: #202638;
+
+  font-size: 23px;
+  line-height: 1.22;
+  font-weight: 850;
+
+  letter-spacing: -0.028em;
+}
+
+.profileEmptyState h2 span {
+  white-space: nowrap;
+}
+
+.profileEmptyState p {
+  margin: 9px 0 0;
+
+  color: #5d6980;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.profileEmptyState p strong {
+  color: #303a4e;
+  font-weight: 800;
+}
+
+.profileEmptySubcopy {
+  margin-top: 3px !important;
+
+  color: #8c96a7 !important;
+
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .profileEmptyState {
+    grid-template-columns: 52px minmax(0, 1fr);
+    column-gap: 18px;
+
+    min-height: 180px;
+    padding: 30px 32px;
+  }
+
+  .profileEmptyIcon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+  }
+
+  .profileEmptyState h2 {
+    font-size: 21px;
+  }
+}
+
+@media (max-width: 640px) {
+  .profileEmptyState {
+    min-height: 0;
+
+    grid-template-columns: 1fr;
+    justify-items: center;
+
+    row-gap: 16px;
+
+    padding: 34px 24px;
+
+    text-align: center;
+  }
+
+  .profileEmptyContent {
+    max-width: 520px;
+  }
+
+  .profileEmptyState h2 {
+    font-size: 20px;
+  }
+
+  .profileEmptyState h2 span {
+    white-space: normal;
+  }
+
+  .profileEmptyState p {
+    font-size: 13px;
+  }
+}
+
+/* Keep profile empty-state message on one desktop line */
+.profileEmptyContent > p {
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .profileEmptyContent > p {
+    white-space: normal;
+  }
+}
+
+/* Keep profile empty-state message on one desktop line */
+.profileEmptyContent > p {
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .profileEmptyContent > p {
+    white-space: normal;
+  }
+}

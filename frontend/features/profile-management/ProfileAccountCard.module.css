@@ -1,0 +1,116 @@
+.card {
+  border: 1px solid #e7eaf1;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #ffffff, #fafaff);
+  box-shadow: 0 14px 38px rgba(36, 29, 72, 0.06);
+  padding: 26px;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  display: block;
+  color: #7257e8;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .14em;
+}
+
+.heading h2 {
+  margin: 7px 0 5px;
+  color: #171b27;
+  font-size: 20px;
+  letter-spacing: -.025em;
+}
+
+.heading p {
+  margin: 0;
+  color: #8991a3;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.lockBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 7px 10px;
+  border: 1px solid #e7e4f8;
+  border-radius: 999px;
+  background: #f8f6ff;
+  color: #6d58d9;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field > span {
+  color: #717b8f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.readOnly {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid #e4e7ee;
+  border-radius: 12px;
+  background: #f5f6f9;
+  color: #7b8496;
+}
+
+.readOnly strong {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #414a5d;
+  font-size: 13px;
+}
+
+.readOnly svg:first-child {
+  color: #7a6ae0;
+}
+
+.readOnly svg:last-child {
+  color: #a1a8b6;
+}
+
+@media (max-width: 700px) {
+  .card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .heading {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

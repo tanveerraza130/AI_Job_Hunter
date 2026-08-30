@@ -3940,18 +3940,28 @@ body {
   }
 }
 
-/* ============================================================
-   JOB CARD — ALIGNMENT ONLY
-   No content / logic / color / layout-ratio changes
-   ============================================================ */
-
 
 /* ============================================================
-   CARD
+   JOB CARD — DESKTOP LAYOUT FIX
+   Keeps every job-card element inside its own column.
+   No content or application logic changes.
    ============================================================ */
 
 .mj-card {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  display: grid;
+  grid-template-columns:
+    minmax(0, 58%)
+    minmax(300px, 27%)
+    minmax(170px, 15%);
+
   align-items: stretch;
+
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 
@@ -3961,43 +3971,49 @@ body {
 
 .mj-job-details {
   min-width: 0;
+  min-height: 0;
 
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-columns: 40px minmax(0, 1fr);
 
   align-items: start;
 
-  gap: 15px;
+  gap: 14px;
 
-  padding: 28px 34px 28px 28px;
+  padding: 26px 24px 26px 24px;
 
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-
-/* Rank sits on the same visual top axis as title */
-
 .mj-rank {
-  padding-top: 7px;
+  min-width: 0;
+
+  padding-top: 6px;
+
+  color: #8f99aa;
+
+  font-size: 12px;
+  line-height: 1;
+
+  font-weight: 800;
 
   text-align: center;
 }
 
-
-/* Content starts from one clean vertical axis */
-
 .mj-content {
   min-width: 0;
+  max-width: 100%;
 
   display: flex;
   flex-direction: column;
 
-  padding: 0;
+  overflow: hidden;
 }
 
 
 /* ============================================================
-   TITLE
+   TITLE / COMPANY
    ============================================================ */
 
 .mj-title-row {
@@ -4005,23 +4021,50 @@ body {
   min-width: 0;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
 
-  gap: 9px;
+  gap: 8px;
 }
 
 .mj-title {
   min-width: 0;
+  max-width: 100%;
 
+  flex: 1 1 auto;
+
+  color: #172033;
+
+  font-size: 20px;
   line-height: 1.25;
+
+  font-weight: 780;
+
+  letter-spacing: -.35px;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-
-/* Company directly below title */
+.mj-best {
+  flex: 0 0 auto;
+}
 
 .mj-company {
-  margin-top: 7px;
+  min-width: 0;
+  max-width: 100%;
+
+  margin-top: 6px;
+
+  color: #566276;
+
+  font-size: 14px;
+  line-height: 1.3;
+
+  font-weight: 650;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 
@@ -4037,23 +4080,83 @@ body {
   align-items: center;
   flex-wrap: wrap;
 
-  margin-top: 15px;
+  gap: 7px 0;
+
+  margin-top: 13px;
+
+  color: #687487;
+
+  font-size: 11px;
+  line-height: 1.25;
+
+  overflow: hidden;
+}
+
+.mj-meta span {
+  min-width: 0;
+  max-width: 100%;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 5px;
+
+  white-space: normal;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mj-meta span + span::before {
+  content: "•";
+
+  flex: 0 0 auto;
+
+  margin: 0 9px;
+
+  color: #c1c7d1;
+
+  font-size: 9px;
+}
+
+.mj-meta svg {
+  flex: 0 0 auto;
+
+  color: #8f99a9;
 }
 
 
 /* ============================================================
-   EVIDENCE CARD
+   EVIDENCE
    ============================================================ */
 
 .mj-evidence {
   width: 100%;
   min-width: 0;
+  max-width: 100%;
 
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 
-  padding: 15px 17px;
+  gap: 10px;
+
+  margin-top: 17px;
+
+  padding: 13px 14px;
 
   box-sizing: border-box;
+
+  border: 1px solid #e1e5ec;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fbfcff 100%
+    );
+
+  overflow: hidden;
 }
 
 .mj-evidence-row {
@@ -4061,29 +4164,72 @@ body {
   min-width: 0;
 
   display: grid;
-
-  grid-template-columns: 60px minmax(0, 1fr);
+  grid-template-columns: 54px minmax(0, 1fr);
 
   align-items: start;
 
-  gap: 11px;
+  gap: 9px;
 }
 
 .mj-label {
-  align-self: start;
+  min-width: 0;
 
-  padding-top: 7px;
+  padding-top: 5px;
+
+  color: #8791a2;
+
+  font-size: 8px;
+  line-height: 1;
+
+  font-weight: 850;
+
+  letter-spacing: .8px;
 }
 
 .mj-chips {
   min-width: 0;
-
-  align-content: flex-start;
+  max-width: 100%;
 
   display: flex;
   flex-wrap: wrap;
 
-  gap: 7px;
+  gap: 5px;
+
+  overflow: hidden;
+}
+
+.mj-chip {
+  min-width: 0;
+  max-width: 100%;
+
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 8px;
+
+  border-radius: 6px;
+
+  font-size: 9px;
+  line-height: 1.15;
+
+  white-space: normal;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mj-more {
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 7px;
+
+  color: #707b8e;
+
+  font-size: 9px;
+  font-weight: 750;
 }
 
 
@@ -4095,27 +4241,23 @@ body {
   min-width: 0;
   min-height: 0;
 
-  /*
-    Keep score section at existing width.
-    Improve internal balance only.
-  */
+  display: grid;
   grid-template-columns:
-    minmax(88px, 28%)
-    minmax(0, 72%);
+    86px minmax(0, 1fr);
 
   align-items: stretch;
+
+  border-left: 1px solid #e1e6ed;
+
+  background: #ffffff;
+
+  box-sizing: border-box;
 
   overflow: hidden;
 }
 
-
-/* ============================================================
-   SCORE SUMMARY
-   ============================================================ */
-
 .mj-score-summary {
   min-width: 0;
-  min-height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -4123,45 +4265,52 @@ body {
   align-items: center;
   justify-content: center;
 
-  gap: 0;
-
-  padding: 0 4px;
+  padding: 18px 4px;
 
   box-sizing: border-box;
+
+  overflow: hidden;
 }
 
-
-/* Smaller + cleaner circle */
-
 .mj-score {
-  width: 72px;
-  height: 72px;
+  width: 70px;
+  height: 70px;
 
-  min-width: 72px;
-  min-height: 72px;
+  min-width: 70px;
+  min-height: 70px;
 
-  flex: 0 0 72px;
+  flex: 0 0 70px;
 
-  border-width: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  border: 3px solid;
+  border-radius: 50%;
 }
 
 .mj-score strong {
-  font-size: 24px;
+  font-size: 23px;
+  line-height: 1;
+
+  font-weight: 850;
+
+  letter-spacing: -1px;
 }
-
-.mj-score span {
-  font-size: 9px;
-}
-
-
-/* Keep AI MATCH directly below circle */
 
 .mj-score-label {
-  margin-top: 13px;
+  margin-top: 11px;
 
-  text-align: center;
-
+  font-size: 7px;
   line-height: 1;
+
+  font-weight: 850;
+
+  letter-spacing: 1.7px;
+
+  white-space: nowrap;
 }
 
 
@@ -4171,51 +4320,42 @@ body {
 
 .mj-score-breakdown {
   min-width: 0;
-  min-height: 100%;
+  min-height: 0;
 
   display: flex;
   flex-direction: column;
 
-  /*
-    No internal vertical separator.
-  */
-  border-left: 0;
-
-  padding: 38px 24px 28px 20px;
+  padding: 22px 16px 18px;
 
   box-sizing: border-box;
 
   overflow: hidden;
 }
 
-
-/* Title and all metrics share exactly the same left axis */
-
 .mj-breakdown-title {
-  width: 100%;
+  flex: 0 0 auto;
 
-  margin: 0 0 28px;
+  margin: 0 0 18px;
 
-  text-align: left;
+  color: #65748d;
 
+  font-size: 10px;
   line-height: 1.15;
+
+  font-weight: 800;
+
+  letter-spacing: .65px;
 
   white-space: nowrap;
 }
 
-
-/* ============================================================
-   METRIC ALIGNMENT
-   ============================================================ */
-
 .mj-score-metrics {
-  width: 100%;
   min-width: 0;
 
   display: flex;
   flex-direction: column;
 
-  gap: 25px;
+  gap: 14px;
 }
 
 .mj-score-metric {
@@ -4223,97 +4363,121 @@ body {
   min-width: 0;
 
   display: grid;
-
-  /*
-      LABEL          VALUE       BAR
-
-      All three rows use exactly
-      the same columns.
-  */
-
   grid-template-columns:
-    minmax(105px, 1fr)
-    52px
-    minmax(90px, 1.15fr);
+    minmax(0, 1fr)
+    38px;
 
   align-items: center;
 
-  gap: 10px;
+  gap: 7px;
+
+  box-sizing: border-box;
 }
 
 .mj-score-metric-label {
-  width: 100%;
   min-width: 0;
 
-  overflow: visible;
+  color: #687890;
 
-  text-overflow: clip;
+  font-size: 10px;
+  line-height: 1.2;
+
+  font-weight: 650;
 
   white-space: nowrap;
 
-  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mj-score-metric-value {
-  width: 52px;
-  min-width: 52px;
+  width: 38px;
+  min-width: 38px;
+
+  color: #1c2940;
+
+  font-size: 12px;
+  line-height: 1;
+
+  font-weight: 850;
 
   text-align: right;
 
-  line-height: 1;
+  white-space: nowrap;
 }
 
 .mj-score-progress {
-  width: 100%;
-  max-width: 100%;
+  grid-column: 1 / -1;
 
-  height: 9px;
-
-  justify-self: stretch;
-}
-
-.mj-score-progress-fill {
-  height: 100%;
-
-  max-width: 100%;
-}
-
-
-/* ============================================================
-   OVERALL SCORE
-   ============================================================ */
-
-.mj-score-overall {
   width: 100%;
   min-width: 0;
 
-  display: grid;
+  height: 7px;
 
-  grid-template-columns:
-    minmax(0, 1fr)
-    auto;
+  margin: -2px 0 0;
 
+  box-sizing: border-box;
+
+  border-radius: 999px;
+
+  background: #e7ecef;
+
+  overflow: hidden;
+}
+
+.mj-score-progress-fill {
+  max-width: 100%;
+  height: 100%;
+
+  display: block;
+
+  border-radius: 999px;
+
+  background: #1aa976;
+}
+
+.mj-score-overall {
+  min-width: 0;
+
+  display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  gap: 15px;
+  gap: 8px;
 
   margin-top: auto;
+  padding-top: 13px;
 
-  padding-top: 18px;
+  border-top: 1px solid #e1e6ed;
 }
 
 .mj-score-overall span {
   min-width: 0;
 
-  text-align: left;
+  color: #26344c;
+
+  font-size: 11px;
+  line-height: 1.15;
+
+  font-weight: 800;
 
   white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mj-score-overall strong {
-  min-width: 0;
+  flex: 0 0 auto;
 
-  text-align: right;
+  color: #079963;
+
+  font-size: 19px;
+  line-height: 1;
+
+  font-weight: 850;
+
+  white-space: nowrap;
 }
 
 
@@ -4325,6053 +4489,157 @@ body {
   min-width: 0;
   min-height: 0;
 
+  position: relative;
+
   display: flex;
   flex-direction: column;
 
   align-items: stretch;
   justify-content: center;
 
-  gap: 13px;
+  gap: 10px;
 
-  padding: 30px 20px;
+  padding: 58px 16px 20px;
 
   box-sizing: border-box;
 
+  border-left: 1px solid #e1e6ed;
+
+  background: #ffffff;
+
   overflow: hidden;
 }
-
-
-/* Bookmark remains independent from action stack */
 
 .mj-save {
-  top: 18px;
-  right: 18px;
-}
+  position: absolute;
 
+  top: 16px;
+  right: 16px;
 
-/* Action stack has consistent horizontal axis */
-
-.mj-status,
-.mj-details,
-.mj-apply {
-  width: 100%;
-  min-width: 0;
-}
-
-
-/* Status */
-
-.mj-status {
-  height: 44px;
-
-  box-sizing: border-box;
-}
-
-
-/* Details */
-
-.mj-details {
-  height: 38px;
+  width: 34px;
+  height: 34px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
-
-  white-space: nowrap;
-}
-
-
-/* Apply */
-
-.mj-apply {
-  height: 50px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  box-sizing: border-box;
-}
-
-
-/* ============================================================
-   DESKTOP BALANCE
-   ============================================================ */
-
-@media (min-width: 1251px) {
-
-  .mj-job-details {
-    padding-left: 30px;
-    padding-right: 36px;
-  }
-
-  .mj-score-breakdown {
-    padding-left: 22px;
-    padding-right: 25px;
-  }
-
-  .mj-actions {
-    padding-left: 22px;
-    padding-right: 22px;
-  }
-}
-
-
-/* ============================================================
-   1250px — ALIGNMENT ONLY
-   ============================================================ */
-
-@media (max-width: 1250px) and (min-width: 901px) {
-
-  .mj-job-details {
-    padding: 25px 20px 25px 20px;
-
-    grid-template-columns:
-      38px
-      minmax(0, 1fr);
-
-    gap: 12px;
-  }
-
-  .mj-score-panel {
-    grid-template-columns:
-      88px
-      minmax(0, 1fr);
-  }
-
-  .mj-score {
-    width: 68px;
-    height: 68px;
-
-    min-width: 68px;
-    min-height: 68px;
-    flex-basis: 68px;
-  }
-
-  .mj-score-breakdown {
-    padding: 30px 15px 22px 16px;
-  }
-
-  .mj-breakdown-title {
-    margin-bottom: 22px;
-  }
-
-  .mj-score-metrics {
-    gap: 19px;
-  }
-
-  .mj-score-metric {
-    grid-template-columns:
-      minmax(82px, 1fr)
-      44px
-      minmax(65px, 1fr);
-
-    gap: 7px;
-  }
-
-  .mj-score-metric-value {
-    width: 44px;
-    min-width: 44px;
-  }
-
-  .mj-actions {
-    padding: 25px 12px;
-  }
-}
-
-
-/* ============================================================
-   MOBILE
-   ============================================================ */
-
-@media (max-width: 900px) {
-
-  .mj-job-details {
-    padding: 24px 20px;
-  }
-
-  .mj-score-panel {
-    grid-template-columns:
-      95px
-      minmax(0, 1fr);
-
-    border-left: 0;
-  }
-
-  .mj-score-summary {
-    padding: 15px 4px;
-  }
-
-  .mj-score-breakdown {
-    padding: 25px 18px 22px 18px;
-  }
-
-  .mj-score-metric {
-    grid-template-columns:
-      minmax(90px, 1fr)
-      45px
-      minmax(70px, 1fr);
-  }
-
-  .mj-actions {
-    padding: 24px 20px;
-  }
-}
-
-
-/* ============================================================
-   PHONE
-   ============================================================ */
-
-@media (max-width: 600px) {
-
-  .mj-job-details {
-    padding: 20px 15px;
-  }
-
-  .mj-score-panel {
-    grid-template-columns: 1fr;
-  }
-
-  .mj-score-summary {
-    min-height: 145px;
-  }
-
-  .mj-score-breakdown {
-    padding: 22px 16px;
-  }
-
-  .mj-score-metric {
-    grid-template-columns:
-      minmax(85px, 1fr)
-      44px
-      minmax(60px, 1fr);
-  }
-
-  .mj-actions {
-    padding: 20px 16px;
-  }
-}
-
-/* ============================================================
-   FINAL JOB CARD ALIGNMENT
-   Alignment / spacing only
-   Existing JSX + scoring logic preserved
-   ============================================================ */
-
-
-/* ============================================================
-   CARD
-   ============================================================ */
-
-.mj-card {
-  grid-template-columns:
-    minmax(0, 55%)
-    minmax(0, 30%)
-    minmax(0, 15%);
-
-  min-height: 300px;
-
-  align-items: stretch;
-}
-
-
-/* ============================================================
-   55% — JOB DETAILS
-   ============================================================ */
-
-.mj-job-details {
-  display: grid;
-
-  grid-template-columns:
-    40px
-    minmax(0, 1fr);
-
-  align-items: start;
-
-  gap: 14px;
-
-  padding:
-    30px
-    34px
-    28px
-    28px;
-
-  box-sizing: border-box;
-}
-
-
-/* Rank */
-
-.mj-rank {
-  padding-top: 8px;
-
-  font-size: 12px;
-
-  line-height: 1;
-
-  text-align: center;
-}
-
-
-/* Main content */
-
-.mj-content {
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
 
   padding: 0;
-}
 
+  border: 1px solid #dfe5ed;
+  border-radius: 9px;
 
-/* ============================================================
-   TITLE / COMPANY
-   ============================================================ */
+  background: #ffffff;
 
-.mj-title-row {
-  width: 100%;
+  color: #8995a7;
 
-  display: flex;
-  align-items: center;
-
-  flex-wrap: nowrap;
-
-  gap: 10px;
-}
-
-.mj-title {
-  min-width: 0;
-
-  font-size: 21px;
-
-  line-height: 1.2;
-
-  letter-spacing: -.35px;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-}
-
-.mj-best {
-  flex: 0 0 auto;
-
-  height: 23px;
-
-  padding: 0 10px;
-
-  font-size: 9px;
-
-  letter-spacing: .7px;
-}
-
-.mj-company {
-  margin-top: 8px;
-
-  font-size: 14px;
-
-  line-height: 1.2;
-}
-
-
-/* ============================================================
-   META
-   ============================================================ */
-
-.mj-meta {
-  width: 100%;
-
-  display: flex;
-
-  align-items: center;
-
-  flex-wrap: nowrap;
-
-  margin-top: 16px;
-
-  font-size: 11px;
-
-  line-height: 1;
-}
-
-.mj-meta span {
-  flex: 0 0 auto;
-}
-
-
-/* ============================================================
-   EVIDENCE
-   ============================================================ */
-
-.mj-evidence {
-  width: 100%;
-
-  margin-top: 20px;
-
-  padding:
-    14px
-    16px;
+  cursor: pointer;
 
   box-sizing: border-box;
 }
 
-.mj-evidence-row {
-  display: grid;
-
-  grid-template-columns:
-    62px
-    minmax(0, 1fr);
-
-  align-items: start;
-
-  gap: 10px;
-}
-
-.mj-evidence-row + .mj-evidence-row {
-  margin-top: 11px;
-}
-
-.mj-label {
-  padding-top: 7px;
-
-  font-size: 9px;
-
-  line-height: 1;
-}
-
-.mj-chips {
+.mj-status {
+  width: 100%;
   min-width: 0;
 
-  display: flex;
+  height: 42px;
 
-  flex-wrap: wrap;
+  padding: 0 9px;
 
-  align-items: flex-start;
+  border: 1px solid #dfe4eb;
+  border-radius: 9px;
 
-  gap: 6px;
-}
+  background: #ffffff;
 
-.mj-chip,
-.mj-more {
-  min-height: 28px;
-
-  padding:
-    6px
-    10px;
+  color: #586477;
 
   font-size: 10px;
-
-  line-height: 1;
-}
-
-
-/* ============================================================
-   30% — SCORE PANEL
-   ============================================================ */
-
-.mj-score-panel {
-  min-width: 0;
-
-  display: grid;
-
-  grid-template-columns:
-    92px
-    minmax(0, 1fr);
-
-  align-items: stretch;
-
-  border-left:
-    1px solid #e1e6ed;
-
-  overflow: hidden;
-}
-
-
-/* ============================================================
-   SCORE SUMMARY
-   ============================================================ */
-
-.mj-score-summary {
-  min-width: 0;
-
-  min-height: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding:
-    0
-    4px;
-
-  box-sizing: border-box;
-}
-
-
-/* Circle */
-
-.mj-score {
-  width: 74px;
-  height: 74px;
-
-  min-width: 74px;
-  min-height: 74px;
-
-  flex: 0 0 74px;
-
-  border-width: 3px;
-}
-
-.mj-score strong {
-  font-size: 24px;
-
-  letter-spacing: -1px;
-}
-
-.mj-score span {
-  margin-left: 2px;
-
-  font-size: 9px;
-}
-
-.mj-score-label {
-  margin-top: 12px;
-
-  font-size: 8px;
-
-  letter-spacing: 2px;
-
-  line-height: 1;
-
-  text-align: center;
-}
-
-
-/* ============================================================
-   SCORE BREAKDOWN
-   ============================================================ */
-
-.mj-score-breakdown {
-  min-width: 0;
-
-  min-height: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  padding:
-    34px
-    22px
-    25px
-    18px;
-
-  box-sizing: border-box;
-
-  border-left: 0;
-
-  overflow: hidden;
-}
-
-
-/* Title */
-
-.mj-breakdown-title {
-  width: 100%;
-
-  margin:
-    0
-    0
-    27px;
-
-  color: #687790;
-
-  font-size: 11px;
-
-  line-height: 1;
-
-  font-weight: 850;
-
-  letter-spacing: 2.5px;
-
-  text-align: left;
-
-  white-space: nowrap;
-}
-
-
-/* ============================================================
-   METRIC LIST
-   ============================================================ */
-
-.mj-score-metrics {
-  width: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 22px;
-
-  margin: 0;
-}
-
-.mj-score-metric {
-  width: 100%;
-
-  min-width: 0;
-
-  display: grid;
-
-  grid-template-columns:
-    minmax(78px, 1fr)
-    43px
-    minmax(65px, 1fr);
-
-  align-items: center;
-
-  gap: 8px;
-}
-
-.mj-score-metric-label {
-  min-width: 0;
-
-  color: #6b7b94;
-
-  font-size: 10px;
-
-  line-height: 1;
-
   font-weight: 700;
 
-  text-align: left;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-}
-
-.mj-score-metric-value {
-  width: 43px;
-
-  min-width: 43px;
-
-  color: #1c2940;
-
-  font-size: 12px;
-
-  line-height: 1;
-
-  font-weight: 850;
-
-  text-align: right;
-
-  white-space: nowrap;
-}
-
-.mj-score-progress {
-  width: 100%;
-
-  height: 8px;
-
-  min-width: 0;
-
-  margin: 0;
-
-  border-radius: 999px;
-
-  overflow: hidden;
-}
-
-.mj-score-progress-fill {
-  height: 100%;
-
-  border-radius: 999px;
-}
-
-
-/* ============================================================
-   OVERALL SCORE
-   ============================================================ */
-
-.mj-score-overall {
-  width: 100%;
-
-  min-width: 0;
-
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, 1fr)
-    auto;
-
-  align-items: center;
-
-  gap: 10px;
-
-  margin-top: auto;
-
-  padding-top: 17px;
-
-  border-top:
-    2px solid #e1e6ed;
-}
-
-.mj-score-overall span {
-  min-width: 0;
-
-  color: #26344c;
-
-  font-size: 12px;
-
-  line-height: 1;
-
-  font-weight: 800;
-
-  text-align: left;
-
-  white-space: nowrap;
-}
-
-.mj-score-overall strong {
-  color: #079963;
-
-  font-size: 24px;
-
-  line-height: 1;
-
-  font-weight: 850;
-
-  text-align: right;
-
-  white-space: nowrap;
-}
-
-
-/* ============================================================
-   15% — ACTIONS
-   ============================================================ */
-
-.mj-actions {
-  min-width: 0;
-
-  min-height: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: stretch;
-
-  justify-content: center;
-
-  gap: 12px;
-
-  padding:
-    30px
-    20px
-    28px;
-
-  box-sizing: border-box;
-
-  border-left:
-    1px solid #e1e6ed;
-
-  overflow: hidden;
-}
-
-
-/* Bookmark */
-
-.mj-save {
-  top: 18px;
-
-  right: 18px;
-
-  width: 36px;
-  height: 36px;
-
-  border-radius: 10px;
-}
-
-
-/* Status */
-
-.mj-status {
-  width: 100%;
-
-  height: 43px;
-
-  margin-top: 20px;
-
   box-sizing: border-box;
 }
-
-
-/* ============================================================
-   VIEW DETAILS
-   ============================================================ */
 
 .mj-details {
   width: 100%;
+  min-width: 0;
+  min-height: 34px;
 
-  height: 36px;
-
-  min-height: 36px;
-
-  display: flex;
-
+  display: inline-flex;
   align-items: center;
-
   justify-content: center;
 
-  gap: 6px;
-
-  margin: 0;
-
-  padding: 0;
-
-  box-sizing: border-box;
+  gap: 5px;
 
   color: #5140df;
 
-  font-size: 12px;
-
-  line-height: 1;
-
+  font-size: 11px;
   font-weight: 800;
 
-  text-align: center;
+  text-decoration: none;
 
   white-space: nowrap;
 }
 
-.mj-details svg {
-  flex: 0 0 auto;
-}
-
-
-/* ============================================================
-   APPLY
-   ============================================================ */
-
 .mj-apply {
   width: 100%;
+  min-width: 0;
 
-  height: 48px;
+  height: 44px;
 
-  min-height: 48px;
-
-  display: flex;
-
+  display: inline-flex;
   align-items: center;
-
   justify-content: center;
 
-  gap: 7px;
-
-  margin: 0;
+  gap: 5px;
 
   padding: 0 8px;
 
   box-sizing: border-box;
 
-  border-radius: 10px;
-
-  font-size: 13px;
-
-  line-height: 1;
-
-  font-weight: 800;
+  border-radius: 9px;
 
   white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
 /* ============================================================
-   DESKTOP — PRECISE BALANCE
-   ============================================================ */
-
-@media (min-width: 1400px) {
-
-  .mj-job-details {
-    padding-left: 30px;
-    padding-right: 38px;
-  }
-
-  .mj-score-panel {
-    grid-template-columns:
-      94px
-      minmax(0, 1fr);
-  }
-
-  .mj-score-breakdown {
-    padding-left: 20px;
-    padding-right: 24px;
-  }
-
-  .mj-actions {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
-
-
-/* ============================================================
-   1250–1399
-   ============================================================ */
-
-@media (max-width: 1399px) and (min-width: 901px) {
-
-  .mj-job-details {
-    grid-template-columns:
-      36px
-      minmax(0, 1fr);
-
-    gap: 11px;
-
-    padding:
-      25px
-      20px;
-  }
-
-  .mj-title {
-    font-size: 19px;
-  }
-
-  .mj-meta {
-    font-size: 10px;
-  }
-
-  .mj-score-panel {
-    grid-template-columns:
-      84px
-      minmax(0, 1fr);
-  }
-
-  .mj-score {
-    width: 68px;
-    height: 68px;
-
-    min-width: 68px;
-    min-height: 68px;
-    flex-basis: 68px;
-  }
-
-  .mj-score-breakdown {
-    padding:
-      28px
-      14px
-      22px
-      14px;
-  }
-
-  .mj-breakdown-title {
-    font-size: 10px;
-    letter-spacing: 2px;
-
-    margin-bottom: 22px;
-  }
-
-  .mj-score-metric {
-    grid-template-columns:
-      minmax(68px, 1fr)
-      40px
-      minmax(55px, 1fr);
-
-    gap: 6px;
-  }
-
-  .mj-score-metric-label {
-    font-size: 9px;
-  }
-
-  .mj-score-metric-value {
-    width: 40px;
-    min-width: 40px;
-
-    font-size: 11px;
-  }
-
-  .mj-actions {
-    padding:
-      25px
-      12px;
-      gap: 10px;
-  }
-}
-
-/* ============================================================
-   FINAL DESKTOP ALIGNMENT LOCK
-   Desktop only — intentionally isolated from mobile
+   DESKTOP SAFETY
+   Prevent content from creating horizontal overflow.
    ============================================================ */
 
 @media (min-width: 901px) {
-
-  /* ----------------------------------------------------------
-     1. JOB DETAILS — hierarchy + spacing
-     ---------------------------------------------------------- */
-
-  .mj-job-details {
-    min-width: 0;
-    box-sizing: border-box;
-  }
-
-  .mj-content {
-    min-width: 0;
-    padding: 2px 0 0;
-  }
-
-  .mj-title-row {
-    align-items: center;
-    column-gap: 10px;
-    row-gap: 5px;
-    min-width: 0;
-  }
-
-  .mj-title {
-    min-width: 0;
-    max-width: 100%;
-
-    font-size: 19px;
-    line-height: 1.28;
-    letter-spacing: -0.28px;
-
-    overflow-wrap: anywhere;
-  }
-
-  .mj-company {
-    margin-top: 6px;
-
-    font-size: 13px;
-    line-height: 1.35;
-  }
-
-  .mj-meta {
-    margin-top: 12px;
-
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-
-    column-gap: 16px;
-    row-gap: 7px;
-
-    font-size: 12px;
-    line-height: 1.35;
-  }
-
-  .mj-evidence {
-    margin-top: 15px;
-    gap: 10px;
-  }
-
-  .mj-evidence-row {
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .mj-label {
-    flex: 0 0 48px;
-    padding-top: 7px;
-  }
-
+  .mj-card,
+  .mj-job-details,
+  .mj-content,
+  .mj-score-panel,
+  .mj-score-breakdown,
+  .mj-actions,
+  .mj-evidence,
+  .mj-evidence-row,
   .mj-chips {
-    min-width: 0;
-    align-items: center;
-    gap: 6px;
-  }
-
-  /* Keep the evidence box visually balanced when a job
-     contains fewer skills/tools. */
-  .mj-chip,
-  .mj-more {
-    min-height: 25px;
-  }
-
-
-  /* ----------------------------------------------------------
-     2. SCORE — reduce visual noise without changing layout
-     ---------------------------------------------------------- */
-
-  .mj-score-panel {
-    min-width: 0;
-    box-sizing: border-box;
-
-    overflow: hidden;
-  }
-
-  .mj-score-summary {
-    min-width: 0;
-    box-sizing: border-box;
-  }
-
-  .mj-score {
-    flex: 0 0 auto;
-  }
-
-  .mj-score-label {
-    white-space: nowrap;
-  }
-
-  .mj-score-breakdown {
-    min-width: 0;
-    width: 100%;
-    box-sizing: border-box;
-
-    overflow: hidden;
-  }
-
-  .mj-breakdown-title {
-    margin-bottom: 18px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .mj-breakdown-list {
-    width: 100%;
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-    gap: 17px;
-  }
-
-  .mj-breakdown-item {
-    width: 100%;
-    min-width: 0;
-
-    display: grid;
-    grid-template-columns: minmax(105px, 1fr) auto minmax(72px, 0.85fr);
-    align-items: center;
-
-    column-gap: 10px;
-  }
-
-  .mj-breakdown-label {
-    min-width: 0;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  .mj-breakdown-item strong {
-    flex: 0 0 auto;
-
-    font-size: 12px;
-    font-weight: 850;
-    white-space: nowrap;
-  }
-
-  /* Quieter, cleaner bars */
-  .mj-score-bar {
-    width: 100%;
     max-width: 100%;
-    height: 7px;
-
-    overflow: hidden;
-
-    border-radius: 999px;
   }
-
-  .mj-score-bar-fill {
-    height: 100%;
-    border-radius: inherit;
-  }
-
-  .mj-overall {
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-
-    margin-top: 22px;
-    padding-top: 17px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 14px;
-  }
-
-  .mj-overall span {
-    min-width: 0;
-
-    font-size: 13px;
-    font-weight: 750;
-    line-height: 1.25;
-
-    white-space: nowrap;
-  }
-
-  .mj-overall strong {
-    flex: 0 0 auto;
-
-    font-size: 20px;
-    line-height: 1;
-    font-weight: 850;
-
-    white-space: nowrap;
-  }
+}
 
 
-  /* ----------------------------------------------------------
-     3. ACTIONS — cleaner spacing and hierarchy
-     ---------------------------------------------------------- */
+/* ============================================================
+   MOBILE — KEEP EXISTING MOBILE PRESENTATION
+   ============================================================ */
 
-  .mj-actions {
-    min-width: 0;
-    box-sizing: border-box;
-
-    padding-left: 20px;
-    padding-right: 2px;
-    padding-top: 20px;
-
-    gap: 12px;
-  }
-
-  .mj-save {
-    top: 2px;
-    right: 0;
-
-    width: 32px;
-    height: 32px;
-  }
-
-  .mj-status {
-    width: 100%;
-    min-width: 0;
-
-    height: 40px;
-    box-sizing: border-box;
-
-    padding: 0 12px;
-
-    font-size: 11px;
-  }
-
-  .mj-details {
-    width: 100%;
-    min-width: 0;
-
-    height: 36px;
-
-    white-space: nowrap;
-
-    font-size: 11px;
-  }
-
-  .mj-apply {
-    width: 100%;
-    min-width: 0;
-
-    height: 44px;
-    box-sizing: border-box;
-
-    border-radius: 9px;
-
-    font-size: 12px;
-    font-weight: 800;
-
-    white-space: nowrap;
-  }
-
-
-  /* ----------------------------------------------------------
-     4. CARD RHYTHM — keep every desktop card consistent
-     ---------------------------------------------------------- */
-
+@media (max-width: 900px) {
   .mj-card {
-    align-items: stretch;
-  }
-
-  .mj-card > * {
-    min-width: 0;
-  }
-
-}
-
-
-/* END FINAL DESKTOP ALIGNMENT LOCK */
-
-/* ============================================================
-   ACTION COLUMN — FINAL DESKTOP ALIGNMENT
-   Scope: .mj-actions ONLY
-   ============================================================ */
-
-@media (min-width: 901px) {
-
-  .mj-actions {
-    position: relative;
-
     display: flex;
     flex-direction: column;
+  }
 
-    align-items: center;
-    justify-content: center;
-
+  .mj-score-panel,
+  .mj-actions {
     width: 100%;
-    min-width: 0;
-    height: 100%;
-    min-height: 100%;
-
-    box-sizing: border-box;
-
-    padding: 58px 20px 28px;
-
-    gap: 0;
-
-    border-left: 1px solid #edf0f4;
-
-    overflow: hidden;
-  }
-
-
-  /* ----------------------------------------------------------
-     SAVE
-     ---------------------------------------------------------- */
-
-  .mj-actions .mj-save {
-    position: absolute;
-
-    top: 20px;
-    right: 20px;
-
-    width: 40px;
-    height: 40px;
-
-    min-width: 40px;
-    min-height: 40px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: 0;
-    padding: 0;
-
-    box-sizing: border-box;
-
-    border: 1px solid #dfe4ec;
-    border-radius: 11px;
-
-    background: #fff;
-    color: #8290a4;
-
-    box-shadow: none;
-
-    z-index: 2;
-  }
-
-  .mj-actions .mj-save:hover,
-  .mj-actions .mj-save-active {
-    border-color: #d7d0ff;
-    background: #f7f5ff;
-    color: #5140df;
-  }
-
-
-  /* ----------------------------------------------------------
-     STATUS
-     ---------------------------------------------------------- */
-
-  .mj-actions .mj-status {
-    display: block;
-
-    width: 100%;
-    max-width: 100%;
-
-    height: 48px;
-    min-height: 48px;
-
-    margin: 0;
-    padding: 0 15px;
-
-    box-sizing: border-box;
-
-    border: 1px solid #dfe4ec;
-    border-radius: 11px;
-
-    background: #fff;
-    color: #56647a;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    line-height: 48px;
-
-    cursor: pointer;
-
-    outline: none;
-
-    appearance: auto;
-  }
-
-  .mj-actions .mj-status:focus {
-    border-color: #cfc7ff;
-    box-shadow: 0 0 0 3px rgba(81,64,223,.08);
-  }
-
-
-  /* ----------------------------------------------------------
-     VIEW DETAILS
-     ---------------------------------------------------------- */
-
-  .mj-actions .mj-details {
-    width: 100%;
-    max-width: 100%;
-
-    height: 42px;
-    min-height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: 18px 0 14px;
-    padding: 0;
-
-    box-sizing: border-box;
-
-    gap: 7px;
-
-    color: #5140df;
-
-    font-size: 13px;
-    font-weight: 800;
-
-    line-height: 1;
-
-    text-decoration: none;
-
-    white-space: nowrap;
-  }
-
-  .mj-actions .mj-details:hover {
-    color: #3f2ed0;
-  }
-
-  .mj-actions .mj-details svg {
-    flex: 0 0 auto;
-  }
-
-
-  /* ----------------------------------------------------------
-     APPLY NOW
-     ---------------------------------------------------------- */
-
-  .mj-actions .mj-apply {
-    width: 100%;
-    max-width: 100%;
-
-    height: 50px;
-    min-height: 50px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: 0;
-    padding: 0 16px;
-
-    box-sizing: border-box;
-
-    gap: 8px;
-
-    border: 0;
-    border-radius: 11px;
-
-    background: linear-gradient(
-      135deg,
-      #5b45f3,
-      #4931df
-    );
-
-    color: #fff;
-
-    font-size: 13px;
-    font-weight: 850;
-
-    line-height: 1;
-
-    text-decoration: none;
-
-    white-space: nowrap;
-
-    box-shadow:
-      0 8px 20px rgba(79,58,230,.20);
-
-    transition:
-      transform .16s ease,
-      box-shadow .16s ease;
-  }
-
-  .mj-actions .mj-apply:hover {
-    color: #fff;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-      0 11px 24px rgba(79,58,230,.28);
-  }
-
-  .mj-actions .mj-apply svg {
-    flex: 0 0 auto;
-  }
-
-}
-
-
-/* END ACTION COLUMN — FINAL DESKTOP ALIGNMENT */
-
-/* =========================================================
-   APPROVED JOB DETAIL DESKTOP LAYOUT
-   ========================================================= */
-
-.job-detail-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: 18px;
-  align-items: start;
-  margin-top: 18px;
-}
-
-.job-detail-main {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.job-detail-sidebar {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  position: sticky;
-  top: 18px;
-}
-
-.detail-side-card {
-  background: #fff;
-  border: 1px solid #e5e9f2;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 5px 18px rgba(31, 45, 74, 0.035);
-}
-
-.detail-side-heading {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: 18px;
-}
-
-.detail-side-heading h3 {
-  margin: 0;
-  color: #18223a;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.detail-side-icon {
-  width: 25px;
-  height: 25px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  background: #f1efff;
-  color: #5138ee;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.highlight-item {
-  padding: 12px 0;
-  border-bottom: 1px solid #eef1f6;
-}
-
-.highlight-item:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-.highlight-item strong {
-  display: block;
-  color: #26324b;
-  font-size: 11px;
-}
-
-.highlight-item span {
-  display: block;
-  margin-top: 4px;
-  color: #8792a7;
-  font-size: 10px;
-  line-height: 1.5;
-}
-
-.side-score {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.side-score-ring {
-  width: 78px;
-  height: 78px;
-  flex: 0 0 78px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  border: 7px solid #24b47e;
-  background: #fff;
-}
-
-.side-score-ring strong {
-  color: #18223a;
-  font-size: 20px;
-  line-height: 1;
-}
-
-.side-score-ring span {
-  color: #53627f;
-  font-size: 9px;
-}
-
-.side-score-list {
-  flex: 1;
-  min-width: 0;
-}
-
-.breakdown-link {
-  width: 100%;
-  margin-top: 18px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #5138ee;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.job-detail-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.job-detail-meta > div {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.job-detail-meta span {
-  color: #8995aa;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-}
-
-.job-detail-meta strong {
-  color: #26324b;
-  font-size: 11px;
-  line-height: 1.45;
-  word-break: break-word;
-}
-
-.share-card h3 {
-  margin: 0 0 13px;
-  color: #26324b;
-  font-size: 12px;
-}
-
-.share-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.share-actions button {
-  width: 34px;
-  height: 34px;
-  border: 1px solid #e1e6ef;
-  border-radius: 8px;
-  background: #fff;
-  color: #53627f;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-@media (max-width: 1100px) {
-  .job-detail-layout {
-    grid-template-columns: minmax(0, 1fr) 320px;
-  }
-}
-
-@media (max-width: 900px) {
-  .job-detail-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .job-detail-sidebar {
-    position: static;
-  }
-}
-
-/* =========================================================
-   MATCH SCORE BREAKDOWN — APPROVED UI
-   SCOPED ONLY TO MATCH SCORE CARD
-   ========================================================= */
-
-.match-breakdown-card {
-  padding: 24px !important;
-  border-radius: 18px !important;
-  background: #ffffff !important;
-}
-
-.match-breakdown-card .detail-side-heading {
-  display: flex !important;
-  align-items: center !important;
-  gap: 14px !important;
-  margin-bottom: 34px !important;
-}
-
-.match-breakdown-card .detail-side-icon {
-  width: 38px !important;
-  height: 38px !important;
-  flex: 0 0 38px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 10px !important;
-  background: #f0ebff !important;
-  color: #5138ee !important;
-  font-size: 17px !important;
-}
-
-.match-breakdown-card .detail-side-heading h3 {
-  margin: 0 !important;
-  color: #18223a !important;
-  font-size: 20px !important;
-  line-height: 1.3 !important;
-  font-weight: 750 !important;
-}
-
-.match-breakdown-card .side-score {
-  display: grid !important;
-  grid-template-columns: 125px minmax(0, 1fr) !important;
-  align-items: center !important;
-  column-gap: 28px !important;
-}
-
-.match-breakdown-card .side-score-ring {
-  position: relative !important;
-  width: 112px !important;
-  height: 112px !important;
-  flex: 0 0 112px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 0 !important;
-  border-radius: 50% !important;
-  background:
-    conic-gradient(
-      from 0deg,
-      #1769e8 0deg 90deg,
-      #6938ef 90deg 180deg,
-      #ff9d00 180deg 270deg,
-      #16b77d 270deg 360deg
-    ) !important;
-}
-
-.match-breakdown-card .side-score-ring::before {
-  content: "" !important;
-  position: absolute !important;
-  inset: 10px !important;
-  border-radius: 50% !important;
-  background: #ffffff !important;
-}
-
-.match-breakdown-card .side-score-ring strong {
-  position: relative !important;
-  z-index: 1 !important;
-  color: #18223a !important;
-  font-size: 25px !important;
-  line-height: 1 !important;
-  font-weight: 750 !important;
-}
-
-.match-breakdown-card .side-score-ring span {
-  position: relative !important;
-  z-index: 1 !important;
-  margin-top: 3px !important;
-  color: #53627f !important;
-  font-size: 10px !important;
-  line-height: 1 !important;
-}
-
-.match-breakdown-card .scorebar {
-  width: 100% !important;
-  margin: 0 0 20px !important;
-}
-
-.match-breakdown-card .scorebar:last-child {
-  margin-bottom: 0 !important;
-}
-
-.match-breakdown-card .scorebar > div {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  margin-bottom: 8px !important;
-}
-
-.match-breakdown-card .scorebar > div > span {
-  color: #53627f !important;
-  font-size: 13px !important;
-  line-height: 1.3 !important;
-  font-weight: 500 !important;
-}
-
-.match-breakdown-card .scorebar > div > b {
-  color: #263552 !important;
-  font-size: 13px !important;
-  line-height: 1.3 !important;
-  font-weight: 750 !important;
-}
-
-.match-breakdown-card .scorebar > i {
-  display: block !important;
-  width: 100% !important;
-  height: 7px !important;
-  overflow: hidden !important;
-  border-radius: 999px !important;
-  background: #edf0f5 !important;
-  font-style: normal !important;
-}
-
-.match-breakdown-card .scorebar > i > em {
-  display: block !important;
-  height: 100% !important;
-  border-radius: inherit !important;
-  background: #5138ee !important;
-  font-style: normal !important;
-}
-
-.match-breakdown-card .breakdown-link {
-  width: 100% !important;
-  height: 42px !important;
-  margin-top: 28px !important;
-  padding: 0 16px !important;
-  border: 1.5px solid #5138ee !important;
-  border-radius: 8px !important;
-  background: #ffffff !important;
-  color: #5138ee !important;
-  font-size: 13px !important;
-  line-height: 1 !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-  cursor: pointer !important;
-}
-
-.match-breakdown-card .breakdown-link:hover {
-  background: #f7f4ff !important;
-}
-
-@media (max-width: 1000px) {
-  .match-breakdown-card .side-score {
-    grid-template-columns: 100px minmax(0, 1fr) !important;
-    column-gap: 20px !important;
-  }
-
-  .match-breakdown-card .side-score-ring {
-    width: 90px !important;
-    height: 90px !important;
-    flex-basis: 90px !important;
-  }
-
-  .match-breakdown-card .side-score-ring::before {
-    inset: 8px !important;
-  }
-
-  .match-breakdown-card .side-score-ring strong {
-    font-size: 21px !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .match-breakdown-card .side-score {
-    grid-template-columns: 1fr !important;
-    row-gap: 24px !important;
-  }
-
-  .match-breakdown-card .side-score-ring {
-    margin: 0 auto !important;
-  }
-}
-
-.match-breakdown-card {
-  padding: 28px !important;
-}
-
-.match-breakdown-card .detail-side-heading {
-  margin-bottom: 34px !important;
-}
-
-.match-breakdown-card .detail-side-heading h3 {
-  font-size: 21px !important;
-  color: #18223a !important;
-  font-weight: 750 !important;
-}
-
-.score-breakdown-layout {
-  display: grid !important;
-  grid-template-columns: 125px minmax(0, 1fr) !important;
-  align-items: center !important;
-  gap: 28px !important;
-}
-
-.score-breakdown-donut {
-  width: 118px !important;
-  height: 118px !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: conic-gradient(
-    #16b77d 0deg 90deg,
-    #1769e8 90deg 180deg,
-    #6938ef 180deg 270deg,
-    #ff9800 270deg 360deg
-  ) !important;
-}
-
-.score-breakdown-donut-inner {
-  width: 88px !important;
-  height: 88px !important;
-  border-radius: 50% !important;
-  background: #fff !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.score-breakdown-donut-inner strong {
-  color: #18223a !important;
-  font-size: 28px !important;
-  font-weight: 750 !important;
-}
-
-.score-breakdown-donut-inner span {
-  margin-top: 6px !important;
-  color: #53627f !important;
-  font-size: 11px !important;
-}
-
-.score-breakdown-metrics {
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 20px !important;
-}
-
-.match-breakdown-card .scorebar {
-  margin: 0 !important;
-}
-
-.match-breakdown-card .scorebar > div {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  margin-bottom: 7px !important;
-}
-
-.match-breakdown-card .scorebar > div span {
-  color: #53627f !important;
-  font-size: 13px !important;
-  font-weight: 550 !important;
-}
-
-.match-breakdown-card .scorebar > div b {
-  color: #18223a !important;
-  font-size: 13px !important;
-  font-weight: 750 !important;
-}
-
-.match-breakdown-card .scorebar > i {
-  height: 7px !important;
-  background: #edf0f5 !important;
-  border-radius: 999px !important;
-}
-
-.match-breakdown-card .scorebar > i em {
-  height: 100% !important;
-  border-radius: inherit !important;
-}
-
-.match-breakdown-card .score-green > i em {
-  background: #16b77d !important;
-}
-
-.match-breakdown-card .score-blue > i em {
-  background: #1769e8 !important;
-}
-
-.match-breakdown-card .score-purple > i em {
-  background: #6938ef !important;
-}
-
-.match-breakdown-card .score-orange > i em {
-  background: #ff9800 !important;
-}
-
-@media (max-width: 600px) {
-  .score-breakdown-layout {
-    grid-template-columns: 1fr !important;
-    justify-items: center !important;
-  }
-
-  .score-breakdown-metrics {
-    width: 100% !important;
-  }
-}
-
-/* =========================================================
-   JOB DETAIL PAGE — ABOUT ROLE + JOB DETAILS
-   ONLY
-   ========================================================= */
-
-/* ---------------------------------------------------------
-   ABOUT THE ROLE
-   --------------------------------------------------------- */
-
-.job-detail-content #about-role {
-  padding: 0 !important;
-  margin: 0 0 22px !important;
-}
-
-.job-detail-content #about-role > * {
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.job-detail-content #about-role h2 {
-  font-size: 25px !important;
-  line-height: 1.3 !important;
-  font-weight: 750 !important;
-  color: #18223a !important;
-  margin-bottom: 8px !important;
-}
-
-.job-detail-content #about-role p {
-  font-size: 15px !important;
-  line-height: 1.75 !important;
-  color: #53627f !important;
-  opacity: 1 !important;
-  margin-bottom: 18px !important;
-  max-width: 100% !important;
-}
-
-.job-detail-content #about-role p:last-child {
-  margin-bottom: 0 !important;
-}
-
-/* Role overview label */
-.job-detail-content #about-role .section-label,
-.job-detail-content #about-role .eyebrow {
-  font-size: 12px !important;
-  line-height: 1.4 !important;
-  font-weight: 700 !important;
-  color: #53627f !important;
-}
-
-/* Make About Role visually closer to the approved cards */
-.job-detail-content #about-role .detail-content-card,
-.job-detail-content #about-role .job-description-card {
-  padding: 28px 32px !important;
-  background: #fff !important;
-  border-radius: 12px !important;
-}
-
-
-/* ---------------------------------------------------------
-   JOB DETAILS
-   --------------------------------------------------------- */
-
-.job-detail-sidebar
-.detail-side-card:has(.job-detail-meta) {
-  padding: 24px !important;
-  border-radius: 14px !important;
-  background: #fff !important;
-}
-
-.job-detail-sidebar
-.detail-side-card:has(.job-detail-meta)
-.detail-side-heading {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-  margin-bottom: 24px !important;
-}
-
-.job-detail-sidebar
-.detail-side-card:has(.job-detail-meta)
-.detail-side-heading h3 {
-  margin: 0 !important;
-  color: #18223a !important;
-  font-size: 21px !important;
-  line-height: 1.3 !important;
-  font-weight: 750 !important;
-}
-
-.job-detail-sidebar
-.detail-side-card:has(.job-detail-meta)
-.job-detail-meta {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 18px !important;
-}
-
-.job-detail-sidebar
-.detail-side-card:has(.job-detail-meta)
-.job-detail-meta > div {
-  display: grid !important;
-  grid-template-columns: minmax(90px, 0.8fr) minmax(0, 1.2fr) !important;
-  align-items: start !important;
-  column-gap: 18px !important;
-  margin: 0 !important;
-}
-
-.job-detail-sidebar
-.detail-side-card:has(.job-detail-meta)
-.job-detail-meta span {
-  color: #8996ad !important;
-  font-size: 10px !important;
-  line-height: 1.35 !important;
-  font-weight: 750 !important;
-  text-transform: uppercase !important;
-  letter-spacing: .06em !important;
-}
-
-.job-detail-sidebar
-.detail-side-card:has(.job-detail-meta)
-.job-detail-meta strong {
-  color: #263552 !important;
-  font-size: 14px !important;
-  line-height: 1.45 !important;
-  font-weight: 650 !important;
-  overflow-wrap: anywhere !important;
-}
-
-
-/* ---------------------------------------------------------
-   DESKTOP — KEEP JOB DETAILS VISIBLE WHILE READING
-   --------------------------------------------------------- */
-
-@media (min-width: 1001px) {
-
-  .job-detail-sidebar
-  .detail-side-card:has(.job-detail-meta) {
-    position: sticky !important;
-    top: 24px !important;
-    align-self: start !important;
-  }
-
-}
-
-
-/* ---------------------------------------------------------
-   MOBILE
-   --------------------------------------------------------- */
-
-@media (max-width: 1000px) {
-
-  .job-detail-content #about-role h2 {
-    font-size: 21px !important;
-  }
-
-  .job-detail-content #about-role p {
-    font-size: 14px !important;
-    line-height: 1.7 !important;
-  }
-
-  .job-detail-content #about-role .detail-content-card,
-  .job-detail-content #about-role .job-description-card {
-    padding: 22px !important;
-  }
-
-  .job-detail-sidebar
-  .detail-side-card:has(.job-detail-meta) {
-    position: static !important;
-  }
-
-  .job-detail-sidebar
-  .detail-side-card:has(.job-detail-meta)
-  .job-detail-meta > div {
-    grid-template-columns: 1fr !important;
-    row-gap: 5px !important;
-  }
-}
-
-/* =========================================================
-   APPROVED JOB DESCRIPTION DESIGN
-   ABOUT ROLE + RESPONSIBILITIES + REQUIREMENTS + COMPANY
-   ========================================================= */
-
-/* ---------------------------------------------------------
-   MAIN CONTENT CONTAINER
-   --------------------------------------------------------- */
-
-.job-detail-content {
-  background: #ffffff !important;
-  border: 1px solid #e3e7ef !important;
-  border-radius: 12px !important;
-  overflow: hidden !important;
-}
-
-/* Remove individual section-card appearance */
-.job-detail-content .detail-content-section {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* ---------------------------------------------------------
-   ABOUT ROLE
-   --------------------------------------------------------- */
-
-.job-detail-content #about-role {
-  padding: 34px 40px 32px !important;
-  margin: 0 !important;
-  background: #ffffff !important;
-}
-
-.job-detail-content #about-role .detail-content-card,
-.job-detail-content #about-role .job-description-card {
-  padding: 0 !important;
-  margin: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-
-/* Heading */
-.job-detail-content #about-role h2 {
-  margin: 0 0 18px !important;
-  color: #18223a !important;
-  font-size: 25px !important;
-  line-height: 1.3 !important;
-  font-weight: 750 !important;
-}
-
-/* Icon */
-.job-detail-content #about-role .detail-section-icon,
-.job-detail-content #about-role .section-icon {
-  flex: 0 0 auto !important;
-}
-
-/* Description */
-.job-detail-content #about-role p {
-  margin: 0 0 18px !important;
-  max-width: 100% !important;
-  color: #53627f !important;
-  font-size: 15px !important;
-  line-height: 1.75 !important;
-  font-weight: 450 !important;
-  opacity: 1 !important;
-}
-
-.job-detail-content #about-role p:last-child {
-  margin-bottom: 0 !important;
-}
-
-
-/* ---------------------------------------------------------
-   RESPONSIBILITIES
-   --------------------------------------------------------- */
-
-.job-detail-content #responsibilities {
-  padding: 30px 40px 34px !important;
-  background: #ffffff !important;
-}
-
-/* Remove nested card styling */
-.job-detail-content #responsibilities .responsibilities-card,
-.job-detail-content #responsibilities .card {
-  padding: 0 !important;
-  margin: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* Section heading */
-.job-detail-content #responsibilities h2 {
-  margin: 0 0 22px !important;
-  color: #18223a !important;
-  font-size: 23px !important;
-  line-height: 1.35 !important;
-  font-weight: 750 !important;
-}
-
-/* Responsibility list */
-.job-detail-content #responsibilities ul {
-  margin: 0 !important;
-  padding: 0 !important;
-  list-style: none !important;
-}
-
-/* Remove grey row/card backgrounds */
-.job-detail-content #responsibilities li {
-  position: relative !important;
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 12px !important;
-  margin: 0 0 13px !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* Green check */
-.job-detail-content #responsibilities li::before {
-  content: "✓" !important;
-  flex: 0 0 21px !important;
-  width: 21px !important;
-  height: 21px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin-top: 1px !important;
-  border: 2px solid #20b77b !important;
-  border-radius: 50% !important;
-  color: #20a873 !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  box-sizing: border-box !important;
-}
-
-/* Text */
-.job-detail-content #responsibilities li,
-.job-detail-content #responsibilities li p,
-.job-detail-content #responsibilities li span {
-  color: #53627f !important;
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-}
-
-.job-detail-content #responsibilities li:last-child {
-  margin-bottom: 0 !important;
-}
-
-
-/* ---------------------------------------------------------
-   REQUIREMENTS
-   --------------------------------------------------------- */
-
-.job-detail-content #requirements {
-  padding: 30px 40px 34px !important;
-  background: #ffffff !important;
-}
-
-/* Remove nested card styling */
-.job-detail-content #requirements .requirements-card,
-.job-detail-content #requirements .card {
-  padding: 0 !important;
-  margin: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.job-detail-content #requirements h2 {
-  margin: 0 0 22px !important;
-  color: #18223a !important;
-  font-size: 23px !important;
-  line-height: 1.35 !important;
-  font-weight: 750 !important;
-}
-
-.job-detail-content #requirements ul {
-  margin: 0 !important;
-  padding: 0 !important;
-  list-style: none !important;
-}
-
-.job-detail-content #requirements li {
-  position: relative !important;
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 12px !important;
-  margin: 0 0 13px !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.job-detail-content #requirements li::before {
-  content: "✓" !important;
-  flex: 0 0 21px !important;
-  width: 21px !important;
-  height: 21px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin-top: 1px !important;
-  border: 2px solid #20b77b !important;
-  border-radius: 50% !important;
-  color: #20a873 !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-}
-
-.job-detail-content #requirements li,
-.job-detail-content #requirements li p,
-.job-detail-content #requirements li span {
-  color: #53627f !important;
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-}
-
-
-/* ---------------------------------------------------------
-   DIVIDER BETWEEN MAIN SECTIONS
-   --------------------------------------------------------- */
-
-.job-detail-content #responsibilities {
-  border-top: 1px solid #edf0f5 !important;
-}
-
-.job-detail-content #requirements {
-  border-top: 1px solid #edf0f5 !important;
-}
-
-.job-detail-content #company {
-  border-top: 1px solid #edf0f5 !important;
-}
-
-
-/* ---------------------------------------------------------
-   ABOUT COMPANY
-   --------------------------------------------------------- */
-
-.job-detail-content #company {
-  padding: 30px 40px 34px !important;
-  background: #ffffff !important;
-}
-
-.job-detail-content #company .company-card,
-.job-detail-content #company .card {
-  padding: 0 !important;
-  margin: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.job-detail-content #company h2 {
-  margin: 0 0 18px !important;
-  color: #18223a !important;
-  font-size: 23px !important;
-  line-height: 1.35 !important;
-  font-weight: 750 !important;
-}
-
-.job-detail-content #company p {
-  margin: 0 0 24px !important;
-  color: #53627f !important;
-  font-size: 15px !important;
-  line-height: 1.7 !important;
-}
-
-/* Company metadata row */
-.job-detail-content #company .company-meta,
-.job-detail-content #company .company-details {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 0 !important;
-  margin-top: 22px !important;
-}
-
-.job-detail-content #company .company-meta > div,
-.job-detail-content #company .company-details > div {
-  min-width: 0 !important;
-  padding: 0 22px !important;
-  border-right: 1px solid #e5e8ef !important;
-}
-
-.job-detail-content #company .company-meta > div:first-child,
-.job-detail-content #company .company-details > div:first-child {
-  padding-left: 0 !important;
-}
-
-.job-detail-content #company .company-meta > div:last-child,
-.job-detail-content #company .company-details > div:last-child {
-  padding-right: 0 !important;
-  border-right: 0 !important;
-}
-
-/* Company labels */
-.job-detail-content #company .company-meta span,
-.job-detail-content #company .company-details span {
-  color: #8996ad !important;
-  font-size: 11px !important;
-  line-height: 1.35 !important;
-  font-weight: 700 !important;
-}
-
-/* Company values */
-.job-detail-content #company .company-meta strong,
-.job-detail-content #company .company-details strong {
-  display: block !important;
-  margin-top: 5px !important;
-  color: #263552 !important;
-  font-size: 14px !important;
-  line-height: 1.45 !important;
-  font-weight: 650 !important;
-}
-
-/* Company CTA */
-.job-detail-content #company a {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  margin-top: 28px !important;
-  color: #5138ee !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  text-decoration: none !important;
-}
-
-
-/* ---------------------------------------------------------
-   MOBILE
-   --------------------------------------------------------- */
-
-@media (max-width: 1000px) {
-
-  .job-detail-content {
-    border-radius: 10px !important;
-  }
-
-  .job-detail-content #about-role,
-  .job-detail-content #responsibilities,
-  .job-detail-content #requirements,
-  .job-detail-content #company {
-    padding: 24px 22px !important;
-  }
-
-  .job-detail-content #about-role h2,
-  .job-detail-content #responsibilities h2,
-  .job-detail-content #requirements h2,
-  .job-detail-content #company h2 {
-    font-size: 21px !important;
-  }
-
-  .job-detail-content #about-role p,
-  .job-detail-content #responsibilities li,
-  .job-detail-content #responsibilities li p,
-  .job-detail-content #requirements li,
-  .job-detail-content #requirements li p,
-  .job-detail-content #company p {
-    font-size: 14px !important;
-    line-height: 1.7 !important;
-  }
-
-  .job-detail-content #company .company-meta,
-  .job-detail-content #company .company-details {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 20px !important;
-  }
-
-  .job-detail-content #company .company-meta > div,
-  .job-detail-content #company .company-details > div {
-    padding: 0 !important;
-    border-right: 0 !important;
-  }
-}
-
-
-/* ============================================================
-   APPROVED JOB CONTENT UI
-   About Role / Responsibilities / Requirements / About Company
-   ============================================================ */
-
-.detail-grid > .content-card {
-  background: #ffffff !important;
-  border: 1px solid #e4e8f0 !important;
-  border-radius: 16px !important;
-  overflow: hidden !important;
-}
-
-.detail-grid > .content-card > .tabs {
-  min-height: 58px !important;
-  display: flex !important;
-  align-items: stretch !important;
-  padding: 0 20px !important;
-  gap: 4px !important;
-  background: #ffffff !important;
-  border-bottom: 1px solid #e5e9f1 !important;
-}
-
-.detail-grid > .content-card > .tabs .tab {
-  position: relative !important;
-  min-height: 58px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 0 16px !important;
-  border: 0 !important;
-  background: transparent !important;
-  color: #52617d !important;
-  font-size: 13px !important;
-  line-height: 1.3 !important;
-  font-weight: 650 !important;
-  white-space: nowrap !important;
-  cursor: pointer !important;
-}
-
-.detail-grid > .content-card > .tabs .tab:hover {
-  color: #5038e8 !important;
-}
-
-.detail-grid > .content-card > .tabs .tab.active {
-  color: #5038e8 !important;
-  font-weight: 750 !important;
-}
-
-.detail-grid > .content-card > .tabs .tab.active::after {
-  content: "" !important;
-  position: absolute !important;
-  left: 12px !important;
-  right: 12px !important;
-  bottom: 0 !important;
-  height: 3px !important;
-  border-radius: 3px 3px 0 0 !important;
-  background: #5038e8 !important;
-}
-
-.detail-grid > .content-card > section {
-  padding: 34px 38px 40px !important;
-  background: #ffffff !important;
-}
-
-.detail-grid > .content-card .section-heading {
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 14px !important;
-  margin-bottom: 25px !important;
-}
-
-.detail-grid > .content-card .section-heading h2 {
-  margin: 0 !important;
-  color: #17233f !important;
-  font-size: 24px !important;
-  line-height: 1.3 !important;
-  font-weight: 750 !important;
-  letter-spacing: -0.02em !important;
-}
-
-.detail-grid > .content-card .section-heading p {
-  margin: 7px 0 0 !important;
-  color: #8996ad !important;
-  font-size: 13px !important;
-  line-height: 1.55 !important;
-}
-
-.detail-grid > .content-card .description {
-  color: #53627f !important;
-  font-size: 15px !important;
-  line-height: 1.75 !important;
-}
-
-.detail-grid > .content-card .description p {
-  margin: 0 0 17px !important;
-  color: #53627f !important;
-  font-size: 15px !important;
-  line-height: 1.75 !important;
-}
-
-.detail-grid > .content-card .description p:last-child {
-  margin-bottom: 0 !important;
-}
-
-.detail-grid > .content-card li {
-  margin-bottom: 14px !important;
-  color: #53627f !important;
-  font-size: 15px !important;
-  line-height: 1.7 !important;
-}
-
-.detail-grid > .content-card li:last-child {
-  margin-bottom: 0 !important;
-}
-
-.detail-grid > .content-card .fact-card {
-  background: #f8f9fc !important;
-  border: 1px solid #e5e9f1 !important;
-  border-radius: 10px !important;
-}
-
-.detail-grid > .content-card .fact-card span {
-  color: #8996ad !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-}
-
-.detail-grid > .content-card .fact-card strong {
-  color: #263552 !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-}
-
-@media (max-width: 1000px) {
-  .detail-grid > .content-card > .tabs {
-    padding: 0 10px !important;
-    overflow-x: auto !important;
-  }
-
-  .detail-grid > .content-card > .tabs .tab {
-    min-height: 52px !important;
-    padding: 0 12px !important;
-    font-size: 12px !important;
-  }
-
-  .detail-grid > .content-card > section {
-    padding: 25px 22px 30px !important;
-  }
-
-  .detail-grid > .content-card .section-heading h2 {
-    font-size: 21px !important;
-  }
-
-  .detail-grid > .content-card .description,
-  .detail-grid > .content-card .description p,
-  .detail-grid > .content-card li {
-    font-size: 14px !important;
-    line-height: 1.7 !important;
-  }
-}
-
-/* ============================================================
-   APPROVED JOB CONTENT DESIGN
-   Locked Match Snapshot / Sidebar are intentionally untouched.
-   ============================================================ */
-
-.approved-job-content {
-  width: 100%;
-  margin-top: 18px;
-  background: #ffffff;
-  border: 1px solid #e4e8f0;
-  border-radius: 17px;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-/* ============================================================
-   TOP MENU
-   ============================================================ */
-
-.approved-job-tabs {
-  width: 100%;
-  height: 64px;
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  padding: 0 24px;
-  border-bottom: 1px solid #e8ecf2;
-  background: #ffffff;
-  box-sizing: border-box;
-}
-
-.approved-job-tab {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 64px;
-  padding: 0 18px;
-
-  color: #52617d;
-  background: transparent;
-  border: 0;
-
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 650;
-  line-height: 1;
-
-  text-decoration: none;
-  white-space: nowrap;
-
-  cursor: pointer;
-}
-
-.approved-job-tab:hover {
-  color: #5138ee;
-}
-
-.approved-job-tab.active {
-  color: #5138ee;
-  font-weight: 750;
-}
-
-.approved-job-tab.active::after {
-  content: "";
-
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  bottom: -1px;
-
-  height: 3px;
-
-  background: #5138ee;
-  border-radius: 3px 3px 0 0;
-}
-
-/* ============================================================
-   CONTENT BODY
-   ============================================================ */
-
-.approved-job-content-body {
-  padding: 36px 42px 42px;
-  box-sizing: border-box;
-}
-
-/* ============================================================
-   SECTION HEADING
-   ============================================================ */
-
-.approved-section-heading {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  margin: 0 0 27px;
-}
-
-.approved-section-icon {
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #f0ebff;
-  color: #5138ee;
-  border-radius: 12px;
-
-  font-size: 21px;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.approved-section-heading h2 {
-  margin: 1px 0 7px;
-
-  color: #17233f;
-
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
-}
-
-.approved-section-heading p {
-  margin: 0;
-
-  color: #8b9ab6;
-
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-/* ============================================================
-   ABOUT ROLE
-   ============================================================ */
-
-.approved-role-label {
-  margin: 0 0 22px;
-
-  color: #536789;
-
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5;
-}
-
-/*
-   Neutralise the old component card so the component content
-   becomes part of the approved unified design.
-*/
-
-.approved-component-content .content-card,
-.approved-component-content .section-card,
-.approved-component-content .detail-section,
-.approved-component-content > section {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-/* Remove old component padding */
-.approved-component-content .content-card,
-.approved-component-content .section-card,
-.approved-component-content .detail-section {
-  padding: 0 !important;
-}
-
-/* ============================================================
-   BODY TEXT
-   ============================================================ */
-
-.approved-component-content .description,
-.approved-component-content .description p,
-.approved-component-content p {
-  color: #536789;
-  font-size: 15px;
-  line-height: 1.85;
-}
-
-.approved-component-content p {
-  margin-top: 0;
-  margin-bottom: 16px;
-}
-
-.approved-component-content p:last-child {
-  margin-bottom: 0;
-}
-
-/* ============================================================
-   RESPONSIBILITIES / REQUIREMENTS
-   ============================================================ */
-
-.approved-job-section {
-  margin-top: 54px;
-}
-
-.approved-job-section .approved-section-heading {
-  margin-bottom: 25px;
-}
-
-/*
-   Old component headings are hidden because the approved
-   heading is now owned by this new wrapper.
-*/
-
-.approved-component-content .section-heading,
-.approved-component-content .section-header {
-  display: none !important;
-}
-
-/* Old kicker/description labels */
-.approved-component-content .section-kicker {
-  display: none !important;
-}
-
-.approved-component-content ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.approved-component-content ol {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.approved-component-content li {
-  position: relative;
-
-  margin: 0 0 14px;
-  padding-left: 34px;
-
-  color: #536789;
-
-  font-size: 15px;
-  line-height: 1.65;
-}
-
-.approved-component-content li:last-child {
-  margin-bottom: 0;
-}
-
-.approved-component-content li::before {
-  content: "✓";
-
-  position: absolute;
-  left: 0;
-  top: 1px;
-
-  width: 20px;
-  height: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 2px solid #22b982;
-  border-radius: 50%;
-
-  color: #20a975;
-
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1;
-  box-sizing: border-box;
-}
-
-/* ============================================================
-   DIVIDER
-   ============================================================ */
-
-.approved-content-divider {
-  width: 100%;
-  height: 1px;
-
-  margin: 48px 0 38px;
-
-  background: #e6eaf0;
-}
-
-/* ============================================================
-   ABOUT COMPANY
-   ============================================================ */
-
-.approved-company-section {
-  margin-top: 0;
-}
-
-.approved-company-section .approved-section-heading {
-  margin-bottom: 25px;
-}
-
-/*
-   Company component is allowed to provide its existing data,
-   but its old outer card is removed visually.
-*/
-
-.approved-company-section .approved-component-content {
-  color: #536789;
-}
-
-/* ============================================================
-   COMPANY COMPONENT CLEANUP
-   ============================================================ */
-
-.approved-company-section .company-card,
-.approved-company-section .company-section,
-.approved-company-section .company-content,
-.approved-company-section .content-card {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-}
-
-/* Old Company heading */
-.approved-company-section .section-heading,
-.approved-company-section .section-header {
-  display: none !important;
-}
-
-/* Company description */
-.approved-company-section p {
-  color: #536789;
-  font-size: 15px;
-  line-height: 1.75;
-}
-
-/* ============================================================
-   COMPANY META
-   ============================================================ */
-
-.approved-company-section .company-meta,
-.approved-company-section .company-details {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 0 !important;
-
-  margin-top: 36px !important;
-}
-
-.approved-company-section .company-meta > div,
-.approved-company-section .company-details > div {
-  min-width: 0;
-
-  padding: 0 24px !important;
-
-  border-right: 1px solid #e1e6ed !important;
-}
-
-.approved-company-section .company-meta > div:first-child,
-.approved-company-section .company-details > div:first-child {
-  padding-left: 0 !important;
-}
-
-.approved-company-section .company-meta > div:last-child,
-.approved-company-section .company-details > div:last-child {
-  padding-right: 0 !important;
-  border-right: 0 !important;
-}
-
-.approved-company-section .company-meta span,
-.approved-company-section .company-details span {
-  color: #667792;
-  font-size: 13px;
-}
-
-.approved-company-section .company-meta strong,
-.approved-company-section .company-details strong {
-  display: block;
-  margin-top: 7px;
-
-  color: #17233f;
-
-  font-size: 15px;
-  font-weight: 650;
-}
-
-/* ============================================================
-   COMPANY PROFILE LINK
-   ============================================================ */
-
-.approved-company-section a {
-  color: #5138ee !important;
-  font-size: 15px;
-  font-weight: 750;
-  text-decoration: none;
-}
-
-.approved-company-section a:hover {
-  text-decoration: none;
-}
-
-/* ============================================================
-   MOBILE
-   ============================================================ */
-
-@media (max-width: 900px) {
-
-  .approved-job-tabs {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding: 0 10px;
-
-    scrollbar-width: none;
-  }
-
-  .approved-job-tabs::-webkit-scrollbar {
-    display: none;
-  }
-
-  .approved-job-tab {
-    flex: 0 0 auto;
-    padding: 0 14px;
-    font-size: 12px;
-  }
-
-  .approved-job-content-body {
-    padding: 30px 24px 34px;
-  }
-
-  .approved-section-heading h2 {
-    font-size: 21px;
-  }
-
-  .approved-component-content .description,
-  .approved-component-content .description p,
-  .approved-component-content p,
-  .approved-component-content li,
-  .approved-company-section p {
-    font-size: 14px;
-    line-height: 1.75;
-  }
-
-  .approved-company-section .company-meta,
-  .approved-company-section .company-details {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 26px !important;
-  }
-
-  .approved-company-section .company-meta > div,
-  .approved-company-section .company-details > div {
-    padding: 0 !important;
-    border-right: 0 !important;
-  }
-}
-
-@media (max-width: 600px) {
-
-  .approved-job-content {
-    border-radius: 14px;
-  }
-
-  .approved-job-tabs {
-    min-height: 56px;
-  }
-
-  .approved-job-tab {
-    height: 56px;
-    padding: 0 12px;
-    font-size: 11px;
-  }
-
-  .approved-job-content-body {
-    padding: 25px 18px 30px;
-  }
-
-  .approved-section-heading {
-    gap: 13px;
-    margin-bottom: 21px;
-  }
-
-  .approved-section-icon {
-    width: 42px;
-    height: 42px;
-    flex-basis: 42px;
-    border-radius: 10px;
-    font-size: 18px;
-  }
-
-  .approved-section-heading h2 {
-    font-size: 19px;
-  }
-
-  .approved-section-heading p {
-    font-size: 12px;
-  }
-
-  .approved-role-label {
-    font-size: 13px;
-  }
-
-  .approved-component-content .description,
-  .approved-component-content .description p,
-  .approved-component-content p,
-  .approved-component-content li,
-  .approved-company-section p {
-    font-size: 13px;
-    line-height: 1.75;
-  }
-
-  .approved-job-section {
-    margin-top: 42px;
-  }
-
-  .approved-content-divider {
-    margin: 38px 0 30px;
-  }
-
-  .approved-company-section .company-meta,
-  .approved-company-section .company-details {
-    grid-template-columns: 1fr !important;
-    gap: 24px !important;
-  }
-}
-
-
-/* ============================================================
-   JOB DETAIL CONTENT — APPROVED DESIGN REFINEMENT
-   ------------------------------------------------------------
-   SCOPE:
-   - Overview tabs
-   - About the Role
-   - Responsibilities
-   - Requirements
-   - About Company
-   - Job Details
-   - Share Job
-
-   PROTECTED:
-   - Match Snapshot
-   - Job Highlights
-   - Match Score Breakdown
-   - Job Header
-   - API / scoring / data logic
-   ============================================================ */
-
-
-/* ============================================================
-   1. MAIN JOB DETAIL LAYOUT
-   ============================================================ */
-
-.job-detail-layout {
-  align-items: start;
-}
-
-.job-detail-main {
-  min-width: 0;
-}
-
-
-/* ============================================================
-   2. OVERVIEW / TABS
-   ============================================================ */
-
-.job-detail-main .tabs {
-  min-height: 62px;
-  display: flex;
-  align-items: stretch;
-  padding: 0 24px;
-  border-bottom: 1px solid #e7ebf2;
-  background: #ffffff;
-}
-
-.job-detail-main .tab {
-  position: relative;
-  min-height: 62px;
-  padding: 0 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #53627f;
-  background: transparent;
-  border: 0;
-
-  font-size: 13px;
-  line-height: 1;
-  font-weight: 650;
-
-  white-space: nowrap;
-  cursor: pointer;
-  transition:
-    color 0.18s ease,
-    background 0.18s ease;
-}
-
-.job-detail-main .tab:hover {
-  color: #5138ee;
-}
-
-.job-detail-main .tab.active {
-  color: #5138ee;
-  font-weight: 750;
-}
-
-.job-detail-main .tab.active::after {
-  content: "";
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 0;
-  height: 3px;
-  border-radius: 3px 3px 0 0;
-  background: #5138ee;
-}
-
-
-/* ============================================================
-   3. CONTENT SECTIONS
-   ============================================================ */
-
-.job-detail-main .content-card {
-  background: #ffffff;
-  border: 1px solid #e4e9f1;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.job-detail-main .content-card > section {
-  padding: 34px 36px 38px;
-}
-
-
-/* ============================================================
-   4. SECTION HEADINGS
-   ============================================================ */
-
-.job-detail-main .section-heading {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 0 0 22px;
-}
-
-.job-detail-main .section-heading h2 {
-  margin: 0;
-  color: #17233d;
-
-  font-size: 23px !important;
-  line-height: 1.25;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-}
-
-.job-detail-main .section-heading p {
-  margin: 5px 0 0;
-  color: #8997b0;
-
-  font-size: 13px !important;
-  line-height: 1.55;
-}
-
-.job-detail-main .section-heading > span,
-.job-detail-main .section-heading > div:first-child {
-  flex: 0 0 auto;
-}
-
-
-/* ============================================================
-   5. ABOUT THE ROLE
-   ============================================================ */
-
-.job-detail-main .description {
-  color: #536684;
-
-  font-size: 15px !important;
-  line-height: 1.85 !important;
-  font-weight: 450;
-
-  max-width: 100%;
-}
-
-.job-detail-main .description p {
-  margin: 0 0 18px;
-
-  color: #536684;
-  font-size: 15px !important;
-  line-height: 1.85 !important;
-}
-
-.job-detail-main .description p:last-child {
-  margin-bottom: 0;
-}
-
-
-/* Small label such as "Role & responsibilities" */
-
-.job-detail-main .description-label,
-.job-detail-main .content-label {
-  margin-bottom: 14px;
-
-  color: #53627f;
-  font-size: 13px;
-  line-height: 1.5;
-  font-weight: 650;
-}
-
-
-/* ============================================================
-   6. RESPONSIBILITIES
-   ============================================================ */
-
-.job-detail-main ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.job-detail-main li {
-  position: relative;
-
-  margin: 0 0 14px;
-  padding-left: 29px;
-
-  color: #536684;
-
-  font-size: 15px !important;
-  line-height: 1.7 !important;
-  font-weight: 450;
-}
-
-.job-detail-main li:last-child {
-  margin-bottom: 0;
-}
-
-.job-detail-main li::before {
-  content: "✓";
-
-  position: absolute;
-  left: 0;
-  top: 1px;
-
-  width: 19px;
-  height: 19px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 2px solid #20b486;
-  border-radius: 50%;
-
-  color: #20a97e;
-
-  font-size: 10px;
-  font-weight: 850;
-}
-
-
-/* ============================================================
-   7. REQUIREMENTS
-   ============================================================ */
-
-.job-detail-main .detail-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-
-  margin: 22px 0 24px;
-}
-
-.job-detail-main .fact-card {
-  min-height: 88px;
-
-  padding: 17px 19px;
-
-  background: #f8faff;
-  border: 1px solid #e4e9f2;
-  border-radius: 11px;
-}
-
-.job-detail-main .fact-card span {
-  display: block;
-
-  color: #8a98b0;
-
-  font-size: 11px;
-  line-height: 1.4;
-  font-weight: 600;
-}
-
-.job-detail-main .fact-card strong {
-  display: block;
-
-  margin-top: 8px;
-
-  color: #243352;
-
-  font-size: 14px;
-  line-height: 1.4;
-  font-weight: 750;
-}
-
-
-/* Relevant skills */
-
-.job-detail-main .skill-row {
-  gap: 8px;
-}
-
-.job-detail-main .skill-chip,
-.job-detail-main .tool-chip,
-.job-detail-main .skill-more {
-  padding: 7px 11px;
-
-  border-radius: 8px;
-
-  font-size: 11px;
-  line-height: 1.2;
-  font-weight: 650;
-}
-
-
-/* ============================================================
-   8. SEPARATOR BEFORE ABOUT COMPANY
-   ============================================================ */
-
-.job-detail-main #company,
-.job-detail-main .company-section {
-  border-top: 1px solid #e7ebf2;
-  margin-top: 4px;
-  padding-top: 34px;
-}
-
-
-/* ============================================================
-   9. ABOUT COMPANY
-   ============================================================ */
-
-.job-detail-main .company-details,
-.job-detail-main .company-meta {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-
-  margin-top: 28px;
-}
-
-.job-detail-main .company-details > div,
-.job-detail-main .company-meta > div {
-  min-height: 58px;
-  padding: 0 22px;
-
-  border-right: 1px solid #e4e8ef;
-}
-
-.job-detail-main .company-details > div:first-child,
-.job-detail-main .company-meta > div:first-child {
-  padding-left: 0;
-}
-
-.job-detail-main .company-details > div:last-child,
-.job-detail-main .company-meta > div:last-child {
-  border-right: 0;
-}
-
-.job-detail-main .company-details span,
-.job-detail-main .company-meta span {
-  display: block;
-
-  margin-bottom: 7px;
-
-  color: #8491a8;
-
-  font-size: 11px;
-  font-weight: 650;
-}
-
-.job-detail-main .company-details strong,
-.job-detail-main .company-meta strong {
-  color: #263553;
-
-  font-size: 14px;
-  line-height: 1.4;
-  font-weight: 750;
-}
-
-.job-detail-main #company p,
-.job-detail-main .company-section p {
-  color: #536684;
-
-  font-size: 15px !important;
-  line-height: 1.75 !important;
-}
-
-
-/* Company profile CTA */
-
-.job-detail-main .company-profile-link,
-.job-detail-main .company-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  margin-top: 25px;
-
-  color: #5138ee;
-
-  font-size: 14px;
-  font-weight: 750;
-
-  text-decoration: none;
-}
-
-.job-detail-main .company-profile-link:hover,
-.job-detail-main .company-link:hover {
-  text-decoration: underline;
-}
-
-
-/* ============================================================
-   10. JOB DETAILS SIDEBAR
-   ------------------------------------------------------------
-   Sidebar only.
-   Match Score Breakdown is explicitly excluded.
-   ============================================================ */
-
-.job-detail-sidebar {
-  align-self: start;
-}
-
-.job-detail-sidebar > .detail-side-card:not(.match-breakdown-card) {
-  border: 1px solid #e2e7ef;
-  border-radius: 15px;
-  background: #ffffff;
-
-  padding: 23px 24px;
-}
-
-.job-detail-sidebar
-  > .detail-side-card:not(.match-breakdown-card)
-  .detail-side-heading {
-  margin-bottom: 22px;
-}
-
-.job-detail-sidebar
-  > .detail-side-card:not(.match-breakdown-card)
-  .detail-side-heading h3 {
-  color: #1d2943;
-
-  font-size: 16px !important;
-  line-height: 1.3;
-  font-weight: 800;
-}
-
-
-/* Job Details */
-
-.job-detail-sidebar .job-detail-meta {
-  display: grid;
-  gap: 19px;
-}
-
-.job-detail-sidebar .job-detail-meta > div {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 5px;
-}
-
-.job-detail-sidebar .job-detail-meta span {
-  color: #8b98ae;
-
-  font-size: 10px;
-  line-height: 1.35;
-  font-weight: 750;
-
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-}
-
-.job-detail-sidebar .job-detail-meta strong {
-  color: #253450;
-
-  font-size: 13px;
-  line-height: 1.45;
-  font-weight: 700;
-
-  overflow-wrap: anywhere;
-}
-
-
-/* ============================================================
-   11. SHARE CARD
-   ============================================================ */
-
-.job-detail-sidebar .share-card {
-  padding: 20px 24px !important;
-}
-
-.job-detail-sidebar .share-card h3 {
-  margin: 0 0 15px;
-
-  color: #26334e;
-
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.job-detail-sidebar .share-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.job-detail-sidebar .share-actions button {
-  width: 34px;
-  height: 34px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid #e1e6ee;
-  border-radius: 8px;
-
-  background: #ffffff;
-  color: #66748d;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  cursor: pointer;
-  transition:
-    border-color 0.18s ease,
-    color 0.18s ease,
-    background 0.18s ease;
-}
-
-.job-detail-sidebar .share-actions button:hover {
-  border-color: #cfc7ff;
-  color: #5138ee;
-  background: #faf9ff;
-}
-
-
-/* ============================================================
-   12. REMOVE DUPLICATED CONTENT HEADING VISUALLY
-   ------------------------------------------------------------
-   Current screenshot shows "About the Role" twice.
-   Keep the actual section content; suppress only the redundant
-   inner heading when it immediately follows the main heading.
-   ============================================================ */
-
-.job-detail-main
-  .section-heading
-  + .description
-  + .section-heading:first-of-type {
-  margin-top: 0;
-}
-
-
-/* ============================================================
-   13. DESKTOP READABILITY
-   ============================================================ */
-
-@media (min-width: 901px) {
-  .job-detail-main .content-card > section {
-    padding-left: 38px;
-    padding-right: 38px;
-  }
-
-  .job-detail-main .description {
-    max-width: 1050px;
-  }
-}
-
-
-/* ============================================================
-   14. TABLET
-   ============================================================ */
-
-@media (max-width: 1100px) and (min-width: 701px) {
-  .job-detail-main .content-card > section {
-    padding: 30px;
-  }
-
-  .job-detail-main .detail-facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .job-detail-main .company-details,
-  .job-detail-main .company-meta {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px;
-  }
-
-  .job-detail-main .company-details > div,
-  .job-detail-main .company-meta > div {
-    padding: 0 15px;
-    border-right: 0;
-  }
-}
-
-
-/* ============================================================
-   15. MOBILE
-   ============================================================ */
-
-@media (max-width: 700px) {
-  .job-detail-main .tabs {
-    min-height: 54px;
-    padding: 0 8px;
-    overflow-x: auto;
-  }
-
-  .job-detail-main .tab {
-    min-height: 54px;
-    padding: 0 12px;
-
-    font-size: 12px;
-  }
-
-  .job-detail-main .tab.active::after {
-    left: 10px;
-    right: 10px;
-  }
-
-  .job-detail-main .content-card > section {
-    padding: 26px 20px 30px;
-  }
-
-  .job-detail-main .section-heading h2 {
-    font-size: 21px !important;
-  }
-
-  .job-detail-main .section-heading p {
-    font-size: 12px !important;
-  }
-
-  .job-detail-main .description,
-  .job-detail-main .description p,
-  .job-detail-main li,
-  .job-detail-main #company p,
-  .job-detail-main .company-section p {
-    font-size: 14px !important;
-    line-height: 1.75 !important;
-  }
-
-  .job-detail-main .detail-facts {
-    grid-template-columns: 1fr;
-  }
-
-  .job-detail-main .company-details,
-  .job-detail-main .company-meta {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .job-detail-main .company-details > div,
-  .job-detail-main .company-meta > div {
-    padding: 0;
-    border-right: 0;
-  }
-
-  .job-detail-sidebar .job-detail-meta {
-    gap: 16px;
-  }
-}
-
-/* ============================================================
-   ABOUT THE ROLE — FINAL SECTION POLISH
-   Section-scoped only
-   ============================================================ */
-
-.job-description-section {
-  padding: 34px 36px 38px !important;
-}
-
-.job-description-section .job-content-heading {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 30px;
-}
-
-.job-description-section .job-content-icon {
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: #f0ebff;
-  color: #5738ff;
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.job-description-section .job-content-heading h2 {
-  margin: 0;
-  color: #17213a;
-  font-size: 25px;
-  line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.job-description-section .job-content-heading p {
-  margin: 7px 0 0;
-  color: #91a0bc;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.job-description-section .job-description-body {
-  padding-left: 66px;
-}
-
-.job-description-section .job-description-body h3 {
-  margin: 0 0 20px;
-  color: #536584;
-  font-size: 16px;
-  line-height: 1.4;
-  font-weight: 650;
-}
-
-.job-description-section .job-description-points {
-  display: grid;
-  gap: 15px;
-}
-
-.job-description-section .job-description-points p {
-  position: relative;
-  margin: 0;
-  padding-left: 25px;
-  color: #536584;
-  font-size: 15px;
-  line-height: 1.75;
-}
-
-
-
-/* Mobile — section only */
-@media (max-width: 700px) {
-  .job-description-section {
-    padding: 25px 22px 30px !important;
-  }
-
-  .job-description-section .job-content-heading {
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .job-description-section .job-content-icon {
-    width: 44px;
-    height: 44px;
-    flex-basis: 44px;
-    border-radius: 12px;
-    font-size: 19px;
-  }
-
-  .job-description-section .job-content-heading h2 {
-    font-size: 21px;
-  }
-
-  .job-description-section .job-content-heading p {
-    font-size: 13px;
-  }
-
-  .job-description-section .job-description-body {
-    padding-left: 0;
-  }
-
-  .job-description-section .job-description-body h3 {
-    font-size: 15px;
-  }
-
-  .job-description-section .job-description-points p {
-    font-size: 14px;
-    line-height: 1.7;
-    padding-left: 21px;
-  }
-}
-
-/* ============================================================
-   ABOUT THE ROLE — UNIQUE FINAL UI
-   Section scoped only
-   ============================================================ */
-
-.job-description-section {
-  padding: 34px 36px 40px !important;
-}
-
-.job-description-section .job-content-heading {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin: 0 0 32px;
-}
-
-.job-description-section .job-content-icon {
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: #f0ebff;
-  color: #5738ff;
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.job-description-section .job-content-heading h2 {
-  margin: 0;
-  color: #17213a;
-  font-size: 25px !important;
-  line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.job-description-section .job-content-heading p {
-  margin: 7px 0 0;
-  color: #91a0bc;
-  font-size: 14px !important;
-  line-height: 1.5;
-}
-
-/* Description list */
-
-.job-description-section .job-description-body {
-  margin: 0;
-  padding: 0;
-}
-
-.job-description-section .job-description-points {
-  display: grid;
-  gap: 16px;
-}
-
-.job-description-section .job-description-point {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  margin: 0;
-}
-
-.job-description-section .job-description-check {
-  width: 24px;
-  height: 24px;
-  flex: 0 0 24px;
-  margin-top: 2px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 7px;
-  background: #f0ebff;
-  color: #5738ff;
-
-  font-size: 14px;
-  line-height: 1;
-  font-weight: 900;
-}
-
-.job-description-section .job-description-point p {
-  margin: 0;
-  color: #536584;
-  font-size: 15px !important;
-  line-height: 1.75;
-}
-
-/* ============================================================
-   IMPORTANT:
-   Prevent legacy About Role sub-headings from appearing
-   inside this section.
-   ============================================================ */
-
-.job-description-section .job-description-body h3,
-.job-description-section .role-overview,
-.job-description-section .role-responsibilities {
-  display: none !important;
-}
-
-/* Mobile */
-
-@media (max-width: 700px) {
-  .job-description-section {
-    padding: 25px 22px 30px !important;
-  }
-
-  .job-description-section .job-content-heading {
-    gap: 12px;
-    margin-bottom: 25px;
-  }
-
-  .job-description-section .job-content-icon {
-    width: 44px;
-    height: 44px;
-    flex-basis: 44px;
-    border-radius: 12px;
-    font-size: 19px;
-  }
-
-  .job-description-section .job-content-heading h2 {
-    font-size: 21px !important;
-  }
-
-  .job-description-section .job-content-heading p {
-    font-size: 13px !important;
-  }
-
-  .job-description-section .job-description-points {
-    gap: 14px;
-  }
-
-  .job-description-section .job-description-point {
-    gap: 11px;
-  }
-
-  .job-description-section .job-description-check {
-    width: 22px;
-    height: 22px;
-    flex-basis: 22px;
-    font-size: 13px;
-  }
-
-  .job-description-section .job-description-point p {
-    font-size: 14px !important;
-    line-height: 1.7;
-  }
-}
-
-/* ============================================================
-   ABOUT THE ROLE — CHECKBOX ONLY
-   ============================================================ */
-
-.job-description-section .job-description-point {
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 14px !important;
-  position: relative !important;
-}
-
-.job-description-section .job-description-point::before,
-.job-description-section .job-description-point::after,
-.job-description-section .job-description-point p::before,
-.job-description-section .job-description-point p::after {
-  content: none !important;
-  display: none !important;
-}
-
-.job-description-section .job-description-check {
-  display: grid !important;
-  place-items: center !important;
-
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  flex: 0 0 24px !important;
-
-  margin-top: 2px !important;
-
-  border-radius: 7px !important;
-  background: #f0ebff !important;
-  color: #5738ff !important;
-
-  font-size: 14px !important;
-  line-height: 1 !important;
-  font-weight: 900 !important;
-}
-
-.job-description-section .job-description-point p {
-  position: static !important;
-  padding-left: 0 !important;
-  margin: 0 !important;
-}
-
-/* ============================================================
-   REMOVE LEGACY DUPLICATE ROLE HEADER
-   Keep the structured About the Role section only.
-   ============================================================ */
-
-.job-description-section
-  > .job-description-legacy-header,
-.job-description-section
-  > .legacy-role-header {
-  display: none !important;
-}
-
-/* Prevent accidental old Role Overview heading */
-.job-description-section .job-description-body > h3 {
-  display: none !important;
-}
-
-/* Mobile */
-@media (max-width: 700px) {
-  .job-description-section .job-description-point {
-    gap: 11px !important;
-  }
-
-  .job-description-section .job-description-check {
-    width: 22px !important;
-    height: 22px !important;
-    min-width: 22px !important;
-    flex-basis: 22px !important;
-    font-size: 13px !important;
-  }
-}
-
-/* About the Role — checkbox is the ONLY marker */
-.approved-about-role .job-description-point {
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 14px !important;
-}
-
-.approved-about-role .job-description-point::before,
-.approved-about-role .job-description-point::after,
-.approved-about-role .job-description-point p::before,
-.approved-about-role .job-description-point p::after {
-  content: none !important;
-  display: none !important;
-}
-
-.approved-about-role .job-description-point p {
-  padding-left: 0 !important;
-  margin: 0 !important;
-}
-
-.approved-about-role .job-description-check {
-  display: grid !important;
-  place-items: center !important;
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  flex: 0 0 24px !important;
-  margin-top: 2px !important;
-  border-radius: 7px !important;
-  background: #f0ebff !important;
-  color: #5738ff !important;
-  font-size: 14px !important;
-  font-weight: 900 !important;
-}
-
-@media (max-width: 700px) {
-  .approved-about-role .job-description-point {
-    gap: 11px !important;
-  }
-
-  .approved-about-role .job-description-check {
-    width: 22px !important;
-    height: 22px !important;
-    min-width: 22px !important;
-    flex-basis: 22px !important;
-    font-size: 13px !important;
   }
-}
-
-/* About the Role — Role Overview */
-.approved-about-role .role-overview-point {
-  display: block !important;
-  margin-bottom: 6px !important;
-}
-
-.approved-about-role .role-overview-point p {
-  padding-left: 0 !important;
-  margin: 0 !important;
-  color: #536584 !important;
-  font-size: 15px !important;
-  line-height: 1.5 !important;
-  font-weight: 700 !important;
-}
-
-.approved-about-role .role-overview-point::before,
-.approved-about-role .role-overview-point::after,
-.approved-about-role .role-overview-point p::before,
-.approved-about-role .role-overview-point p::after {
-  display: none !important;
-  content: none !important;
-}
-
-/* =========================================================
-   JOB HIGHLIGHTS — ALIGN WITH MATCH SNAPSHOT
-   ========================================================= */
-
-.job-detail-sidebar > .detail-side-card:first-child {
-  margin-top: 14px;
-}
-
-
-/* =========================================================
-   JOB DETAILS — SAME WIDTH AS MATCH SCORE BREAKDOWN
-   ========================================================= */
-
-.job-detail-sidebar > .detail-side-card {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.job-detail-sidebar > .match-breakdown-card,
-.job-detail-sidebar > .detail-side-card:nth-of-type(3) {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-
-/* =========================================================
-   JOB DETAIL — SHARED CONTENT WIDTH
-   Header + Match Snapshot + Job Highlights
-   ========================================================= */
-
-.job-detail-header {
-  width: 100%;
-  max-width: none;
-  box-sizing: border-box;
-}
-
-.job-detail-layout {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.job-detail-main,
-.job-detail-sidebar {
-  min-width: 0;
-}
-
-/* Keep the header aligned with the same page container */
-.job-detail-header,
-.job-detail-layout {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Prevent sidebar cards from creating a different visual width */
-.job-detail-sidebar .detail-side-card {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Match Snapshot and header use the same available content width */
-.job-detail-main > .snapshot,
-.job-detail-main > .approved-job-content {
-  width: 100%;
-  box-sizing: border-box;
-}
 
-@media (max-width: 900px) {
-  .job-detail-header,
-  .job-detail-layout {
+  .mj-job-details {
     width: 100%;
   }
 }
-
-
-/* ============================================================
-   MOBILE JOB HIGHLIGHTS — INDEPENDENT SECTION
-   Does not affect other sidebar cards.
-   ============================================================ */
-
-@media (max-width: 800px) {
-
-  .job-detail-sidebar > .detail-side-card:first-child {
-    width: 100%;
-    margin: 0;
-
-    padding: 16px;
-
-    border: 1px solid #e6eaf0;
-    border-radius: 14px;
-
-    background: #ffffff;
-    box-shadow: 0 2px 10px rgba(20, 30, 50, 0.035);
-  }
-
-  .job-detail-sidebar > .detail-side-card:first-child
-  .detail-side-heading {
-    gap: 10px;
-    margin-bottom: 13px;
-  }
-
-  .job-detail-sidebar > .detail-side-card:first-child
-  .detail-side-icon {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-
-    border-radius: 9px;
-
-    background: #f0edff;
-    color: #5138ee;
-
-    font-size: 14px;
-  }
-
-  .job-detail-sidebar > .detail-side-card:first-child
-  .detail-side-heading h3 {
-    font-size: 16px;
-    line-height: 1.25;
-    font-weight: 750;
-  }
-
-  .job-detail-sidebar > .detail-side-card:first-child
-  .highlight-item {
-    padding: 11px 0;
-  }
-
-  .job-detail-sidebar > .detail-side-card:first-child
-  .highlight-item strong {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  .job-detail-sidebar > .detail-side-card:first-child
-  .highlight-item span {
-    margin-top: 4px;
-
-    font-size: 10px;
-    line-height: 1.55;
-  }
-}
-
-/* ============================================================
-   MOBILE MATCH SCORE BREAKDOWN — INDEPENDENT
-   Desktop presentation remains untouched.
-   ============================================================ */
-
-@media (max-width: 800px) {
-
-  .job-detail-sidebar > .match-breakdown-card {
-    width: 100%;
-    margin: 0;
-    padding: 16px !important;
-
-    border: 1px solid #e6eaf0 !important;
-    border-radius: 14px !important;
-
-    background: #ffffff !important;
-    box-shadow: 0 2px 10px rgba(20, 30, 50, 0.035) !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .detail-side-heading {
-    gap: 10px !important;
-    margin-bottom: 18px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .detail-side-icon {
-    width: 30px !important;
-    height: 30px !important;
-    flex: 0 0 30px !important;
-
-    border-radius: 9px !important;
-
-    background: #f0edff !important;
-    color: #5138ee !important;
-
-    font-size: 14px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .detail-side-heading h3 {
-    font-size: 16px !important;
-    line-height: 1.25 !important;
-    font-weight: 750 !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .side-score {
-    display: flex !important;
-    align-items: center !important;
-    gap: 16px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .side-score-ring {
-    width: 78px !important;
-    height: 78px !important;
-    flex: 0 0 78px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .side-score-ring strong {
-    font-size: 20px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .side-score-ring span {
-    font-size: 9px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .scorebar {
-    margin-bottom: 13px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .scorebar > div {
-    margin-bottom: 6px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .scorebar > div > span,
-  .job-detail-sidebar > .match-breakdown-card
-  .scorebar > div > b {
-    font-size: 11px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .scorebar > i {
-    height: 6px !important;
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .breakdown-link {
-    margin-top: 14px !important;
-    font-size: 11px !important;
-  }
-}
-
-/* ============================================================
-   MOBILE JOB DETAILS — INDEPENDENT SECTION
-   ============================================================ */
-
-@media (max-width: 800px) {
-
-  .job-detail-sidebar .job-detail-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-
-    margin: 0;
-    padding: 2px 0;
-  }
-
-  .job-detail-sidebar .job-detail-meta > div {
-    min-width: 0;
-    padding: 11px 10px;
-
-    border-bottom: 1px solid #edf0f5;
-  }
-
-  .job-detail-sidebar .job-detail-meta > div:nth-child(odd) {
-    padding-left: 0;
-    padding-right: 12px;
-  }
-
-  .job-detail-sidebar .job-detail-meta > div:nth-child(even) {
-    padding-left: 12px;
-    padding-right: 0;
-
-    border-left: 1px solid #edf0f5;
-  }
-
-  .job-detail-sidebar .job-detail-meta > div:nth-last-child(-n + 2) {
-    border-bottom: 0;
-  }
-
-  .job-detail-sidebar .job-detail-meta span {
-    margin-bottom: 4px;
-
-    color: #8995aa;
-    font-size: 9px;
-    line-height: 1.2;
-    letter-spacing: 0.06em;
-  }
-
-  .job-detail-sidebar .job-detail-meta strong {
-    color: #26324b;
-    font-size: 12px;
-    line-height: 1.45;
-    font-weight: 650;
-  }
-}
-
-
-/* ============================================================
-   MOBILE JOB DETAIL ACCORDIONS
-   ------------------------------------------------------------
-   MOBILE ONLY.
-   Desktop presentation remains unchanged.
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-  /* Main content accordion rows */
-  .mobile-accordion-trigger {
-    width: 100%;
-    min-height: 56px;
-
-    display: flex;
-    align-items: center;
-
-    margin: 0;
-    padding: 0 14px;
-
-    border: 0;
-    background: #ffffff;
-
-    cursor: pointer;
-    text-align: left;
-
-    box-sizing: border-box;
-  }
-
-  .mobile-accordion-trigger::after {
-    content: "›";
-
-    margin-left: auto;
-
-    color: #7b879c;
-
-    font-size: 22px;
-    line-height: 1;
-
-    transition: transform .18s ease;
-  }
-
-  .mobile-accordion-trigger[aria-expanded="true"]::after {
-    transform: rotate(90deg);
-  }
-
-  .mobile-accordion-trigger .approved-section-icon {
-    width: 28px;
-    height: 28px;
-    flex: 0 0 28px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 8px;
-
-    background: #f0edff;
-    color: #5138ee;
-
-    font-size: 12px;
-  }
-
-  .mobile-accordion-trigger h2 {
-    margin: 0 !important;
-
-    color: #17233f;
-
-    font-size: 13px !important;
-    line-height: 1.3 !important;
-    font-weight: 700;
-  }
-
-  .mobile-accordion-trigger p {
-    display: none;
-  }
-
-  .mobile-accordion-content {
-    display: none;
-  }
-
-  .mobile-accordion-content.is-open {
-    display: block;
-  }
-
-  .mobile-accordion-content
-  .approved-component-content {
-    padding: 0 14px 16px !important;
-  }
-
-
-  /* Sidebar accordion rows */
-  .mobile-sidebar-accordion-trigger {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    margin: 0;
-    padding: 0;
-
-    border: 0;
-    background: transparent;
-
-    cursor: pointer;
-    text-align: left;
-  }
-
-  .mobile-sidebar-accordion-trigger::after {
-    content: "›";
-
-    margin-left: auto;
-
-    color: #7b879c;
-
-    font-size: 22px;
-    line-height: 1;
-
-    transition: transform .18s ease;
-  }
-
-  .mobile-sidebar-accordion-trigger[aria-expanded="true"]::after {
-    transform: rotate(90deg);
-  }
-
-  /* Force accordion state to win over existing sidebar rules */
-  .job-detail-sidebar
-  .detail-side-card
-  .mobile-sidebar-accordion-content {
-    display: none !important;
-  }
-
-  .job-detail-sidebar
-  .detail-side-card
-  .mobile-sidebar-accordion-content.is-open {
-    display: block !important;
-  }
-
-  .job-detail-sidebar
-  .detail-side-card
-  .mobile-sidebar-accordion-content.is-open
-  .score-breakdown-layout {
-    display: grid !important;
-  }
-
-  .job-detail-sidebar
-  .detail-side-card
-  .mobile-sidebar-accordion-content.is-open
-  .job-detail-meta {
-    display: flex !important;
-  }
-
-
-  /* Clean mobile card treatment */
-  .approved-job-section {
-    overflow: hidden;
-  }
-
-  .approved-content-divider {
-    display: none;
-  }
-
-  /* Do not let nested desktop card styling create
-     another card inside the mobile accordion. */
-  .mobile-accordion-content .section {
-    margin: 0 !important;
-    padding: 0 !important;
-
-    border: 0 !important;
-    border-radius: 0 !important;
-
-    box-shadow: none !important;
-  }
-}
-
-
-/* ============================================================
-   MOBILE JOB DETAIL ACCORDIONS — FINAL
-   MOBILE ONLY / DESKTOP UNTOUCHED
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-  /* Main sections */
-  .mobile-accordion-trigger {
-    width: 100%;
-    min-height: 54px;
-
-    display: flex;
-    align-items: center;
-
-    margin: 0;
-    padding: 0 14px;
-
-    border: 0;
-    background: #ffffff;
-
-    color: #17233f;
-
-    font: inherit;
-    text-align: left;
-
-    cursor: pointer;
-  }
-
-  .mobile-accordion-trigger::after {
-    content: "›";
-
-    margin-left: auto;
-
-    color: #7c879b;
-
-    font-size: 21px;
-    line-height: 1;
-
-    transition: transform .18s ease;
-  }
-
-  .mobile-accordion-trigger[aria-expanded="true"]::after {
-    transform: rotate(90deg);
-  }
-
-  .mobile-accordion-trigger h2 {
-    margin: 0 !important;
-
-    color: #17233f;
-
-    font-size: 13px !important;
-    line-height: 1.3 !important;
-    font-weight: 700 !important;
-  }
-
-  .mobile-accordion-trigger p {
-    display: none !important;
-  }
-
-  .mobile-accordion-content {
-    display: none;
-  }
-
-  .mobile-accordion-content.is-open {
-    display: block;
-  }
-
-  .mobile-accordion-content
-  .approved-component-content {
-    padding: 0 14px 16px !important;
-  }
-
-
-  /* Sidebar sections */
-  .mobile-sidebar-accordion-trigger {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    margin: 0;
-    padding: 0;
-
-    border: 0;
-    background: transparent;
-
-    color: inherit;
-
-    font: inherit;
-    text-align: left;
-
-    cursor: pointer;
-  }
-
-  .mobile-sidebar-accordion-trigger::after {
-    content: "›";
-
-    margin-left: auto;
-
-    color: #7c879b;
-
-    font-size: 21px;
-    line-height: 1;
-
-    transition: transform .18s ease;
-  }
-
-  .mobile-sidebar-accordion-trigger[aria-expanded="true"]::after {
-    transform: rotate(90deg);
-  }
-
-  .mobile-sidebar-accordion-content {
-    display: none;
-  }
-
-  .mobile-sidebar-accordion-content.is-open {
-    display: block;
-  }
-}
-
-
-/* ============================================================
-   MOBILE JOB DETAIL — APPROVED ACCORDION UI
-   Desktop completely untouched
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-  /* ----------------------------------------------------------
-     Main content accordion sections
-     ---------------------------------------------------------- */
-
-  .job-detail-main .mobile-job-accordion {
-    margin: 8px 0;
-    padding: 0;
-
-    border: 1px solid #e9edf4;
-    border-radius: 12px;
-
-    background: #ffffff;
-
-    overflow: hidden;
-  }
-
-  .job-detail-main .mobile-job-accordion-trigger {
-    width: 100%;
-    min-height: 54px;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 16px;
-
-    border: 0;
-    background: #ffffff;
-
-    color: #17233f;
-
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-
-    text-align: left;
-
-    cursor: pointer;
-  }
-
-  .mobile-job-accordion-trigger::after {
-    content: "›";
-
-    margin-left: auto;
-
-    color: #7d899d;
-
-    font-size: 22px;
-    line-height: 1;
-
-    transition: transform .18s ease;
-  }
-
-  .mobile-job-accordion-trigger.is-open::after {
-    transform: rotate(90deg);
-  }
-
-  .mobile-job-accordion-content {
-    display: none;
-
-    padding: 0 16px 16px;
-  }
-
-  .mobile-job-accordion-content.is-open {
-    display: block;
-  }
-
-  /* Hide the original duplicated section heading
-     when accordion wrapper supplies the heading. */
-
-  .mobile-job-accordion-content > .section > .header,
-  .mobile-job-accordion-content > .section > .header {
-    display: none;
-  }
-
-  /* ----------------------------------------------------------
-     Sidebar accordions
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar > .detail-side-card
-  .mobile-sidebar-accordion-trigger {
-    width: 100%;
-
-    min-height: 48px;
-
-    display: flex;
-    align-items: center;
-
-    margin: 0;
-    padding: 0;
-
-    border: 0;
-    background: transparent;
-
-    color: #18223a;
-
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 750;
-
-    text-align: left;
-
-    cursor: pointer;
-  }
-
-  .job-detail-sidebar > .detail-side-card
-  .mobile-sidebar-accordion-trigger::after {
-    content: "›";
-
-    margin-left: auto;
-
-    color: #7d899d;
-
-    font-size: 22px;
-    line-height: 1;
-
-    transition: transform .18s ease;
-  }
-
-  .job-detail-sidebar > .detail-side-card
-  .mobile-sidebar-accordion-trigger[aria-expanded="true"]::after {
-    transform: rotate(90deg);
-  }
-
-  .job-detail-sidebar > .detail-side-card
-  .mobile-sidebar-accordion-content {
-    display: none !important;
-  }
-
-  .job-detail-sidebar > .detail-side-card
-  .mobile-sidebar-accordion-content.is-open {
-    display: block !important;
-  }
-
-  .job-detail-sidebar > .detail-side-card
-  .mobile-sidebar-accordion-content.is-open
-  .score-breakdown-layout {
-    display: grid !important;
-  }
-
-  .job-detail-sidebar > .detail-side-card
-  .mobile-sidebar-accordion-content.is-open
-  .job-detail-meta {
-    display: flex !important;
-  }
-
-  /* Clean mobile sidebar cards */
-
-  .job-detail-sidebar > .detail-side-card {
-    margin: 8px 0;
-
-    padding: 10px 14px;
-
-    border: 1px solid #e9edf4;
-    border-radius: 12px;
-
-    background: #ffffff;
-
-    box-shadow: 0 2px 8px rgba(30, 42, 70, .025);
-  }
-
-  .job-detail-sidebar > .match-breakdown-card
-  .mobile-sidebar-accordion-content {
-    padding: 4px 0 8px;
-  }
-
-  .job-detail-sidebar > .detail-side-card
-  .mobile-sidebar-accordion-content
-  .job-detail-meta {
-    padding-top: 4px;
-  }
-}
-
-/* ============================================================
-   APPROVED MOBILE ACCORDION — MAIN JOB SECTIONS
-   Mobile only
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-  .job-detail-main
-  .approved-job-section {
-    margin: 0 0 8px !important;
-
-    padding: 0 !important;
-
-    border: 1px solid #e8ecf3 !important;
-    border-radius: 12px !important;
-
-    background: #ffffff !important;
-
-    overflow: hidden;
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-trigger {
-    width: 100%;
-    min-height: 56px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    margin: 0;
-    padding: 0 14px;
-
-    border: 0;
-
-    background: #ffffff;
-
-    color: #17233f;
-
-    font-family: inherit;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    box-sizing: border-box;
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-trigger::after {
-    content: "›";
-
-    margin-left: auto;
-
-    color: #7f8aa0;
-
-    font-size: 22px;
-    line-height: 1;
-
-    transition: transform .18s ease;
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-trigger[aria-expanded="true"]::after {
-    transform: rotate(90deg);
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-trigger
-  .approved-section-icon {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 8px;
-
-    background: #f1edff;
-    color: #5138ee;
-
-    font-size: 12px;
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-trigger h2 {
-    margin: 0 !important;
-
-    color: #17233f;
-
-    font-size: 14px !important;
-    line-height: 1.3 !important;
-
-    font-weight: 700 !important;
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-trigger p {
-    display: none !important;
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-content {
-    display: none;
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-content.is-open {
-    display: block;
-  }
-
-  .job-detail-main
-  .mobile-job-accordion-content
-  .approved-component-content {
-    padding: 0 14px 16px !important;
-  }
-
-  .approved-content-divider {
-    display: none !important;
-  }
-}
-
-.mobile-bottom-actions {
-  display: none;
-}
-
-@media (max-width: 700px) {
-
-  .mobile-bottom-actions {
-    position: fixed;
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
-    z-index: 1000;
-
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr) 44px;
-    gap: 8px;
-
-    padding: 8px;
-
-    border: 1px solid #e5e9f1;
-    border-radius: 14px;
-
-    background: rgba(255,255,255,.96);
-    box-shadow: 0 8px 28px rgba(20,30,50,.12);
-    backdrop-filter: blur(12px);
-  }
-
-  .mobile-bottom-actions button,
-  .mobile-bottom-actions a {
-    height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid #dfe4ed;
-    border-radius: 9px;
-
-    background: #ffffff;
-    color: #5138ee;
-
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 700;
-
-    text-decoration: none;
-  }
-
-  .mobile-bottom-actions a {
-    background: #5138ee;
-    border-color: #5138ee;
-    color: #ffffff;
-  }
-
-  .detail-shell {
-    padding-bottom: 78px;
-  }
-}
-
-/* ============================================================
-   FINAL MOBILE CLEANUP
-   ------------------------------------------------------------
-   Skills & Tools spacing + remove redundant section tabs.
-   Mobile only. Desktop untouched.
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-  /* ----------------------------------------------------------
-     REMOVE REDUNDANT OVERVIEW / RESPONSIBILITIES / REQUIREMENTS
-     TAB NAVIGATION
-     ---------------------------------------------------------- */
-
-  .approved-job-tabs {
-    display: none !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     SKILLS & TOOLS — CLEAN MOBILE CARD
-     ---------------------------------------------------------- */
-
-  .mobileSkillsTools {
-    margin-top: 10px !important;
-    padding: 10px !important;
-
-    border: 1px solid #e5e9f1 !important;
-    border-radius: 10px !important;
-
-    background: #ffffff !important;
-    box-sizing: border-box !important;
-  }
-
-
-  /* Header */
-
-  .mobileSkillsHeader {
-    min-height: 28px !important;
-
-    display: flex !important;
-    align-items: center !important;
-
-    margin: 0 0 8px !important;
-    padding: 0 2px !important;
-  }
-
-  .mobileSkillsHeader strong {
-    font-size: 9px !important;
-    line-height: 1.2 !important;
-    letter-spacing: .09em !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     EACH MATCH GROUP
-     ---------------------------------------------------------- */
-
-  .mobileSkillsTools .group {
-    margin: 0 0 7px !important;
-    padding: 9px 10px !important;
-
-    border: 1px solid #e5e9f1 !important;
-    border-radius: 9px !important;
-
-    background: #ffffff !important;
-    box-sizing: border-box !important;
-  }
-
-  .mobileSkillsTools .group:last-child {
-    margin-bottom: 0 !important;
-  }
-
-
-  /* Group heading */
-
-  .mobileSkillsTools .groupTitle {
-    display: flex !important;
-    align-items: center !important;
-
-    gap: 7px !important;
-
-    margin: 0 0 7px !important;
-  }
-
-  .mobileSkillsTools .groupTitle strong {
-    font-size: 9px !important;
-    line-height: 1.2 !important;
-    letter-spacing: .05em !important;
-  }
-
-  .mobileSkillsTools .groupIcon {
-    width: 16px !important;
-    height: 16px !important;
-    min-width: 16px !important;
-
-    display: grid !important;
-    place-items: center !important;
-
-    border-radius: 50% !important;
-
-    font-size: 8px !important;
-    line-height: 1 !important;
-  }
-
-
-  /* Chips */
-
-  .mobileSkillsTools .chips {
-    display: flex !important;
-    flex-wrap: wrap !important;
-
-    gap: 5px !important;
-
-    margin: 0 !important;
-  }
-
-  .mobileSkillsTools .chips span {
-    margin: 0 !important;
-    padding: 5px 8px !important;
-
-    border-radius: 6px !important;
-
-    font-size: 8px !important;
-    line-height: 1.15 !important;
-  }
-
-
-  /* Empty states */
-
-  .mobileSkillsTools .group p {
-    margin: 0 !important;
-    padding: 0 !important;
-
-    color: #8995aa !important;
-
-    font-size: 8px !important;
-    line-height: 1.35 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     MORE SPACE BETWEEN MATCHED / MISSING GROUPS
-     ---------------------------------------------------------- */
-
-  .mobileSkillsTools .group + .group {
-    margin-top: 7px !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     REMOVE EXTRA INTERNAL DIVIDER EFFECT
-     ---------------------------------------------------------- */
-
-  .mobileSkillsTools .group {
-    border-bottom: 1px solid #e5e9f1 !important;
-  }
-
-  .mobileSkillsTools .group:last-child {
-    border-bottom: 1px solid #e5e9f1 !important;
-  }
-}
-
-/* ============================================================
-   FINAL MOBILE SECTION RHYTHM
-   ------------------------------------------------------------
-   Equal spacing between every major section.
-   Does NOT change spacing inside the sections.
-   Desktop completely untouched.
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-  /* ----------------------------------------------------------
-     MAIN PAGE STACK
-     ---------------------------------------------------------- */
-
-  .job-detail-layout {
-    display: flex !important;
-    flex-direction: column !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .job-detail-main {
-    display: flex !important;
-    flex-direction: column !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     APPROVED CONTENT
-     ---------------------------------------------------------- */
-
-  .approved-job-content {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .approved-job-content-body {
-    display: flex !important;
-    flex-direction: column !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     MAIN ACCORDION SECTIONS
-     ----------------------------------------------------------
-     Remove their individual margins.
-     Parent gap controls ALL spacing.
-     ---------------------------------------------------------- */
-
-  .job-detail-main
-  .approved-job-section {
-    margin: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     ACCORDION CONTENT
-     ----------------------------------------------------------
-     Keep internal content padding.
-     Only normalize the outer section spacing.
-     ---------------------------------------------------------- */
-
-  .job-detail-main
-  .mobile-job-accordion-content {
-    margin: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     SIDEBAR
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar {
-    display: flex !important;
-    flex-direction: column !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    position: static !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     EVERY SIDEBAR CARD
-     ----------------------------------------------------------
-     Parent gap controls spacing.
-     No card gets its own margin.
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .detail-side-card {
-    margin: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     JOB HIGHLIGHTS
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .detail-side-card:first-child {
-    margin: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     MATCH SCORE BREAKDOWN
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .match-breakdown-card {
-    margin: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     JOB DETAILS
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .detail-side-card:nth-of-type(3) {
-    margin: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     SHARE CARD
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .share-card {
-    margin: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     REMOVE STRAY DIVIDERS / EMPTY SPACING
-     ---------------------------------------------------------- */
-
-  .approved-content-divider {
-    display: none !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-    height: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     CONSISTENT SECTION EDGE
-     ---------------------------------------------------------- */
-
-  .job-detail-main
-  .approved-job-section,
-  .job-detail-sidebar
-  > .detail-side-card {
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     KEEP CONTENT INSIDE EXPANDED ACCORDIONS
-     ---------------------------------------------------------- */
-
-  .job-detail-main
-  .mobile-job-accordion-content.is-open {
-    margin: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     BOTTOM CTA CLEARANCE
-     ---------------------------------------------------------- */
-
-  .detail-shell {
-    padding-bottom: 78px !important;
-  }
-}
-
-/* ============================================================
-   MOBILE — UNIFIED SECTION WIDTH
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-  .detail-shell {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .job-detail-layout,
-  .job-detail-main,
-  .job-detail-sidebar,
-  .approved-job-content,
-  .approved-job-content-body {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-  /* Every major mobile section uses the same width */
-  .job-detail-main > *,
-  .job-detail-sidebar > *,
-  .approved-job-content-body > .approved-job-section {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Snapshot */
-  .job-detail-main > .snapshot {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Main accordion sections */
-  .job-detail-main
-  .approved-job-section {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    box-sizing: border-box !important;
-  }
-
-  /* Sidebar cards */
-  .job-detail-sidebar
-  > .detail-side-card {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    box-sizing: border-box !important;
-  }
-
-  /* Prevent inner content from creating wider/narrower cards */
-  .approved-component-content,
-  .mobile-job-accordion-content,
-  .mobileSkillsTools,
-  .job-detail-sidebar .mobile-sidebar-accordion-content {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Keep card edges aligned */
-  .job-detail-main,
-  .job-detail-sidebar {
-    align-items: stretch !important;
-  }
-}
-
-/* ============================================================
-   FINAL MOBILE JOB DETAIL LAYOUT
-   ============================================================
-   One consistent visual system for the complete mobile page.
-   Desktop is completely untouched.
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-  /* ----------------------------------------------------------
-     PAGE
-     ---------------------------------------------------------- */
-
-  .detail-shell {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    margin: 0 !important;
-    padding: 8px 0 86px !important;
-
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     BACK LINK
-     ---------------------------------------------------------- */
-
-  .back-link {
-    display: flex !important;
-    align-items: center !important;
-
-    width: 100% !important;
-
-    min-height: 24px !important;
-
-    margin: 0 0 8px !important;
-    padding: 0 8px !important;
-
-    box-sizing: border-box !important;
-
-    font-size: 10px !important;
-    line-height: 1.2 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     MAIN PAGE STACK
-     ---------------------------------------------------------- */
-
-  .job-detail-layout {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-  .job-detail-main {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     HEADER
-     ---------------------------------------------------------- */
-
-  .job-detail-header {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    margin: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     MATCH SNAPSHOT
-     ---------------------------------------------------------- */
-
-  .job-detail-main > .snapshot {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    margin: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     APPROVED CONTENT
-     ---------------------------------------------------------- */
-
-  .approved-job-content {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-  .approved-job-content-body {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     MAIN ACCORDIONS
-     ---------------------------------------------------------- */
-
-  .job-detail-main
-  .approved-job-section {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    margin: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     SIDEBAR
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    gap: 12px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    position: static !important;
-
-    box-sizing: border-box !important;
-  }
-
-
-  /* Every sidebar card gets exactly the same outer geometry */
-
-  .job-detail-sidebar
-  > .detail-side-card {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    margin: 0 !important;
-
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     JOB HIGHLIGHTS
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .detail-side-card:first-child {
-    min-height: 0 !important;
-
-    padding: 14px !important;
-
-    border-radius: 12px !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     MATCH BREAKDOWN
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .match-breakdown-card {
-    min-height: 0 !important;
-
-    padding: 10px 14px !important;
-
-    border-radius: 12px !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     JOB DETAILS
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .detail-side-card:nth-of-type(3) {
-    min-height: 0 !important;
-
-    padding: 10px 14px !important;
-
-    border-radius: 12px !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     SHARE
-     ---------------------------------------------------------- */
-
-  .job-detail-sidebar
-  > .share-card {
-    min-height: 0 !important;
-
-    padding: 14px !important;
-
-    border-radius: 12px !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     REMOVE STRAY DIVIDER SPACE
-     ---------------------------------------------------------- */
-
-  .approved-content-divider {
-    display: none !important;
-
-    width: 0 !important;
-    height: 0 !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     SIMILAR JOBS
-     ---------------------------------------------------------- */
-
-  .job-detail-main > *,
-  .job-detail-layout > * {
-    box-sizing: border-box !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     BOTTOM ACTION BAR
-     ---------------------------------------------------------- */
-
-  .mobile-bottom-actions {
-    left: 8px !important;
-    right: 8px !important;
-    bottom: 8px !important;
-
-    width: auto !important;
-
-    padding: 6px !important;
-
-    gap: 6px !important;
-
-    border-radius: 12px !important;
-  }
-
-  .mobile-bottom-actions button,
-  .mobile-bottom-actions a {
-    height: 40px !important;
-
-    border-radius: 8px !important;
-
-    font-size: 10px !important;
-  }
-
-
-  /* ----------------------------------------------------------
-     PREVENT HORIZONTAL OVERFLOW
-     ---------------------------------------------------------- */
-
-  .detail-shell,
-  .job-detail-layout,
-  .job-detail-main,
-  .job-detail-sidebar,
-  .approved-job-content,
-  .approved-job-content-body,
-  .job-detail-main > *,
-  .job-detail-sidebar > * {
-    overflow-x: hidden !important;
-  }
-}
-

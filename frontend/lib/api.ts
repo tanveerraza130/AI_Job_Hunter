@@ -23,7 +23,38 @@ async function apiRequest<T>(
   );
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.status}`);
+    let message = `API Error: ${response.status}`;
+
+    try {
+      const errorData = await response.json();
+      if (typeof errorData?.detail === "string") {
+        message = errorData.detail;
+      } else if (typeof errorData?.message === "string") {
+        message = errorData.message;
+      }
+    } catch {
+      try {
+        const text = await response.text();
+        if (text.trim()) {
+          message = text.trim();
+        }
+      } catch {
+        // Keep the HTTP status message.
+      }
+    }
+
+    throw new Error(message);
+  }
+
+  const contentType =
+    response.headers.get("content-type") || "";
+
+  if (!contentType.includes("application/json")) {
+    const text = await response.text();
+
+    throw new Error(
+      text.trim() || "Server returned an invalid response.",
+    );
   }
 
   return response.json();
@@ -33,6 +64,33 @@ export async function getProfiles(): Promise<{
   profiles: string[];
 }> {
   return apiRequest("/profiles");
+}
+
+
+export interface AuthenticatedProfileResponse {
+  profile: {
+    user_id: string;
+    full_name: string;
+    phone: string | null;
+    profile_id: string;
+    preferred_location: string;
+    role_level: string;
+    experience_years: string;
+    current_ctc_lpa: number;
+    expected_ctc_lpa: number;
+    resume_path: string | null;
+  } | null;
+  profile_complete: boolean;
+}
+
+export async function getMyProfile(
+  token: string,
+): Promise<AuthenticatedProfileResponse> {
+  return apiRequest("/profile", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
 
 export async function getDashboardSummary(

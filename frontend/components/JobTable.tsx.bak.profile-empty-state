@@ -24,7 +24,6 @@ type ApplicationStatus =
 interface Props {
   jobs: Job[];
   profileId: string;
-  totalJobs: number;
 }
 
 const displayStatus = (status?: string): ApplicationStatus => {
@@ -140,7 +139,7 @@ function ScoreMetric({
   );
 }
 
-export default function JobTable({ jobs, profileId, totalJobs }: Props) {
+export default function JobTable({ jobs, profileId }: Props) {
   const [statusMap, setStatusMap] = useState<
     Record<string, ApplicationStatus>
   >({});
@@ -234,33 +233,11 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
   });
 
   if (!jobs.length) {
-    const profileName = formatDisplayText(
-      profileId.replace(/[_-]+/g, " "),
-    );
-
-    const profileHasNoJobs = totalJobs === 0;
-
     return (
       <div className="mj-empty">
-        <div className="mj-empty-icon">
-          {profileHasNoJobs ? "✦" : "⌕"}
-        </div>
-
-        {profileHasNoJobs ? (
-          <>
-            <strong>We’re working on your matches 🚀</strong>
-            <span>
-              We don’t have {profileName} jobs available in our job
-              sources yet. We’re actively working to add relevant
-              opportunities for this profile and expand coverage soon.
-            </span>
-          </>
-        ) : (
-          <>
-            <strong>No matching jobs found</strong>
-            <span>Try changing your search or filters.</span>
-          </>
-        )}
+        <div className="mj-empty-icon">⌕</div>
+        <strong>No matching jobs found</strong>
+        <span>Try changing your search or filters.</span>
       </div>
     );
   }
