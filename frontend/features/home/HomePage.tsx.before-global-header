@@ -9,12 +9,10 @@ import Section5 from "./section-5/Section5";
 import Section6 from "./section-6/Section6";
 import BrandMarquee from "./brand-marquee/BrandMarquee";
 import Footer from "./footer/Footer";
-import GlobalHeader from "./GlobalHeader";
 
 export default function HomePage() {
   return (
     <main className={styles.page}>
-      <GlobalHeader />
 
       <div className={`${styles.shell} ${styles.hero}`}>
         <Section1 />

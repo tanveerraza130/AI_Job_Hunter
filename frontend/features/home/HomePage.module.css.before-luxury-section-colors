@@ -1,0 +1,128 @@
+/* ============================================================
+   AI JOB HUNTER — PAGE LEVEL VISUAL RHYTHM
+   ------------------------------------------------------------
+   Does NOT alter the internal approved component designs.
+   Creates separation between sections.
+   ============================================================ */
+
+.page {
+  width: 100%;
+  overflow-x: clip;
+  background: #ffffff;
+}
+
+/* ------------------------------------------------------------
+   SECTION SHELL
+   ------------------------------------------------------------ */
+
+.shell {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Section 1 — keep existing design, give it clean ending */
+.hero {
+  background: #ffffff;
+}
+
+/* Section 2 — warm editorial transition */
+.problem {
+  padding: 18px 0;
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f8f3ed 18%,
+      #f5efe8 82%,
+      #f0ebf7 100%
+    );
+}
+
+/* Rocket — distinct transition */
+.rocket {
+  padding: 14px 0;
+  background:
+    linear-gradient(
+      135deg,
+      #eee9fa 0%,
+      #e8e1f7 50%,
+      #f4eee7 100%
+    );
+}
+
+/* Section 3 — approved internal AI design */
+.ai {
+  padding: 18px 0;
+  background: #f2eefb;
+}
+
+/* Section 4 — warm luxury editorial */
+.sources {
+  padding: 18px 0;
+  background:
+    linear-gradient(
+      180deg,
+      #f5efe6 0%,
+      #eee7dc 100%
+    );
+}
+
+/* Section 5 — cool clean product surface */
+.tracking {
+  padding: 18px 0;
+  background:
+    linear-gradient(
+      180deg,
+      #eef1f7 0%,
+      #f5f4f8 100%
+    );
+}
+
+/* Section 6 — approved */
+.final {
+  padding: 18px 0;
+  background: #f4f1fb;
+}
+
+/* ------------------------------------------------------------
+   PREMIUM SECTION EDGES
+   ------------------------------------------------------------ */
+
+.problem > *,
+.rocket > *,
+.ai > *,
+.sources > *,
+.tracking > *,
+.final > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* New sections get a soft floating-card treatment */
+.problem > section,
+.rocket > section,
+.sources > section,
+.tracking > section {
+  border-radius: 34px;
+  overflow: hidden;
+}
+
+/* Keep mobile clean */
+@media (max-width: 700px) {
+  .problem,
+  .rocket,
+  .ai,
+  .sources,
+  .tracking,
+  .final {
+    padding: 8px 0;
+  }
+
+  .problem > section,
+  .rocket > section,
+  .sources > section,
+  .tracking > section {
+    border-radius: 22px;
+  }
+}

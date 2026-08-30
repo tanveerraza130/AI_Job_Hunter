@@ -1,0 +1,152 @@
+.section {
+  width:100%;
+  padding:110px 24px;
+  box-sizing:border-box;
+  background:#fffdfa;
+}
+
+.container {
+  width:min(1120px,100%);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:90px;
+  align-items:center;
+}
+
+.window {
+  padding:26px;
+  border:1px solid rgba(118,80,233,.12);
+  border-radius:28px;
+  background:#f8f6fc;
+  box-shadow:0 30px 75px rgba(72,51,128,.10);
+}
+
+.windowTop {
+  display:flex;
+  justify-content:space-between;
+  color:#8c879a;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.13em;
+}
+
+.pipeline {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:22px;
+}
+
+.stage {
+  min-height:90px;
+  padding:13px 11px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  border-radius:15px;
+  background:#fff;
+}
+
+.stage span {
+  color:#777185;
+  font-size:9px;
+  font-weight:700;
+}
+
+.stage strong {
+  color:#28243f;
+  font-size:24px;
+  letter-spacing:-.04em;
+}
+
+.progress {
+  height:5px;
+  margin-top:17px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#e8e3f2;
+}
+
+.progress span {
+  display:block;
+  width:72%;
+  height:100%;
+  border-radius:inherit;
+  background:#7650e9;
+}
+
+.status {
+  margin-top:15px;
+  padding:12px 13px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border-radius:14px;
+  background:#fff;
+}
+
+.status i {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#e4a24e;
+}
+
+.status span {
+  color:#625c70;
+  font-size:9px;
+}
+
+.status b {
+  margin-left:auto;
+  color:#7650e9;
+  font-size:9px;
+}
+
+.eyebrow {
+  margin:0 0 14px;
+  color:#7650e9;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.17em;
+}
+
+.copy h2 {
+  margin:0;
+  color:#24223b;
+  font-size:clamp(36px,4.2vw,56px);
+  line-height:.98;
+  letter-spacing:-.055em;
+}
+
+.copy > p {
+  max-width:410px;
+  margin:20px 0 0;
+  color:#706b78;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.points {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:24px;
+}
+
+.points span {
+  padding:8px 11px;
+  border:1px solid rgba(118,80,233,.13);
+  border-radius:999px;
+  color:#69627d;
+  background:#faf8ff;
+  font-size:9px;
+  font-weight:750;
+}
+
+@media (max-width:820px) {
+  .section { padding:72px 20px; }
+  .container { grid-template-columns:1fr; gap:42px; }
+  .pipeline { grid-template-columns:1fr 1fr; }
+}

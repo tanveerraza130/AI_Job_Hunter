@@ -3259,9 +3259,15 @@ h1{
 }
 </style>
 
-<style id="section1-header-hidden-global-lock">
-/* Header is now rendered globally by HomePage. */
-.site-header {
-  display: none !important;
+<style id="section1-header-sticky-lock">
+/* =========================================================
+   HEADER — STICKY ON SCROLL
+   Design unchanged. Only scrolling behaviour changed.
+   ========================================================= */
+
+.site-header{
+  position:sticky !important;
+  top:0 !important;
+  z-index:1000 !important;
 }
 </style>

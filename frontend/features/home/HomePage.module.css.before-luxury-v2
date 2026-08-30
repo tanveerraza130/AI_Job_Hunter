@@ -1,0 +1,349 @@
+/* ============================================================
+   AI JOB HUNTER — PAGE LEVEL VISUAL RHYTHM
+   ------------------------------------------------------------
+   Does NOT alter the internal approved component designs.
+   Creates separation between sections.
+   ============================================================ */
+
+.page {
+  width: 100%;
+  overflow-x: clip;
+  background: #ffffff;
+}
+
+/* ------------------------------------------------------------
+   SECTION SHELL
+   ------------------------------------------------------------ */
+
+.shell {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Section 1 — keep existing design, give it clean ending */
+.hero {
+  background: #ffffff;
+}
+
+/* Section 2 — warm editorial transition */
+.problem {
+  padding: 18px 0;
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f8f3ed 18%,
+      #f5efe8 82%,
+      #f0ebf7 100%
+    );
+}
+
+/* Rocket — distinct transition */
+.rocket {
+  padding: 14px 0;
+  background:
+    linear-gradient(
+      135deg,
+      #eee9fa 0%,
+      #e8e1f7 50%,
+      #f4eee7 100%
+    );
+}
+
+/* Section 3 — approved internal AI design */
+.ai {
+  padding: 18px 0;
+  background: #f2eefb;
+}
+
+/* Section 4 — warm luxury editorial */
+.sources {
+  padding: 18px 0;
+  background:
+    linear-gradient(
+      180deg,
+      #f5efe6 0%,
+      #eee7dc 100%
+    );
+}
+
+/* Section 5 — cool clean product surface */
+.tracking {
+  padding: 18px 0;
+  background:
+    linear-gradient(
+      180deg,
+      #eef1f7 0%,
+      #f5f4f8 100%
+    );
+}
+
+/* Section 6 — approved */
+.final {
+  padding: 18px 0;
+  background: #f4f1fb;
+}
+
+/* ------------------------------------------------------------
+   PREMIUM SECTION EDGES
+   ------------------------------------------------------------ */
+
+.problem > *,
+.rocket > *,
+.ai > *,
+.sources > *,
+.tracking > *,
+.final > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* New sections get a soft floating-card treatment */
+.problem > section,
+.rocket > section,
+.sources > section,
+.tracking > section {
+  border-radius: 34px;
+  overflow: hidden;
+}
+
+/* Keep mobile clean */
+@media (max-width: 700px) {
+  .problem,
+  .rocket,
+  .ai,
+  .sources,
+  .tracking,
+  .final {
+    padding: 8px 0;
+  }
+
+  .problem > section,
+  .rocket > section,
+  .sources > section,
+  .tracking > section {
+    border-radius: 22px;
+  }
+}
+
+
+/* ============================================================
+   AI JOB HUNTER — LUXURY SECTION SEPARATION
+   ------------------------------------------------------------
+   IMPORTANT:
+   - Section 1 untouched
+   - Section 3 untouched
+   - Section 6 untouched
+   - Section component internals untouched
+   - Only HomePage section wrappers are styled
+   ============================================================ */
+
+/* HERO — keep existing approved presentation */
+.hero {
+  background: #ffffff !important;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 2 — WARM IVORY / HUMAN PROBLEM
+   Creates a clearly different visual chapter.
+   ------------------------------------------------------------ */
+
+.problem {
+  padding: 34px 0 42px !important;
+
+  background:
+    radial-gradient(
+      700px 260px at 50% 0%,
+      rgba(255,255,255,.95),
+      transparent 75%
+    ),
+    linear-gradient(
+      180deg,
+      #f8f4ed 0%,
+      #f3eee6 100%
+    ) !important;
+
+  border-top: 1px solid rgba(79,64,38,.06);
+  border-bottom: 1px solid rgba(79,64,38,.06);
+}
+
+
+/* ------------------------------------------------------------
+   ROCKET CTA — very subtle champagne transition
+   ------------------------------------------------------------ */
+
+.rocket {
+  padding: 30px 0 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #eee8df 0%,
+      #e8e0d4 100%
+    ) !important;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 3 — KEEP APPROVED AI PURPLE DESIGN
+   Wrapper only adds separation.
+   ------------------------------------------------------------ */
+
+.ai {
+  padding: 18px 0 24px !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f3efff 0%,
+      #eee9ff 100%
+    ) !important;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 4 — DARKER WARM NEUTRAL
+   Multiple sources = distinct chapter.
+   ------------------------------------------------------------ */
+
+.sources {
+  padding: 28px 0 36px !important;
+
+  background:
+    radial-gradient(
+      800px 360px at 80% 30%,
+      rgba(255,255,255,.75),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #eee8dd 0%,
+      #e7dfd2 100%
+    ) !important;
+
+  border-top: 1px solid rgba(65,54,38,.07);
+  border-bottom: 1px solid rgba(65,54,38,.07);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 5 — CLEAN PEARL / APPLICATION TRACKING
+   Different from both Section 3 and Section 4.
+   ------------------------------------------------------------ */
+
+.tracking {
+  padding: 34px 0 42px !important;
+
+  background:
+    radial-gradient(
+      700px 340px at 25% 40%,
+      rgba(255,255,255,.95),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #faf9f7 0%,
+      #f1eff3 100%
+    ) !important;
+
+  border-top: 1px solid rgba(72,63,87,.06);
+  border-bottom: 1px solid rgba(72,63,87,.06);
+}
+
+
+/* ------------------------------------------------------------
+   FINAL CTA — preserve approved dark visual
+   ------------------------------------------------------------ */
+
+.final {
+  padding: 20px 0 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #111022 0%,
+      #090810 100%
+    ) !important;
+}
+
+
+/* ============================================================
+   LUXURY SECTION EDGES
+   Gives the page a designed, intentional rhythm rather
+   than six pasted blocks.
+   ============================================================ */
+
+.problem > section,
+.rocket > section,
+.sources > section,
+.tracking > section {
+  border-radius: 32px;
+}
+
+
+/* Slight floating separation for light sections */
+.problem > section,
+.sources > section,
+.tracking > section {
+  box-shadow:
+    0 18px 55px rgba(44,35,70,.055);
+}
+
+
+/* ============================================================
+   DESKTOP — MORE PREMIUM BREATHING ROOM
+   ============================================================ */
+
+@media (min-width: 981px) {
+
+  .problem {
+    padding: 46px 0 54px !important;
+  }
+
+  .rocket {
+    padding: 34px 0 !important;
+  }
+
+  .ai {
+    padding: 26px 0 30px !important;
+  }
+
+  .sources {
+    padding: 42px 0 50px !important;
+  }
+
+  .tracking {
+    padding: 48px 0 56px !important;
+  }
+
+  .final {
+    padding: 24px 0 !important;
+  }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .problem,
+  .rocket,
+  .ai,
+  .sources,
+  .tracking,
+  .final {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .problem > section,
+  .rocket > section,
+  .sources > section,
+  .tracking > section {
+    border-radius: 22px;
+  }
+}

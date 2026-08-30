@@ -1,0 +1,276 @@
+/* ============================================================
+   AI JOB HUNTER — LUXURY PAGE RHYTHM V2
+
+   IMPORTANT:
+   Section 1 internal design  : LOCKED
+   Section 3 internal design  : LOCKED
+   Section 6 internal design  : LOCKED
+   Footer                     : LOCKED
+
+   This file controls ONLY the visual chapter separation.
+   ============================================================ */
+
+.page {
+  width: 100%;
+  overflow-x: clip;
+  background: #ffffff;
+}
+
+
+/* ============================================================
+   GENERIC SECTION SHELL
+   ============================================================ */
+
+.shell {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   01 — HERO
+   Existing approved design.
+   DO NOT ALTER.
+   ============================================================ */
+
+.hero {
+  background: #ffffff;
+}
+
+
+/* ============================================================
+   02 — HUMAN PROBLEM
+   Warm ivory / champagne.
+
+   The purpose is to visually move away from the white hero
+   without introducing a loud new brand color.
+   ============================================================ */
+
+.problem {
+  padding: 34px 0 42px;
+
+  background:
+    radial-gradient(
+      900px 380px at 50% 0%,
+      rgba(255,255,255,.92),
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      #f7f1e8 0%,
+      #efe7dc 100%
+    );
+
+  border-top: 1px solid rgba(77,61,42,.08);
+  border-bottom: 1px solid rgba(77,61,42,.10);
+}
+
+
+/* ============================================================
+   03 — ROCKET CTA
+   INTENTIONALLY DARK.
+
+   This is the first major visual interruption after the
+   problem section.
+   ============================================================ */
+
+.rocket {
+  padding: 30px 0;
+
+  background:
+    radial-gradient(
+      700px 240px at 50% 50%,
+      rgba(118,80,233,.22),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      #17142a 0%,
+      #0f0d1d 100%
+    );
+
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(118,80,233,.18);
+}
+
+
+/* ============================================================
+   04 — AI MATCHING
+   Existing approved internal design.
+   Wrapper provides separation only.
+   ============================================================ */
+
+.ai {
+  padding: 24px 0 30px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f1edff 0%,
+      #e8e1ff 100%
+    );
+}
+
+
+/* ============================================================
+   05 — MULTIPLE SOURCES
+   Warm stone / editorial luxury.
+   ============================================================ */
+
+.sources {
+  padding: 40px 0 48px;
+
+  background:
+    radial-gradient(
+      850px 360px at 75% 30%,
+      rgba(255,255,255,.80),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #eee6d9 0%,
+      #e4dacb 100%
+    );
+
+  border-top: 1px solid rgba(67,53,38,.08);
+  border-bottom: 1px solid rgba(67,53,38,.10);
+}
+
+
+/* ============================================================
+   06 — APPLICATION TRACKING
+   Cool pearl / blue-grey.
+
+   Deliberately different from both purple and champagne.
+   ============================================================ */
+
+.tracking {
+  padding: 46px 0 54px;
+
+  background:
+    radial-gradient(
+      760px 360px at 25% 40%,
+      rgba(255,255,255,.96),
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      #f1f4f7 0%,
+      #e7ebf0 100%
+    );
+
+  border-top: 1px solid rgba(57,67,82,.07);
+  border-bottom: 1px solid rgba(57,67,82,.08);
+}
+
+
+/* ============================================================
+   07 — FINAL CTA
+   Existing approved dark visual.
+   ============================================================ */
+
+.final {
+  padding: 24px 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #111022 0%,
+      #090810 100%
+    );
+}
+
+
+/* ============================================================
+   SECTION SHAPES
+   ============================================================ */
+
+.problem > section,
+.rocket > section,
+.sources > section,
+.tracking > section {
+  position: relative;
+  z-index: 1;
+
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   PREMIUM DEPTH
+   ============================================================ */
+
+.problem > section,
+.sources > section,
+.tracking > section {
+  box-shadow:
+    0 20px 60px rgba(38,31,54,.07);
+}
+
+
+/* Dark CTA gets a subtle premium halo */
+
+.rocket > section {
+  box-shadow:
+    0 20px 70px rgba(11,8,25,.24),
+    0 0 80px rgba(118,80,233,.08);
+}
+
+
+/* ============================================================
+   DESKTOP
+   ============================================================ */
+
+@media (min-width: 981px) {
+
+  .problem {
+    padding: 48px 0 56px;
+  }
+
+  .rocket {
+    padding: 34px 0;
+  }
+
+  .ai {
+    padding: 28px 0 34px;
+  }
+
+  .sources {
+    padding: 48px 0 56px;
+  }
+
+  .tracking {
+    padding: 54px 0 62px;
+  }
+
+  .final {
+    padding: 26px 0;
+  }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .problem,
+  .rocket,
+  .ai,
+  .sources,
+  .tracking,
+  .final {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .problem > section,
+  .rocket > section,
+  .sources > section,
+  .tracking > section {
+    border-radius: 22px;
+  }
+}

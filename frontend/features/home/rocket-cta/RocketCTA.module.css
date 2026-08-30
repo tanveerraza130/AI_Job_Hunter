@@ -1,0 +1,203 @@
+/* ============================================================
+   ROCKET CTA — PREMIUM DARK INTERRUPTION
+   ============================================================ */
+
+.section {
+  position: relative;
+
+  width: 100%;
+  padding: 38px 24px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      700px 260px at 50% 50%,
+      rgba(118,80,233,.24),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      #17142b 0%,
+      #0f0d1d 100%
+    );
+}
+
+
+.container {
+  position: relative;
+
+  width: min(1120px,100%);
+  min-height: 154px;
+
+  margin: 0 auto;
+  padding: 30px 36px;
+
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: 70px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 28px;
+
+  border: 1px solid rgba(170,149,255,.20);
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.075) 0%,
+      rgba(118,80,233,.105) 100%
+    );
+
+  box-shadow:
+    0 28px 80px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -1px 0 rgba(0,0,0,.22);
+}
+
+
+/* ============================================================
+   ROCKET
+   ============================================================ */
+
+.rocket {
+  width: 60px;
+  height: 60px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      #a285ff 0%,
+      #7953ee 42%,
+      #603bd2 100%
+    );
+
+  color: #ffffff;
+
+  font-size: 25px;
+  font-weight: 700;
+
+  transform: rotate(-18deg);
+
+  box-shadow:
+    0 14px 38px rgba(118,80,233,.42),
+    0 0 0 9px rgba(118,80,233,.08),
+    0 0 55px rgba(118,80,233,.18);
+}
+
+
+/* ============================================================
+   COPY
+   ============================================================ */
+
+.copy {
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+
+  color: #aa96ff;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.copy h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(23px,2.35vw,33px);
+  line-height: 1.06;
+
+  letter-spacing: -.045em;
+}
+
+.copy p:last-child {
+  margin: 9px 0 0;
+
+  color: rgba(234,230,247,.68);
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   CTA
+   ============================================================ */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 13px 20px;
+
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #825df4 0%,
+      #6942df 100%
+    );
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 12px 34px rgba(118,80,233,.32),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.cta span {
+  font-size: 15px;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width:760px) {
+
+  .section {
+    padding: 26px 16px;
+  }
+
+  .container {
+    grid-template-columns: 52px 1fr;
+    gap: 17px;
+    padding: 25px;
+  }
+
+  .rocket {
+    width: 48px;
+    height: 48px;
+    font-size: 21px;
+  }
+
+  .cta {
+    grid-column: 1/-1;
+    justify-self: start;
+  }
+}

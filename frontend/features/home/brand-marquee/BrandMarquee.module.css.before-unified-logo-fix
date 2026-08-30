@@ -1,0 +1,278 @@
+/* ============================================================
+   AI JOB HUNTER — PREMIUM BRAND MARQUEE
+   FINAL CLEAN / OPTICAL NORMALISATION
+   ============================================================ */
+
+.section {
+  position: relative;
+  width: 100%;
+  height: 78px;
+
+  display: flex;
+  align-items: center;
+
+  overflow: hidden;
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-top: 1px solid rgba(30, 25, 48, .045);
+  border-bottom: 1px solid rgba(30, 25, 48, .045);
+}
+
+.marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+
+  animation: brandScroll 34s linear infinite;
+
+  will-change: transform;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+
+  gap: 70px;
+  padding-right: 70px;
+}
+
+
+/* ============================================================
+   IDENTICAL LOGO STAGE
+   ============================================================ */
+
+.logoItem {
+  width: 154px;
+  height: 46px;
+
+  flex: 0 0 154px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  opacity: .94;
+}
+
+.logoItem:hover {
+  opacity: 1;
+}
+
+
+/* ============================================================
+   WIDE WORDMARKS
+   ============================================================ */
+
+.logoItem img {
+  display: block;
+
+  width: auto;
+  height: 30px;
+
+  max-width: 120px;
+  max-height: 30px;
+
+  object-fit: contain;
+  object-position: center;
+
+  margin: 0;
+}
+
+
+/* ============================================================
+   OPTICAL SCALE
+   ------------------------------------------------------------
+   Compact source assets are enlarged because their original
+   canvases are square/near-square compared with wordmarks.
+   ============================================================ */
+
+/* Meesho — 1:1 source */
+.logoItem.me esho img,
+.logoItem img[src$="meesho.png"] {
+  width: 40px;
+  height: 40px;
+
+  max-width: 40px;
+  max-height: 40px;
+}
+
+/* Swiggy — 1.34:1 source */
+.logoItem img[src$="swiggy.png"] {
+  width: 46px;
+  height: 35px;
+
+  max-width: 46px;
+  max-height: 35px;
+}
+
+/* Tata — 1.09:1 source */
+.logoItem img[src$="tata.svg"] {
+  width: 40px;
+  height: 40px;
+
+  max-width: 40px;
+  max-height: 40px;
+}
+
+/* IKEA — 2.5:1 source */
+.logoItem img[src$="ikea.svg"] {
+  width: 76px;
+  height: 30px;
+
+  max-width: 76px;
+  max-height: 30px;
+}
+
+
+/* ============================================================
+   EDGE FADE
+   ============================================================ */
+
+.fadeLeft,
+.fadeRight {
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+
+  width: 100px;
+
+  z-index: 5;
+  pointer-events: none;
+}
+
+.fadeLeft {
+  left: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      rgba(255,255,255,.92) 30%,
+      rgba(255,255,255,0) 100%
+    );
+}
+
+.fadeRight {
+  right: 0;
+
+  background:
+    linear-gradient(
+      270deg,
+      #ffffff 0%,
+      rgba(255,255,255,.92) 30%,
+      rgba(255,255,255,0) 100%
+    );
+}
+
+
+/* ============================================================
+   RIGHT → LEFT
+   ============================================================ */
+
+@keyframes brandScroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .section {
+    height: 64px;
+  }
+
+  .group {
+    gap: 44px;
+    padding-right: 44px;
+  }
+
+  .logoItem {
+    width: 102px;
+    height: 36px;
+
+    flex-basis: 102px;
+  }
+
+  .logoItem img {
+    height: 24px;
+
+    max-width: 82px;
+    max-height: 24px;
+  }
+
+  .logoItem img[src$="meesho.png"] {
+    width: 30px;
+    height: 30px;
+
+    max-width: 30px;
+    max-height: 30px;
+  }
+
+  .logoItem img[src$="swiggy.png"] {
+    width: 37px;
+    height: 28px;
+
+    max-width: 37px;
+    max-height: 28px;
+  }
+
+  .logoItem img[src$="tata.svg"] {
+    width: 30px;
+    height: 30px;
+
+    max-width: 30px;
+    max-height: 30px;
+  }
+
+  .logoItem img[src$="ikea.svg"] {
+    width: 60px;
+    height: 24px;
+
+    max-width: 60px;
+    max-height: 24px;
+  }
+
+  .track {
+    animation-duration: 27s;
+  }
+
+  .fadeLeft,
+  .fadeRight {
+    width: 58px;
+  }
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}
+

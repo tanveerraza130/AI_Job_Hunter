@@ -834,13 +834,3 @@
     animation: none !important;
   }
 }
-
-    
-/* ============================================================
-   FINAL CTA — RESERVED BRAND MOTION SPACE
-   ONLY CHANGE: extra breathing room before footer
-   ============================================================ */
-
-.section {
-  padding-bottom: 64px !important;
-}

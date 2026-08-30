@@ -1,0 +1,188 @@
+/* ============================================================
+   ROCKET CTA — DARK LUXURY VERSION
+   ============================================================ */
+
+.section {
+  width: 100%;
+  padding: 34px 24px;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      700px 240px at 50% 50%,
+      rgba(118,80,233,.22),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      #17142a 0%,
+      #0f0d1d 100%
+    );
+}
+
+
+.container {
+  width: min(1120px, 100%);
+  min-height: 150px;
+  margin: 0 auto;
+  padding: 28px 34px;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 26px;
+
+  border: 1px solid rgba(166,145,255,.20);
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.08),
+      rgba(118,80,233,.08)
+    );
+
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+
+/* ============================================================
+   ROCKET ICON
+   ============================================================ */
+
+.rocket {
+  width: 58px;
+  height: 58px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #9c78ff 0%,
+      #7650e9 48%,
+      #5d39d0 100%
+    );
+
+  color: #ffffff;
+
+  font-size: 25px;
+  font-weight: 700;
+
+  transform: rotate(-18deg);
+
+  box-shadow:
+    0 12px 35px rgba(118,80,233,.38),
+    0 0 0 8px rgba(118,80,233,.08);
+}
+
+
+/* ============================================================
+   COPY
+   ============================================================ */
+
+.copy {
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+
+  color: #a993ff;
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.copy h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(22px,2.3vw,32px);
+  line-height: 1.08;
+  letter-spacing: -.04em;
+}
+
+.copy p:last-child {
+  margin: 8px 0 0;
+
+  color: rgba(232,228,245,.70);
+
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   CTA
+   ============================================================ */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 13px 19px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8059f2 0%,
+      #6942df 100%
+    );
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 10px 30px rgba(118,80,233,.28);
+}
+
+.cta span {
+  font-size: 15px;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width:760px) {
+
+  .section {
+    padding: 24px 16px;
+  }
+
+  .container {
+    grid-template-columns: 52px 1fr;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .rocket {
+    width: 48px;
+    height: 48px;
+    font-size: 21px;
+  }
+
+  .cta {
+    grid-column: 1/-1;
+    justify-self: start;
+  }
+}
