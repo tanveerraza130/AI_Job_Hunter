@@ -327,6 +327,13 @@ class Engine:
     # Registry
     # ------------------------------------------------------------------
 
+    def _canonical_job_id(self, job: Job) -> str:
+        """Return the canonical globally unique job ID."""
+        if job.portal and ":" not in str(job.job_id):
+            return f"{job.portal}:{job.job_id}"
+
+        return str(job.job_id)
+
     def _save_to_registry(
         self,
         job: Job,
@@ -391,15 +398,21 @@ class Engine:
                 elif (
                     profile_type
                     and self._score_repo is not None
-                    and not self._score_repo.has_score(
-                        job_id=job.job_id,
-                        profile_id=profile_type,
-                    )
                 ):
-                    # Job exists globally, but this profile has
-                    # not processed it yet. Allow profile-specific
-                    # processing.
-                    new_jobs.append(job)
+                    canonical_job_id = self._canonical_job_id(job)
+
+                    if not self._score_repo.has_score(
+                        job_id=canonical_job_id,
+                        profile_id=profile_type,
+                    ):
+                        # Job exists globally, but this profile has
+                        # not processed it yet. Allow profile-specific
+                        # processing.
+                        new_jobs.append(job)
+
+                    else:
+                        self._registry.mark_seen(job)
+                        seen_count += 1
 
                 else:
                     self._registry.mark_seen(job)
@@ -888,11 +901,8 @@ class Engine:
                         # Persist score
                         # ----------------------------------------------
 
-                        canonical_job_id = (
-                            f"{job.portal}:{job.job_id}"
-                            if job.portal and ':' not in str(job.job_id)
-                            else str(job.job_id)
-                        )
+                        canonical_job_id = self._canonical_job_id(job)
+
                         self._score_repo.save_score_result(
                             job_id=canonical_job_id,
                             profile_id=profile_type,

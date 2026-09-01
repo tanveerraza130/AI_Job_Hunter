@@ -12,6 +12,12 @@ import {
 import { deleteApplication, getApplicationsBulk, updateApplication } from "@/lib/api";
 import type { Job } from "@/types/job";
 import { formatDisplayText } from "@/lib/display";
+import {
+  getApplyReturnState,
+  markApplyReturned,
+  setApplyAwaitingReturn,
+  clearApplyReturnState,
+} from "@/lib/applyReturnState";
 
 type ApplicationStatus =
   | "Not Applied"
@@ -175,22 +181,208 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
   >(null);
 
   useEffect(() => {
-    if (!waitingForApplyReturn) return;
-
-    const handleReturn = () => {
-      if (document.visibilityState === "visible") {
-        setShowApplyPrompt(waitingForApplyReturn);
+    function handleReturn() {
+      if (document.visibilityState !== "visible") {
+        return;
       }
-    };
+
+      const shared = getApplyReturnState();
+
+      if (!shared) {
+        return;
+      }
+
+      const jobExists = jobs.some(
+        (job) => String(job.job_id) === String(shared.jobId),
+      );
+
+      if (!jobExists) {
+        return;
+      }
+
+      if (shared.promptRequired) {
+        setShowApplyPrompt(shared.jobId);
+        setWaitingForApplyReturn(shared.jobId);
+        return;
+      }
+
+      if (shared.awaitingReturn) {
+        const returned = markApplyReturned();
+
+        if (returned?.promptRequired) {
+          setShowApplyPrompt(returned.jobId);
+          setWaitingForApplyReturn(returned.jobId);
+        }
+      }
+    }
+
+    handleReturn();
+
+    function handleApplyStateStorage(event: StorageEvent) {
+      if (event.key !== "ai_job_hunter_apply_return") {
+        return;
+      }
+
+      if (event.newValue === null) {
+        setShowApplyPrompt(null);
+        setWaitingForApplyReturn(null);
+      }
+    }
 
     window.addEventListener("focus", handleReturn);
-    document.addEventListener("visibilitychange", handleReturn);
+    window.addEventListener("pageshow", handleReturn);
+    document.addEventListener(
+      "visibilitychange",
+      handleReturn,
+    );
+    window.addEventListener(
+      "storage",
+      handleApplyStateStorage,
+    );
 
     return () => {
       window.removeEventListener("focus", handleReturn);
-      document.removeEventListener("visibilitychange", handleReturn);
+      window.removeEventListener("pageshow", handleReturn);
+      document.removeEventListener(
+        "visibilitychange",
+        handleReturn,
+      );
+      window.removeEventListener(
+        "storage",
+        handleApplyStateStorage,
+      );
     };
-  }, [waitingForApplyReturn]);
+  }, [jobs]);
+
+  /*
+   * Desktop application confirmation lock.
+   *
+   * When the user returns from the external job portal,
+   * the confirmation must be explicitly resolved before
+   * the dashboard can be scrolled.
+   *
+   * This only affects the confirmation state. It does not
+   * change application/status logic.
+   */
+  useEffect(() => {
+    if (!showApplyPrompt) {
+      return;
+    }
+
+    /*
+     * Confirmation lock is DESKTOP ONLY.
+     * Mobile must remain freely scrollable.
+     */
+    if (window.innerWidth < 901) {
+      return;
+    }
+
+    const dialog = document.querySelector(
+      `.mj-card > .mj-actions [role="dialog"][aria-label="Application status"]`
+    );
+
+    if (dialog) {
+      requestAnimationFrame(() => {
+        dialog.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+
+        const firstButton =
+          dialog.querySelector<HTMLButtonElement>(
+            "button"
+          );
+
+        firstButton?.focus({ preventScroll: true });
+      });
+    }
+
+    const html = document.documentElement;
+    const body = document.body;
+
+    const previousOverflow = body.style.overflow;
+    const previousOverscrollBehavior = body.style.overscrollBehavior;
+    const previousTouchAction = body.style.touchAction;
+
+    html.classList.add("mj-status-confirmation-active");
+
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "none";
+    body.style.touchAction = "none";
+
+    return () => {
+      html.classList.remove("mj-status-confirmation-active");
+
+      body.style.overflow = previousOverflow;
+      body.style.overscrollBehavior =
+        previousOverscrollBehavior;
+      body.style.touchAction = previousTouchAction;
+    };
+  }, [showApplyPrompt]);
+
+  /*
+   * Desktop status-confirmation scroll nudge.
+   *
+   * When the page is intentionally scroll-locked because the user
+   * must confirm application status, a scroll attempt gently nudges
+   * the active job card.
+   *
+   * UX intent:
+   * - No popup/banner
+   * - No card expansion
+   * - No layout shift
+   * - No additional blocking UI
+   * - Simply directs attention back to the pending status action
+   * - Desktop only
+   */
+  useEffect(() => {
+    if (!showApplyPrompt) {
+      return;
+    }
+
+    const handleScrollAttempt = () => {
+      if (window.innerWidth < 901) {
+        return;
+      }
+
+      const dialog = document.querySelector(
+        `.mj-card > .mj-actions [role="dialog"][aria-label="Application status"]`
+      );
+
+      if (!dialog) {
+        return;
+      }
+
+      if (!(dialog instanceof HTMLElement)) {
+        return;
+      }
+
+      dialog.classList.remove("mj-status-scroll-nudge");
+
+      // Restart the animation cleanly for repeated scroll attempts.
+      void dialog.offsetWidth;
+
+      dialog.classList.add("mj-status-scroll-nudge");
+
+      window.setTimeout(() => {
+        dialog.classList.remove("mj-status-scroll-nudge");
+      }, 600);
+    };
+
+    window.addEventListener(
+      "wheel",
+      handleScrollAttempt,
+      { passive: true }
+    );
+
+    return () => {
+      window.removeEventListener(
+        "wheel",
+        handleScrollAttempt
+      );
+    };
+  }, [showApplyPrompt]);
 
   useEffect(() => {
     let cancelled = false;
@@ -409,12 +601,18 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
 
                 <div className="mj-meta">
                   <span>
-                    <MapPin size={14} />
+                    <MapPin
+                      size={14}
+                      style={{ color: "#ef4444" }}
+                    />
                     {job.location ? formatDisplayText(job.location) : "Location unavailable"}
                   </span>
 
                   <span>
-                    <BriefcaseBusiness size={14} />
+                    <BriefcaseBusiness
+                      size={14}
+                      style={{ color: "#2563eb" }}
+                    />
                     {experience(
                       job.experience_min,
                       job.experience_max,
@@ -422,15 +620,18 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
                   </span>
 
                   <span>
-                    {salary(
-                      job.salary_min,
-                      job.salary_max,
-                      job.salary_currency,
-                    )}
+                    <BriefcaseBusiness
+                      size={14}
+                      style={{ color: "#7c3aed" }}
+                    />
+                    Full-time
                   </span>
 
                   <span>
-                    <CalendarDays size={14} />
+                    <CalendarDays
+                      size={14}
+                      style={{ color: "#16a34a" }}
+                    />
                     {formatDate(job.posted_date)}
                   </span>
                 </div>
@@ -636,6 +837,7 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
                         "noopener,noreferrer",
                       );
 
+                      setApplyAwaitingReturn(job.job_id);
                       setWaitingForApplyReturn(job.job_id);
                     }}
                   >
@@ -661,6 +863,7 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
                           updateStatus(job.job_id, "Applied");
                           setShowApplyPrompt(null);
                           setWaitingForApplyReturn(null);
+                          clearApplyReturnState();
                         }}
                       >
                         ✓ Yes, Applied
@@ -671,6 +874,7 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
                         onClick={() => {
                           setShowApplyPrompt(null);
                           setWaitingForApplyReturn(null);
+                          clearApplyReturnState();
                         }}
                       >
                         Not Yet
@@ -685,6 +889,7 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
                           );
                           setShowApplyPrompt(null);
                           setWaitingForApplyReturn(null);
+                          clearApplyReturnState();
                         }}
                       >
                         Not Relevant

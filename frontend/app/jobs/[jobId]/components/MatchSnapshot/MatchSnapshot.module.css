@@ -1540,3 +1540,11 @@
     padding: 0 !important;
   }
 }
+
+/* MOBILE ONLY — hide ONLY the duplicate percentage.
+   Keep OVERALL MATCH SCORE + match label. */
+@media (max-width: 767px) {
+  .mobileOverallScoreText > strong {
+    display: none !important;
+  }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useRef, useState } from "react";
 import JobHeader from "./components/JobHeader/JobHeader";
 import MatchSnapshot from "./components/MatchSnapshot/MatchSnapshot";
 import JobDescription from "./components/JobDescription/JobDescription";
@@ -13,6 +13,12 @@ import { ArrowLeft } from "lucide-react";
 import { getApplication, getJobDetail, getMyProfile, updateApplication } from "@/lib/api";
 import type { ApplicationStatus } from "@/lib/api";
 import type { JobDetail, ScoreBreakdown } from "@/types/job";
+import {
+  getApplyReturnState,
+  markApplyReturned,
+  setApplyAwaitingReturn,
+  clearApplyReturnState,
+} from "@/lib/applyReturnState";
 
 function date(value?: string | null) { if (!value) return "Not disclosed"; const d = new Date(value); return Number.isNaN(d.getTime()) ? "Not disclosed" : d.toLocaleDateString("en-IN", { day:"numeric", month:"short", year:"numeric" }); }
 function salary(min?: number | null,max?: number | null,currency?: string|null){if(min==null&&max==null)return"Salary not disclosed";const s=currency||"₹",f=(v:number)=>new Intl.NumberFormat("en-IN").format(v);if(min!=null&&max!=null)return`${s}${f(min)} – ${s}${f(max)}`;return min!=null?`From ${s}${f(min)}`:`Up to ${s}${f(max as number)}`;}
@@ -25,17 +31,363 @@ function splitDescription(text?:string|null){
 }
 export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>}){
   const {jobId}=use(params);
+
   const [profileId,setProfileId]=useState<string | null>(null);
   const [job,setJob]=useState<JobDetail|null>(null); const [loading,setLoading]=useState(true); const [error,setError]=useState<string|null>(null);
   const [status,setStatus]=useState<ApplicationStatus>("saved");
   const [openMobileSection, setOpenMobileSection] =
     useState<string | null>(null);
 
+  
+  /*
+   * Apply-return state.
+   *
+   * React state controls rendering.
+   * The ref is used only to synchronously arm the Apply flow
+   * before window.open() can trigger browser focus changes.
+   */
+  const [showApplyPrompt, setShowApplyPrompt] =
+    useState<string | null>(null);
+
+
+
+
+
+  /*
+   * ============================================================
+   * JOB DETAILS APPLY → RETURN → CONFIRMATION
+   * ============================================================
+   *
+   * Behaviour:
+   *
+   * 1. Apply Now arms this exact job synchronously.
+   * 2. External portal opens.
+   * 3. Browser returns/focuses this page.
+   * 4. awaitingReturn is converted to promptRequired.
+   * 5. Popup is shown.
+   * 6. If popup already exists in shared localStorage,
+   *    it is restored after a Job Details refresh.
+   *
+   * Exact job ID matching is mandatory.
+   *
+   * No polling.
+   * No blur workaround.
+   * No duplicate watcher.
+   */
+  /*
+   * JOB DETAILS APPLY → RETURN → CONFIRMATION
+   *
+   * Shared localStorage is the source of truth.
+   *
+   * promptRequired:
+   *   Persistent confirmation. Restores after refresh.
+   *
+   * awaitingReturn:
+   *   Converted only when this Job Details page actually
+   *   armed Apply for the exact current job.
+   *
+   * Exact job ID matching is mandatory.
+   */
+  /*
+   * JOB DETAILS APPLY → RETURN → CONFIRMATION
+   *
+   * The watcher is mounted when Job Details loads.
+   *
+   * IMPORTANT:
+   * waitingForApplyReturnRef is armed synchronously BEFORE
+   * window.open(), so the browser cannot race React state/effect
+   * registration.
+   *
+   * promptRequired is persistent and therefore survives refresh.
+   */
+  /*
+   * ============================================================
+   * JOB DETAILS APPLY → CONFIRMATION
+   * ============================================================
+   *
+   * Important browser behaviour:
+   *
+   * window.open("_blank") does not reliably cause the original
+   * Job Details page to receive focus/visibility events.
+   *
+   * Therefore we use:
+   *
+   *   1. focus / pageshow / visibilitychange
+   *   2. a lightweight fallback poll
+   *
+   * The ref remains the gate for awaitingReturn, so an unrelated
+   * localStorage state cannot create a popup.
+   *
+   * promptRequired remains persistent and therefore survives
+   * Job Details refresh.
+   */
+  /*
+   * ============================================================
+   * JOB DETAILS APPLY → RETURN → CONFIRMATION
+   * ============================================================
+   *
+   * Shared localStorage is the source of truth.
+   *
+   * Apply Now writes:
+   *
+   *   awaitingReturn = true
+   *   promptRequired = false
+   *
+   * When Job Details is active again, we convert that state into:
+   *
+   *   awaitingReturn = false
+   *   promptRequired = true
+   *
+   * The prompt then renders from showApplyPrompt.
+   *
+   * IMPORTANT:
+   * Do NOT gate this conversion behind React state/ref.
+   * The Apply state itself already contains the exact job ID.
+   * This mirrors the working Dashboard behaviour.
+   */
+  /*
+   * ============================================================
+   * JOB DETAILS APPLY / RETURN CONFIRMATION
+   * ============================================================
+   *
+   * The shared localStorage state is the source of truth.
+   *
+   * Dashboard and Job Details both use:
+   *
+   *   awaitingReturn
+   *        ↓
+   *   promptRequired
+   *
+   * Exact jobId matching prevents cross-job prompts.
+   *
+   * promptRequired is persistent, so a refresh keeps the
+   * confirmation visible.
+   */
+  /*
+   * ============================================================
+   * JOB DETAILS APPLY RETURN
+   *
+   * This intentionally mirrors the WORKING Dashboard flow.
+   *
+   * Dashboard:
+   *   Apply → awaitingReturn
+   *   browser returns → markApplyReturned()
+   *   promptRequired → show popup
+   *
+   * Job Details uses the same shared state.
+   * The only difference is that there is one loaded `job`
+   * instead of a `jobs[]` collection.
+   * ============================================================
+   */
+  useEffect(() => {
+    function handleReturn() {
+      /*
+       * Same lifecycle guard as Dashboard.
+       */
+      if (document.visibilityState !== "visible") {
+        return;
+      }
+
+      /*
+       * Do not inspect Apply state until the actual Job Details
+       * record has finished loading.
+       */
+      if (!job) {
+        return;
+      }
+
+      const shared = getApplyReturnState();
+
+      if (!shared) {
+        return;
+      }
+
+      /*
+       * Same protection as Dashboard's jobs.some().
+       *
+       * Always compare against the REAL loaded job.job_id.
+       */
+      if (
+        String(job.job_id) !==
+        String(shared.jobId)
+      ) {
+        return;
+      }
+
+      /*
+       * Already converted to confirmation.
+       *
+       * This is the important refresh path.
+       */
+      if (shared.promptRequired) {
+        setShowApplyPrompt(
+          String(shared.jobId),
+        );
+        return;
+      }
+
+      /*
+       * Apply was started and the browser has returned.
+       *
+       * Use the same conversion used by Dashboard.
+       */
+      if (shared.awaitingReturn) {
+        const returned = markApplyReturned();
+
+        if (
+          returned?.promptRequired &&
+          String(returned.jobId) ===
+            String(job.job_id)
+        ) {
+          setShowApplyPrompt(
+            String(returned.jobId),
+          );
+        }
+      }
+    }
+
+    /*
+     * Initial check.
+     *
+     * If Dashboard/another page already created promptRequired,
+     * Job Details restores it once the job is loaded.
+     */
+    handleReturn();
+
+    /*
+     * Same browser return signals as Dashboard.
+     */
+    function handleApplyStateStorage(event: StorageEvent) {
+      if (event.key !== "ai_job_hunter_apply_return") {
+        return;
+      }
+
+      if (event.newValue === null) {
+        setShowApplyPrompt(null);
+      }
+    }
+
+    window.addEventListener(
+      "focus",
+      handleReturn,
+    );
+
+    window.addEventListener(
+      "pageshow",
+      handleReturn,
+    );
+
+    document.addEventListener(
+      "visibilitychange",
+      handleReturn,
+    );
+
+    window.addEventListener(
+      "storage",
+      handleApplyStateStorage,
+    );
+
+    return () => {
+      window.removeEventListener(
+        "focus",
+        handleReturn,
+      );
+
+      window.removeEventListener(
+        "pageshow",
+        handleReturn,
+      );
+
+      document.removeEventListener(
+        "visibilitychange",
+        handleReturn,
+      );
+
+      window.removeEventListener(
+        "storage",
+        handleApplyStateStorage,
+      );
+    };
+  }, [job]);
+
+  const [mobileStatusOpen, setMobileStatusOpen] =
+    useState(false);
+
+  const mobileStatusOptions: {
+    value: ApplicationStatus;
+    label: string;
+  }[] = [
+    { value: "saved", label: "Saved" },
+    { value: "pending", label: "Application pending" },
+    { value: "applied", label: "Applied" },
+    { value: "interview", label: "Interview" },
+    { value: "offer", label: "Offer" },
+    { value: "rejected", label: "Rejected" },
+    { value: "not_relevant", label: "Not relevant" },
+  ];
+
+  function handleMobileStatusChange(
+    nextStatus: ApplicationStatus,
+  ) {
+    setMobileStatusOpen(false);
+    saveApplication(nextStatus);
+  }
+
   function toggleMobileSection(section: string) {
     setOpenMobileSection((current) =>
       current === section ? null : section,
     );
   }
+
+  // Close the mobile status menu when the user clicks/taps
+  // anywhere outside the status control.
+  useEffect(() => {
+    if (!mobileStatusOpen) return;
+
+    function mobileStatusOutsideClose(event: PointerEvent) {
+      const target = event.target as Node | null;
+      const statusControl = document.querySelector(
+        ".mobile-bottom-status",
+      );
+
+      if (
+        statusControl &&
+        target &&
+        !statusControl.contains(target)
+      ) {
+        setMobileStatusOpen(false);
+      }
+    }
+
+    function mobileStatusEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMobileStatusOpen(false);
+      }
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      mobileStatusOutsideClose,
+    );
+
+    document.addEventListener(
+      "keydown",
+      mobileStatusEscape,
+    );
+
+    return () => {
+      document.removeEventListener(
+        "pointerdown",
+        mobileStatusOutsideClose,
+      );
+
+      document.removeEventListener(
+        "keydown",
+        mobileStatusEscape,
+      );
+    };
+  }, [mobileStatusOpen]);
+
  const [notes,setNotes]=useState(""); const [saving,setSaving]=useState(false);
   useEffect(() => {
     let cancelled = false;
@@ -153,7 +505,25 @@ export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>
         status={status}
         saving={saving}
         saveApplication={saveApplication}
+        showApplyPrompt={showApplyPrompt === String(job.job_id)}
+        onApplyConfirmed={() => {
+          saveApplication("applied");
+          setShowApplyPrompt(null);
+          clearApplyReturnState();
+        }}
+        onApplyNotYet={() => {
+          saveApplication("pending");
+          setShowApplyPrompt(null);
+          clearApplyReturnState();
+        }}
+        onApplyNotRelevant={() => {
+          saveApplication("not_relevant");
+          setShowApplyPrompt(null);
+          clearApplyReturnState();
+        }}
       />
+
+
 
       <div className="job-detail-layout">
         <div className="job-detail-main">
@@ -340,20 +710,33 @@ export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>
         </div>
 
         <aside className="job-detail-sidebar">
-          <section className="detail-side-card">
-            <div className="detail-side-heading">
+          <section className="detail-side-card job-highlights-card">
+            <button
+              type="button"
+              className="detail-side-heading mobile-sidebar-accordion-trigger"
+              aria-expanded={openMobileSection === "job-highlights"}
+              onClick={() =>
+                toggleMobileSection("job-highlights")
+              }
+            >
               <span className="detail-side-icon">✦</span>
-              <div>
-                <h3>Job Highlights</h3>
-              </div>
-            </div>
+              <h3>Job Highlights</h3>
+            </button>
 
-            <div className="highlight-item">
-              <strong>High match with your profile</strong>
-              <span>
-                Your skills match {Math.round(score?.overall_score ?? 0)}%
-                of requirements
-              </span>
+            <div
+              className={`mobile-sidebar-accordion-content ${
+                openMobileSection === "job-highlights"
+                  ? "is-open"
+                  : ""
+              }`}
+            >
+              <div className="highlight-item">
+                <strong>High match with your profile</strong>
+                <span>
+                  Your skills match {Math.round(score?.overall_score ?? 0)}%
+                  of requirements
+                </span>
+              </div>
             </div>
           </section>
 
@@ -378,7 +761,17 @@ export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>
               }`}
             >
               <div className="score-breakdown-layout">
-              <div className="score-breakdown-donut">
+              <div
+                className="score-breakdown-donut"
+                style={
+                  {
+                    "--breakdown-score": `${Math.max(
+                      0,
+                      Math.min(100, Math.round(score?.overall_score ?? 0)),
+                    )}%`,
+                  } as React.CSSProperties
+                }
+              >
                 <div className="score-breakdown-donut-inner">
                   <strong>
                     {score?.overall_score != null
@@ -511,29 +904,115 @@ export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>
       />
 
       <div className="mobile-bottom-actions">
-        <button type="button" aria-label="Share job">
-          ↗
-        </button>
-
-        {job.job_url && (
-          <a
-            href={job.job_url}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Apply Now ↗
-          </a>
-        )}
 
         <button
           type="button"
-          aria-label="Save job"
+          className={`mobile-bottom-save ${
+            status === "saved" ? "is-saved" : ""
+          }`}
+          aria-label={status === "saved" ? "Saved" : "Save job"}
           onClick={() => saveApplication("saved")}
           disabled={saving}
         >
-          ♡
+          {status === "saved" ? "♥" : "♡"}
         </button>
+
+        <div className="mobile-bottom-status">
+          <button
+            type="button"
+            className="mobile-bottom-status-trigger"
+            aria-expanded={mobileStatusOpen}
+            aria-haspopup="listbox"
+            aria-label="Job Status"
+            onClick={() =>
+              setMobileStatusOpen((open) => !open)
+            }
+            disabled={saving}
+          >
+            <span>
+              {status === "saved" && "Saved"}
+              {status === "pending" && "Application Pending"}
+              {status === "applied" && "Applied"}
+              {status === "interview" && "Interview"}
+              {status === "offer" && "Offer"}
+              {status === "rejected" && "Rejected"}
+              {status === "not_relevant" && "Not Relevant"}
+            </span>
+
+            <span
+              className={`mobile-bottom-status-chevron ${
+                mobileStatusOpen ? "is-open" : ""
+              }`}
+              aria-hidden="true"
+            >
+              ⌄
+            </span>
+          </button>
+
+          {mobileStatusOpen && (
+            <div
+              className="mobile-bottom-status-menu"
+              role="listbox"
+              aria-label="Job Status options"
+            >
+              {mobileStatusOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="option"
+                  aria-selected={status === option.value}
+                  className={`mobile-bottom-status-option ${
+                    status === option.value
+                      ? "is-selected"
+                      : ""
+                  }`}
+                  onClick={() =>
+                    handleMobileStatusChange(option.value)
+                  }
+                >
+                  <span>{option.label}</span>
+
+                  {status === option.value && (
+                    <span
+                      className="mobile-bottom-status-check"
+                      aria-hidden="true"
+                    >
+                      ✓
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {job.job_url && (
+          <button
+            type="button"
+            className="mobile-bottom-apply"
+            onClick={() => {
+              if (!job.job_url) {
+                return;
+              }
+              const exactJobId = String(job.job_id);
+
+              setApplyAwaitingReturn(
+                exactJobId,
+              );
+
+              window.open(
+                job.job_url,
+                "_blank",
+                "noopener,noreferrer",
+              );
+            }}
+          >
+            Apply Now ↗
+          </button>
+        )}
+
       </div>
+
     </main>
   );
 }

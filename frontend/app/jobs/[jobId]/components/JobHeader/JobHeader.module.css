@@ -77,17 +77,82 @@
 
   margin-top: 7px;
 
+  min-width: 0;
+  max-width: 100%;
+
   color: #52617d;
 
   font-size: 14px;
   line-height: 1.2;
   font-weight: 500;
+
+  overflow: hidden;
 }
 
-.companyLine strong {
+.companyName {
+  flex: 0 1 auto;
+  min-width: 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   color: #344054;
   font-weight: 700;
 }
+
+.companySeparator {
+  flex: 0 0 auto;
+  color: #c3cad5;
+}
+
+.locationInline {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  /*
+   * Short locations stay content-sized.
+   * Long locations shrink and truncate instead of
+   * pushing the remaining metadata out of view.
+   */
+  flex: 0 1 auto;
+  min-width: 0;
+
+  max-width: min(420px, 100%);
+
+  overflow: hidden;
+
+  color: #52617d;
+}
+
+.locationInline svg {
+  flex: 0 0 auto;
+
+  color: #f97316;
+  stroke-width: 2.2;
+}
+
+.locationText {
+  display: block;
+
+  min-width: 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.workModeInline {
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 5px;
+
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 
 .meta {
   display: flex;
@@ -120,11 +185,28 @@
 }
 
 .metaPill svg {
-  color: #65738b;
+  flex: 0 0 auto;
+}
+
+.metaPill:nth-child(1) svg {
+  color: #8b5cf6;
+}
+
+.metaPill:nth-child(3) svg {
+  color: #f97316;
 }
 
 .rupee {
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 16px;
+  height: 16px;
+
+  color: #059669;
+
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -632,3 +714,680 @@
   }
 }
 
+
+/* MOBILE ONLY — hide duplicate score text beside score circle */
+@media (max-width: 767px) {
+  .scoreInfo {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   DESKTOP JOB DETAILS — STATUS CONTROL
+   Desktop only. Mobile status remains untouched.
+   ============================================================ */
+
+.desktopStatus {
+  position: relative;
+  overflow: visible;
+  z-index: 100;
+
+  position: relative;
+  flex: 0 0 150px;
+  width: 150px;
+  min-width: 150px;
+}
+
+.desktopStatusTrigger {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  padding: 0 11px;
+
+  color: #344054;
+  background: #ffffff;
+
+  border: 1px solid #d8d2ff;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+
+  white-space: nowrap;
+  overflow: hidden;
+
+  cursor: pointer;
+}
+
+.desktopStatusTrigger > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.desktopStatusTrigger:hover {
+  border-color: #c7bfff;
+}
+
+.desktopStatusTrigger:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+.desktopStatusTrigger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.desktopStatusChevron {
+  flex: 0 0 auto;
+  font-size: 15px;
+  line-height: 1;
+  transform: translateY(-1px);
+  transition: transform 160ms ease;
+}
+
+.desktopStatusChevronOpen {
+  transform: rotate(180deg) translateY(1px);
+}
+
+.desktopStatusMenu {
+  position: absolute;
+  z-index: 1000;
+
+  left: 0;
+  top: calc(100% - 20px);
+  bottom: auto;
+
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+
+  padding: 6px;
+
+  background: #ffffff;
+  border: 1px solid #e0e5ef;
+  border-radius: 10px;
+
+  box-shadow:
+    0 14px 32px rgba(17, 24, 39, 0.12),
+    0 3px 10px rgba(17, 24, 39, 0.06);
+
+  overflow: hidden;
+}
+
+.desktopStatusOption {
+  width: 100%;
+  min-height: 34px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 10px;
+
+  color: #344054;
+  background: transparent;
+
+  border: 0;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  text-align: left;
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+.desktopStatusOption:hover {
+  background: #f7f5ff;
+  color: #4f46e5;
+}
+
+.desktopStatusOptionSelected {
+  background: #f0edff;
+  color: #4f46e5;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .desktopStatus {
+    display: none !important;
+  }
+}
+
+
+/* ============================================================
+   DESKTOP JOB DETAILS — FINAL CTA ALIGNMENT
+   Save / Status / Apply
+   Desktop only. Mobile untouched.
+   ============================================================ */
+
+@media (min-width: 768px) {
+
+  .heroMain .actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+  }
+
+  /* SAVE */
+  .heroMain .actions .saveButton {
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+    height: 38px !important;
+
+    flex: 0 0 82px !important;
+
+    justify-content: center !important;
+    white-space: nowrap !important;
+  }
+
+  /* STATUS */
+  .heroMain .actions .desktopStatus {
+    width: 170px !important;
+    min-width: 170px !important;
+    max-width: 170px !important;
+
+    flex: 0 0 170px !important;
+  }
+
+  .heroMain .actions .desktopStatusTrigger {
+    width: 170px !important;
+    min-width: 170px !important;
+    max-width: 170px !important;
+    height: 38px !important;
+
+    padding-left: 12px !important;
+    padding-right: 11px !important;
+
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  .heroMain .actions .desktopStatusTrigger > span:first-child {
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  /* DROPDOWN */
+  .heroMain .actions .desktopStatusMenu {
+    width: 170px !important;
+    min-width: 170px !important;
+    max-width: 170px !important;
+
+    left: 0 !important;
+    right: auto !important;
+  }
+
+  /* APPLY */
+  .heroMain .actions .applyButton {
+    width: 92px !important;
+    min-width: 92px !important;
+    max-width: 92px !important;
+    height: 38px !important;
+
+    flex: 0 0 92px !important;
+
+    justify-content: center !important;
+    white-space: nowrap !important;
+  }
+  
+  .companyLine {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    gap: 5px;
+
+    width: 100%;
+    min-width: 0;
+
+    overflow: hidden;
+
+    font-size: 11px;
+  }
+
+  .companyName {
+    flex: 0 1 auto;
+
+    min-width: 0;
+    max-width: 38%;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .companySeparator {
+    flex: 0 0 auto;
+    color: #c5ccd7;
+  }
+
+  .locationInline {
+    /*
+     * Mobile:
+     * location gets the remaining width only when necessary.
+     * Short locations remain compact.
+     */
+    flex: 0 1 auto;
+
+    min-width: 0;
+    max-width: min(100%, 58%);
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 4px;
+
+    overflow: hidden;
+  }
+
+  .locationInline svg {
+    width: 12px;
+    height: 12px;
+
+    flex: 0 0 auto;
+
+    color: #f97316;
+  }
+
+  .locationText {
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .workModeInline {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 5px !important;
+
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+
+  .workModeInline svg {
+    display: block !important;
+    flex: 0 0 auto !important;
+
+    width: 12px;
+    height: 12px;
+
+    color: #8b5cf6;
+    stroke-width: 2.2;
+  }
+
+}
+
+
+/* =========================================================
+   JOB DETAILS — APPLY STATUS PROMPT
+   Dashboard visual language, scoped to JobHeader only.
+   Desktop only.
+   ========================================================= */
+
+@media (max-width: 767px) {
+  .jobDetailsApplyPrompt {
+    position: static;
+    width: 100%;
+    margin-top: 12px;
+    box-shadow: none;
+  }
+
+  .jobDetailsApplyPrompt::before {
+    display: none;
+  }
+}
+
+
+/* ============================================================
+   JOB DETAILS APPLY CONFIRMATION
+   Matches Dashboard visual language.
+   ============================================================ */
+
+.job-details-apply-prompt {
+  position: absolute;
+  top: 150px;
+  right: 32px;
+  z-index: 9999;
+
+  width: 320px;
+  box-sizing: border-box;
+
+  padding: 18px;
+
+  border: 1px solid #ddd2ff;
+  border-radius: 18px;
+
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #faf8ff 100%
+  );
+
+  box-shadow:
+    0 18px 42px rgb(77 54 190 / 18%),
+    0 4px 14px rgb(16 24 40 / 10%);
+}
+
+.job-details-apply-prompt::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 42px;
+
+  width: 16px;
+  height: 16px;
+
+  background: #ffffff;
+
+  border-top: 1px solid #ddd2ff;
+  border-left: 1px solid #ddd2ff;
+
+  transform: rotate(45deg);
+}
+
+.job-details-apply-prompt-title {
+  position: relative;
+
+  margin: 0 0 14px;
+
+  padding-top: 28px;
+
+  color: #172033;
+
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.job-details-apply-prompt-title::before {
+  content: "ACTION REQUIRED";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 24px;
+  padding: 0 11px;
+
+  border-radius: 999px;
+
+  color: #ffffff;
+  background: #e62b2b;
+
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.12em;
+}
+
+.job-details-apply-prompt-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.job-details-apply-prompt-actions button {
+  width: 100%;
+  min-height: 40px;
+
+  box-sizing: border-box;
+
+  padding: 9px 14px;
+
+  border: 1px solid #d5dbe7;
+  border-radius: 11px;
+
+  color: #58667f;
+  background: #ffffff;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.job-details-apply-prompt-actions button:first-child {
+  border: 2px solid #7657ff;
+  color: #59677f;
+  background: #ffffff;
+}
+
+.job-details-apply-prompt-actions button:hover {
+  border-color: #7657ff;
+  background: #fbfaff;
+  transform: translateY(-1px);
+}
+
+.job-details-apply-prompt-actions button:first-child:hover {
+  box-shadow: 0 4px 14px rgb(118 87 255 / 14%);
+}
+
+@media (max-width: 767px) {
+  .job-details-apply-prompt {
+    position: fixed;
+    top: auto;
+    right: 12px;
+    bottom: 88px;
+    left: 12px;
+
+    width: auto;
+
+    z-index: 9999;
+  }
+
+  .job-details-apply-prompt::before {
+    display: none;
+  }
+}
+
+
+/* ============================================================
+   APPLY CONFIRMATION
+   Anchored directly above Apply Now
+   ============================================================ */
+
+.applyAction {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.applyPrompt {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 12px);
+  z-index: 10000;
+
+  width: max-content;
+  min-width: 390px;
+  max-width: min(460px, calc(100vw - 32px));
+
+  box-sizing: border-box;
+  padding: 18px 20px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.16),
+    0 5px 14px rgba(15, 23, 42, 0.08);
+}
+
+.applyPrompt::after {
+  content: "";
+  position: absolute;
+  right: 28px;
+  bottom: -7px;
+
+  width: 13px;
+  height: 13px;
+
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+
+  transform: rotate(45deg);
+}
+
+.applyPromptTitle {
+  margin: 0 0 14px;
+
+  color: #111827;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.applyPromptActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.applyPromptActions button {
+  appearance: none;
+
+  min-height: 42px;
+  padding: 9px 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #374151;
+
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.applyPromptActions button:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.applyPromptActions button:active {
+  transform: translateY(1px);
+}
+
+.applyPromptActions button:first-child {
+  border-color: #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.applyPromptActions button:first-child:hover {
+  border-color: #15803d;
+  background: #15803d;
+}
+
+@media (max-width: 900px) {
+  .applyAction {
+    position: relative;
+  }
+
+  .applyPrompt {
+    right: 0;
+    bottom: calc(100% + 10px);
+
+    width: min(360px, calc(100vw - 32px));
+    min-width: 0;
+    max-width: calc(100vw - 32px);
+
+    padding: 16px;
+  }
+
+  .applyPromptActions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    white-space: normal;
+  }
+
+  .applyPromptActions button {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .applyPrompt::after {
+    right: 24px;
+  }
+}
+
+/* Desktop: bring application confirmation closer to Apply Now */
+@media (min-width: 901px) {
+  .applyPrompt {
+    transform: translateY(80px);
+  }
+}
+
+
+/* Mobile: confirmation popup starts at the Apply action card */
+@media (max-width: 900px) {
+  .applyAction {
+    position: relative;
+  }
+
+  .applyPrompt {
+    position: absolute;
+
+    /* Start at the top of the Apply action card */
+    top: 0;
+    bottom: auto;
+
+    /* Exact horizontal center */
+    left: 50%;
+    right: auto;
+    transform: translateX(calc(-50% - 140px));
+
+    width: min(330px, calc(100vw - 24px));
+    max-width: calc(100vw - 24px);
+    box-sizing: border-box;
+
+    z-index: 1000;
+  }
+}

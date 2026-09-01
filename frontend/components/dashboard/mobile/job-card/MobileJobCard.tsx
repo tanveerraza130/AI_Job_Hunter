@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  getApplyReturnState,
+  markApplyReturned,
+  setApplyAwaitingReturn,
+  clearApplyReturnState,
+} from "@/lib/applyReturnState";
 
 import Link from "next/link";
 
@@ -9,6 +15,7 @@ import {
   Bookmark,
   BriefcaseBusiness,
   CalendarDays,
+  ChevronDown,
   ChevronRight,
   MapPin,
 } from "lucide-react";
@@ -112,6 +119,24 @@ function MobileJobCard({
   onStatusChange,
   profileId,
 }: Props) {
+  const [statusOpen, setStatusOpen] = useState(false);
+
+  const statusOptions: MobileStatus[] = [
+    "Not Applied",
+    "Saved",
+    "Pending",
+    "Applied",
+    "Interview",
+    "Offer",
+    "Rejected",
+    "Not Relevant",
+  ];
+
+  const statusLabel =
+    status === "Pending"
+      ? "Application Pending"
+      : status;
+
   const score =
     job.overall_score;
 
@@ -132,33 +157,58 @@ function MobileJobCard({
   ] = useState(false);
 
   useEffect(() => {
-    if (!waitingForApplyReturn) {
-      return;
+    function checkApplyReturn() {
+      if (document.visibilityState !== "visible") {
+        return;
+      }
+
+      const shared = getApplyReturnState();
+
+      if (!shared || shared.jobId !== String(job.job_id)) {
+        return;
+      }
+
+      if (shared.promptRequired) {
+        setShowApplyPrompt(true);
+        setWaitingForApplyReturn(true);
+        return;
+      }
+
+      if (shared.awaitingReturn) {
+        const returned = markApplyReturned();
+
+        if (
+          returned?.jobId === String(job.job_id) &&
+          returned.promptRequired
+        ) {
+          setShowApplyPrompt(true);
+          setWaitingForApplyReturn(true);
+        }
+      }
     }
 
-    const handleReturn = () => {
-      if (document.visibilityState === "visible") {
-        setShowApplyPrompt(true);
-      }
-    };
+    function handleReturn() {
+      checkApplyReturn();
+    }
+
+    checkApplyReturn();
 
     window.addEventListener("focus", handleReturn);
+    window.addEventListener("pageshow", handleReturn);
     document.addEventListener(
       "visibilitychange",
       handleReturn,
     );
 
     return () => {
-      window.removeEventListener(
-        "focus",
-        handleReturn,
-      );
+      window.removeEventListener("focus", handleReturn);
+      window.removeEventListener("pageshow", handleReturn);
       document.removeEventListener(
         "visibilitychange",
         handleReturn,
       );
     };
-  }, [waitingForApplyReturn]);
+  }, [job.job_id]);
 
   const matchedSkills =
     breakdown?.matched_skills ?? [];
@@ -310,7 +360,10 @@ function MobileJobCard({
 
         <div className={styles.metaRow}>
           <span>
-            <BriefcaseBusiness size={13} />
+            <BriefcaseBusiness
+              size={13}
+              style={{ color: "#2563eb" }}
+            />
             {experience(
               job.experience_min,
               job.experience_max,
@@ -318,13 +371,27 @@ function MobileJobCard({
           </span>
 
           <span>
-            <MapPin size={13} />
+            <MapPin
+              size={13}
+              style={{ color: "#ef4444" }}
+            />
             {job.location || "India"}
           </span>
 
           <span>
-            <CalendarDays size={13} />
+            <BriefcaseBusiness
+              size={13}
+              style={{ color: "#7c3aed" }}
+            />
             Full-time
+          </span>
+
+          <span>
+            <CalendarDays
+              size={13}
+              style={{ color: "#16a34a" }}
+            />
+            {postedDate(job.posted_date)}
           </span>
         </div>
       </div>
@@ -394,18 +461,67 @@ function MobileJobCard({
       </section>
 
       <div className={styles.jobCardBottom}>
-        <div className={styles.jobBottomLeft}>
-          <span className={styles.posted}>
-            {postedDate(job.posted_date)}
-          </span>
+        <Link
+          href={href}
+          className={styles.detailsLink}
+        >
+          Job Details
+          <ChevronRight size={14} />
+        </Link>
 
-          <Link
-            href={href}
-            className={styles.detailsLink}
+        <div className={styles.statusControl}>
+          <button
+            type="button"
+            className={styles.statusButton}
+            aria-expanded={statusOpen}
+            aria-haspopup="listbox"
+            onClick={() =>
+              setStatusOpen((open) => !open)
+            }
           >
-            View details
-            <ChevronRight size={15} />
-          </Link>
+            <span>{statusLabel}</span>
+            <ChevronDown
+              size={13}
+              className={
+                statusOpen
+                  ? styles.statusChevronOpen
+                  : ""
+              }
+            />
+          </button>
+
+          {statusOpen && (
+            <div
+              className={styles.statusMenu}
+              role="listbox"
+              aria-label="Job Status"
+            >
+              {statusOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  role="option"
+                  aria-selected={status === option}
+                  className={`${styles.statusOption} ${
+                    status === option
+                      ? styles.statusOptionSelected
+                      : ""
+                  }`}
+                  onClick={async () => {
+                    setStatusOpen(false);
+                    await onStatusChange(
+                      job.job_id,
+                      option,
+                    );
+                  }}
+                >
+                  {option === "Pending"
+                    ? "Application Pending"
+                    : option}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {job.job_url && (
@@ -432,11 +548,12 @@ function MobileJobCard({
                 "noopener,noreferrer",
               );
 
+              setApplyAwaitingReturn(job.job_id);
               setWaitingForApplyReturn(true);
             }}
           >
-            Apply now
-            <ArrowUpRight size={15} />
+            Apply Now
+            <ArrowUpRight size={14} />
           </button>
         )}
       </div>
@@ -450,6 +567,7 @@ function MobileJobCard({
             );
             setShowApplyPrompt(false);
             setWaitingForApplyReturn(false);
+            clearApplyReturnState();
           }}
           onNotYet={() => {
             onStatusChange(
@@ -458,6 +576,7 @@ function MobileJobCard({
             );
             setShowApplyPrompt(false);
             setWaitingForApplyReturn(false);
+            clearApplyReturnState();
           }}
           onNotRelevant={() => {
             onStatusChange(
@@ -466,6 +585,7 @@ function MobileJobCard({
             );
             setShowApplyPrompt(false);
             setWaitingForApplyReturn(false);
+            clearApplyReturnState();
           }}
         />
       )}

@@ -1,11 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import {
   Bookmark,
   CalendarDays,
   ExternalLink,
   BriefcaseBusiness,
   Check,
+  MapPin,
+  Building2,
+  Laptop2,
+  IndianRupee,
+  Clock3,
 } from "lucide-react";
 
 import type { ApplicationStatus } from "@/lib/api";
@@ -13,6 +20,7 @@ import type { JobDetail } from "@/types/job";
 import { formatDisplayText } from "@/lib/display";
 
 import styles from "./JobHeader.module.css";
+import { setApplyAwaitingReturn } from "@/lib/applyReturnState";
 
 type Props = {
   job: JobDetail;
@@ -22,6 +30,11 @@ type Props = {
   saveApplication: (
     nextStatus?: ApplicationStatus,
   ) => Promise<void>;
+  showApplyPrompt?: boolean;
+  onApplyConfirmed?: () => void;
+  onApplyNotYet?: () => void;
+  onApplyNotRelevant?: () => void;
+  onApplyStarted?: () => void;
 };
 
 function formatDate(value?: string | null) {
@@ -92,6 +105,11 @@ export default function JobHeader({
   status,
   saving,
   saveApplication,
+  onApplyStarted,
+  showApplyPrompt,
+  onApplyConfirmed,
+  onApplyNotYet,
+  onApplyNotRelevant,
 }: Props) {
   const scoreValue =
     score?.overall_score != null
@@ -119,6 +137,74 @@ export default function JobHeader({
             ? "Good Match"
             : "Needs Review";
 
+  const [desktopStatusOpen, setDesktopStatusOpen] =
+    useState(false);
+
+  const desktopStatusOptions: {
+    value: ApplicationStatus;
+    label: string;
+  }[] = [
+    { value: "saved", label: "Saved" },
+    { value: "pending", label: "Application Pending" },
+    { value: "applied", label: "Applied" },
+    { value: "interview", label: "Interview" },
+    { value: "offer", label: "Offer" },
+    { value: "rejected", label: "Rejected" },
+    { value: "not_relevant", label: "Not Relevant" },
+  ];
+
+  useEffect(() => {
+    if (!desktopStatusOpen) return;
+
+    function handleOutsideClick(event: PointerEvent) {
+      const target = event.target as Node | null;
+      const control = document.querySelector(
+        ".desktop-job-status"
+      );
+
+      if (
+        control &&
+        target &&
+        !control.contains(target)
+      ) {
+        setDesktopStatusOpen(false);
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setDesktopStatusOpen(false);
+      }
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleOutsideClick,
+    );
+
+    document.addEventListener(
+      "keydown",
+      handleEscape,
+    );
+
+    return () => {
+      document.removeEventListener(
+        "pointerdown",
+        handleOutsideClick,
+      );
+
+      document.removeEventListener(
+        "keydown",
+        handleEscape,
+      );
+    };
+  }, [desktopStatusOpen]);
+
+  const desktopStatusLabel =
+    desktopStatusOptions.find(
+      (option) => option.value === status,
+    )?.label || "Application Pending";
+
   return (
     <section className={styles.hero}>
       <div className={styles.heroMain}>
@@ -140,47 +226,56 @@ export default function JobHeader({
           </h1>
 
           <div className={styles.companyLine}>
-            <strong>
+            <strong className={styles.companyName}>
               {job.company
                 ? formatDisplayText(job.company)
                 : "Company unavailable"}
             </strong>
 
-            <span>•</span>
+            <span className={styles.companySeparator}>•</span>
 
-            <span>
-              {job.location
-                ? formatDisplayText(job.location)
-                : "Location unavailable"}
+            <span className={styles.locationInline}>
+              <MapPin size={13} aria-hidden="true" />
+              <span className={styles.locationText}>
+                {job.location
+                  ? formatDisplayText(job.location)
+                  : "Location unavailable"}
+              </span>
             </span>
 
-            <span>•</span>
+            <span className={styles.companySeparator}>•</span>
 
-            <span>
-              {job.job_url ? "On-site" : ""}
+            <span className={styles.workModeInline}>
+              {job.job_url ? (
+                <Building2 size={13} aria-hidden="true" />
+              ) : (
+                <Laptop2 size={13} aria-hidden="true" />
+              )}
+              {job.job_url ? "On-site" : "Remote"}
             </span>
           </div>
 
           <div className={styles.meta}>
-            <span className={styles.metaPill}>
-              <CalendarDays size={12} />
+            <span className={`${styles.metaPill} ${styles.metaPosted}`}>
+              <CalendarDays size={13} aria-hidden="true" />
               {formatDate(job.posted_date)}
             </span>
 
-            <span className={styles.metaPill}>
+            <span className={`${styles.metaPill} ${styles.metaEmployment}`}>
+              <BriefcaseBusiness size={13} aria-hidden="true" />
               {job.employment_type || "Full-time"}
             </span>
 
-            <span className={styles.metaPill}>
-              <BriefcaseBusiness size={12} />
+            <span className={`${styles.metaPill} ${styles.metaExperience}`}>
+              <Clock3 size={13} aria-hidden="true" />
               {formatExperience(
                 job.experience_min,
                 job.experience_max,
               )}
             </span>
 
-            <span className={styles.metaPill}>
-              <span className={styles.rupee}>₹</span>
+            <span className={`${styles.metaPill} ${styles.metaSalary}`}>
+              <IndianRupee size={13} aria-hidden="true" />
               {formatSalary(
                 job.salary_min,
                 job.salary_max,
@@ -190,7 +285,7 @@ export default function JobHeader({
           </div>
         </div>
 
-        <div className={styles.actions}>
+        <div className={`${styles.actions} mobile-job-header-actions`}>
           <button
             type="button"
             className={`${styles.saveButton} ${
@@ -217,17 +312,131 @@ export default function JobHeader({
               : "Save"}
           </button>
 
-          {job.job_url && (
-            <a
-              className={styles.applyButton}
-              href={job.job_url}
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className={`${styles.desktopStatus} desktop-job-status`}>
+            <button
+              type="button"
+              className={styles.desktopStatusTrigger}
+              aria-expanded={desktopStatusOpen}
+              aria-haspopup="listbox"
+              onClick={() =>
+                setDesktopStatusOpen(
+                  (open) => !open,
+                )
+              }
+              disabled={saving}
             >
-              Apply Now
-              <ExternalLink size={13} />
-            </a>
+              <span>{desktopStatusLabel}</span>
+
+              <span
+                className={`${styles.desktopStatusChevron} ${
+                  desktopStatusOpen
+                    ? styles.desktopStatusChevronOpen
+                    : ""
+                }`}
+                aria-hidden="true"
+              >
+                ⌄
+              </span>
+            </button>
+
+            {desktopStatusOpen && (
+              <div
+                className={styles.desktopStatusMenu}
+                role="listbox"
+                aria-label="Job Status options"
+              >
+                {desktopStatusOptions.map(
+                  (option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      role="option"
+                      aria-selected={
+                        status === option.value
+                      }
+                      className={`${styles.desktopStatusOption} ${
+                        status === option.value
+                          ? styles.desktopStatusOptionSelected
+                          : ""
+                      }`}
+                      onClick={() => {
+                        setDesktopStatusOpen(false);
+                        saveApplication(
+                          option.value,
+                        );
+                      }}
+                    >
+                      {option.label}
+                    </button>
+                  ),
+                )}
+              </div>
+            )}
+            
+
+          </div>
+
+          {job.job_url && (
+            <div className={styles.applyAction}>
+              {showApplyPrompt && (
+                <div
+                  className={styles.applyPrompt}
+                  role="dialog"
+                  aria-label="Application status"
+                >
+                  <div className={styles.applyPromptTitle}>
+                    Did you apply for this job?
+                  </div>
+
+                  <div className={styles.applyPromptActions}>
+                    <button
+                      type="button"
+                      onClick={onApplyConfirmed}
+                    >
+                      ✓ Yes, Applied
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={onApplyNotYet}
+                    >
+                      Not Yet
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={onApplyNotRelevant}
+                    >
+                      Not Relevant
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="button"
+                className={styles.applyButton}
+                onClick={() => {
+                  if (!job.job_url) {
+                    return;
+                  }
+
+                  setApplyAwaitingReturn(job.job_id);
+                  onApplyStarted?.();
+
+                  window.open(
+                    job.job_url,
+                    "_blank",
+                    "noopener,noreferrer",
+                  );
+                }}
+              >
+                Apply Now
+                <ExternalLink size={13} />
+              </button>
+            </div>
           )}
+
         </div>
       </div>
 

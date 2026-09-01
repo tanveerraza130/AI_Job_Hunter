@@ -84,6 +84,16 @@ Examples:
         help="Master database directory (default: output/)",
     )
 
+    parser.add_argument(
+        "--max-jobs",
+        type=int,
+        default=None,
+        help=(
+            "Maximum jobs to fetch per keyword. "
+            "Default: unlimited."
+        ),
+    )
+
     args = parser.parse_args()
 
     # ------------------------------------------------------------
@@ -155,14 +165,44 @@ Examples:
                 request = SearchRequest(
                     keyword=args.keyword,
                     location=args.locations[0],
+                    max_jobs=args.max_jobs,
                 )
                 summary = engine.run(request, destination)
             else:
                 # Profile mode - build search plan
                 profile = load_profile(args.profile)
                 search_requests = build_search_plan(profile, args.locations)
+
+                # SearchRequest is frozen, so never mutate max_jobs in-place.
+                # Rebuild each request while preserving all existing fields.
+                if args.max_jobs is not None:
+                    search_requests = [
+                        SearchRequest(
+                            keyword=request.keyword,
+                            location=request.location,
+                            page=request.page,
+                            per_page=request.per_page,
+                            experience=request.experience,
+                            salary_min=request.salary_min,
+                            salary_max=request.salary_max,
+                            work_mode=request.work_mode,
+                            employment_type=request.employment_type,
+                            company=request.company,
+                            easy_apply_only=request.easy_apply_only,
+                            posted_within_days=request.posted_within_days,
+                            skills=list(request.skills),
+                            page_size=request.page_size,
+                            max_jobs=args.max_jobs,
+                        )
+                        for request in search_requests
+                    ]
+
                 # FIX: Pass profile_type to engine.run()
-                summary = engine.run(search_requests, destination, profile_type=args.profile)
+                summary = engine.run(
+                    search_requests,
+                    destination,
+                    profile_type=args.profile,
+                )
 
             _print_summary(summary, args.exporter)
 

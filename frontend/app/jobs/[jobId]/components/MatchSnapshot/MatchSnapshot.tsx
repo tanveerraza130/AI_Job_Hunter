@@ -50,40 +50,40 @@ export default function MatchSnapshot({
     <section className={styles.snapshot}>
 
       <div className={styles.mobileOverallScore}>
-        <div className={styles.mobileOverallScoreRing}>
-          <div>
-            <strong>
-              {score?.overall_score != null
-                ? Math.round(score.overall_score)
-                : "—"}
-            </strong>
-            <span>%</span>
-          </div>
-        </div>
+  <div className={styles.mobileOverallScoreRing}>
+    <div>
+      <strong>
+        {score?.overall_score != null
+          ? Math.round(score.overall_score)
+          : "—"}
+      </strong>
+      <span>%</span>
+    </div>
+  </div>
 
-        <div className={styles.mobileOverallScoreText}>
-          <span>OVERALL MATCH SCORE</span>
+  <div className={styles.mobileOverallScoreText}>
+    <span>OVERALL MATCH SCORE</span>
 
-          <strong>
-            {score?.overall_score != null
-              ? `${Math.round(score.overall_score)}%`
-              : "—"}
-          </strong>
+    <strong>
+      {score?.overall_score != null
+        ? `${Math.round(score.overall_score)}%`
+        : "—"}
+    </strong>
 
-          <small>
-            ✓{" "}
-            {score?.overall_score != null &&
-            score.overall_score >= 80
-              ? "Excellent Match"
-              : score?.overall_score != null &&
-                score.overall_score >= 60
-                ? "Strong Match"
-                : "Needs Review"}
-          </small>
-        </div>
-      </div>
+    <small>
+      ✓{" "}
+      {score?.overall_score != null &&
+      score.overall_score >= 80
+        ? "Excellent Match"
+        : score?.overall_score != null &&
+          score.overall_score >= 60
+          ? "Strong Match"
+          : "Needs Review"}
+    </small>
+  </div>
+</div>
 
-      <div className={styles.heading}>
+<div className={styles.heading}>
         <div>
           <div className={styles.eyebrowRow}>
             <span className={styles.sparkle}>✣</span>
