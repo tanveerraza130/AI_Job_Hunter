@@ -16,8 +16,15 @@ S3_KEY = "job_hunter.duckdb"
 CHECK_INTERVAL_SECONDS = 30
 
 ROOT = Path(__file__).resolve().parents[1]
-DB_PATH = ROOT / "output" / "job_hunter.duckdb"
-TMP_PATH = ROOT / "output" / "job_hunter.duckdb.tmp"
+# API runtime/cache DB. NEVER point this at the permanent Master DB.
+DB_PATH = ROOT / "output" / "job_hunter_api.duckdb"
+TMP_PATH = ROOT / "output" / "job_hunter_api.duckdb.tmp"
+MASTER_DB_PATH = ROOT / "output" / "job_hunter.duckdb"
+
+if DB_PATH == MASTER_DB_PATH:
+    raise RuntimeError(
+        "FATAL: S3 refresh target must never be the Master DB"
+    )
 
 
 def _etag() -> str | None:
