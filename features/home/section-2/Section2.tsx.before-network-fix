@@ -1,0 +1,160 @@
+﻿import styles from "./Section2.module.css";
+
+export default function Section2() {
+  return (
+    <section className={styles.section}>
+      <div className={styles.canvas}>
+
+        {/* LEFT — LOCKED */}
+        <div className={styles.leftBlock}>
+          <img
+            src="/Job-seeker character.png"
+            alt=""
+            className={styles.sideImage}
+          />
+        </div>
+
+        {/* CENTER */}
+        <div className={styles.centerBlock}>
+          <div className={styles.centerContent}>
+
+            {/* AI NETWORK VISUAL */}
+            <div className={styles.aiVisual}>
+
+              <svg
+                className={styles.network}
+                viewBox="0 0 675 270"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                {/* PINK — LEFT FLOWS */}              <path d="M0 78 C100 78 175 112 300 135" className={styles.pinkPath} />
+              <path d="M0 112 C105 112 190 126 300 140" className={styles.pinkPath} />
+              <path d="M0 150 C110 150 195 145 300 145" className={styles.pinkPath} />
+              <path d="M0 190 C105 190 190 158 300 150" className={styles.pinkPath} />
+              <path d="M0 225 C105 225 205 175 300 155" className={styles.pinkPath} />
+
+              <path d="M375 135 C500 112 575 78 675 78" className={styles.greenPath} />
+              <path d="M375 140 C485 126 570 112 675 112" className={styles.greenPath} />
+              <path d="M375 145 C480 145 565 150 675 150" className={styles.greenPath} />
+              <path d="M375 150 C485 158 570 190 675 190" className={styles.greenPath} />
+              <path d="M375 155 C470 175 570 225 675 225" className={styles.greenPath} />
+
+            </svg>
+
+              {/* LEFT FLOATING ICONS */}
+              <div className={`${styles.node} ${styles.nodePink1}`}>
+                ⌕
+              </div>
+
+              <div className={`${styles.node} ${styles.nodePink2}`}>
+                ♙
+              </div>
+
+              <div className={`${styles.node} ${styles.nodePink3}`}>
+                ✕
+              </div>
+
+              <div className={`${styles.node} ${styles.nodePink4}`}>
+                ⚙
+              </div>
+
+              <div className={`${styles.node} ${styles.nodePink5}`}>
+                ◉
+              </div>
+
+              {/* RIGHT FLOATING ICONS */}
+              <div className={`${styles.node} ${styles.nodeGreen1}`}>
+                ✓
+              </div>
+
+              <div className={`${styles.node} ${styles.nodeGreen2}`}>
+                ☷
+              </div>
+
+              <div className={`${styles.node} ${styles.nodeGreen3}`}>
+                ✓
+              </div>
+
+              <div className={`${styles.node} ${styles.nodeGreen4}`}>
+                ☷
+              </div>
+
+              <div className={`${styles.node} ${styles.nodeGreen5}`}>
+                ✓
+              </div>
+
+              {/* AI RINGS */}
+              <span className={`${styles.ring} ${styles.ringOne}`} />
+              <span className={`${styles.ring} ${styles.ringTwo}`} />
+              <span className={`${styles.ring} ${styles.ringThree}`} />
+
+              {/* AI CORE */}
+              <div className={styles.aiCore}>
+                <span>✦</span>
+              </div>
+
+            </div>
+
+            {/* TITLE */}
+            <div className={styles.centerTitle}>
+              <h1>AI Job Hunter</h1>
+              <p>Understands your profile</p>
+              <span>Searches. Matches. Ranks.</span>
+            </div>
+
+            {/* WHAT WE DO */}
+            <div className={styles.whatWeDo}>
+              <h2>Here’s what we do</h2>
+
+              <div className={styles.featureRow}>
+                <div className={styles.featureIcon}>♙</div>
+                <div>
+                  <strong>Understand your profile</strong>
+                  <span>Skills, roles, experience, preferences</span>
+                </div>
+              </div>
+
+              <div className={styles.featureRow}>
+                <div className={styles.featureIcon}>⌕</div>
+                <div>
+                  <strong>Search across multiple sources</strong>
+                  <span>Naukri, LinkedIn, IIMJobs, and more</span>
+                </div>
+              </div>
+
+              <div className={styles.featureRow}>
+                <div className={styles.featureIcon}>⌑</div>
+                <div>
+                  <strong>Remove noise &amp; duplicates</strong>
+                  <span>Clean, unique opportunities</span>
+                </div>
+              </div>
+
+              <div className={styles.featureRow}>
+                <div className={styles.featureIcon}>☆</div>
+                <div>
+                  <strong>Rank by relevance</strong>
+                  <span>AI matches that actually fit you</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* RIGHT — LOCKED */}
+        <div className={styles.rightBlock}>
+          <img
+            src="/AI Job Hunter person.png"
+            alt=""
+            className={styles.sideImage}
+          />
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+
+

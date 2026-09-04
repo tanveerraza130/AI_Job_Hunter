@@ -1,0 +1,203 @@
+﻿import styles from "./Section2.module.css";
+
+export default function Section2() {
+  return (
+    <section className={styles.section}>
+      <div className={styles.canvas}>
+
+        {/* LEFT â€” LOCKED */}
+        <div className={styles.leftBlock}>
+          <img
+            src="/Job-seeker character.png"
+            alt=""
+            className={styles.sideImage}
+          />
+        </div>
+
+        {/* CENTER â€” EVERYTHING MUST STAY INSIDE THIS CARD */}        {/* AI JOB HUNTER CENTER DESIGN START */}
+
+        <div className={styles.centerBlock}>
+          <div className={styles.centerContent}>
+
+            {/* =================================================
+                CENTER AI VISUAL
+                EVERYTHING IS CONTAINED INSIDE CENTER CONTENT
+                ================================================= */}
+
+            <div className={styles.aiVisual}>
+
+              {/* CONNECTOR NETWORK */}
+              <svg
+                className={styles.network}
+                viewBox="0 0 1000 600"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                {/* LEFT â†’ AI */}
+                <path
+                  className={styles.pinkPath}
+                  d="M70 100 C210 100 325 125 448 278"
+                />
+
+                <path
+                  className={styles.pinkPath}
+                  d="M70 200 C215 200 330 220 448 292"
+                />
+
+                <path
+                  className={styles.pinkPath}
+                  d="M70 300 C220 300 335 300 448 300"
+                />
+
+                <path
+                  className={styles.pinkPath}
+                  d="M70 400 C215 400 330 380 448 308"
+                />
+
+                <path
+                  className={styles.pinkPath}
+                  d="M70 500 C210 500 325 455 448 322"
+                />
+
+                {/* AI â†’ RIGHT */}
+                <path
+                  className={styles.greenPath}
+                  d="M552 278 C675 125 790 100 930 100"
+                />
+
+                <path
+                  className={styles.greenPath}
+                  d="M552 292 C670 220 785 200 930 200"
+                />
+
+                <path
+                  className={styles.greenPath}
+                  d="M552 300 C665 300 780 300 930 300"
+                />
+
+                <path
+                  className={styles.greenPath}
+                  d="M552 308 C670 380 785 400 930 400"
+                />
+
+                <path
+                  className={styles.greenPath}
+                  d="M552 322 C675 455 790 500 930 500"
+                />
+              </svg>
+
+              {/* LEFT NODES */}
+              <div className={`${styles.node} ${styles.nodePink1}`}>⌕</div>
+              <div className={`${styles.node} ${styles.nodePink2}`}>♙</div>
+              <div className={`${styles.node} ${styles.nodePink3}`}>×</div>
+              <div className={`${styles.node} ${styles.nodePink4}`}>⚙</div>
+              <div className={`${styles.node} ${styles.nodePink5}`}>◉</div>
+
+              {/* RIGHT NODES */}
+              <div className={`${styles.node} ${styles.nodeGreen1}`}>☷</div>
+              <div className={`${styles.node} ${styles.nodeGreen2}`}>✓</div>
+              <div className={`${styles.node} ${styles.nodeGreen3}`}>☷</div>
+              <div className={`${styles.node} ${styles.nodeGreen4}`}>✓</div>
+              <div className={`${styles.node} ${styles.nodeGreen5}`}>✓</div>
+              {/* AI HUB */}
+              <div className={styles.aiHub}>
+
+                <span className={`${styles.ring} ${styles.ring1}`} />
+                <span className={`${styles.ring} ${styles.ring1}`} />
+                <span className={`${styles.ring} ${styles.ring1}`} />
+
+                <div className={styles.aiCore}>
+                  <span>âœ¦</span>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* =================================================
+                CENTER TITLE
+                ================================================= */}
+
+            <div className={styles.centerTitle}>
+
+              <h1>AI Job Hunter</h1>
+
+              <h2>Understands your profile</h2>
+
+              <p>Searches. Matches. Ranks.</p>
+
+            </div>
+
+            {/* =================================================
+                WHAT WE DO
+                ================================================= */}
+
+            <div className={styles.whatWeDo}>
+
+              <h3>Hereâ€™s what we do</h3>
+
+              <div className={styles.featureRow}>
+
+                <div className={styles.featureIcon}>â™™</div>
+
+                <div className={styles.featureText}>
+                  <strong>Understand your profile</strong>
+                  <span>Skills, roles, experience, preferences</span>
+                </div>
+
+              </div>
+
+              <div className={styles.featureRow}>
+
+                <div className={styles.featureIcon}>âŒ•</div>
+
+                <div className={styles.featureText}>
+                  <strong>Search across multiple sources</strong>
+                  <span>Naukri, LinkedIn, IIMJobs, and more</span>
+                </div>
+
+              </div>
+
+              <div className={styles.featureRow}>
+
+                <div className={styles.featureIcon}>â–½</div>
+
+                <div className={styles.featureText}>
+                  <strong>Remove noise &amp; duplicates</strong>
+                  <span>Clean, unique opportunities</span>
+                </div>
+
+              </div>
+
+              <div className={styles.featureRow}>
+
+                <div className={styles.featureIcon}>âœ¦</div>
+
+                <div className={styles.featureText}>
+                  <strong>Rank by relevance</strong>
+                  <span>AI matches that actually fit you</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        {/* AI JOB HUNTER CENTER DESIGN END */}
+{/* RIGHT â€” LOCKED */}
+        <div className={styles.rightBlock}>
+          <img
+            src="/AI Job Hunter person.png"
+            alt=""
+            className={styles.sideImage}
+          />
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+

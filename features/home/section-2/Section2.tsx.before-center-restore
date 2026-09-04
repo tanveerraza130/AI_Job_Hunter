@@ -1,0 +1,39 @@
+﻿import styles from "./Section2.module.css";
+
+export default function Section2() {
+  return (
+    <section className={styles.section}>
+      <div className={styles.canvas}>
+
+        {/* LEFT — LOCKED */}
+        <div className={styles.leftBlock}>
+          <img
+            src="/Job-seeker character.png"
+            alt=""
+            className={styles.sideImage}
+          />
+        </div>
+
+                {/* CENTER — BLANK CARD ONLY */}
+        <div className={styles.centerBlock}>
+          <div className={styles.centerContent}>
+          </div>
+        </div>
+{/* RIGHT — LOCKED */}
+        <div className={styles.rightBlock}>
+          <img
+            src="/AI Job Hunter person.png"
+            alt=""
+            className={styles.sideImage}
+          />
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+
+
+
+
