@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 
@@ -31,24 +32,56 @@ PUBLISH_SCRIPT = ROOT / "scripts" / "publish_production.py"
 
 
 def run_step(name: str, command: list[str]) -> None:
-    """Run one pipeline step and stop on failure."""
+    """Run one pipeline step and stop immediately on failure."""
     print()
     print("=" * 70)
     print(name)
     print("=" * 70)
-    print("$", " ".join(command))
+    print("Command:", " ".join(command))
+    print("-" * 70)
 
-    result = subprocess.run(
-        command,
-        cwd=ROOT,
-    )
+    started_at = time.monotonic()
+
+    try:
+        result = subprocess.run(
+            command,
+            cwd=ROOT,
+        )
+    except Exception as exc:
+        elapsed = time.monotonic() - started_at
+        print()
+        print("=" * 70)
+        print("❌ PIPELINE STEP FAILED")
+        print("=" * 70)
+        print(f"Failed step : {name}")
+        print(f"Elapsed     : {elapsed:.1f}s")
+        print(f"Exception   : {type(exc).__name__}: {exc}")
+        print(f"Command     : {' '.join(command)}")
+        print("Pipeline stopped immediately.")
+        print("=" * 70)
+        raise
+
+    elapsed = time.monotonic() - started_at
 
     if result.returncode != 0:
+        print()
+        print("=" * 70)
+        print("❌ PIPELINE STEP FAILED")
+        print("=" * 70)
+        print(f"Failed step : {name}")
+        print(f"Exit code   : {result.returncode}")
+        print(f"Elapsed     : {elapsed:.1f}s")
+        print(f"Command     : {' '.join(command)}")
+        print("Pipeline stopped immediately.")
+        print("=" * 70)
         raise RuntimeError(
-            f"Pipeline step failed: {name}"
+            f"Pipeline step failed: {name} "
+            f"(exit code {result.returncode})"
         )
 
+    print("-" * 70)
     print(f"✓ {name} PASS")
+    print(f"Elapsed: {elapsed:.1f}s")
 
 
 def main() -> int:
@@ -152,4 +185,14 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except Exception as exc:
+        print()
+        print("=" * 70)
+        print("❌ FULL PIPELINE FAILED")
+        print("=" * 70)
+        print(f"Error: {type(exc).__name__}: {exc}")
+        print("The pipeline was stopped. Debug the failed step before rerunning.")
+        print("=" * 70)
+        raise

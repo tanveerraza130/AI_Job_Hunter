@@ -51,7 +51,7 @@ PAGE_NAVIGATION_TIMEOUT_SECONDS = 30
 
 # Diagnostic experiment: bounded relevance pagination.
 # Naukri sorting/filtering is not changed.
-NAUKRI_EXPERIMENT_MAX_PAGES = 10
+NAUKRI_EXPERIMENT_MAX_PAGES = 5
 MAX_TOTAL_JOBS = 5000
 
 

@@ -1,153 +1,251 @@
-import styles from "./Section2.module.css";
+﻿import styles from "./Section2.module.css";
 
 export default function Section2() {
   return (
-    <section
-      id="how-it-works"
-      className={styles.section}
-      aria-labelledby="section-2-title"
-    >
-      <div className={styles.container}>
+    <section className={styles.section}>
+      <div className={styles.canvas}>
 
-        {/* =====================================================
-            LEFT — THE PROBLEM
-            ===================================================== */}
-        <div className={styles.problem}>
-
-          <p className={styles.eyebrow}>
-            The problem
-          </p>
-
-          <h2 id="section-2-title">
-            Job search is frustrating
-            <br />
-            and time-consuming.
-          </h2>
-
-          <p className={styles.problemDescription}>
-            Too many tabs. Too many searches.
-            Too little of what actually fits.
-          </p>
-
-          <div className={styles.problemBody}>
-
-            <div>
-              <ul className={styles.problemList}>
-                <li>
-                  <span className={styles.problemIcon}>×</span>
-                  Search multiple sites
-                </li>
-
-                <li>
-                  <span className={styles.problemIcon}>×</span>
-                  Try different keywords
-                </li>
-
-                <li>
-                  <span className={styles.problemIcon}>×</span>
-                  Check each job
-                </li>
-
-                <li>
-                  <span className={styles.problemIcon}>×</span>
-                  Filter manually
-                </li>
-
-                <li>
-                  <span className={styles.problemIcon}>×</span>
-                  Still miss the right ones
-                </li>
-              </ul>
-
-              <div className={styles.problemTime}>
-                1–2+ hours
-              </div>
-            </div>
-
-            <div className={styles.personWrap}>
-              <img
-                src="/Job-seeker character.png"
-                alt="Frustrated job seeker"
-                className={styles.person}
-              />
-            </div>
-
-          </div>
+        {/* LEFT â€” LOCKED */}
+      {/* LEFT PROBLEM TEXT — NEW BLOCK ONLY */}
+      <div className={styles.leftProblemText}>
+        <div className={styles.leftProblemBadge}>
+          <span>!</span>
+          THE PROBLEM
         </div>
 
-        {/* =====================================================
-            CENTER — VS
-            ===================================================== */}
-        <div className={styles.middle} aria-hidden="true">
-          <div className={styles.vs}>
-            VS
-          </div>
+        <h2>
+          Your next job<br />
+          shouldn’t require<br />
+          <span>20 searches a day.</span>
+        </h2>
+
+        <strong>
+          Different sites. Different titles. Different searches.
+        </strong>
+
+        <p>
+          Same career goal — but you keep searching,<br />
+          comparing and reopening the same kinds of<br />
+          jobs again and again.
+        </p>
+      </div>
+
+        <div className={styles.leftBlock}>
+          <img
+            src="/Job-seeker character.png"
+            alt=""
+            className={styles.sideImage}
+          />
         </div>
 
-        {/* =====================================================
-            RIGHT — THE SMARTER WAY
-            ===================================================== */}
-        <div className={styles.solution}>
+        {/* CENTER â€” EVERYTHING MUST STAY INSIDE THIS CARD */}        {/* AI JOB HUNTER CENTER DESIGN START */}
 
-          <p className={styles.eyebrow}>
-            The smarter way
-          </p>
+        <div className={styles.centerBlock}>
+                  <div className={styles.centerContent}>
 
-          <h2>
-            AI Job Hunter does the
-            <br />
-            hard work for you.
-          </h2>
+          {/* =====================================================
+              APPROVED AI JOB HUNTER CENTER DESIGN
+              Everything remains inside centerBlock.
+             ===================================================== */}
 
-          <p className={styles.solutionDescription}>
-            Tell us what matters. Let AI focus
-            on opportunities that fit.
-          </p>
+          <div className={styles.aiCenterVisual}>
 
-          <div className={styles.solutionBody}>
+            {/* CONNECTOR NETWORK */}
+            <svg
+              className={styles.aiCenterNetwork}
+              viewBox="0 0 1000 600"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <path
+                className={styles.aiPink}
+                d="M0 120 C190 120 305 150 430 300"
+              />
+              <path
+                className={styles.aiPink}
+                d="M0 220 C190 220 320 240 430 300"
+              />
+              <path
+                className={styles.aiPink}
+                d="M0 300 C190 300 320 300 430 300"
+              />
+              <path
+                className={styles.aiPink}
+                d="M0 380 C190 380 320 360 430 300"
+              />
+              <path
+                className={styles.aiPink}
+                d="M0 480 C190 480 305 445 430 300"
+              />
 
-            <div>
-              <ul className={styles.solutionList}>
-                <li>
-                  <span className={styles.solutionIcon}>✓</span>
-                  Open AI Job Hunter
-                </li>
+              <path
+                className={styles.aiGreen}
+                d="M570 300 C695 150 810 120 1000 120"
+              />
+              <path
+                className={styles.aiGreen}
+                d="M570 300 C680 240 810 220 1000 220"
+              />
+              <path
+                className={styles.aiGreen}
+                d="M570 300 C680 300 810 300 1000 300"
+              />
+              <path
+                className={styles.aiGreen}
+                d="M570 300 C680 360 810 380 1000 380"
+              />
+              <path
+                className={styles.aiGreen}
+                d="M570 300 C695 445 810 480 1000 480"
+              />
+            </svg>
 
-                <li>
-                  <span className={styles.solutionIcon}>✓</span>
-                  See AI-ranked matches
-                </li>
-
-                <li>
-                  <span className={styles.solutionIcon}>✓</span>
-                  Review &amp; apply
-                </li>
-
-                <li>
-                  <span className={styles.solutionIcon}>✓</span>
-                  Track progress
-                </li>
-
-                <li>
-                  <span className={styles.solutionIcon}>✓</span>
-                  Get the right opportunities
-                </li>
-              </ul>
-
-              <div className={styles.solutionTime}>
-                10–20 minutes
-              </div>
+            {/* LEFT FLOATING NODES */}
+            <div className={`${styles.aiNode} ${styles.aiPinkNode} ${styles.aiP1}`}>
+              ⌕
             </div>
 
-            <div className={styles.personWrap}>
-              <img
-                src="/AI Job Hunter person.png"
-                alt="Happy job seeker using AI Job Hunter"
-                className={styles.person}
-              />
+            <div className={`${styles.aiNode} ${styles.aiPinkNode} ${styles.aiP2}`}>
+              ♙
+            </div>
+
+            <div className={`${styles.aiNode} ${styles.aiPinkNode} ${styles.aiP3}`}>
+              ×
+            </div>
+
+            <div className={`${styles.aiNode} ${styles.aiPinkNode} ${styles.aiP4}`}>
+              ⚙
+            </div>
+
+            <div className={`${styles.aiNode} ${styles.aiPinkNode} ${styles.aiP5}`}>
+              ◉
+            </div>
+
+            {/* RIGHT FLOATING NODES */}
+            <div className={`${styles.aiNode} ${styles.aiGreenNode} ${styles.aiG1}`}>
+              ☷
+            </div>
+
+            <div className={`${styles.aiNode} ${styles.aiGreenNode} ${styles.aiG2}`}>
+              ✓
+            </div>
+
+            <div className={`${styles.aiNode} ${styles.aiGreenNode} ${styles.aiG3}`}>
+              ☷
+            </div>
+
+            <div className={`${styles.aiNode} ${styles.aiGreenNode} ${styles.aiG4}`}>
+              ✓
+            </div>
+
+            <div className={`${styles.aiNode} ${styles.aiGreenNode} ${styles.aiG5}`}>
+              ✓
+            </div>
+
+            {/* CENTRAL AI HUB */}
+            <div className={styles.aiCenterHub}>
+
+              <span className={`${styles.aiRing} ${styles.aiRing1}`} />
+              <span className={`${styles.aiRing} ${styles.aiRing2}`} />
+              <span className={`${styles.aiRing} ${styles.aiRing3}`} />
+
+              <div className={styles.aiCore}>
+                <span className={styles.aiSpark}>✦</span>
+              </div>
+
             </div>
 
           </div>
+
+          {/* CENTER COPY */}
+          <div className={styles.aiCenterCopy}>
+
+            <h2>AI Job Hunter</h2>
+
+            <h3>Understands your profile</h3>
+
+            <p>Searches. Matches. Ranks.</p>
+
+          </div>
+
+          {/* WHAT WE DO */}
+          <div className={styles.aiWhatWeDo}>
+
+            <h3>Here’s what we do</h3>
+
+            <div className={styles.aiFeature}>
+
+              <div className={styles.aiFeatureIcon}>
+                ♙
+              </div>
+
+              <div>
+                <strong>Understand your profile</strong>
+                <span>
+                  Skills, roles, experience, preferences
+                </span>
+              </div>
+
+            </div>
+
+            <div className={styles.aiFeature}>
+
+              <div className={styles.aiFeatureIcon}>
+                ⌕
+              </div>
+
+              <div>
+                <strong>Search across multiple sources</strong>
+                <span>
+                  Naukri, LinkedIn, IIMJobs, and more
+                </span>
+              </div>
+
+            </div>
+
+            <div className={styles.aiFeature}>
+
+              <div className={styles.aiFeatureIcon}>
+                ▽
+              </div>
+
+              <div>
+                <strong>Remove noise &amp; duplicates</strong>
+                <span>
+                  Clean, unique opportunities
+                </span>
+              </div>
+
+            </div>
+
+            <div className={styles.aiFeature}>
+
+              <div className={styles.aiFeatureIcon}>
+                ✦
+              </div>
+
+              <div>
+                <strong>Rank by relevance</strong>
+                <span>
+                  AI matches that actually fit you
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+        </div>
+
+        {/* AI JOB HUNTER CENTER DESIGN END */}
+{/* RIGHT â€” LOCKED */}
+        <div className={styles.rightBlock}>
+          <img
+            src="/AI Job Hunter person.png"
+            alt=""
+            className={styles.sideImage}
+          />
         </div>
 
       </div>

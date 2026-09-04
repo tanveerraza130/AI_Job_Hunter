@@ -466,12 +466,11 @@ class Engine:
                     connector_jobs
                 )
 
-            except Exception as exc:
-                logger.error(
-                    "Connector '%s' failed for '%s': %s",
+            except Exception:
+                logger.exception(
+                    "Connector '%s' failed for '%s'",
                     connector_name,
                     request.keyword,
-                    exc,
                 )
 
                 continue
