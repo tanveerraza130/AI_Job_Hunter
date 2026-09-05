@@ -3734,3 +3734,451 @@ h1{
 
 }
 </style>
+
+
+<style id="section1-mobile-hero-v2-20260905">
+
+/* =========================================================
+   SECTION 1 — MOBILE HERO V2
+   Mobile-only storytelling composition.
+   Desktop geometry is intentionally untouched.
+   ========================================================= */
+
+@media (max-width:620px){
+
+  .hero{
+    overflow:visible !important;
+    min-height:0 !important;
+    height:auto !important;
+    max-height:none !important;
+  }
+
+  .hero > .wrap{
+    display:block !important;
+    width:100% !important;
+    padding:38px 0 58px !important;
+    transform:none !important;
+  }
+
+  .copy{
+    width:calc(100% - 32px) !important;
+    margin:0 auto !important;
+    padding:0 !important;
+    text-align:center !important;
+  }
+
+  .badge{
+    margin:0 auto !important;
+    max-width:100% !important;
+  }
+
+  h1{
+    margin:22px auto 16px !important;
+    max-width:355px !important;
+    font-size:clamp(39px,11vw,48px) !important;
+    line-height:.99 !important;
+    letter-spacing:-.045em !important;
+  }
+
+  .desc{
+    max-width:350px !important;
+    margin:0 auto !important;
+    font-size:15px !important;
+    line-height:1.55 !important;
+  }
+
+  .ctas{
+    margin-top:21px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    gap:10px !important;
+  }
+
+  .btn{
+    width:100% !important;
+    max-width:330px !important;
+    min-height:46px !important;
+    height:46px !important;
+    border-radius:12px !important;
+    font-size:13px !important;
+  }
+
+  .sources{
+    margin-top:25px !important;
+  }
+
+  .sources-label{
+    font-size:9px !important;
+    line-height:1.3 !important;
+  }
+
+  .source-row{
+    margin-top:9px !important;
+    display:flex !important;
+    flex-wrap:wrap !important;
+    justify-content:center !important;
+    gap:8px 17px !important;
+  }
+
+  .source-row .logo{
+    font-size:11px !important;
+  }
+
+  /* =======================================================
+     MOBILE VISUAL — ONE CLEAR STORY
+     ======================================================= */
+
+  .visual{
+    width:100% !important;
+    height:940px !important;
+    margin:38px auto 0 !important;
+    position:relative !important;
+    transform:none !important;
+    overflow:visible !important;
+  }
+
+  /* AI understands — story introduction */
+
+  .visual .ai-understands{
+    position:absolute !important;
+    top:0 !important;
+    left:50% !important;
+
+    width:calc(100% - 64px) !important;
+    max-width:300px !important;
+
+    transform:translateX(-50%) !important;
+
+    text-align:center !important;
+    z-index:20 !important;
+  }
+
+  .visual .ai-understands h3{
+    margin:0 0 10px !important;
+
+    font-size:17px !important;
+    line-height:1.15 !important;
+
+    text-align:center !important;
+  }
+
+  .visual .ai-understands .checks{
+    width:100% !important;
+    max-width:245px !important;
+    margin:0 auto !important;
+
+    display:flex !important;
+    flex-wrap:wrap !important;
+    justify-content:center !important;
+    gap:6px 7px !important;
+  }
+
+  .visual .ai-understands .check{
+    min-height:28px !important;
+
+    padding:0 9px !important;
+
+    display:inline-flex !important;
+    align-items:center !important;
+
+    border:1px solid rgba(118,80,233,.12) !important;
+    border-radius:999px !important;
+
+    background:rgba(255,255,255,.76) !important;
+
+    font-size:9px !important;
+    gap:5px !important;
+
+    box-shadow:0 4px 14px rgba(67,45,130,.045) !important;
+  }
+
+  .visual .ai-understands .check i{
+    flex:0 0 16px !important;
+    width:16px !important;
+    height:16px !important;
+
+    display:grid !important;
+    place-items:center !important;
+
+    border-radius:50% !important;
+
+    font-size:8px !important;
+  }
+
+  /* =======================================================
+     SOURCE CARD
+     ======================================================= */
+
+  .visual .source-panel{
+    position:absolute !important;
+
+    top:112px !important;
+    left:50% !important;
+    right:auto !important;
+
+    width:calc(100% - 32px) !important;
+    max-width:360px !important;
+    height:auto !important;
+    min-height:278px !important;
+
+    transform:translateX(-50%) !important;
+
+    padding:19px 14px 14px !important;
+
+    border-radius:20px !important;
+
+    box-sizing:border-box !important;
+  }
+
+  .visual .source-panel .panel-title{
+    font-size:17px !important;
+    line-height:1.15 !important;
+    letter-spacing:-.02em !important;
+  }
+
+  .visual .source-panel .panel-sub{
+    margin-top:6px !important;
+    font-size:10px !important;
+    line-height:1.35 !important;
+  }
+
+  .visual .source-list{
+    margin-top:13px !important;
+    gap:5px !important;
+  }
+
+  .visual .source{
+    height:34px !important;
+    padding:0 9px !important;
+    gap:8px !important;
+    border-radius:9px !important;
+  }
+
+  .visual .source .mark{
+    flex:0 0 21px !important;
+    width:21px !important;
+    height:21px !important;
+    font-size:9px !important;
+  }
+
+  .visual .source b{
+    font-size:11px !important;
+  }
+
+  .visual .more-source{
+    font-size:9px !important;
+  }
+
+  /* =======================================================
+     AI MATCHING — CENTRAL TRANSITION
+     ======================================================= */
+
+  .visual .glow{
+    position:absolute !important;
+
+    top:414px !important;
+    left:50% !important;
+
+    width:142px !important;
+    height:142px !important;
+
+    transform:translateX(-50%) !important;
+
+    opacity:.82 !important;
+  }
+
+  .visual .ai-core{
+    position:absolute !important;
+
+    top:425px !important;
+    left:50% !important;
+
+    width:116px !important;
+    height:116px !important;
+
+    transform:translateX(-50%) !important;
+
+    z-index:12 !important;
+  }
+
+  .visual .ai-label{
+    position:absolute !important;
+
+    top:548px !important;
+    left:50% !important;
+
+    transform:translateX(-50%) !important;
+
+    font-size:16px !important;
+    font-weight:850 !important;
+
+    white-space:nowrap !important;
+    z-index:15 !important;
+  }
+
+  /* =======================================================
+     RESULT CARD
+     ======================================================= */
+
+  .visual .result-panel{
+    position:absolute !important;
+
+    top:594px !important;
+    left:50% !important;
+    right:auto !important;
+
+    width:calc(100% - 32px) !important;
+    max-width:360px !important;
+
+    height:auto !important;
+    min-height:315px !important;
+
+    transform:translateX(-50%) !important;
+
+    padding:19px 14px 14px !important;
+
+    border-radius:20px !important;
+
+    box-sizing:border-box !important;
+  }
+
+  .visual .result-panel .panel-title{
+    font-size:17px !important;
+    line-height:1.15 !important;
+    letter-spacing:-.02em !important;
+  }
+
+  .visual .result-panel .panel-sub{
+    margin-top:6px !important;
+    margin-bottom:11px !important;
+
+    font-size:10px !important;
+    line-height:1.35 !important;
+  }
+
+  .visual .jobs{
+    gap:6px !important;
+  }
+
+  .visual .job{
+    height:72px !important;
+
+    padding:9px 43px 7px 36px !important;
+
+    border-radius:10px !important;
+    box-sizing:border-box !important;
+  }
+
+  .visual .rank{
+    left:8px !important;
+    top:9px !important;
+
+    width:23px !important;
+    height:23px !important;
+
+    font-size:10px !important;
+  }
+
+  .visual .job-title{
+    max-width:none !important;
+
+    font-size:10px !important;
+    line-height:1.16 !important;
+
+    min-height:24px !important;
+  }
+
+  .visual .company{
+    margin-top:3px !important;
+    font-size:8px !important;
+  }
+
+  .visual .meta{
+    margin-top:2px !important;
+    font-size:7px !important;
+  }
+
+  .visual .match{
+    top:9px !important;
+    right:7px !important;
+
+    width:32px !important;
+
+    font-size:12px !important;
+  }
+
+  .visual .match small{
+    margin-top:2px !important;
+    font-size:6px !important;
+  }
+
+  .visual .more-jobs{
+    height:34px !important;
+    font-size:9px !important;
+  }
+
+  .visual .more-jobs span:last-child{
+    font-size:14px !important;
+  }
+
+  /* Connectors are intentionally removed on mobile.
+     The vertical composition itself communicates the flow. */
+
+  .visual .connectors{
+    display:none !important;
+  }
+
+}
+
+@media (max-width:360px){
+
+  .hero > .wrap{
+    padding-top:32px !important;
+  }
+
+  .copy{
+    width:calc(100% - 28px) !important;
+  }
+
+  h1{
+    font-size:clamp(36px,11vw,43px) !important;
+  }
+
+  .desc{
+    font-size:14px !important;
+  }
+
+  .visual{
+    height:930px !important;
+    margin-top:32px !important;
+  }
+
+  .visual .source-panel,
+  .visual .result-panel{
+    width:calc(100% - 24px) !important;
+  }
+
+  .visual .source-panel{
+    top:108px !important;
+  }
+
+  .visual .ai-core{
+    top:422px !important;
+  }
+
+  .visual .glow{
+    top:411px !important;
+  }
+
+  .visual .ai-label{
+    top:546px !important;
+  }
+
+  .visual .result-panel{
+    top:592px !important;
+  }
+
+}
+
+</style>

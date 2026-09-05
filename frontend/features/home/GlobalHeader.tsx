@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import styles from "./GlobalHeader.module.css";
 
 const handleJoinFree = (
@@ -13,11 +14,20 @@ const handleJoinFree = (
 };
 
 export default function GlobalHeader() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
 
-        <a className={styles.brand} href="#" aria-label="AI Job Hunter home">
+        <a
+          className={styles.brand}
+          href="#"
+          aria-label="AI Job Hunter home"
+          onClick={closeMenu}
+        >
           <span className={styles.mark}>✦</span>
 
           <span className={styles.brandCopy}>
@@ -41,8 +51,55 @@ export default function GlobalHeader() {
           <a className={styles.cta} href="/signup" onClick={handleJoinFree}>
             Join Free <span>→</span>
           </a>
+
+          <button
+            type="button"
+            className={`${styles.menuButton} ${menuOpen ? styles.menuButtonOpen : ""}`}
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
 
+      </div>
+
+      <div
+        className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
+        aria-hidden={!menuOpen}
+      >
+        <nav aria-label="Mobile navigation">
+          <a href="#how-it-works" onClick={closeMenu}>
+            <span>How it works</span>
+            <span>→</span>
+          </a>
+          <a href="#what-you-get" onClick={closeMenu}>
+            <span>What you get</span>
+            <span>→</span>
+          </a>
+          <a href="#apply-track" onClick={closeMenu}>
+            <span>Apply &amp; track</span>
+            <span>→</span>
+          </a>
+          <a href="#employers" onClick={closeMenu}>
+            <span>For employers</span>
+            <span>→</span>
+          </a>
+        </nav>
+
+        <a
+          className={styles.mobileMenuCta}
+          href="/signup"
+          onClick={(event) => {
+            closeMenu();
+            handleJoinFree(event);
+          }}
+        >
+          Join Free <span>→</span>
+        </a>
       </div>
     </header>
   );

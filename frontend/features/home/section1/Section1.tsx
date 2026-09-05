@@ -15,6 +15,7 @@ export default function Section1() {
         style={{
           width: "100%",
           height: "100%",
+          minHeight: "760px",
           border: "0",
           display: "block",
         }}
