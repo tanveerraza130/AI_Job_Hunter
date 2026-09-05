@@ -497,13 +497,13 @@ export default function JobDetailPage({
       </main>
     );
   }
-  if(error||!job)return <main className="detail-shell"><div className="error-card"><h2>{error||"Job not found"}</h2><button type="button" className="apply-now" onClick={() => router.back()}>Back to jobs</button></div></main>;
+  if(error||!job)return <main className="detail-shell"><div className="error-card"><h2>{error||"Job not found"}</h2><button type="button" className="apply-now" onClick={() => router.push("/dashboard")}>Back to jobs</button></div></main>;
   return (
     <main className="detail-shell">
       <button
         type="button"
         className="back-link"
-        onClick={() => router.back()}
+        onClick={() => router.push("/dashboard")}
       >
         <ArrowLeft size={15} />
         Back to jobs
