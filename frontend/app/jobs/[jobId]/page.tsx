@@ -353,7 +353,7 @@ export default function JobDetailPage({
     function mobileStatusOutsideClose(event: PointerEvent) {
       const target = event.target as Node | null;
       const statusControl = document.querySelector(
-        ".mobile-bottom-status",
+        ".job-details-mobile-status",
       );
 
       if (
@@ -497,13 +497,13 @@ export default function JobDetailPage({
       </main>
     );
   }
-  if(error||!job)return <main className="detail-shell"><div className="error-card"><h2>{error||"Job not found"}</h2><button type="button" className="apply-now" onClick={() => router.push("/dashboard")}>Back to jobs</button></div></main>;
+  if(error||!job)return <main className="detail-shell"><div className="error-card"><h2>{error||"Job not found"}</h2><button type="button" className="apply-now" onClick={() => router.push("/dashboard", { scroll: false })}>Back to jobs</button></div></main>;
   return (
     <main className="detail-shell">
       <button
         type="button"
         className="back-link"
-        onClick={() => router.push("/dashboard")}
+        onClick={() => router.push("/dashboard", { scroll: false })}
       >
         <ArrowLeft size={15} />
         Back to jobs
@@ -913,11 +913,11 @@ export default function JobDetailPage({
         profileId={profileId}
       />
 
-      <div className="mobile-bottom-actions">
+      <div className="job-details-mobile-actions">
 
         <button
           type="button"
-          className={`mobile-bottom-save ${
+          className={`job-details-mobile-save ${
             status === "saved" ? "is-saved" : ""
           }`}
           aria-label={status === "saved" ? "Saved" : "Save job"}
@@ -927,10 +927,10 @@ export default function JobDetailPage({
           {status === "saved" ? "♥" : "♡"}
         </button>
 
-        <div className="mobile-bottom-status">
+        <div className="job-details-mobile-status">
           <button
             type="button"
-            className="mobile-bottom-status-trigger"
+            className="job-details-mobile-status-trigger"
             aria-expanded={mobileStatusOpen}
             aria-haspopup="listbox"
             aria-label="Job Status"
@@ -950,7 +950,7 @@ export default function JobDetailPage({
             </span>
 
             <span
-              className={`mobile-bottom-status-chevron ${
+              className={`job-details-mobile-status-chevron ${
                 mobileStatusOpen ? "is-open" : ""
               }`}
               aria-hidden="true"
@@ -961,7 +961,7 @@ export default function JobDetailPage({
 
           {mobileStatusOpen && (
             <div
-              className="mobile-bottom-status-menu"
+              className="job-details-mobile-status-menu"
               role="listbox"
               aria-label="Job Status options"
             >
@@ -971,7 +971,7 @@ export default function JobDetailPage({
                   type="button"
                   role="option"
                   aria-selected={status === option.value}
-                  className={`mobile-bottom-status-option ${
+                  className={`job-details-mobile-status-option ${
                     status === option.value
                       ? "is-selected"
                       : ""
@@ -984,7 +984,7 @@ export default function JobDetailPage({
 
                   {status === option.value && (
                     <span
-                      className="mobile-bottom-status-check"
+                      className="job-details-mobile-status-check"
                       aria-hidden="true"
                     >
                       ✓
@@ -999,7 +999,7 @@ export default function JobDetailPage({
         {job.job_url && (
           <button
             type="button"
-            className="mobile-bottom-apply"
+            className="job-details-mobile-apply"
             onClick={() => {
               if (!job.job_url) {
                 return;

@@ -412,7 +412,7 @@
 .applyButton {
   min-height: 34px;
 
-  padding: 0 13px;
+  padding: 0 9px;
 
   border-radius: 9px;
 
@@ -566,8 +566,8 @@
 }
 
 .detailsLink {
-  width: 100% !important;
-  min-width: 0 !important;
+  width: 90px !important;
+  min-width: 90px !important;
   height: 36px !important;
 
   display: inline-flex !important;
@@ -597,10 +597,11 @@
 }
 
 .statusButton {
-  width: 126px !important;
-  min-width: 126px !important;
-  max-width: 126px !important;
+  width: 118px !important;
+  min-width: 118px !important;
+  max-width: 118px !important;
   height: 36px !important;
+  transform: translateX(8px) !important;
 
   display: inline-flex !important;
   align-items: center !important;
@@ -647,9 +648,9 @@
   left: 0 !important;
   bottom: calc(100% + 7px) !important;
 
-  width: 126px !important;
-  min-width: 126px !important;
-  max-width: 126px !important;
+  width: 118px !important;
+  min-width: 118px !important;
+  max-width: 118px !important;
 
   padding: 5px !important;
 
@@ -697,9 +698,9 @@
 }
 
 .applyButton {
-  width: 106px !important;
-  min-width: 106px !important;
-  max-width: 106px !important;
+  width: 92px !important;
+  min-width: 92px !important;
+  max-width: 92px !important;
   height: 36px !important;
   min-height: 36px !important;
 
@@ -763,9 +764,10 @@
   }
 
   .applyButton {
-    width: 112px !important;
-    min-width: 112px !important;
-    max-width: 112px !important;
+    width: 92px !important;
+  margin-left: 14px !important;
+    min-width: 92px !important;
+    max-width: 92px !important;
 
     white-space: nowrap !important;
   }
@@ -807,5 +809,500 @@
 .metaRow > span:nth-child(1),
 .metaRow > span:nth-child(3) {
   flex: 0 0 auto;
+}
+
+
+
+/* =========================================================
+   MOBILE — JOB CARD CTA FINAL ALIGNMENT
+   Desktop untouched
+   ========================================================= */
+
+.jobCardBottom {
+  display: grid !important;
+  grid-template-columns: 1fr 1.35fr 1fr !important;
+
+  align-items: center !important;
+  gap: 8px !important;
+
+  width: 100% !important;
+  margin-top: 10px !important;
+  padding: 0 !important;
+}
+
+.detailsLink {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 36px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 3px !important;
+
+  border: 1px solid #d8d2ff !important;
+  border-radius: 9px !important;
+
+  background: #ffffff !important;
+  color: var(--mobile-purple) !important;
+
+  font-size: 9px !important;
+  font-weight: 800 !important;
+
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.statusControl {
+  position: relative;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  transform: translateX(-10px) !important;
+}
+
+.statusButton {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 36px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  padding: 0 10px !important;
+
+  border: 1px solid #d8d2ff !important;
+  border-radius: 9px !important;
+
+  background: #ffffff !important;
+  color: #344054 !important;
+
+  font-family: inherit !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+
+  white-space: nowrap !important;
+  overflow: hidden !important;
+
+  cursor: pointer !important;
+}
+
+.statusButton > span:first-child {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.statusButton svg {
+  flex: 0 0 auto !important;
+}
+
+.statusChevronOpen {
+  transform: rotate(180deg);
+}
+
+.statusMenu {
+  position: absolute !important;
+  z-index: 100 !important;
+
+  left: 0 !important;
+  bottom: calc(100% + 7px) !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  padding: 5px !important;
+
+  background: #ffffff !important;
+
+  border: 1px solid #e0e5ef !important;
+  border-radius: 9px !important;
+
+  box-shadow:
+    0 12px 26px rgba(17, 24, 39, 0.12),
+    0 3px 8px rgba(17, 24, 39, 0.06) !important;
+
+  overflow: hidden !important;
+}
+
+.applyButton {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 36px !important;
+  min-height: 36px !important;
+
+  padding: 0 8px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 4px !important;
+
+  border-radius: 9px !important;
+
+  font-size: 9px !important;
+  font-weight: 800 !important;
+
+  white-space: nowrap !important;
+  transform: translateX(-10px) !important;
+}
+
+/* ============================================================
+   DASHBOARD MOBILE — CTA LOCKED FINAL
+   Job Details | Status | Apply Now
+   Dashboard only.
+   Job Details page CTA is completely separate.
+   Desktop untouched.
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  .jobCardBottom {
+    display: grid !important;
+
+    grid-template-columns: 90px 118px 112px !important;
+
+    align-items: center !important;
+    justify-content: end !important;
+
+    gap: 7px !important;
+
+    width: 100% !important;
+
+    margin-top: 10px !important;
+    padding: 0 !important;
+  }
+
+
+  /* ----------------------------------------------------------
+     JOB DETAILS
+     ---------------------------------------------------------- */
+
+  .jobCardBottom .detailsLink {
+    width: 90px !important;
+    min-width: 90px !important;
+    max-width: 90px !important;
+
+    height: 36px !important;
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 6px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+
+    font-size: 9px !important;
+  }
+
+
+  /* ----------------------------------------------------------
+     STATUS — FIXED
+     ---------------------------------------------------------- */
+
+  .jobCardBottom .statusControl {
+    position: relative !important;
+
+    width: 118px !important;
+    min-width: 118px !important;
+    max-width: 118px !important;
+
+    height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateX(-10px) !important;
+  }
+
+  .jobCardBottom .statusButton {
+    width: 118px !important;
+    min-width: 118px !important;
+    max-width: 118px !important;
+
+    height: 36px !important;
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+
+    font-size: 9px !important;
+  }
+
+  .jobCardBottom .statusMenu {
+    width: 118px !important;
+    min-width: 118px !important;
+    max-width: 118px !important;
+  }
+
+
+  /* ----------------------------------------------------------
+     APPLY NOW — FIXED
+     ---------------------------------------------------------- */
+
+  .jobCardBottom .applyButton {
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+
+    height: 36px !important;
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 4px !important;
+
+    white-space: nowrap !important;
+
+    font-size: 9px !important;
+
+    transform: translateX(-10px) !important;
+  }
+
+
+  /* ----------------------------------------------------------
+     NARROW PHONES
+     ---------------------------------------------------------- */
+
+  @media (max-width: 390px) {
+
+    .jobCardBottom {
+      grid-template-columns: 86px 112px 106px !important;
+      gap: 6px !important;
+    }
+
+    .jobCardBottom .detailsLink {
+      width: 86px !important;
+      min-width: 86px !important;
+      max-width: 86px !important;
+    }
+
+    .jobCardBottom .statusControl,
+    .jobCardBottom .statusButton {
+      width: 112px !important;
+      min-width: 112px !important;
+      max-width: 112px !important;
+    }
+
+    .jobCardBottom .statusMenu {
+      width: 112px !important;
+      min-width: 112px !important;
+      max-width: 112px !important;
+    }
+
+    .jobCardBottom .applyButton {
+      width: 106px !important;
+      min-width: 106px !important;
+      max-width: 106px !important;
+    }
+  }
+}
+
+
+/* ============================================================
+   DASHBOARD MOBILE CTA — LOCKED FINAL GEOMETRY
+   Source: verified current MacBook CSS
+   Dashboard only.
+   Job Details CTA is separate.
+   Desktop untouched.
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  .jobCardBottom {
+    display: grid !important;
+
+    /* Fixed CTA geometry */
+    grid-template-columns: 90px 118px 112px !important;
+
+    align-items: center !important;
+    justify-content: start !important;
+
+    gap: 7px !important;
+
+    width: 100% !important;
+    margin-top: 10px !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* JOB DETAILS */
+
+  .jobCardBottom .detailsLink {
+    width: 90px !important;
+    min-width: 90px !important;
+    max-width: 90px !important;
+
+    height: 36px !important;
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 6px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+
+    white-space: nowrap !important;
+
+    font-size: 9px !important;
+  }
+
+
+  /* STATUS */
+
+  .jobCardBottom .statusControl {
+    position: relative !important;
+
+    width: 118px !important;
+    min-width: 118px !important;
+    max-width: 118px !important;
+
+    height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateX(-10px) !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .jobCardBottom .statusButton {
+    width: 118px !important;
+    min-width: 118px !important;
+    max-width: 118px !important;
+
+    height: 36px !important;
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    overflow: hidden !important;
+    white-space: nowrap !important;
+
+    font-size: 9px !important;
+  }
+
+  .jobCardBottom .statusMenu {
+    width: 118px !important;
+    min-width: 118px !important;
+    max-width: 118px !important;
+  }
+
+
+  /* APPLY NOW */
+
+  .jobCardBottom .applyButton {
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+
+    height: 36px !important;
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 4px !important;
+
+    white-space: nowrap !important;
+
+    font-size: 9px !important;
+
+    transform: translateX(-3px) !important;
+  }
+
+
+  /* NARROW PHONES */
+
+  @media (max-width: 390px) {
+
+    .jobCardBottom {
+      grid-template-columns: 86px 112px 106px !important;
+      gap: 6px !important;
+    }
+
+    .jobCardBottom .detailsLink {
+      width: 86px !important;
+      min-width: 86px !important;
+      max-width: 86px !important;
+    }
+
+    .jobCardBottom .statusControl {
+      width: 112px !important;
+      min-width: 112px !important;
+      max-width: 112px !important;
+    }
+
+    .jobCardBottom .statusButton {
+      width: 112px !important;
+      min-width: 112px !important;
+      max-width: 112px !important;
+    }
+
+    .jobCardBottom .statusMenu {
+      width: 112px !important;
+      min-width: 112px !important;
+      max-width: 112px !important;
+    }
+
+    .jobCardBottom .applyButton {
+      width: 106px !important;
+      min-width: 106px !important;
+      max-width: 106px !important;
+    }
+  }
 }
 

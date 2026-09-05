@@ -14,6 +14,7 @@ import {
 } from "@/lib/dashboardReturnState";
 
 const PAGE_SIZE = 20;
+const DESKTOP_JOB_RETURN_KEY = "ai_job_hunter_desktop_job_return";
 
 type Relevance = "all" | "gte_30" | "gte_70" | "50_69" | "30_49" | "lt_30";
 type SortMode = "score" | "newest" | "oldest";
@@ -138,6 +139,23 @@ export default function Dashboard() {
           }
         : {}),
     });
+
+    if (typeof window !== "undefined") {
+      try {
+        if (isMobile) {
+          sessionStorage.removeItem(DESKTOP_JOB_RETURN_KEY);
+        } else if (jobId) {
+          sessionStorage.setItem(
+            DESKTOP_JOB_RETURN_KEY,
+            JSON.stringify({
+              jobId,
+              page: currentPage,
+              scrollY: window.scrollY,
+            }),
+          );
+        }
+      } catch {}
+    }
   };
 
   useEffect(() => {
@@ -439,6 +457,112 @@ export default function Dashboard() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileReady, profileId, page, search, filterRevision]);
+
+  /*
+   * Desktop return restoration.
+   *
+   * Desktop keeps the exact job target in a separate sessionStorage key.
+   * The existing dashboard return state remains unchanged for mobile.
+   */
+  const desktopRestoreStartedRef = useRef(false);
+
+  useEffect(() => {
+    if (!profileReady || !profileId) return;
+    if (!initialDashboardLoaded) return;
+    if (desktopRestoreStartedRef.current) return;
+
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 700px)").matches;
+
+    if (isMobile) return;
+
+    let desktopReturn: {
+      jobId?: string;
+      page?: number;
+      scrollY?: number;
+    } | null = null;
+
+    try {
+      const raw = sessionStorage.getItem(DESKTOP_JOB_RETURN_KEY);
+
+      if (raw) {
+        const parsed = JSON.parse(raw);
+
+        if (
+          parsed &&
+          typeof parsed.jobId === "string"
+        ) {
+          desktopReturn = parsed;
+        }
+      }
+    } catch {}
+
+    if (!desktopReturn?.jobId) return;
+
+    const targetPage =
+      typeof desktopReturn.page === "number" &&
+      Number.isInteger(desktopReturn.page)
+        ? Math.max(1, desktopReturn.page)
+        : Math.max(1, returnState?.page ?? 1);
+
+    if (page !== targetPage) {
+      setPage(targetPage);
+      return;
+    }
+
+    const jobId = desktopReturn.jobId;
+
+    let attempts = 0;
+    let cancelled = false;
+
+    const restoreDesktopCard = () => {
+      if (cancelled) return;
+
+      const card = document.querySelector(
+        `[data-job-id="${CSS.escape(jobId)}"]`,
+      );
+
+      if (card instanceof HTMLElement) {
+        const absoluteTop =
+          card.getBoundingClientRect().top + window.scrollY;
+
+        window.scrollTo({
+          top: Math.max(0, absoluteTop - 120),
+          behavior: "instant",
+        });
+
+        desktopRestoreStartedRef.current = true;
+
+        try {
+          sessionStorage.removeItem(
+            DESKTOP_JOB_RETURN_KEY,
+          );
+        } catch {}
+
+        clearDashboardReturnState();
+        return;
+      }
+
+      if (attempts >= 20) return;
+
+      attempts += 1;
+      window.requestAnimationFrame(restoreDesktopCard);
+    };
+
+    window.requestAnimationFrame(restoreDesktopCard);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    profileReady,
+    profileId,
+    initialDashboardLoaded,
+    jobs,
+    returnState,
+    page,
+  ]);
 
   const mobileRestoreStartedRef = useRef(false);
 

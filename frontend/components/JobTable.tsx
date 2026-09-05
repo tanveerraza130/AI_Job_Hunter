@@ -43,7 +43,7 @@ interface Props {
   jobs: Job[];
   profileId: string;
   totalJobs: number;
-  onJobOpen: () => void;
+  onJobOpen: (jobId?: string) => void;
 }
 
 const displayStatus = (status?: string): ApplicationStatus => {
@@ -580,7 +580,7 @@ export default function JobTable({
             `?profile_id=${encodeURIComponent(profileId)}`;
 
           return (
-            <article className="mj-card" key={job.job_id}>
+            <article className="mj-card" key={job.job_id} data-job-id={job.job_id}>
               <div className="mj-job-details">
                 <div className="mj-rank">
                   {String(index + 1).padStart(2, "0")}
@@ -591,7 +591,7 @@ export default function JobTable({
                   <Link
                     href={href}
                     className="mj-title"
-                    onClick={onJobOpen}
+                    onClick={() => onJobOpen(job.job_id)}
                   >
                     {formatDisplayText(job.title)}
                   </Link>

@@ -1373,21 +1373,21 @@
   }
 
   .applyPrompt {
-    position: absolute;
+    position: fixed;
 
-    /* Start at the top of the Apply action card */
-    top: 0;
-    bottom: auto;
+    top: auto;
+    right: 12px;
+    bottom: 88px;
+    left: 12px;
 
-    /* Exact horizontal center */
-    left: 50%;
-    right: auto;
-    transform: translateX(calc(-50% - 140px));
+    width: auto;
+    max-width: none;
+    min-width: 0;
 
-    width: min(330px, calc(100vw - 24px));
-    max-width: calc(100vw - 24px);
     box-sizing: border-box;
 
-    z-index: 1000;
+    transform: none;
+
+    z-index: 10000;
   }
 }

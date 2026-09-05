@@ -11702,3 +11702,929 @@ body {
     min-height: 42px;
   }
 }
+
+/* ============================================================
+   JOB DETAILS — MOBILE CTA FINAL ALIGNMENT
+   Scope: max-width: 767px only
+   Desktop untouched.
+   Dashboard CTA untouched.
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  .detail-shell .mobile-bottom-actions {
+    grid-template-columns: 54px minmax(0, 1fr) 108px !important;
+    gap: 7px !important;
+
+    left: 8px !important;
+    right: 8px !important;
+
+    padding: 7px !important;
+
+    min-height: 64px !important;
+    align-items: center !important;
+  }
+
+  /* SAVE */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-save {
+    width: 54px !important;
+    min-width: 54px !important;
+    height: 50px !important;
+    min-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* STATUS */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    justify-content: center !important;
+  }
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status-trigger {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 11px !important;
+  }
+
+  .detail-shell
+  .mobile-bottom-status-trigger
+  > span:first-child {
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .detail-shell
+  .mobile-bottom-status-chevron {
+    flex: 0 0 14px !important;
+
+    width: 14px !important;
+    min-width: 14px !important;
+    max-width: 14px !important;
+
+    height: 14px !important;
+
+    font-size: 13px !important;
+  }
+
+  /* APPLY NOW */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-apply {
+    width: 108px !important;
+    min-width: 108px !important;
+    max-width: 108px !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 11px !important;
+
+    font-size: 12px !important;
+    font-weight: 700 !important;
+
+    white-space: nowrap !important;
+  }
+
+  /* NARROW PHONES */
+
+  @media (max-width: 390px) {
+
+    .detail-shell .mobile-bottom-actions {
+      grid-template-columns: 50px minmax(0, 1fr) 100px !important;
+      gap: 6px !important;
+
+      left: 6px !important;
+      right: 6px !important;
+
+      padding: 6px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-save {
+      width: 50px !important;
+      min-width: 50px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-apply {
+      width: 100px !important;
+      min-width: 100px !important;
+      max-width: 100px !important;
+
+      font-size: 11px !important;
+    }
+  }
+}
+
+
+/* JOB DETAILS — MOBILE STATUS FIX
+   Fixed width; no auto adjustment.
+   Desktop untouched.
+*/
+
+@media (max-width: 767px) {
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status {
+    width: 150px !important;
+    min-width: 150px !important;
+    max-width: 150px !important;
+    flex: 0 0 150px !important;
+  }
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status-trigger {
+    width: 150px !important;
+    min-width: 150px !important;
+    max-width: 150px !important;
+  }
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status-menu {
+    width: 150px !important;
+    min-width: 150px !important;
+    max-width: 150px !important;
+  }
+
+  @media (max-width: 390px) {
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-status {
+      width: 120px !important;
+      min-width: 120px !important;
+      max-width: 120px !important;
+      flex: 0 0 120px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-status-trigger {
+      width: 120px !important;
+      min-width: 120px !important;
+      max-width: 120px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-status-menu {
+      width: 120px !important;
+      min-width: 120px !important;
+      max-width: 120px !important;
+    }
+  }
+}
+
+
+/* ============================================================
+   JOB DETAILS — MOBILE CTA FINAL UI
+   Save | Status | Apply Now
+   Mobile only — desktop untouched
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  .detail-shell .mobile-bottom-actions {
+    position: fixed !important;
+
+    left: 8px !important;
+    right: 8px !important;
+    bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+
+    display: grid !important;
+
+    /* Fixed / controlled CTA widths */
+    grid-template-columns: 54px 148px minmax(0, 1fr) !important;
+
+    align-items: center !important;
+    gap: 8px !important;
+
+    min-height: 64px !important;
+
+    padding: 7px !important;
+
+    box-sizing: border-box !important;
+
+    background: rgba(255,255,255,.98) !important;
+
+    border: 1px solid #e1e6ef !important;
+    border-radius: 16px !important;
+
+    box-shadow:
+      0 8px 28px rgba(20,30,60,.12) !important;
+
+    z-index: 1000 !important;
+  }
+
+
+  /* ==========================================================
+     SAVE
+     ========================================================== */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-save {
+    width: 54px !important;
+    min-width: 54px !important;
+    max-width: 54px !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    border: 1px solid #dce2ec !important;
+    border-radius: 11px !important;
+
+    background: #fff !important;
+
+    color: #5540ee !important;
+
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+
+  /* ==========================================================
+     STATUS — FIXED WIDTH
+     ========================================================== */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status {
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+
+    flex: 0 0 148px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status-trigger {
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+
+    margin: 0 !important;
+
+    padding: 0 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    box-sizing: border-box !important;
+
+    border: 1px solid #d8d2ff !important;
+    border-radius: 11px !important;
+
+    background: #fff !important;
+
+    color: #293754 !important;
+
+    font-family: inherit !important;
+  }
+
+
+  /* Status text */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status-trigger
+  > span:first-child {
+    flex: 1 1 auto !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+
+  /* Status arrow */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status-chevron {
+    flex: 0 0 14px !important;
+
+    width: 14px !important;
+    min-width: 14px !important;
+    max-width: 14px !important;
+
+    height: 14px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 14px !important;
+    line-height: 1 !important;
+
+    color: #687792 !important;
+  }
+
+
+  /* Status dropdown = EXACT same fixed width */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-status-menu {
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ==========================================================
+     APPLY NOW
+     ========================================================== */
+
+  .detail-shell .mobile-bottom-actions
+  .mobile-bottom-apply {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+
+    margin: 0 !important;
+
+    padding: 0 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 11px !important;
+
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+  }
+
+
+  /* ==========================================================
+     NARROW PHONES
+     ========================================================== */
+
+  @media (max-width: 390px) {
+
+    .detail-shell .mobile-bottom-actions {
+      grid-template-columns: 50px 132px minmax(0, 1fr) !important;
+      gap: 7px !important;
+
+      left: 6px !important;
+      right: 6px !important;
+
+      padding: 6px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-save {
+      width: 50px !important;
+      min-width: 50px !important;
+      max-width: 50px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-status {
+      width: 132px !important;
+      min-width: 132px !important;
+      max-width: 132px !important;
+
+      flex-basis: 132px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-status-trigger {
+      width: 132px !important;
+      min-width: 132px !important;
+      max-width: 132px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-status-menu {
+      width: 132px !important;
+      min-width: 132px !important;
+      max-width: 132px !important;
+    }
+
+    .detail-shell .mobile-bottom-actions
+    .mobile-bottom-apply {
+      font-size: 11px !important;
+      padding-left: 7px !important;
+      padding-right: 7px !important;
+    }
+  }
+}
+
+
+/* ============================================================
+   JOB DETAILS — UNIQUE MOBILE CTA
+   Completely independent from Dashboard CTA.
+   Mobile only. Desktop untouched.
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  .detail-shell .job-details-mobile-actions {
+    position: fixed !important;
+
+    left: 8px !important;
+    right: 8px !important;
+    bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      54px
+      148px
+      minmax(0, 1fr) !important;
+
+    align-items: center !important;
+    gap: 8px !important;
+
+    min-height: 64px !important;
+
+    padding: 7px !important;
+    box-sizing: border-box !important;
+
+    background: rgba(255,255,255,.98) !important;
+
+    border: 1px solid #e1e6ef !important;
+    border-radius: 16px !important;
+
+    box-shadow:
+      0 8px 28px rgba(20,30,60,.12) !important;
+
+    z-index: 1000 !important;
+  }
+
+
+  /* SAVE */
+
+  .detail-shell .job-details-mobile-save {
+    width: 54px !important;
+    min-width: 54px !important;
+    max-width: 54px !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    border: 1px solid #dce2ec !important;
+    border-radius: 11px !important;
+
+    background: #fff !important;
+    color: #5540ee !important;
+
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+
+  /* STATUS — FIXED */
+
+  .detail-shell .job-details-mobile-status {
+    position: relative !important;
+
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+
+    height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    flex: 0 0 148px !important;
+    box-sizing: border-box !important;
+  }
+
+  .detail-shell .job-details-mobile-status-trigger {
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    box-sizing: border-box !important;
+
+    border: 1px solid #d8d2ff !important;
+    border-radius: 11px !important;
+
+    background: #fff !important;
+    color: #293754 !important;
+
+    font-family: inherit !important;
+  }
+
+  .detail-shell .job-details-mobile-status-trigger
+  > span:first-child {
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .detail-shell .job-details-mobile-status-chevron {
+    flex: 0 0 14px !important;
+
+    width: 14px !important;
+    min-width: 14px !important;
+    max-width: 14px !important;
+
+    height: 14px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 14px !important;
+    line-height: 1 !important;
+  }
+
+  .detail-shell .job-details-mobile-status-menu {
+    position: absolute !important;
+
+    left: 0 !important;
+    bottom: calc(100% + 8px) !important;
+
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 1100 !important;
+  }
+
+
+  /* APPLY NOW */
+
+  .detail-shell .job-details-mobile-apply {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+
+    margin: 0 !important;
+    padding: 0 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 11px !important;
+
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+
+  /* NARROW PHONES */
+
+  @media (max-width: 390px) {
+
+    .detail-shell .job-details-mobile-actions {
+      grid-template-columns:
+        50px
+        132px
+        minmax(0, 1fr) !important;
+
+      gap: 7px !important;
+
+      left: 6px !important;
+      right: 6px !important;
+
+      padding: 6px !important;
+    }
+
+    .detail-shell .job-details-mobile-save {
+      width: 50px !important;
+      min-width: 50px !important;
+      max-width: 50px !important;
+    }
+
+    .detail-shell .job-details-mobile-status {
+      width: 132px !important;
+      min-width: 132px !important;
+      max-width: 132px !important;
+
+      flex-basis: 132px !important;
+    }
+
+    .detail-shell .job-details-mobile-status-trigger {
+      width: 132px !important;
+      min-width: 132px !important;
+      max-width: 132px !important;
+    }
+
+    .detail-shell .job-details-mobile-status-menu {
+      width: 132px !important;
+      min-width: 132px !important;
+      max-width: 132px !important;
+    }
+
+    .detail-shell .job-details-mobile-apply {
+      font-size: 11px !important;
+      padding-left: 7px !important;
+      padding-right: 7px !important;
+    }
+  }
+}
+
+
+/* ============================================================
+   JOB DETAILS — MOBILE STATUS DROPDOWN FINAL RESET
+   Unique Job Details classes only.
+   Dashboard CTA is NOT affected.
+   Desktop is NOT affected.
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  .detail-shell .job-details-mobile-status-menu {
+    position: absolute !important;
+
+    left: 0 !important;
+    bottom: calc(100% + 8px) !important;
+
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+
+    margin: 0 !important;
+    padding: 6px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+
+    background: #ffffff !important;
+    border: 1px solid #dfe4ed !important;
+    border-radius: 12px !important;
+
+    box-shadow:
+      0 10px 28px rgba(25, 35, 60, .16) !important;
+
+    overflow: hidden !important;
+
+    z-index: 1200 !important;
+  }
+
+
+  .detail-shell .job-details-mobile-status-option {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+
+    margin: 0 !important;
+    padding: 0 9px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    border: 0 !important;
+    border-radius: 7px !important;
+
+    background: transparent !important;
+
+    color: #293754 !important;
+
+    font-family: inherit !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+
+    white-space: nowrap !important;
+    text-align: left !important;
+
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+
+  .detail-shell .job-details-mobile-status-option
+  > span:first-child {
+    display: block !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+
+  .detail-shell .job-details-mobile-status-option
+  .job-details-mobile-status-check {
+    flex: 0 0 auto !important;
+
+    width: 14px !important;
+    min-width: 14px !important;
+
+    margin-left: 6px !important;
+
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+
+    text-align: center !important;
+  }
+
+
+  .detail-shell .job-details-mobile-status-option:hover,
+  .detail-shell .job-details-mobile-status-option:focus-visible {
+    background: #f4f2ff !important;
+    outline: none !important;
+  }
+
+
+  .detail-shell .job-details-mobile-status-option.is-selected {
+    background: #f4f2ff !important;
+    color: #4f3be8 !important;
+    font-weight: 700 !important;
+  }
+
+
+  @media (max-width: 390px) {
+
+    .detail-shell .job-details-mobile-status-menu {
+      width: 132px !important;
+      min-width: 132px !important;
+      max-width: 132px !important;
+    }
+
+    .detail-shell .job-details-mobile-status-option {
+      height: 31px !important;
+      min-height: 31px !important;
+      max-height: 31px !important;
+
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+
+      font-size: 9px !important;
+    }
+
+    .detail-shell .job-details-mobile-status-option
+    > span:first-child {
+      font-size: 9px !important;
+    }
+  }
+}
+
+/* ============================================================
+   JOB DETAILS — MOBILE APPLY NOW COLOR
+   Job Details only. Dashboard untouched.
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .detail-shell .job-details-mobile-apply {
+    background: linear-gradient(135deg, #5c43ef, #4930df) !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    box-shadow: 0 7px 15px rgba(80, 56, 232, .18) !important;
+  }
+
+  .detail-shell .job-details-mobile-apply:hover {
+    background: linear-gradient(135deg, #5c43ef, #4930df) !important;
+    color: #ffffff !important;
+  }
+}
