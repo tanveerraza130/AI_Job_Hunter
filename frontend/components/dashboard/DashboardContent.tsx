@@ -165,6 +165,7 @@ export default function DashboardContent(props: DashboardPresentationProps) {
               jobs={props.jobs}
               profileId={props.profileId}
               totalJobs={props.totalJobs}
+              onJobOpen={props.onJobOpen}
             />
 
             {props.totalJobs > 20 && (

@@ -43,6 +43,7 @@ interface Props {
   jobs: Job[];
   profileId: string;
   totalJobs: number;
+  onJobOpen: () => void;
 }
 
 const displayStatus = (status?: string): ApplicationStatus => {
@@ -164,7 +165,12 @@ function ScoreMetric({
   );
 }
 
-export default function JobTable({ jobs, profileId, totalJobs }: Props) {
+export default function JobTable({
+  jobs,
+  profileId,
+  totalJobs,
+  onJobOpen,
+}: Props) {
   const [statusMap, setStatusMap] = useState<
     Record<string, ApplicationStatus>
   >({});
@@ -582,7 +588,11 @@ export default function JobTable({ jobs, profileId, totalJobs }: Props) {
 
                 <div className="mj-content">
                 <div className="mj-title-row">
-                  <Link href={href} className="mj-title">
+                  <Link
+                    href={href}
+                    className="mj-title"
+                    onClick={onJobOpen}
+                  >
                     {formatDisplayText(job.title)}
                   </Link>
 

@@ -32,9 +32,10 @@ class Settings(BaseSettings):
     jwt_expire_minutes: int = 1440
 
     # Google OAuth
-    google_client_id: str
-    google_client_secret: str
-    google_redirect_uri: str
+    google_client_id: str | None = None
+    google_client_secret: str | None = None
+    google_redirect_uri: str | None = None
+    frontend_url: str = "https://aijobhunter.in"
 
     # Default profile
     default_profile: str = "crm_manager"

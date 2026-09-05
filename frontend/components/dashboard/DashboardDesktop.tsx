@@ -48,6 +48,8 @@ export interface DashboardPresentationProps {
   loadMoreJobs: () => Promise<void>;
   mobileLoadingMore: boolean;
 
+  onJobOpen: () => void;
+
   setPage: Dispatch<SetStateAction<number>>;
 }
 

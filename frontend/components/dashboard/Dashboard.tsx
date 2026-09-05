@@ -7,6 +7,11 @@ import type { DashboardSummary, Job, JobFilterOptions } from "@/types/job";
 import DashboardMobile from "./DashboardMobile";
 import DashboardDesktop from "./DashboardDesktop";
 import styles from "./Dashboard.module.css";
+import {
+  clearDashboardReturnState,
+  readDashboardReturnState,
+  saveDashboardReturnState,
+} from "@/lib/dashboardReturnState";
 
 const PAGE_SIZE = 20;
 
@@ -20,6 +25,10 @@ function localDate(value: Date): string {
 }
 
 export default function Dashboard() {
+  const [returnState] = useState(() =>
+    readDashboardReturnState(),
+  );
+
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [profileId, setProfileId] = useState("");
@@ -27,32 +36,110 @@ export default function Dashboard() {
   const [filterOptions, setFilterOptions] = useState<JobFilterOptions>({
     locations: [], skills: [], tools: [], portals: [], companies: [],
   });
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() => {
+    if (!returnState) return 1;
+
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 700px)").matches;
+
+    return isMobile
+      ? 1
+      : Math.max(1, returnState.page);
+  });
   const [totalJobs, setTotalJobs] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [filterRevision, setFilterRevision] = useState(0);
   const hasLoadedOnceRef = useRef(false);
-  const [search, setSearch] = useState("");
-  const [company, setCompany] = useState("");
-  const [locations, setLocations] = useState<string[]>([]);
-  const [skills, setSkills] = useState<string[]>([]);
-  const [tools, setTools] = useState<string[]>([]);
-  const [portal, setPortal] = useState("");
-  const [relevance, setRelevance] = useState<Relevance[]>(["gte_30"]);
-  const [sort, setSort] = useState<SortMode>("newest");
-  const [postedDateFrom, setPostedDateFrom] = useState("");
-  const [postedDateTo, setPostedDateTo] = useState("");
+  const [search, setSearch] = useState(
+    returnState?.search ?? "",
+  );
+  const [company, setCompany] = useState(
+    returnState?.company ?? "",
+  );
+  const [locations, setLocations] = useState<string[]>(
+    returnState?.locations ?? [],
+  );
+  const [skills, setSkills] = useState<string[]>(
+    returnState?.skills ?? [],
+  );
+  const [tools, setTools] = useState<string[]>(
+    returnState?.tools ?? [],
+  );
+  const [portal, setPortal] = useState(
+    returnState?.portal ?? "",
+  );
+  const [relevance, setRelevance] = useState<Relevance[]>(
+    returnState?.relevance ?? ["gte_30"],
+  );
+  const [sort, setSort] = useState<SortMode>(
+    returnState?.sort ?? "newest",
+  );
+  const [postedDateFrom, setPostedDateFrom] = useState(
+    returnState?.postedDateFrom ?? "",
+  );
+  const [postedDateTo, setPostedDateTo] = useState(
+    returnState?.postedDateTo ?? "",
+  );
 
   const requestId = useRef(0);
   const previousPageRef = useRef(1);
+  const [initialDashboardLoaded, setInitialDashboardLoaded] =
+    useState(false);
 
-  const mobilePageRef = useRef(1);
+  const mobilePageRef = useRef(
+    returnState?.mobilePage ?? 1,
+  );
+  const mobileRestoreTargetRef = useRef(
+    returnState?.mobilePage ?? 1,
+  );
   const mobileLoadingRef = useRef(false);
 
   const [mobileLoadingMore, setMobileLoadingMore] =
     useState(false);
+
+  const onJobOpen = (jobId?: string) => {
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 700px)").matches;
+
+    const currentMobilePage = Math.max(
+      1,
+      mobilePageRef.current,
+    );
+
+    const currentPage = Math.max(
+      1,
+      page,
+    );
+
+    saveDashboardReturnState({
+      page: currentPage,
+      mobilePage: currentMobilePage,
+      search,
+      company,
+      locations,
+      skills,
+      tools,
+      portal,
+      relevance,
+      sort,
+      postedDateFrom,
+      postedDateTo,
+      ...(isMobile && jobId
+        ? {
+            jobId,
+            scrollY:
+              typeof window !== "undefined"
+                ? window.scrollY
+                : 0,
+          }
+        : {}),
+    });
+  };
+
   useEffect(() => {
     let cancelled = false;
 
@@ -205,6 +292,8 @@ export default function Dashboard() {
       setSummary(dashboard);
       setJobs(jobsData.jobs || []);
       setTotalJobs(jobsData.total || 0);
+
+      setInitialDashboardLoaded(true);
     } catch (error) {
       if (currentId !== requestId.current) return;
       console.error("Dashboard error:", error);
@@ -351,6 +440,117 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileReady, profileId, page, search, filterRevision]);
 
+  const mobileRestoreStartedRef = useRef(false);
+
+  useEffect(() => {
+    if (!profileReady || !profileId) return;
+    if (!initialDashboardLoaded) return;
+    if (mobileRestoreStartedRef.current) return;
+
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 700px)").matches;
+
+    if (!isMobile) return;
+
+    const targetPage = Math.max(
+      1,
+      mobileRestoreTargetRef.current,
+    );
+
+    if (targetPage <= 1) return;
+    if (mobilePageRef.current >= targetPage) return;
+
+    mobileRestoreStartedRef.current = true;
+
+    let cancelled = false;
+
+    async function restoreMobilePages() {
+      const requestGeneration = requestId.current;
+      let restoredJobs = [...jobs];
+      let restoredPage = mobilePageRef.current;
+
+      try {
+        while (
+          !cancelled &&
+          restoredPage < targetPage
+        ) {
+          const nextPage = restoredPage + 1;
+
+          const jobsData = await getJobs({
+            profile_id: profileId,
+            page: nextPage,
+            page_size: PAGE_SIZE,
+            search: search || undefined,
+            company: company || undefined,
+            location: locations,
+            skill: skills,
+            tool: tools,
+            portal: portal || undefined,
+            relevance,
+            posted_date_from:
+              postedDateFrom || undefined,
+            posted_date_to:
+              postedDateTo || undefined,
+            sort,
+          });
+
+          if (
+            cancelled ||
+            requestGeneration !== requestId.current
+          ) {
+            return;
+          }
+
+          const incoming = jobsData.jobs || [];
+
+          if (incoming.length) {
+            const existing = new Set(
+              restoredJobs.map(
+                (job) => job.job_id,
+              ),
+            );
+
+            const unique = incoming.filter(
+              (job) => !existing.has(job.job_id),
+            );
+
+            restoredJobs = [
+              ...restoredJobs,
+              ...unique,
+            ];
+          }
+
+          restoredPage = nextPage;
+        }
+
+        if (
+          cancelled ||
+          requestGeneration !== requestId.current
+        ) {
+          return;
+        }
+
+        mobilePageRef.current = restoredPage;
+        setJobs(restoredJobs);
+        clearDashboardReturnState();
+      } catch (error) {
+        console.error(
+          "Failed to restore mobile dashboard pages:",
+          error,
+        );
+      }
+    }
+
+    restoreMobilePages();
+
+    return () => {
+      cancelled = true;
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileReady, profileId, initialDashboardLoaded]);
+
   useEffect(() => {
     if (previousPageRef.current === page) return;
     previousPageRef.current = page;
@@ -361,6 +561,66 @@ export default function Dashboard() {
 
   // Automatic 10-second refresh disabled.
   // Dashboard refreshes only when filters/page/profile change.
+
+  useEffect(() => {
+    if (!profileReady || !profileId) return;
+    if (!initialDashboardLoaded) return;
+    if (!returnState?.jobId) return;
+
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 700px)").matches;
+
+    if (!isMobile) return;
+
+    const jobId = returnState.jobId;
+    const scrollY = returnState.scrollY ?? 0;
+
+    let attempts = 0;
+    let cancelled = false;
+
+    const restoreJobPosition = () => {
+      if (cancelled) return;
+
+      const card = document.querySelector(
+        `[data-job-id="${CSS.escape(jobId)}"]`,
+      );
+
+      if (card) {
+        card.scrollIntoView({
+          behavior: "instant",
+          block: "center",
+        });
+
+        clearDashboardReturnState();
+        return;
+      }
+
+      if (attempts >= 20) {
+        window.scrollTo({
+          top: scrollY,
+          behavior: "instant",
+        });
+
+        clearDashboardReturnState();
+        return;
+      }
+
+      attempts += 1;
+      window.requestAnimationFrame(restoreJobPosition);
+    };
+
+    window.requestAnimationFrame(restoreJobPosition);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    profileReady,
+    profileId,
+    initialDashboardLoaded,
+    returnState,
+  ]);
 
   function applyDesktopFilterChange() {
     setPage(1);
@@ -541,6 +801,7 @@ export default function Dashboard() {
     clearFilters,
     loadMoreJobs,
     mobileLoadingMore,
+    onJobOpen,
     setPage,
   };
 

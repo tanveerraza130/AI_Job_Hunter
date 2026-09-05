@@ -110,6 +110,7 @@ type Props = {
     status: MobileStatus,
   ) => Promise<void>;
   profileId: string;
+  onJobOpen: (jobId?: string) => void;
 };
 
 function MobileJobCard({
@@ -118,6 +119,7 @@ function MobileJobCard({
   status,
   onStatusChange,
   profileId,
+  onJobOpen,
 }: Props) {
   const [statusOpen, setStatusOpen] = useState(false);
 
@@ -297,7 +299,10 @@ function MobileJobCard({
       : "Company unavailable";
 
   return (
-    <article className={styles.jobCard}>
+    <article
+      className={styles.jobCard}
+      data-job-id={job.job_id}
+    >
       <div className={styles.jobCardTop}>
         <div className={styles.jobCardTopLeft}>
           <div className={styles.jobRank}>
@@ -349,6 +354,7 @@ function MobileJobCard({
           <Link
             href={href}
             className={styles.jobTitle}
+            onClick={() => onJobOpen(job.job_id)}
           >
             {job.title || "Untitled role"}
           </Link>
@@ -464,6 +470,7 @@ function MobileJobCard({
         <Link
           href={href}
           className={styles.detailsLink}
+          onClick={() => onJobOpen(job.job_id)}
         >
           Job Details
           <ChevronRight size={14} />

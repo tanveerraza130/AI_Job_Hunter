@@ -19,8 +19,7 @@ import {
 } from "lucide-react";
 import styles from "./AuthPage.module.css";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/v1";
+const API_BASE = "/api/v1";
 
 
 type Step = "account" | "password" | "profile" | "complete" | "login";
@@ -205,12 +204,12 @@ export default function AuthPage({
     }
 
     if (googleErrorParam === "account_not_found") {
-      setAuthMode("signin");
-      setStep("login");
+      setAuthMode("signup");
+      setStep("account");
       setAuthMethod(null);
 
       setGoogleError(
-        "No account found with this email. Please create an account first.",
+        "No account found with this email. Please create an account to continue.",
       );
 
       setLoginError("");

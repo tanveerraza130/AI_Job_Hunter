@@ -443,6 +443,9 @@ export default function DashboardMobile(
                 profileId={
                   props.profileId
                 }
+                onJobOpen={
+                  props.onJobOpen
+                }
               />
             ),
           )

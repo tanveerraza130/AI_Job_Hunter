@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { use, useEffect, useMemo, useRef, useState } from "react";
 import JobHeader from "./components/JobHeader/JobHeader";
 import MatchSnapshot from "./components/MatchSnapshot/MatchSnapshot";
@@ -29,7 +30,12 @@ function splitDescription(text?:string|null){
   if(typeof window !== "undefined") { const div=document.createElement("div"); div.innerHTML=normalized; return (div.textContent||"").replace(/\r/g,"").split(/\n+/).map(s=>s.replace(/\s+/g," ").trim()).filter(Boolean); }
   return normalized.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim().split(/\n+/).filter(Boolean);
 }
-export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>}){
+export default function JobDetailPage({
+  params,
+}: {
+  params: Promise<{ jobId: string }>;
+}) {
+  const router = useRouter();
   const {jobId}=use(params);
 
   const [profileId,setProfileId]=useState<string | null>(null);
@@ -491,13 +497,17 @@ export default function JobDetailPage({ params }:{params:Promise<{jobId:string}>
       </main>
     );
   }
-  if(error||!job)return <main className="detail-shell"><div className="error-card"><h2>{error||"Job not found"}</h2><Link className="apply-now" href="/">Back to jobs</Link></div></main>;
+  if(error||!job)return <main className="detail-shell"><div className="error-card"><h2>{error||"Job not found"}</h2><button type="button" className="apply-now" onClick={() => router.back()}>Back to jobs</button></div></main>;
   return (
     <main className="detail-shell">
-      <Link href="/" className="back-link">
+      <button
+        type="button"
+        className="back-link"
+        onClick={() => router.back()}
+      >
         <ArrowLeft size={15} />
         Back to jobs
-      </Link>
+      </button>
 
       <JobHeader
         job={job}

@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 import secrets
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, EmailStr, Field
@@ -27,6 +27,7 @@ from api.account_store import (
     mark_password_reset_token_used,
     update_user_password,
 )
+from api.config import settings
 from api.google_oauth import (
     authenticate_google_user,
     get_google_login_url,
@@ -52,8 +53,22 @@ class EmailCheckRequest(BaseModel):
     email: EmailStr
 
 
+def _google_oauth_configured() -> bool:
+    return bool(
+        settings.google_client_id
+        and settings.google_client_secret
+        and settings.google_redirect_uri
+    )
+
+
 @router.get("/google/start")
 async def google_start(mode: str = "signin"):
+    if not _google_oauth_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="Google sign-in is not configured.",
+        )
+
     return RedirectResponse(
         url=get_google_login_url(mode),
         status_code=302,
@@ -65,6 +80,11 @@ async def google_callback(
     code: str,
     state: str = "signin",
 ):
+    if not _google_oauth_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="Google sign-in is not configured.",
+        )
     result = authenticate_google_user(
         code,
         mode=state,
@@ -73,7 +93,7 @@ async def google_callback(
     if result.get("status") == "account_not_found":
         return RedirectResponse(
             url=(
-                "http://localhost:3000/login"
+                f"{settings.frontend_url}/signup"
                 "?google_error=account_not_found"
                 f"&email={result['email']}"
             ),
@@ -83,7 +103,7 @@ async def google_callback(
     if result.get("status") == "account_exists":
         return RedirectResponse(
             url=(
-                "http://localhost:3000/signup"
+                f"{settings.frontend_url}/signup"
                 "?google_error=account_exists"
                 f"&email={result['email']}"
             ),
@@ -103,7 +123,7 @@ async def google_callback(
         if result.get("account_created"):
             return RedirectResponse(
                 url=(
-                    "http://localhost:3000/signup"
+                    f"{settings.frontend_url}/signup"
                     "?google_success=1"
                     f"&account_created=1"
                     f"&token={result['access_token']}"
@@ -114,7 +134,7 @@ async def google_callback(
 
         return RedirectResponse(
             url=(
-                "http://localhost:3000/dashboard"
+                f"{settings.frontend_url}/dashboard"
                 "?google_success=1"
                 f"&token={result['access_token']}"
             ),
@@ -127,7 +147,7 @@ async def google_callback(
     if result.get("profile_complete"):
         return RedirectResponse(
             url=(
-                "http://localhost:3000/dashboard"
+                f"{settings.frontend_url}/dashboard"
                 "?google_success=1"
                 f"&token={result['access_token']}"
             ),
@@ -136,7 +156,7 @@ async def google_callback(
 
     return RedirectResponse(
         url=(
-            "http://localhost:3000/login"
+            f"{settings.frontend_url}/login"
             "?google_success=1"
             "&profile_complete=0"
             f"&token={result['access_token']}"
