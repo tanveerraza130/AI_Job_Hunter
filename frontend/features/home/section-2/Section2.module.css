@@ -3236,3 +3236,1927 @@
     min-height: 720px !important;
   }
 }
+
+
+/* =========================================================
+   SECTION 2 — MOBILE FINAL REDESIGN
+   Desktop remains completely untouched.
+   Story:
+   Problem → Old Way → AI Processing → What We Do → AI Way
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  /* =======================================================
+     SECTION / CANVAS
+     ======================================================= */
+
+  .section {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    overflow: visible !important;
+  }
+
+  .canvas {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+
+    gap: 0 !important;
+
+    padding: 42px 16px 64px !important;
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* =======================================================
+     01 — PROBLEM INTRO
+     ======================================================= */
+
+  .leftProblemText {
+    position: relative !important;
+
+    order: 1 !important;
+
+    width: 100% !important;
+    max-width: 390px !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 auto 26px !important;
+    padding: 0 4px !important;
+
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    transform: none !important;
+
+    text-align: left !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 20 !important;
+  }
+
+  .leftProblemBadge {
+    display: inline-flex !important;
+    align-items: center !important;
+
+    margin: 0 0 18px !important;
+  }
+
+  .leftProblemText h2 {
+    margin: 0 0 14px !important;
+
+    font-size: clamp(34px, 8.8vw, 42px) !important;
+    line-height: 1.015 !important;
+    letter-spacing: -0.045em !important;
+
+    max-width: 370px !important;
+  }
+
+  .leftProblemText strong {
+    display: block !important;
+
+    max-width: 370px !important;
+
+    font-size: 13px !important;
+    line-height: 1.42 !important;
+  }
+
+  .leftProblemText p {
+    max-width: 365px !important;
+
+    margin: 8px 0 0 !important;
+
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+
+  /* =======================================================
+     02 — OLD WAY
+     ======================================================= */
+
+  .leftBlock {
+    order: 2 !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 390px !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    align-self: center !important;
+
+    transform: none !important;
+
+    margin: 0 auto 30px !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+
+    overflow: visible !important;
+
+    z-index: 5 !important;
+  }
+
+  .leftBlock > .sideImage {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+    max-height: none !important;
+
+    margin: 0 auto !important;
+
+    object-fit: contain !important;
+
+    transform: none !important;
+  }
+
+
+  /* =======================================================
+     03 — AI CENTER
+     ======================================================= */
+
+  .centerBlock {
+    order: 3 !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 390px !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    align-self: center !important;
+
+    transform: none !important;
+
+    margin: 0 auto 32px !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+
+    overflow: visible !important;
+
+    z-index: 10 !important;
+  }
+
+  .centerContent {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* =======================================================
+     AI NETWORK — COMPACT MOBILE COMPOSITION
+     ======================================================= */
+
+  .aiCenterVisual {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 390px !important;
+
+    height: 232px !important;
+    min-height: 232px !important;
+
+    margin: 0 auto !important;
+
+    overflow: visible !important;
+
+    transform: none !important;
+  }
+
+  .aiCenterNetwork {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow: visible !important;
+  }
+
+
+  /* =======================================================
+     AI HUB — TRUE CENTER
+     ======================================================= */
+
+  .aiCenterHub {
+    position: absolute !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: 112px !important;
+    height: 112px !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    z-index: 20 !important;
+  }
+
+  .aiCore {
+    position: absolute !important;
+
+    left: 50% !important;
+    top: 50% !important;
+
+    width: 74px !important;
+    height: 74px !important;
+
+    transform: translate(-50%, -50%) !important;
+  }
+
+  .aiSpark {
+    font-size: 29px !important;
+  }
+
+  .aiRing1 {
+    transform: scale(.82) !important;
+  }
+
+  .aiRing2 {
+    transform: scale(1.02) !important;
+  }
+
+  .aiRing3 {
+    transform: scale(1.20) !important;
+  }
+
+
+  /* =======================================================
+     FLOATING NODES
+     Symmetric around the hub.
+     ======================================================= */
+
+  .aiNode {
+    position: absolute !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    font-size: 12px !important;
+
+    z-index: 15 !important;
+  }
+
+  /* LEFT */
+  .aiP1 {
+    left: 5% !important;
+    top: 8% !important;
+  }
+
+  .aiP2 {
+    left: 11% !important;
+    top: 30% !important;
+  }
+
+  .aiP3 {
+    left: 5% !important;
+    top: 52% !important;
+  }
+
+  .aiP4 {
+    left: 11% !important;
+    top: 74% !important;
+  }
+
+  .aiP5 {
+    left: 5% !important;
+    top: 90% !important;
+  }
+
+  /* RIGHT */
+  .aiG1 {
+    right: 5% !important;
+    top: 8% !important;
+  }
+
+  .aiG2 {
+    right: 11% !important;
+    top: 30% !important;
+  }
+
+  .aiG3 {
+    right: 5% !important;
+    top: 52% !important;
+  }
+
+  .aiG4 {
+    right: 11% !important;
+    top: 74% !important;
+  }
+
+  .aiG5 {
+    right: 5% !important;
+    top: 90% !important;
+  }
+
+
+  /* =======================================================
+     AI COPY
+     ======================================================= */
+
+  .aiCenterCopy {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 350px !important;
+
+    margin: 2px auto 16px !important;
+
+    text-align: center !important;
+
+    z-index: 30 !important;
+  }
+
+  .aiCenterCopy h2 {
+    margin: 0 !important;
+
+    font-size: 27px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.025em !important;
+  }
+
+  .aiCenterCopy h3 {
+    margin: 5px 0 0 !important;
+
+    font-size: 15px !important;
+    line-height: 1.25 !important;
+  }
+
+  .aiCenterCopy p {
+    margin: 4px 0 0 !important;
+
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+  }
+
+
+  /* =======================================================
+     WHAT WE DO
+     ======================================================= */
+
+  .aiWhatWeDo {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 350px !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 auto !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 30 !important;
+  }
+
+  .aiWhatWeDo h3 {
+    margin: 0 0 7px !important;
+
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+  }
+
+  .aiFeature {
+    min-height: 48px !important;
+
+    padding: 7px 9px !important;
+
+    gap: 9px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .aiFeatureIcon {
+    flex: 0 0 30px !important;
+
+    width: 30px !important;
+    height: 30px !important;
+
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .aiFeature strong {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+  }
+
+  .aiFeature span {
+    font-size: 9px !important;
+    line-height: 1.25 !important;
+  }
+
+
+  /* =======================================================
+     04 — AI JOB HUNTER WAY
+     ======================================================= */
+
+  .rightBlock {
+    order: 4 !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 390px !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    align-self: center !important;
+
+    transform: none !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+
+    overflow: visible !important;
+
+    z-index: 5 !important;
+  }
+
+  .rightBlock > .sideImage {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+    max-height: none !important;
+
+    margin: 0 auto !important;
+
+    object-fit: contain !important;
+
+    transform: none !important;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES — <=390
+   ========================================================= */
+
+@media (max-width:390px) {
+
+  .canvas {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .leftProblemText,
+  .leftBlock,
+  .centerBlock,
+  .rightBlock {
+    max-width: 100% !important;
+  }
+
+  .leftProblemText h2 {
+    font-size: 33px !important;
+  }
+
+  .aiCenterVisual {
+    height: 220px !important;
+    min-height: 220px !important;
+  }
+
+  .aiCenterHub {
+    width: 106px !important;
+    height: 106px !important;
+  }
+
+  .aiCore {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  .aiNode {
+    width: 30px !important;
+    height: 30px !important;
+
+    min-width: 30px !important;
+    min-height: 30px !important;
+
+    font-size: 11px !important;
+  }
+
+  .aiCenterCopy h2 {
+    font-size: 25px !important;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES — <=360
+   ========================================================= */
+
+@media (max-width:360px) {
+
+  .canvas {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    padding-top: 34px !important;
+    padding-bottom: 56px !important;
+  }
+
+  .leftProblemText {
+    margin-bottom: 22px !important;
+  }
+
+  .leftProblemText h2 {
+    font-size: 31px !important;
+  }
+
+  .leftBlock {
+    margin-bottom: 24px !important;
+  }
+
+  .aiCenterVisual {
+    height: 208px !important;
+    min-height: 208px !important;
+  }
+
+  .aiCenterHub {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  .aiCore {
+    width: 66px !important;
+    height: 66px !important;
+  }
+
+  .aiCenterCopy {
+    margin-top: 0 !important;
+  }
+
+  .aiCenterCopy h2 {
+    font-size: 23px !important;
+  }
+
+  .rightBlock {
+    margin-top: 0 !important;
+  }
+}
+
+/* =========================================================
+   SECTION 2 — MOBILE AI HUB FINAL FIX
+   ONLY AI CIRCLE / RINGS / SPARK MOTION
+   ========================================================= */
+
+@media (max-width:768px){
+
+  /* Keep the AI hub as the single positioning reference */
+  .aiCenterHub{
+    position:absolute !important;
+    left:50% !important;
+    top:50% !important;
+
+    width:112px !important;
+    height:112px !important;
+
+    margin:0 !important;
+
+    transform:translate(-50%,-50%) !important;
+
+    display:block !important;
+
+    overflow:visible !important;
+
+    z-index:30 !important;
+  }
+
+
+  /* -------------------------------------------------------
+     ALL RINGS — independently centered
+     ------------------------------------------------------- */
+
+  .aiCenterHub .aiRing{
+    position:absolute !important;
+
+    left:50% !important;
+    top:50% !important;
+
+    margin:0 !important;
+
+    transform-origin:center center !important;
+
+    border-radius:50% !important;
+
+    pointer-events:none !important;
+  }
+
+
+  /* Inner ring */
+  .aiCenterHub .aiRing1{
+    width:92px !important;
+    height:92px !important;
+
+    transform:translate(-50%,-50%) scale(1) !important;
+
+    animation:mobileRingOne 3.2s ease-in-out infinite !important;
+  }
+
+
+  /* Middle ring */
+  .aiCenterHub .aiRing2{
+    width:112px !important;
+    height:112px !important;
+
+    transform:translate(-50%,-50%) scale(1) !important;
+
+    animation:mobileRingTwo 4s ease-in-out infinite !important;
+  }
+
+
+  /* Outer ring */
+  .aiCenterHub .aiRing3{
+    width:132px !important;
+    height:132px !important;
+
+    transform:translate(-50%,-50%) scale(1) !important;
+
+    animation:mobileRingThree 5s ease-in-out infinite !important;
+  }
+
+
+  /* -------------------------------------------------------
+     CORE — stays exactly in the middle
+     ------------------------------------------------------- */
+
+  .aiCenterHub .aiCore{
+    position:absolute !important;
+
+    left:50% !important;
+    top:50% !important;
+
+    width:74px !important;
+    height:74px !important;
+
+    margin:0 !important;
+
+    transform:translate(-50%,-50%) !important;
+
+    transform-origin:center center !important;
+
+    z-index:40 !important;
+
+    animation:mobileCoreBreath 2.8s ease-in-out infinite !important;
+  }
+
+
+  /* Spark stays centered inside core */
+  .aiCenterHub .aiSpark{
+    position:absolute !important;
+
+    left:50% !important;
+    top:50% !important;
+
+    margin:0 !important;
+
+    transform:translate(-50%,-50%) !important;
+
+    transform-origin:center center !important;
+
+    z-index:50 !important;
+
+    animation:mobileSparkBreath 2.2s ease-in-out infinite !important;
+  }
+
+
+  /* -------------------------------------------------------
+     RING MOTIONS
+     ------------------------------------------------------- */
+
+  @keyframes mobileRingOne{
+    0%,100%{
+      transform:translate(-50%,-50%) scale(.96);
+      opacity:.62;
+    }
+
+    50%{
+      transform:translate(-50%,-50%) scale(1.04);
+      opacity:.9;
+    }
+  }
+
+
+  @keyframes mobileRingTwo{
+    0%,100%{
+      transform:translate(-50%,-50%) scale(.98);
+      opacity:.40;
+    }
+
+    50%{
+      transform:translate(-50%,-50%) scale(1.045);
+      opacity:.68;
+    }
+  }
+
+
+  @keyframes mobileRingThree{
+    0%,100%{
+      transform:translate(-50%,-50%) scale(.94);
+      opacity:.24;
+    }
+
+    50%{
+      transform:translate(-50%,-50%) scale(1.06);
+      opacity:.48;
+    }
+  }
+
+
+  /* -------------------------------------------------------
+     CORE MOTION
+     ------------------------------------------------------- */
+
+  @keyframes mobileCoreBreath{
+    0%,100%{
+      transform:translate(-50%,-50%) scale(1);
+      filter:drop-shadow(
+        0 9px 20px rgba(92,55,220,.18)
+      );
+    }
+
+    50%{
+      transform:translate(-50%,-50%) scale(1.035);
+      filter:drop-shadow(
+        0 11px 28px rgba(92,55,220,.30)
+      );
+    }
+  }
+
+
+  /* -------------------------------------------------------
+     SPARK MOTION
+     ------------------------------------------------------- */
+
+  @keyframes mobileSparkBreath{
+    0%,100%{
+      transform:translate(-50%,-50%) scale(.94);
+      opacity:.88;
+    }
+
+    50%{
+      transform:translate(-50%,-50%) scale(1.08);
+      opacity:1;
+    }
+  }
+}
+
+
+/* =========================================================
+   <=390px
+   ========================================================= */
+
+@media (max-width:390px){
+
+  .aiCenterHub{
+    width:106px !important;
+    height:106px !important;
+  }
+
+  .aiCenterHub .aiRing1{
+    width:86px !important;
+    height:86px !important;
+  }
+
+  .aiCenterHub .aiRing2{
+    width:106px !important;
+    height:106px !important;
+  }
+
+  .aiCenterHub .aiRing3{
+    width:126px !important;
+    height:126px !important;
+  }
+
+  .aiCenterHub .aiCore{
+    width:70px !important;
+    height:70px !important;
+  }
+}
+
+
+/* =========================================================
+   <=360px
+   ========================================================= */
+
+@media (max-width:360px){
+
+  .aiCenterHub{
+    width:100px !important;
+    height:100px !important;
+  }
+
+  .aiCenterHub .aiRing1{
+    width:82px !important;
+    height:82px !important;
+  }
+
+  .aiCenterHub .aiRing2{
+    width:100px !important;
+    height:100px !important;
+  }
+
+  .aiCenterHub .aiRing3{
+    width:120px !important;
+    height:120px !important;
+  }
+
+  .aiCenterHub .aiCore{
+    width:66px !important;
+    height:66px !important;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (max-width:768px) and (prefers-reduced-motion:reduce){
+
+  .aiCenterHub .aiRing,
+  .aiCenterHub .aiCore,
+  .aiCenterHub .aiSpark{
+    animation:none !important;
+  }
+}
+
+/* =========================================================
+   SECTION 2 — MOBILE WHAT WE DO CARD
+   Center + compact premium width
+   ========================================================= */
+
+@media (max-width:768px){
+
+  .centerBlock .aiWhatWeDo{
+    position:relative !important;
+
+    width:calc(100% - 32px) !important;
+    max-width:390px !important;
+
+    margin-left:auto !important;
+    margin-right:auto !important;
+
+    align-self:center !important;
+
+    box-sizing:border-box !important;
+
+    transform:none !important;
+  }
+
+}
+
+
+/* Smaller phones */
+@media (max-width:390px){
+
+  .centerBlock .aiWhatWeDo{
+    width:calc(100% - 24px) !important;
+    max-width:360px !important;
+
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+}
+
+
+/* Very small phones */
+@media (max-width:360px){
+
+  .centerBlock .aiWhatWeDo{
+    width:calc(100% - 20px) !important;
+    max-width:340px !important;
+  }
+
+}
+
+/* =========================================================
+   SECTION 2 — MOBILE WHAT WE DO
+   FINAL CENTER ALIGNMENT FIX
+   Only this card is affected.
+   ========================================================= */
+
+@media (max-width:768px){
+
+  .centerBlock .aiWhatWeDo{
+    position:relative !important;
+
+    /* Completely remove inherited desktop positioning */
+    inset:auto !important;
+    top:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    left:auto !important;
+
+    transform:none !important;
+
+    width:calc(100% - 24px) !important;
+    max-width:350px !important;
+
+    margin-top:0 !important;
+    margin-right:auto !important;
+    margin-bottom:0 !important;
+    margin-left:auto !important;
+
+    align-self:center !important;
+
+    box-sizing:border-box !important;
+
+    overflow:hidden !important;
+  }
+
+  /* Keep all card content inside the card */
+  .centerBlock .aiWhatWeDo h3,
+  .centerBlock .aiWhatWeDo .aiFeature{
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width:390px){
+
+  .centerBlock .aiWhatWeDo{
+    width:calc(100% - 20px) !important;
+    max-width:350px !important;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width:360px){
+
+  .centerBlock .aiWhatWeDo{
+    width:calc(100% - 16px) !important;
+    max-width:340px !important;
+  }
+
+}
+
+/* =========================================================
+   SECTION 2 — MOBILE AI JOB HUNTER COPY CENTER
+   Only center copy alignment.
+   ========================================================= */
+
+@media (max-width:768px){
+
+  .centerBlock .aiCenterCopy{
+    position:relative !important;
+
+    left:auto !important;
+    right:auto !important;
+    top:auto !important;
+    bottom:auto !important;
+
+    width:100% !important;
+    max-width:350px !important;
+
+    margin-left:auto !important;
+    margin-right:auto !important;
+
+    transform:none !important;
+
+    text-align:center !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+  }
+
+  .centerBlock .aiCenterCopy h2,
+  .centerBlock .aiCenterCopy h3,
+  .centerBlock .aiCenterCopy p{
+    width:100% !important;
+    text-align:center !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+
+}
+
+
+/* Small phones */
+@media (max-width:390px){
+
+  .centerBlock .aiCenterCopy{
+    max-width:340px !important;
+  }
+
+}
+
+
+/* Very small phones */
+@media (max-width:360px){
+
+  .centerBlock .aiCenterCopy{
+    max-width:320px !important;
+  }
+
+}
+
+/* =========================================================
+   SECTION 2 — MOBILE FINAL POLISH
+   =========================================================
+   Desktop is intentionally untouched.
+   Mobile story:
+   PROBLEM
+      ↓
+   OLD WAY
+      ↓
+   AI PROCESSING
+      ↓
+   WHAT WE DO
+      ↓
+   AI JOB HUNTER WAY
+   ========================================================= */
+
+
+/* =========================================================
+   MOBILE BASE
+   ========================================================= */
+
+@media (max-width:768px){
+
+  .section{
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    overflow:visible !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #f8f6ff 0%,
+        #f4f0ff 52%,
+        #f7f4ff 100%
+      ) !important;
+  }
+
+
+  .canvas{
+    position:relative !important;
+
+    width:100% !important;
+    max-width:100% !important;
+
+    height:auto !important;
+    min-height:0 !important;
+
+    margin:0 !important;
+    padding:42px 16px 64px !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+
+    gap:0 !important;
+
+    box-sizing:border-box !important;
+
+    overflow:visible !important;
+  }
+
+
+  /* =======================================================
+     01 — PROBLEM COPY
+     ======================================================= */
+
+  .leftProblemText{
+    position:relative !important;
+
+    order:1 !important;
+
+    width:100% !important;
+    max-width:390px !important;
+
+    height:auto !important;
+    min-height:0 !important;
+
+    margin:0 auto 25px !important;
+    padding:0 4px !important;
+
+    inset:auto !important;
+    transform:none !important;
+
+    text-align:left !important;
+
+    box-sizing:border-box !important;
+
+    z-index:20 !important;
+  }
+
+
+  .leftProblemBadge{
+    display:inline-flex !important;
+    align-items:center !important;
+
+    margin:0 0 17px !important;
+  }
+
+
+  .leftProblemText h2{
+    margin:0 0 14px !important;
+
+    max-width:370px !important;
+
+    font-size:clamp(
+      32px,
+      8.5vw,
+      38px
+    ) !important;
+
+    line-height:1.02 !important;
+
+    letter-spacing:-0.045em !important;
+  }
+
+
+  .leftProblemText strong{
+    display:block !important;
+
+    max-width:370px !important;
+
+    margin:0 !important;
+
+    font-size:12.5px !important;
+    line-height:1.45 !important;
+  }
+
+
+  .leftProblemText p{
+    max-width:360px !important;
+
+    margin:8px 0 0 !important;
+
+    font-size:11.5px !important;
+    line-height:1.55 !important;
+  }
+
+
+  /* =======================================================
+     02 — OLD WAY CARD
+     ======================================================= */
+
+  .leftBlock{
+    position:relative !important;
+
+    order:2 !important;
+
+    width:100% !important;
+    max-width:390px !important;
+
+    height:auto !important;
+    min-height:0 !important;
+
+    margin:0 auto 26px !important;
+    padding:0 !important;
+
+    inset:auto !important;
+    transform:none !important;
+
+    align-self:center !important;
+
+    box-sizing:border-box !important;
+
+    overflow:visible !important;
+
+    z-index:5 !important;
+  }
+
+
+  .leftBlock > .sideImage{
+    display:block !important;
+
+    width:100% !important;
+    max-width:100% !important;
+
+    height:auto !important;
+    max-height:none !important;
+
+    margin:0 auto !important;
+
+    object-fit:contain !important;
+
+    transform:none !important;
+  }
+
+
+  /* =======================================================
+     03 — AI CENTER
+     ======================================================= */
+
+  .centerBlock{
+    position:relative !important;
+
+    order:3 !important;
+
+    width:100% !important;
+    max-width:390px !important;
+
+    height:auto !important;
+    min-height:0 !important;
+
+    margin:0 auto 30px !important;
+    padding:0 !important;
+
+    inset:auto !important;
+    transform:none !important;
+
+    align-self:center !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+
+    box-sizing:border-box !important;
+
+    overflow:visible !important;
+
+    z-index:10 !important;
+  }
+
+
+  .centerContent{
+    width:100% !important;
+    max-width:100% !important;
+
+    height:auto !important;
+    min-height:0 !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+
+    box-sizing:border-box !important;
+
+    overflow:visible !important;
+  }
+
+
+  /* =======================================================
+     AI NETWORK
+     ======================================================= */
+
+  .aiCenterVisual{
+    position:relative !important;
+
+    width:100% !important;
+    max-width:390px !important;
+
+    height:238px !important;
+    min-height:238px !important;
+
+    margin:0 auto !important;
+    padding:0 !important;
+
+    overflow:visible !important;
+
+    box-sizing:border-box !important;
+
+    transform:none !important;
+  }
+
+
+  .aiCenterNetwork{
+    position:absolute !important;
+
+    inset:0 !important;
+
+    width:100% !important;
+    height:100% !important;
+
+    overflow:visible !important;
+
+    transform:none !important;
+  }
+
+
+  /* =======================================================
+     AI HUB — PERFECT CENTER
+     ======================================================= */
+
+  .aiCenterHub{
+    position:absolute !important;
+
+    left:50% !important;
+    top:50% !important;
+
+    width:112px !important;
+    height:112px !important;
+
+    margin:0 !important;
+
+    transform:translate(-50%,-50%) !important;
+
+    display:block !important;
+
+    overflow:visible !important;
+
+    z-index:30 !important;
+  }
+
+
+  .aiCenterHub .aiRing{
+    position:absolute !important;
+
+    left:50% !important;
+    top:50% !important;
+
+    margin:0 !important;
+
+    border-radius:50% !important;
+
+    transform-origin:center center !important;
+
+    pointer-events:none !important;
+  }
+
+
+  .aiCenterHub .aiRing1{
+    width:92px !important;
+    height:92px !important;
+
+    transform:translate(-50%,-50%) !important;
+  }
+
+
+  .aiCenterHub .aiRing2{
+    width:112px !important;
+    height:112px !important;
+
+    transform:translate(-50%,-50%) !important;
+  }
+
+
+  .aiCenterHub .aiRing3{
+    width:134px !important;
+    height:134px !important;
+
+    transform:translate(-50%,-50%) !important;
+  }
+
+
+  .aiCenterHub .aiCore{
+    position:absolute !important;
+
+    left:50% !important;
+    top:50% !important;
+
+    width:74px !important;
+    height:74px !important;
+
+    margin:0 !important;
+
+    transform:translate(-50%,-50%) !important;
+
+    transform-origin:center center !important;
+
+    z-index:40 !important;
+  }
+
+
+  .aiCenterHub .aiSpark{
+    position:absolute !important;
+
+    left:50% !important;
+    top:50% !important;
+
+    margin:0 !important;
+
+    transform:translate(-50%,-50%) !important;
+
+    transform-origin:center center !important;
+
+    z-index:50 !important;
+  }
+
+
+  /* =======================================================
+     FLOATING NODES — SYMMETRICAL
+     ======================================================= */
+
+  .aiNode{
+    position:absolute !important;
+
+    width:32px !important;
+    height:32px !important;
+
+    min-width:32px !important;
+    min-height:32px !important;
+
+    display:grid !important;
+    place-items:center !important;
+
+    font-size:12px !important;
+
+    z-index:20 !important;
+
+    box-sizing:border-box !important;
+  }
+
+
+  /* LEFT */
+  .aiP1{
+    left:6% !important;
+    top:7% !important;
+  }
+
+  .aiP2{
+    left:12% !important;
+    top:29% !important;
+  }
+
+  .aiP3{
+    left:6% !important;
+    top:51% !important;
+  }
+
+  .aiP4{
+    left:12% !important;
+    top:73% !important;
+  }
+
+  .aiP5{
+    left:6% !important;
+    top:89% !important;
+  }
+
+
+  /* RIGHT */
+  .aiG1{
+    right:6% !important;
+    top:7% !important;
+  }
+
+  .aiG2{
+    right:12% !important;
+    top:29% !important;
+  }
+
+  .aiG3{
+    right:6% !important;
+    top:51% !important;
+  }
+
+  .aiG4{
+    right:12% !important;
+    top:73% !important;
+  }
+
+  .aiG5{
+    right:6% !important;
+    top:89% !important;
+  }
+
+
+  /* =======================================================
+     AI COPY
+     ======================================================= */
+
+  .aiCenterCopy{
+    position:relative !important;
+
+    width:100% !important;
+    max-width:350px !important;
+
+    margin:1px auto 15px !important;
+    padding:0 !important;
+
+    inset:auto !important;
+    transform:none !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+
+    text-align:center !important;
+
+    box-sizing:border-box !important;
+
+    z-index:40 !important;
+  }
+
+
+  .aiCenterCopy h2{
+    width:100% !important;
+
+    margin:0 !important;
+
+    font-size:27px !important;
+    line-height:1.08 !important;
+    letter-spacing:-0.025em !important;
+
+    text-align:center !important;
+  }
+
+
+  .aiCenterCopy h3{
+    width:100% !important;
+
+    margin:5px 0 0 !important;
+
+    font-size:15px !important;
+    line-height:1.25 !important;
+
+    text-align:center !important;
+  }
+
+
+  .aiCenterCopy p{
+    width:100% !important;
+
+    margin:4px 0 0 !important;
+
+    font-size:11px !important;
+    line-height:1.3 !important;
+
+    text-align:center !important;
+  }
+
+
+  /* =======================================================
+     WHAT WE DO — CENTERED PREMIUM CARD
+     ======================================================= */
+
+  .centerBlock .aiWhatWeDo{
+    position:relative !important;
+
+    width:calc(100% - 24px) !important;
+    max-width:350px !important;
+
+    height:auto !important;
+    min-height:0 !important;
+
+    margin:0 auto !important;
+    padding:0 !important;
+
+    inset:auto !important;
+    transform:none !important;
+
+    align-self:center !important;
+
+    box-sizing:border-box !important;
+
+    overflow:hidden !important;
+
+    z-index:40 !important;
+  }
+
+
+  .centerBlock .aiWhatWeDo h3{
+    width:100% !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    text-align:center !important;
+
+    font-size:18px !important;
+    line-height:1.2 !important;
+  }
+
+
+  .centerBlock .aiFeature{
+    width:100% !important;
+
+    min-height:47px !important;
+
+    padding:7px 9px !important;
+
+    gap:9px !important;
+
+    box-sizing:border-box !important;
+  }
+
+
+  .centerBlock .aiFeatureIcon{
+    flex:0 0 30px !important;
+
+    width:30px !important;
+    height:30px !important;
+
+    display:grid !important;
+    place-items:center !important;
+  }
+
+
+  .centerBlock .aiFeature strong{
+    font-size:11px !important;
+    line-height:1.2 !important;
+  }
+
+
+  .centerBlock .aiFeature span{
+    font-size:9px !important;
+    line-height:1.25 !important;
+  }
+
+
+  /* =======================================================
+     04 — AI JOB HUNTER WAY
+     ======================================================= */
+
+  .rightBlock{
+    position:relative !important;
+
+    order:4 !important;
+
+    width:100% !important;
+    max-width:390px !important;
+
+    height:auto !important;
+    min-height:0 !important;
+
+    margin:0 auto !important;
+    padding:0 !important;
+
+    inset:auto !important;
+    transform:none !important;
+
+    align-self:center !important;
+
+    box-sizing:border-box !important;
+
+    overflow:visible !important;
+
+    z-index:5 !important;
+  }
+
+
+  .rightBlock > .sideImage{
+    display:block !important;
+
+    width:100% !important;
+    max-width:100% !important;
+
+    height:auto !important;
+    max-height:none !important;
+
+    margin:0 auto !important;
+
+    object-fit:contain !important;
+
+    transform:none !important;
+  }
+}
+
+
+/* =========================================================
+   390px AND BELOW
+   ========================================================= */
+
+@media (max-width:390px){
+
+  .canvas{
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+
+
+  .leftProblemText,
+  .leftBlock,
+  .centerBlock,
+  .rightBlock{
+    max-width:100% !important;
+  }
+
+
+  .leftProblemText h2{
+    font-size:33px !important;
+  }
+
+
+  .aiCenterVisual{
+    height:226px !important;
+    min-height:226px !important;
+  }
+
+
+  .aiCenterHub{
+    width:106px !important;
+    height:106px !important;
+  }
+
+
+  .aiCenterHub .aiRing1{
+    width:87px !important;
+    height:87px !important;
+  }
+
+
+  .aiCenterHub .aiRing2{
+    width:106px !important;
+    height:106px !important;
+  }
+
+
+  .aiCenterHub .aiRing3{
+    width:128px !important;
+    height:128px !important;
+  }
+
+
+  .aiCenterHub .aiCore{
+    width:70px !important;
+    height:70px !important;
+  }
+
+
+  .aiNode{
+    width:30px !important;
+    height:30px !important;
+
+    min-width:30px !important;
+    min-height:30px !important;
+
+    font-size:11px !important;
+  }
+
+
+  .aiCenterCopy h2{
+    font-size:25px !important;
+  }
+
+
+  .centerBlock .aiWhatWeDo{
+    width:calc(100% - 18px) !important;
+    max-width:350px !important;
+  }
+}
+
+
+/* =========================================================
+   360px AND BELOW
+   ========================================================= */
+
+@media (max-width:360px){
+
+  .canvas{
+    padding-left:10px !important;
+    padding-right:10px !important;
+    padding-top:34px !important;
+    padding-bottom:56px !important;
+  }
+
+
+  .leftProblemText{
+    margin-bottom:22px !important;
+  }
+
+
+  .leftProblemText h2{
+    font-size:31px !important;
+  }
+
+
+  .leftBlock{
+    margin-bottom:22px !important;
+  }
+
+
+  .aiCenterVisual{
+    height:214px !important;
+    min-height:214px !important;
+  }
+
+
+  .aiCenterHub{
+    width:100px !important;
+    height:100px !important;
+  }
+
+
+  .aiCenterHub .aiRing1{
+    width:82px !important;
+    height:82px !important;
+  }
+
+
+  .aiCenterHub .aiRing2{
+    width:100px !important;
+    height:100px !important;
+  }
+
+
+  .aiCenterHub .aiRing3{
+    width:120px !important;
+    height:120px !important;
+  }
+
+
+  .aiCenterHub .aiCore{
+    width:66px !important;
+    height:66px !important;
+  }
+
+
+  .aiCenterCopy h2{
+    font-size:23px !important;
+  }
+
+
+  .centerBlock .aiWhatWeDo{
+    width:calc(100% - 14px) !important;
+    max-width:340px !important;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (max-width:768px) and (prefers-reduced-motion:reduce){
+
+  .aiCenterHub .aiRing,
+  .aiCenterHub .aiCore,
+  .aiCenterHub .aiSpark{
+    animation:none !important;
+  }
+}
+

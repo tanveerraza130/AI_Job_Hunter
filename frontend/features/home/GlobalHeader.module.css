@@ -278,19 +278,23 @@
   }
 
   .signin {
-    min-width: 58px;
-    height: 34px;
-    padding: 0 10px;
-    border-radius: 9px;
-    font-size: 11px;
+    min-width: 62px;
+    height: 44px;
+    padding: 0 9px;
+    border-radius: 10px;
+    font-size: 12px;
+    transform: scale(.86);
+    transform-origin: center;
   }
 
   .cta {
-    min-width: 82px;
-    height: 34px;
+    min-width: 92px;
+    height: 44px;
     padding: 0 10px;
-    border-radius: 9px;
-    font-size: 11px;
+    border-radius: 10px;
+    font-size: 12px;
+    transform: scale(.86);
+    transform-origin: center;
   }
 
   .cta span {
@@ -298,8 +302,8 @@
   }
 
   .menuButton {
-    width: 34px;
-    height: 34px;
+    width: 44px;
+    height: 44px;
     padding: 0;
     border: 1px solid #e5e1ee;
     border-radius: 9px;
@@ -310,6 +314,8 @@
     justify-content: center;
     gap: 4px;
     cursor: pointer;
+    transform: scale(.86);
+    transform-origin: center;
   }
 
   .menuButton span {

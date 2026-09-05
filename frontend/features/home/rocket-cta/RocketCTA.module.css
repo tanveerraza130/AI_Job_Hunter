@@ -178,26 +178,733 @@
    MOBILE
    ============================================================ */
 
+
+/* ============================================================
+   ROCKET CTA — MOBILE FINAL
+   Desktop remains completely untouched.
+   ============================================================ */
+
 @media (max-width:760px) {
 
   .section {
-    padding: 26px 16px;
+    width:100%;
+    padding:28px 12px;
+    box-sizing:border-box;
   }
+
 
   .container {
-    grid-template-columns: 52px 1fr;
-    gap: 17px;
-    padding: 25px;
+    width:100%;
+    max-width:430px;
+
+    min-height:0;
+
+    margin:0 auto;
+    padding:30px 22px 26px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    gap:0;
+
+    box-sizing:border-box;
+
+    border-radius:26px;
+
+    text-align:center;
   }
+
+
+  /* ==========================================================
+     ROCKET
+     ========================================================== */
 
   .rocket {
-    width: 48px;
-    height: 48px;
-    font-size: 21px;
+    width:58px;
+    height:58px;
+
+    flex:0 0 58px;
+
+    margin:0 auto 17px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    transform:rotate(-18deg);
+
+    box-shadow:
+      0 14px 38px rgba(118,80,233,.42),
+      0 0 0 9px rgba(118,80,233,.08),
+      0 0 55px rgba(118,80,233,.18);
   }
 
+
+  .rocket svg {
+    width:32px;
+    height:32px;
+  }
+
+
+  /* ==========================================================
+     COPY
+     ========================================================== */
+
+  .copy {
+    width:100%;
+    max-width:350px;
+
+    min-width:0;
+
+    margin:0 auto;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    text-align:center;
+  }
+
+
+  .eyebrow {
+    margin:0 0 9px;
+
+    font-size:10px;
+    line-height:1.2;
+
+    letter-spacing:.18em;
+
+    text-align:center;
+  }
+
+
+  .copy h2 {
+    width:100%;
+
+    margin:0;
+
+    font-size:clamp(25px,7vw,31px);
+    line-height:1.08;
+
+    letter-spacing:-.045em;
+
+    text-align:center;
+  }
+
+
+  .copy p:last-child {
+    width:100%;
+
+    margin:10px auto 0;
+
+    font-size:12px;
+    line-height:1.5;
+
+    text-align:center;
+  }
+
+
+  /* ==========================================================
+     CTA BUTTON
+     ========================================================== */
+
   .cta {
-    grid-column: 1/-1;
-    justify-self: start;
+    width:100%;
+    max-width:322px;
+
+    min-height:54px;
+
+    margin:25px auto 0;
+    padding:14px 20px;
+
+    box-sizing:border-box;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:11px;
+
+    border-radius:999px;
+
+    font-size:13px;
+    font-weight:750;
+
+    white-space:nowrap;
+
+    box-shadow:
+      0 14px 36px rgba(118,80,233,.34),
+      inset 0 1px 0 rgba(255,255,255,.18);
+
+    transition:
+      transform .2s ease,
+      box-shadow .2s ease;
+  }
+
+
+  .cta span {
+    font-size:17px;
+    line-height:1;
+  }
+
+
+  .cta:active {
+    transform:translateY(1px);
   }
 }
+
+
+/* ============================================================
+   SMALL PHONES
+   ============================================================ */
+
+@media (max-width:390px) {
+
+  .section {
+    padding:24px 10px;
+  }
+
+
+  .container {
+    padding:27px 18px 23px;
+
+    border-radius:24px;
+  }
+
+
+  .rocket {
+    width:54px;
+    height:54px;
+
+    flex-basis:54px;
+
+    margin-bottom:15px;
+  }
+
+
+  .rocket svg {
+    width:30px;
+    height:30px;
+  }
+
+
+  .copy {
+    max-width:330px;
+  }
+
+
+  .eyebrow {
+    font-size:9px;
+  }
+
+
+  .copy h2 {
+    font-size:25px;
+  }
+
+
+  .copy p:last-child {
+    font-size:11.5px;
+  }
+
+
+  .cta {
+    max-width:100%;
+
+    min-height:52px;
+
+    margin-top:22px;
+
+    font-size:12px;
+  }
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
+
+@media (max-width:360px) {
+
+  .section {
+    padding-left:8px;
+    padding-right:8px;
+  }
+
+
+  .container {
+    padding:25px 15px 21px;
+  }
+
+
+  .rocket {
+    width:50px;
+    height:50px;
+
+    flex-basis:50px;
+
+    margin-bottom:14px;
+  }
+
+
+  .rocket svg {
+    width:28px;
+    height:28px;
+  }
+
+
+  .copy h2 {
+    font-size:23px;
+  }
+
+
+  .copy p:last-child {
+    font-size:11px;
+  }
+
+
+  .cta {
+    min-height:50px;
+
+    margin-top:20px;
+
+    font-size:11.5px;
+  }
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+@media (prefers-reduced-motion:reduce) {
+
+  .cta {
+    transition:none !important;
+  }
+
+}
+
+/* ============================================================
+   ROCKET PNG — FINAL CROP / ALIGNMENT FIX
+   Uses rocket2.png without showing its square canvas.
+   ============================================================ */
+
+.rocket {
+  overflow:hidden !important;
+  background:transparent !important;
+  padding:0 !important;
+
+  display:grid !important;
+  place-items:center !important;
+
+  isolation:isolate;
+}
+
+.rocket img {
+  display:block !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  max-width:none !important;
+  max-height:none !important;
+
+  object-fit:cover !important;
+
+  border-radius:50% !important;
+
+  margin:0 !important;
+
+  transform:none !important;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width:760px) {
+
+  .rocket {
+    overflow:hidden !important;
+  }
+
+  .rocket img {
+    width:100% !important;
+    height:100% !important;
+
+    object-fit:cover !important;
+    border-radius:50% !important;
+  }
+}
+
+
+/* ============================================================
+   SMALL PHONES
+   ============================================================ */
+
+@media (max-width:390px) {
+
+  .rocket img {
+    width:100% !important;
+    height:100% !important;
+
+    object-fit:cover !important;
+  }
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
+
+@media (max-width:360px) {
+
+  .rocket img {
+    width:100% !important;
+    height:100% !important;
+
+    object-fit:cover !important;
+  }
+}
+
+/* ============================================================
+   ROCKET2 — FINAL VISIBILITY / ZOOM
+   Only the PNG presentation is changed.
+   ============================================================ */
+
+.rocket {
+  overflow:hidden !important;
+  background:transparent !important;
+  padding:0 !important;
+  isolation:isolate !important;
+}
+
+.rocket img {
+  display:block !important;
+
+  width:180% !important;
+  height:180% !important;
+
+  max-width:none !important;
+  max-height:none !important;
+
+  object-fit:cover !important;
+  object-position:50% 50% !important;
+
+  border-radius:50% !important;
+
+  margin:-40% !important;
+
+  transform:none !important;
+
+  filter:
+    saturate(1.08)
+    brightness(1.08)
+    contrast(1.05) !important;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width:760px) {
+
+  .rocket img {
+    width:180% !important;
+    height:180% !important;
+
+    margin:-40% !important;
+
+    object-fit:cover !important;
+    object-position:50% 50% !important;
+  }
+}
+
+
+/* ============================================================
+   SMALL PHONES
+   ============================================================ */
+
+@media (max-width:390px) {
+
+  .rocket img {
+    width:185% !important;
+    height:185% !important;
+
+    margin:-42.5% !important;
+  }
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
+
+@media (max-width:360px) {
+
+  .rocket img {
+    width:190% !important;
+    height:190% !important;
+
+    margin:-45% !important;
+  }
+}
+
+/* ============================================================
+   ROCKET2 — FINAL CLEAN PRESENTATION
+   rocket2.png already contains its own circular artwork.
+   Do NOT crop, zoom, rotate, or add another circle.
+   ============================================================ */
+
+.rocket {
+  width:72px !important;
+  height:72px !important;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  display:grid !important;
+  place-items:center !important;
+
+  background:transparent !important;
+
+  border-radius:0 !important;
+
+  overflow:visible !important;
+
+  transform:none !important;
+
+  box-shadow:none !important;
+
+  isolation:auto !important;
+}
+
+
+.rocket img {
+  display:block !important;
+
+  width:72px !important;
+  height:72px !important;
+
+  max-width:72px !important;
+  max-height:72px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  object-fit:contain !important;
+  object-position:center !important;
+
+  border-radius:0 !important;
+
+  transform:none !important;
+
+  filter:none !important;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width:760px) {
+
+  .rocket {
+    width:64px !important;
+    height:64px !important;
+
+    flex:0 0 64px !important;
+
+    margin:0 auto 17px !important;
+  }
+
+  .rocket img {
+    width:64px !important;
+    height:64px !important;
+
+    max-width:64px !important;
+    max-height:64px !important;
+  }
+}
+
+
+/* ============================================================
+   SMALL PHONES
+   ============================================================ */
+
+@media (max-width:390px) {
+
+  .rocket {
+    width:60px !important;
+    height:60px !important;
+
+    flex-basis:60px !important;
+
+    margin-bottom:15px !important;
+  }
+
+  .rocket img {
+    width:60px !important;
+    height:60px !important;
+
+    max-width:60px !important;
+    max-height:60px !important;
+  }
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
+
+@media (max-width:360px) {
+
+  .rocket {
+    width:56px !important;
+    height:56px !important;
+
+    flex-basis:56px !important;
+
+    margin-bottom:14px !important;
+  }
+
+  .rocket img {
+    width:56px !important;
+    height:56px !important;
+
+    max-width:56px !important;
+    max-height:56px !important;
+  }
+}
+
+
+/* ============================================================
+   ROCKET CTA — FINAL ROCKET ALIGNMENT
+   Only rocket vertical alignment is adjusted.
+   ============================================================ */
+
+@media (max-width:760px) {
+
+  .rocket {
+    position:relative !important;
+
+    left:0 !important;
+    right:auto !important;
+
+    margin-left:auto !important;
+    margin-right:auto !important;
+
+    margin-top:4px !important;
+    margin-bottom:20px !important;
+
+    transform:none !important;
+
+    align-self:center !important;
+  }
+
+  .rocket img {
+    display:block !important;
+
+    margin:0 auto !important;
+
+    object-fit:contain !important;
+    object-position:center !important;
+
+    transform:none !important;
+  }
+
+}
+
+
+/* Small phones */
+@media (max-width:390px) {
+
+  .rocket {
+    margin-top:3px !important;
+    margin-bottom:18px !important;
+  }
+
+}
+
+
+/* Very small phones */
+@media (max-width:360px) {
+
+  .rocket {
+    margin-top:2px !important;
+    margin-bottom:17px !important;
+  }
+
+}
+
+/* ============================================================
+   ROCKET CTA — MOBILE FINAL POLISH
+   ============================================================ */
+
+@media (max-width:700px){
+
+  .section{
+    padding:34px 0 !important;
+  }
+
+  .container{
+    width:calc(100% - 32px) !important;
+    max-width:390px !important;
+
+    margin:0 auto !important;
+
+    text-align:center !important;
+  }
+
+  .rocket{
+    width:58px !important;
+    height:58px !important;
+
+    margin:0 auto 18px !important;
+  }
+
+  .rocket img{
+    width:34px !important;
+    height:34px !important;
+
+    object-fit:contain !important;
+  }
+
+  .copy h2{
+    font-size:28px !important;
+    line-height:1.08 !important;
+    letter-spacing:-.04em !important;
+  }
+
+  .copy > p{
+    font-size:13px !important;
+    line-height:1.45 !important;
+  }
+
+  .cta{
+    width:100% !important;
+    min-height:56px !important;
+
+    font-size:14px !important;
+  }
+
+}
+
+
+@media (max-width:390px){
+
+  .container{
+    width:calc(100% - 24px) !important;
+  }
+
+  .copy h2{
+    font-size:26px !important;
+  }
+
+}
+

@@ -292,3 +292,26 @@
   }
 }
 
+
+/* MOBILE FINAL — BRAND STRIP */
+
+@media (max-width:700px){
+
+  .section{
+    padding:18px 0 !important;
+  }
+
+  .logoItem{
+    width:120px !important;
+    flex-basis:120px !important;
+    height:42px !important;
+  }
+
+  .logoItem img{
+    max-width:96px !important;
+    max-height:25px !important;
+    height:25px !important;
+  }
+
+}
+

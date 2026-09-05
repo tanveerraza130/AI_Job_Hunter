@@ -835,12 +835,272 @@
   }
 }
 
-    
 /* ============================================================
-   FINAL CTA — RESERVED BRAND MOTION SPACE
-   ONLY CHANGE: extra breathing room before footer
+   SECTION 6 — FINAL CTA RESPONSIVE POLISH
+   Rocket + spacing
    ============================================================ */
 
-.section {
-  padding-bottom: 64px !important;
+/* Rocket is part of the CTA composition */
+.rocketMobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 86px;
+
+  margin: 0 auto 10px;
+
+  pointer-events: none;
+}
+
+.rocketMobile img {
+  display: block;
+
+  width: 86px;
+  height: 86px;
+
+  object-fit: contain;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .section {
+    min-height: 0 !important;
+    height: auto !important;
+
+    padding: 18px 0 52px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .inner {
+    width: calc(100% - 32px) !important;
+    max-width: 400px !important;
+
+    margin: 0 auto !important;
+
+    padding: 0 0 28px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .rocketMobile {
+    width: 100%;
+    height: 118px;
+
+    margin: 0 auto 8px;
+  }
+
+  .rocketMobile img {
+    width: 118px !important;
+    height: 118px !important;
+  }
+
+  .inner h2 {
+    font-size: 38px !important;
+    line-height: 1.02 !important;
+    letter-spacing: -.05em !important;
+  }
+
+  .inner p {
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+  }
+
+  .primaryText {
+    font-size: 15px !important;
+  }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 390px) {
+
+  .inner {
+    width: calc(100% - 24px) !important;
+  }
+
+  .rocketMobile {
+    height: 108px;
+    margin-bottom: 6px;
+  }
+
+  .rocketMobile img {
+    width: 108px !important;
+    height: 108px !important;
+  }
+
+  .inner h2 {
+    font-size: 35px !important;
+  }
+}
+
+
+/* ============================================================
+   EXTRA SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 360px) {
+
+  .inner {
+    width: calc(100% - 20px) !important;
+  }
+
+  .rocketMobile {
+    height: 100px;
+    margin-bottom: 5px;
+  }
+
+  .rocketMobile img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  .inner h2 {
+    font-size: 32px !important;
+  }
+}
+
+/* ============================================================
+   SECTION 6 — ROCKET FINAL SIZE
+   Image size only — desktop + mobile
+   ============================================================ */
+
+.rocketMobile {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.rocketMobile img {
+  display: block;
+  width: 120px !important;
+  height: 120px !important;
+  object-fit: contain;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .rocketMobile img {
+    width: 135px !important;
+    height: 135px !important;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 390px) {
+  .rocketMobile img {
+    width: 125px !important;
+    height: 125px !important;
+  }
+}
+
+/* Extra-small mobile */
+@media (max-width: 360px) {
+  .rocketMobile img {
+    width: 115px !important;
+    height: 115px !important;
+  }
+}
+
+/* SECTION 6 — LARGER PREMIUM ROCKET */
+
+.rocketMobile img {
+  width: 170px !important;
+  height: 170px !important;
+  object-fit: contain;
+}
+
+@media (max-width: 700px) {
+  .rocketMobile img {
+    width: 190px !important;
+    height: 190px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .rocketMobile img {
+    width: 175px !important;
+    height: 175px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .rocketMobile img {
+    width: 160px !important;
+    height: 160px !important;
+  }
+}
+
+/* SECTION 6 — MOBILE BOTTOM SPACE REDUCTION */
+
+@media (max-width: 700px) {
+  .section {
+    padding-bottom: 22px !important;
+  }
+
+  .inner {
+    padding-bottom: 8px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .section {
+    padding-bottom: 18px !important;
+  }
+
+  .inner {
+    padding-bottom: 6px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .section {
+    padding-bottom: 14px !important;
+  }
+
+  .inner {
+    padding-bottom: 4px !important;
+  }
+}
+
+/* SECTION 6 — MOBILE BOTTOM SPACE REDUCTION */
+
+@media (max-width: 700px) {
+  .section {
+    padding-bottom: 22px !important;
+  }
+
+  .inner {
+    padding-bottom: 8px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .section {
+    padding-bottom: 18px !important;
+  }
+
+  .inner {
+    padding-bottom: 6px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .section {
+    padding-bottom: 14px !important;
+  }
+
+  .inner {
+    padding-bottom: 4px !important;
+  }
 }

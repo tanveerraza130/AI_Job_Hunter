@@ -367,3 +367,33 @@
     border-radius: 22px;
   }
 }
+
+/* ============================================================
+   MOBILE FINAL — PAGE RHYTHM
+   Sections 1 & 2 internal designs remain untouched.
+   ============================================================ */
+
+@media (max-width:700px){
+
+  .page{
+    width:100% !important;
+    overflow-x:clip !important;
+  }
+
+  .shell{
+    width:100% !important;
+    box-sizing:border-box !important;
+  }
+
+  .rocket,
+  .ai,
+  .sources,
+  .tracking,
+  .final{
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+
+}
+
+

@@ -23,6 +23,10 @@ export default function Section6() {
       </div>
 
       <div className={styles.inner}>
+        <div className={styles.rocketMobile} aria-hidden="true">
+          <img src="/Rocket.png" alt="" />
+        </div>
+
         <div className={styles.eyebrow}>
           <span className={styles.dot} />
           The smarter way to job hunt

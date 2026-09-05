@@ -2561,6 +2561,8 @@ h1{
   }
 }
 </style>
+
+
 </head>
 <body>
 
@@ -2741,9 +2743,9 @@ h1{
     </div>
   </div>
 
-  
 
-  
+
+
 
   <!-- SECTION1-LUXURY-FLOW -->
 <div class="section1-luxury-flow" aria-hidden="true">
@@ -3407,388 +3409,102 @@ h1{
 }
 </style>
 
-<style id="section1-mobile-hero-redesign-20260905">
-/*
-=========================================================
- SECTION 1 — MOBILE HERO REDESIGN
- Mobile only. Desktop geometry remains untouched.
-=========================================================
-*/
+<style id="section1-mobile-approved-layout-final-20260905">
 
 @media (max-width:620px){
 
-  /* ---------- HERO / MAIN COPY ---------- */
-
-  .hero{
-    height:auto !important;
-    min-height:0 !important;
-    max-height:none !important;
-    overflow:hidden !important;
-  }
-
-  .wrap{
-    display:flex !important;
-    flex-direction:column !important;
+  html,
+  body{
     width:100% !important;
-    height:auto !important;
-    min-height:0 !important;
-    padding:34px 16px 48px !important;
-  }
-
-  .copy{
-    width:100% !important;
+    margin:0 !important;
     padding:0 !important;
-    text-align:center !important;
+    overflow-x:hidden !important;
+    overflow-y:hidden !important;
   }
-
-  .badge{
-    margin:0 auto !important;
-    font-size:11px !important;
-    height:34px !important;
-    padding:0 13px !important;
-  }
-
-  .badge-icon{
-    width:22px !important;
-    height:22px !important;
-  }
-
-  h1{
-    max-width:360px !important;
-    margin:22px auto 16px !important;
-    font-size:42px !important;
-    line-height:1.02 !important;
-    letter-spacing:-.045em !important;
-  }
-
-  .desc{
-    max-width:350px !important;
-    margin:0 auto !important;
-    font-size:15px !important;
-    line-height:1.5 !important;
-  }
-
-  /* ---------- CTA ---------- */
-
-  .ctas{
-    width:100% !important;
-    margin-top:22px !important;
-    display:flex !important;
-    flex-direction:column !important;
-    align-items:center !important;
-    gap:10px !important;
-  }
-
-  .btn{
-    width:100% !important;
-    max-width:350px !important;
-    height:48px !important;
-    font-size:13px !important;
-  }
-
-  /* ---------- TRUSTED SOURCES ---------- */
-
-  .sources{
-    margin-top:20px !important;
-    text-align:center !important;
-  }
-
-  .sources-label{
-    font-size:10px !important;
-    margin-bottom:9px !important;
-  }
-
-  .source-row{
-    display:flex !important;
-    justify-content:center !important;
-    align-items:center !important;
-    flex-wrap:wrap !important;
-    gap:9px 15px !important;
-  }
-
-  .source-row .logo{
-    font-size:11px !important;
-  }
-
-  /* ---------- MOBILE VISUAL ---------- */
-
-  .visual{
-    position:relative !important;
-    width:100% !important;
-    max-width:390px !important;
-    height:1010px !important;
-    margin:42px auto 0 !important;
-    transform:none !important;
-    overflow:visible !important;
-  }
-
-  /* ---------- AI UNDERSTANDS ---------- */
-
-  .visual .ai-understands{
-    position:absolute !important;
-    top:0 !important;
-    left:50% !important;
-    width:220px !important;
-    transform:translateX(-50%) !important;
-    text-align:center !important;
-    z-index:20 !important;
-  }
-
-  .visual .ai-understands h3{
-    margin:0 0 10px !important;
-    font-size:18px !important;
-    line-height:1.15 !important;
-    text-align:center !important;
-  }
-
-  .visual .ai-understands .checks{
-    width:180px !important;
-    margin:0 auto !important;
-    display:grid !important;
-    gap:7px !important;
-    text-align:left !important;
-  }
-
-  .visual .ai-understands .check{
-    min-height:21px !important;
-    font-size:11px !important;
-    gap:7px !important;
-  }
-
-  .visual .ai-understands .check i{
-    flex:0 0 20px !important;
-    width:20px !important;
-    height:20px !important;
-    font-size:10px !important;
-  }
-
-  /* ---------- SOURCE CARD ---------- */
-
-  .visual .source-panel{
-    position:absolute !important;
-    top:145px !important;
-    left:50% !important;
-    right:auto !important;
-    width:calc(100% - 28px) !important;
-    max-width:350px !important;
-    height:285px !important;
-    transform:translateX(-50%) !important;
-    padding:20px 12px 12px !important;
-    border-radius:18px !important;
-  }
-
-  .visual .source-panel .panel-title{
-    font-size:16px !important;
-    line-height:1.15 !important;
-  }
-
-  .visual .source-panel .panel-sub{
-    margin-top:7px !important;
-    font-size:10px !important;
-    line-height:1.3 !important;
-  }
-
-  .visual .source-list{
-    margin-top:13px !important;
-    gap:5px !important;
-  }
-
-  .visual .source{
-    height:34px !important;
-    padding:0 9px !important;
-    gap:8px !important;
-  }
-
-  .visual .source .mark{
-    flex:0 0 22px !important;
-    width:22px !important;
-    height:22px !important;
-    font-size:9px !important;
-  }
-
-  .visual .source b{
-    font-size:11px !important;
-  }
-
-  .visual .more-source{
-    font-size:10px !important;
-  }
-
-  /* ---------- AI CORE ---------- */
-
-  .visual .glow{
-    position:absolute !important;
-    left:50% !important;
-    top:445px !important;
-    width:150px !important;
-    height:150px !important;
-    transform:translateX(-50%) !important;
-  }
-
-  .visual .ai-core{
-    position:absolute !important;
-    left:50% !important;
-    top:459px !important;
-    width:122px !important;
-    height:122px !important;
-    transform:translateX(-50%) !important;
-  }
-
-  .visual .ai-label{
-    position:absolute !important;
-    left:50% !important;
-    top:588px !important;
-    transform:translateX(-50%) !important;
-    font-size:16px !important;
-    white-space:nowrap !important;
-  }
-
-  /* ---------- RESULT CARD ---------- */
-
-  .visual .result-panel{
-    position:absolute !important;
-    top:635px !important;
-    left:50% !important;
-    right:auto !important;
-    width:calc(100% - 28px) !important;
-    max-width:350px !important;
-    height:340px !important;
-    transform:translateX(-50%) !important;
-    padding:20px 12px 12px !important;
-    border-radius:18px !important;
-  }
-
-  .visual .result-panel .panel-title{
-    font-size:16px !important;
-    line-height:1.15 !important;
-  }
-
-  .visual .result-panel .panel-sub{
-    margin-top:7px !important;
-    margin-bottom:11px !important;
-    font-size:10px !important;
-    line-height:1.3 !important;
-  }
-
-  .visual .jobs{
-    gap:6px !important;
-  }
-
-  .visual .job{
-    height:72px !important;
-    padding:10px 43px 7px 36px !important;
-    border-radius:10px !important;
-  }
-
-  .visual .rank{
-    left:8px !important;
-    top:10px !important;
-    width:23px !important;
-    height:23px !important;
-    font-size:10px !important;
-  }
-
-  .visual .job-title{
-    max-width:none !important;
-    font-size:9px !important;
-    line-height:1.14 !important;
-    min-height:25px !important;
-  }
-
-  .visual .company{
-    margin-top:3px !important;
-    font-size:8px !important;
-  }
-
-  .visual .meta{
-    margin-top:2px !important;
-    font-size:7px !important;
-  }
-
-  .visual .match{
-    top:10px !important;
-    right:7px !important;
-    width:32px !important;
-    font-size:12px !important;
-  }
-
-  .visual .match small{
-    margin-top:2px !important;
-    font-size:6px !important;
-  }
-
-  .visual .more-jobs{
-    height:34px !important;
-    font-size:9px !important;
-  }
-
-  .visual .more-jobs span:last-child{
-    font-size:14px !important;
-  }
-
-  /* ---------- MOBILE: CONNECTORS OFF ---------- */
-
-  .visual .connectors{
-    display:none !important;
-  }
-
-}
-</style>
-
-
-<style id="section1-mobile-hero-v2-20260905">
-
-/* =========================================================
-   SECTION 1 — MOBILE HERO V2
-   Mobile-only storytelling composition.
-   Desktop geometry is intentionally untouched.
-   ========================================================= */
-
-@media (max-width:620px){
 
   .hero{
-    overflow:visible !important;
+    width:100% !important;
     min-height:0 !important;
     height:auto !important;
     max-height:none !important;
+    overflow:visible !important;
+
+    background:
+      radial-gradient(
+        520px 430px at 50% 48%,
+        rgba(112,72,255,.055),
+        transparent 72%
+      ),
+      radial-gradient(
+        360px 300px at 50% 78%,
+        rgba(146,112,255,.035),
+        transparent 72%
+      ),
+      linear-gradient(#fff,#fff) !important;
   }
 
   .hero > .wrap{
-    display:block !important;
     width:100% !important;
-    padding:38px 0 58px !important;
-    transform:none !important;
+    min-height:0 !important;
+    height:auto !important;
+
+    display:block !important;
+
+    margin:0 !important;
+    padding:34px 0 50px !important;
   }
 
+  /* =======================================================
+     HERO COPY
+     ======================================================= */
+
   .copy{
-    width:calc(100% - 32px) !important;
+    width:calc(100% - 30px) !important;
+    max-width:390px !important;
+
     margin:0 auto !important;
     padding:0 !important;
+
     text-align:center !important;
   }
 
   .badge{
+    height:38px !important;
     margin:0 auto !important;
-    max-width:100% !important;
+    padding:0 14px 0 7px !important;
+    gap:8px !important;
+  }
+
+  .badge-icon{
+    width:26px !important;
+    height:26px !important;
+    font-size:14px !important;
   }
 
   h1{
-    margin:22px auto 16px !important;
-    max-width:355px !important;
-    font-size:clamp(39px,11vw,48px) !important;
+    width:100% !important;
+    max-width:365px !important;
+
+    margin:22px auto 17px !important;
+
+    font-size:clamp(38px,10.7vw,48px) !important;
     line-height:.99 !important;
-    letter-spacing:-.045em !important;
+    letter-spacing:-.048em !important;
   }
 
   .desc{
-    max-width:350px !important;
+    width:100% !important;
+    max-width:355px !important;
+
     margin:0 auto !important;
+
     font-size:15px !important;
-    line-height:1.55 !important;
+    line-height:1.53 !important;
   }
 
   .ctas{
     margin-top:21px !important;
+
     display:flex !important;
     flex-direction:column !important;
     align-items:center !important;
@@ -3798,8 +3514,10 @@ h1{
   .btn{
     width:100% !important;
     max-width:330px !important;
-    min-height:46px !important;
+
     height:46px !important;
+    min-height:46px !important;
+
     border-radius:12px !important;
     font-size:13px !important;
   }
@@ -3809,15 +3527,15 @@ h1{
   }
 
   .sources-label{
+    margin-bottom:10px !important;
     font-size:9px !important;
-    line-height:1.3 !important;
   }
 
   .source-row{
-    margin-top:9px !important;
     display:flex !important;
-    flex-wrap:wrap !important;
+    align-items:center !important;
     justify-content:center !important;
+    flex-wrap:wrap !important;
     gap:8px 17px !important;
   }
 
@@ -3826,139 +3544,161 @@ h1{
   }
 
   /* =======================================================
-     MOBILE VISUAL — ONE CLEAR STORY
+     VISUAL STORY
      ======================================================= */
 
   .visual{
-    width:100% !important;
-    height:940px !important;
-    margin:38px auto 0 !important;
     position:relative !important;
+
+    width:100% !important;
+
+    /* Increased so the complete story belongs to Section 1 */
+    height:1040px !important;
+
+    min-width:0 !important;
+
+    margin:40px auto 0 !important;
+
     transform:none !important;
+
     overflow:visible !important;
   }
 
-  /* AI understands — story introduction */
+  /* =======================================================
+     AI UNDERSTANDS
+     ======================================================= */
 
   .visual .ai-understands{
     position:absolute !important;
+
     top:0 !important;
     left:50% !important;
 
-    width:calc(100% - 64px) !important;
-    max-width:300px !important;
+    width:calc(100% - 30px) !important;
+    max-width:340px !important;
 
     transform:translateX(-50%) !important;
 
     text-align:center !important;
-    z-index:20 !important;
+
+    z-index:10 !important;
   }
 
   .visual .ai-understands h3{
-    margin:0 0 10px !important;
+    margin:0 0 11px !important;
 
-    font-size:17px !important;
+    font-size:18px !important;
     line-height:1.15 !important;
-
-    text-align:center !important;
   }
 
-  .visual .ai-understands .checks{
-    width:100% !important;
-    max-width:245px !important;
-    margin:0 auto !important;
-
+  .visual .checks{
     display:flex !important;
     flex-wrap:wrap !important;
+
     justify-content:center !important;
-    gap:6px 7px !important;
+    align-items:center !important;
+
+    gap:7px 8px !important;
+
+    max-width:305px !important;
+    margin:0 auto !important;
   }
 
-  .visual .ai-understands .check{
-    min-height:28px !important;
+  .visual .check{
+    min-height:29px !important;
 
-    padding:0 9px !important;
+    padding:0 10px !important;
 
     display:inline-flex !important;
     align-items:center !important;
 
-    border:1px solid rgba(118,80,233,.12) !important;
-    border-radius:999px !important;
-
-    background:rgba(255,255,255,.76) !important;
-
-    font-size:9px !important;
     gap:5px !important;
 
-    box-shadow:0 4px 14px rgba(67,45,130,.045) !important;
+    border:1px solid #e4ddf7 !important;
+    border-radius:999px !important;
+
+    background:rgba(255,255,255,.94) !important;
+
+    box-shadow:0 7px 20px rgba(63,45,120,.055) !important;
+
+    font-size:9px !important;
   }
 
-  .visual .ai-understands .check i{
-    flex:0 0 16px !important;
-    width:16px !important;
-    height:16px !important;
-
-    display:grid !important;
-    place-items:center !important;
-
-    border-radius:50% !important;
-
+  .visual .check i{
+    width:17px !important;
+    height:17px !important;
+    flex:0 0 17px !important;
     font-size:8px !important;
   }
 
   /* =======================================================
-     SOURCE CARD
+     SEARCH CARD
      ======================================================= */
 
   .visual .source-panel{
     position:absolute !important;
 
-    top:112px !important;
+    top:114px !important;
     left:50% !important;
     right:auto !important;
 
-    width:calc(100% - 32px) !important;
+    width:calc(100% - 30px) !important;
     max-width:360px !important;
-    height:auto !important;
-    min-height:278px !important;
+
+    height:340px !important;
+    min-height:340px !important;
 
     transform:translateX(-50%) !important;
 
-    padding:19px 14px 14px !important;
+    box-sizing:border-box !important;
+
+    padding:20px 14px 13px !important;
 
     border-radius:20px !important;
 
-    box-sizing:border-box !important;
+    background:rgba(255,255,255,.96) !important;
+
+    box-shadow:
+      0 22px 55px rgba(63,45,120,.075) !important;
+
+    z-index:6 !important;
   }
 
   .visual .source-panel .panel-title{
     font-size:17px !important;
-    line-height:1.15 !important;
-    letter-spacing:-.02em !important;
+    line-height:1.18 !important;
   }
 
+  /* ONE LINE */
   .visual .source-panel .panel-sub{
-    margin-top:6px !important;
+    margin:7px 0 0 !important;
+
     font-size:10px !important;
-    line-height:1.35 !important;
+    line-height:1.25 !important;
+
+    white-space:nowrap !important;
   }
 
   .visual .source-list{
     margin-top:13px !important;
+    display:grid !important;
     gap:5px !important;
   }
 
   .visual .source{
-    height:34px !important;
+    height:36px !important;
+
     padding:0 9px !important;
     gap:8px !important;
+
+    box-sizing:border-box !important;
     border-radius:9px !important;
   }
 
   .visual .source .mark{
-    flex:0 0 21px !important;
-    width:21px !important;
-    height:21px !important;
+    width:22px !important;
+    height:22px !important;
+    flex:0 0 22px !important;
     font-size:9px !important;
   }
 
@@ -3967,116 +3707,158 @@ h1{
   }
 
   .visual .more-source{
+    height:36px !important;
     font-size:9px !important;
   }
 
   /* =======================================================
-     AI MATCHING — CENTRAL TRANSITION
+     AI MATCHING
      ======================================================= */
+
+  /*
+     Search card ends around 430px.
+     Label starts at 454px.
+     This gives a clean ~24px visual separation.
+  */
+
+  .visual .ai-label{
+    position:absolute !important;
+
+    top:464px !important;
+    left:50% !important;
+
+    width:auto !important;
+
+    transform:translateX(-50%) !important;
+
+    margin:0 !important;
+
+    white-space:nowrap !important;
+
+    color:#6340e6 !important;
+
+    font-size:17px !important;
+    line-height:1.15 !important;
+    font-weight:850 !important;
+
+    z-index:7 !important;
+  }
+
+  /*
+     Circle is intentionally BELOW the label.
+     Label and circle never overlap.
+  */
 
   .visual .glow{
     position:absolute !important;
 
-    top:414px !important;
+    top:513px !important;
     left:50% !important;
 
-    width:142px !important;
-    height:142px !important;
+    width:168px !important;
+    height:168px !important;
 
     transform:translateX(-50%) !important;
 
-    opacity:.82 !important;
+    z-index:1 !important;
+
+    animation:
+      section1-mobile-glow-final 4.5s ease-in-out infinite !important;
   }
 
   .visual .ai-core{
     position:absolute !important;
 
-    top:425px !important;
+    top:526px !important;
     left:50% !important;
 
-    width:116px !important;
-    height:116px !important;
+    width:118px !important;
+    height:118px !important;
 
     transform:translateX(-50%) !important;
 
-    z-index:12 !important;
-  }
+    z-index:5 !important;
 
-  .visual .ai-label{
-    position:absolute !important;
-
-    top:548px !important;
-    left:50% !important;
-
-    transform:translateX(-50%) !important;
-
-    font-size:16px !important;
-    font-weight:850 !important;
-
-    white-space:nowrap !important;
-    z-index:15 !important;
+    animation:
+      section1-mobile-ai-final 4s ease-in-out infinite !important;
   }
 
   /* =======================================================
-     RESULT CARD
+     RESULTS
      ======================================================= */
+
+  /*
+     Circle ends at ~624px.
+     Result card starts at 674px.
+     Clean ~50px breathing space.
+  */
 
   .visual .result-panel{
     position:absolute !important;
 
-    top:594px !important;
+    top:700px !important;
     left:50% !important;
     right:auto !important;
 
-    width:calc(100% - 32px) !important;
+    width:calc(100% - 30px) !important;
     max-width:360px !important;
 
-    height:auto !important;
-    min-height:315px !important;
+    height:340px !important;
+    min-height:340px !important;
 
     transform:translateX(-50%) !important;
 
-    padding:19px 14px 14px !important;
+    box-sizing:border-box !important;
+
+    padding:19px 14px 13px !important;
 
     border-radius:20px !important;
 
-    box-sizing:border-box !important;
+    background:rgba(255,255,255,.96) !important;
+
+    box-shadow:
+      0 22px 55px rgba(63,45,120,.075) !important;
+
+    z-index:6 !important;
   }
 
   .visual .result-panel .panel-title{
     font-size:17px !important;
-    line-height:1.15 !important;
-    letter-spacing:-.02em !important;
+    line-height:1.18 !important;
   }
 
+  /* ONE LINE */
   .visual .result-panel .panel-sub{
-    margin-top:6px !important;
-    margin-bottom:11px !important;
+    margin:7px 0 10px !important;
 
     font-size:10px !important;
-    line-height:1.35 !important;
+    line-height:1.25 !important;
+
+    white-space:nowrap !important;
   }
 
   .visual .jobs{
-    gap:6px !important;
+    display:grid !important;
+    gap:5px !important;
   }
 
   .visual .job{
-    height:72px !important;
+    height:67px !important;
 
-    padding:9px 43px 7px 36px !important;
+    padding:8px 40px 6px 35px !important;
 
-    border-radius:10px !important;
     box-sizing:border-box !important;
+    border-radius:10px !important;
   }
 
   .visual .rank{
     left:8px !important;
-    top:9px !important;
+    top:8px !important;
 
     width:23px !important;
     height:23px !important;
 
+    border-radius:7px !important;
     font-size:10px !important;
   }
 
@@ -4084,49 +3866,91 @@ h1{
     max-width:none !important;
 
     font-size:10px !important;
-    line-height:1.16 !important;
+    line-height:1.14 !important;
 
-    min-height:24px !important;
+    white-space:normal !important;
   }
 
   .visual .company{
-    margin-top:3px !important;
+    margin-top:2px !important;
     font-size:8px !important;
   }
 
   .visual .meta{
-    margin-top:2px !important;
+    margin-top:1px !important;
     font-size:7px !important;
   }
 
   .visual .match{
-    top:9px !important;
+    top:8px !important;
     right:7px !important;
 
-    width:32px !important;
-
+    width:34px !important;
     font-size:12px !important;
   }
 
   .visual .match small{
-    margin-top:2px !important;
     font-size:6px !important;
   }
 
   .visual .more-jobs{
-    height:34px !important;
+    height:32px !important;
+
+    margin-top:1px !important;
+    padding:0 11px !important;
+
+    border-radius:10px !important;
+
     font-size:9px !important;
   }
 
-  .visual .more-jobs span:last-child{
-    font-size:14px !important;
-  }
-
-  /* Connectors are intentionally removed on mobile.
-     The vertical composition itself communicates the flow. */
+  /* =======================================================
+     MOBILE CONNECTORS
+     ======================================================= */
 
   .visual .connectors{
     display:none !important;
+  }
+
+  /* =======================================================
+     MOTION
+     ======================================================= */
+
+  @keyframes section1-mobile-ai-final{
+
+    0%,
+    100%{
+      transform:translateX(-50%) scale(1);
+    }
+
+    50%{
+      transform:translateX(-50%) scale(1.035);
+    }
+
+  }
+
+  @keyframes section1-mobile-glow-final{
+
+    0%,
+    100%{
+      opacity:.82;
+      transform:translateX(-50%) scale(1);
+    }
+
+    50%{
+      opacity:1;
+      transform:translateX(-50%) scale(1.07);
+    }
+
+  }
+
+  @media (prefers-reduced-motion:reduce){
+
+    .visual .ai-core,
+    .visual .glow{
+      animation:none !important;
+    }
+
   }
 
 }
@@ -4134,24 +3958,27 @@ h1{
 @media (max-width:360px){
 
   .hero > .wrap{
-    padding-top:32px !important;
+    padding-top:30px !important;
+    padding-bottom:45px !important;
   }
 
   .copy{
-    width:calc(100% - 28px) !important;
+    width:calc(100% - 26px) !important;
   }
 
   h1{
-    font-size:clamp(36px,11vw,43px) !important;
+    max-width:335px !important;
+    font-size:clamp(36px,10.8vw,43px) !important;
   }
 
   .desc{
+    max-width:330px !important;
     font-size:14px !important;
   }
 
   .visual{
-    height:930px !important;
-    margin-top:32px !important;
+    height:1045px !important;
+    margin-top:34px !important;
   }
 
   .visual .source-panel,
@@ -4160,25 +3987,356 @@ h1{
   }
 
   .visual .source-panel{
-    top:108px !important;
-  }
-
-  .visual .ai-core{
-    top:422px !important;
-  }
-
-  .visual .glow{
-    top:411px !important;
+    top:112px !important;
   }
 
   .visual .ai-label{
-    top:546px !important;
+    top:462px !important;
+  }
+
+  .visual .glow{
+    top:511px !important;
+  }
+
+  .visual .ai-core{
+    top:524px !important;
   }
 
   .visual .result-panel{
-    top:592px !important;
+    top:698px !important;
   }
 
 }
 
+</style>
+
+<!-- MOBILE AI MATCHING MOTION -->
+<style>
+@media (max-width:620px){
+
+  .visual .glow{
+    animation:mobileGlowBreath 3.2s ease-in-out infinite !important;
+    will-change:transform,opacity;
+  }
+
+  .visual .ai-core{
+    animation:mobileCorePulse 2.8s ease-in-out infinite !important;
+    transform-origin:center center;
+    will-change:transform,filter;
+  }
+
+  .visual .ai-core svg,
+  .visual .ai-core img,
+  .visual .ai-core .spark{
+    animation:mobileSparkPulse 2s ease-in-out infinite;
+    transform-origin:center center;
+    will-change:transform,opacity,filter;
+  }
+
+  .visual .glow::before{
+    content:"";
+    position:absolute;
+    inset:8px;
+    border-radius:50%;
+    border:1px solid rgba(118,80,239,.16);
+    animation:mobileRingPulse 3s ease-out infinite;
+    pointer-events:none;
+  }
+
+  @keyframes mobileGlowBreath{
+    0%,100%{
+      transform:translateX(-50%) scale(.96);
+      opacity:.70;
+    }
+    50%{
+      transform:translateX(-50%) scale(1.06);
+      opacity:1;
+    }
+  }
+
+  @keyframes mobileCorePulse{
+    0%,100%{
+      transform:translateX(-50%) scale(1);
+      filter:drop-shadow(0 8px 22px rgba(92,55,220,.18));
+    }
+    50%{
+      transform:translateX(-50%) scale(1.035);
+      filter:drop-shadow(0 10px 30px rgba(92,55,220,.32));
+    }
+  }
+
+  @keyframes mobileSparkPulse{
+    0%,100%{
+      transform:scale(.94);
+      opacity:.88;
+    }
+    50%{
+      transform:scale(1.08);
+      opacity:1;
+    }
+  }
+
+  @keyframes mobileRingPulse{
+    0%{
+      transform:scale(.82);
+      opacity:.55;
+    }
+    70%{
+      transform:scale(1.12);
+      opacity:0;
+    }
+    100%{
+      transform:scale(1.12);
+      opacity:0;
+    }
+  }
+}
+
+@media (max-width:620px) and (prefers-reduced-motion:reduce){
+  .visual .glow,
+  .visual .ai-core,
+  .visual .ai-core svg,
+  .visual .ai-core img,
+  .visual .ai-core .spark,
+  .visual .glow::before{
+    animation:none !important;
+  }
+}
+</style>
+
+<!-- MOBILE OUTER CIRCLE / ORBIT MOTION -->
+<style>
+@media (max-width:620px){
+
+  .visual .glow{
+    position:absolute;
+  }
+
+  /* Outer circular orbit */
+  .visual .glow::after{
+    content:"";
+    position:absolute;
+    inset:-10px;
+    border-radius:50%;
+    border:1px dashed rgba(118,80,239,.22);
+    animation:mobileOrbitRotate 9s linear infinite;
+    transform-origin:center center;
+    pointer-events:none;
+  }
+
+  /* Subtle light around the orbit */
+  .visual .glow::after{
+    box-shadow:
+      0 -1px 3px rgba(118,80,239,.25),
+      1px 0 5px rgba(118,80,239,.16);
+  }
+
+  @keyframes mobileOrbitRotate{
+    from{
+      transform:rotate(0deg);
+    }
+
+    to{
+      transform:rotate(360deg);
+    }
+  }
+}
+
+@media (max-width:620px) and (prefers-reduced-motion:reduce){
+
+  .visual .glow::after{
+    animation:none !important;
+  }
+}
+</style>
+
+<!-- MOBILE AI MATCHING — DESKTOP STYLE ORBIT MOTION -->
+<style>
+@media (max-width:620px){
+
+  /*
+   * AI Matching motion system
+   * Core + glow + orbit + travelling dot stay on one center point.
+   */
+
+  .visual .glow{
+    position:absolute !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    transform-origin:50% 50% !important;
+    overflow:visible !important;
+
+    animation:mobileAiGlow 3.6s ease-in-out infinite !important;
+  }
+
+  .visual .ai-core{
+    position:absolute !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    transform-origin:50% 50% !important;
+
+    animation:mobileAiCore 3s ease-in-out infinite !important;
+  }
+
+
+  /* -------------------------------------------------------
+     OUTER ORBIT
+     ------------------------------------------------------- */
+
+  .visual .glow::before{
+    content:"";
+    position:absolute;
+
+    width:156px;
+    height:156px;
+
+    left:50%;
+    top:50%;
+
+    margin-left:-78px;
+    margin-top:-78px;
+
+    border-radius:50%;
+    border:1px solid rgba(112,78,235,.18);
+
+    pointer-events:none;
+
+    animation:mobileOrbit 10s linear infinite;
+    transform-origin:50% 50%;
+  }
+
+
+  /* -------------------------------------------------------
+     TRAVELLING DOT
+     ------------------------------------------------------- */
+
+  .visual .glow::after{
+    content:"";
+    position:absolute;
+
+    width:7px;
+    height:7px;
+
+    left:50%;
+    top:50%;
+
+    margin-left:-3.5px;
+    margin-top:-3.5px;
+
+    border-radius:50%;
+
+    background:rgba(118,82,240,.9);
+
+    box-shadow:
+      0 0 5px rgba(118,82,240,.55),
+      0 0 12px rgba(118,82,240,.28);
+
+    pointer-events:none;
+
+    transform-origin:3.5px 3.5px;
+
+    animation:mobileOrbitDot 4.8s linear infinite;
+  }
+
+
+  /* -------------------------------------------------------
+     OUTER SOFT RING
+     ------------------------------------------------------- */
+
+  .visual .glow{
+    box-shadow:
+      0 0 0 1px rgba(118,82,240,.025),
+      0 0 28px rgba(118,82,240,.10),
+      0 0 55px rgba(118,82,240,.08);
+  }
+
+
+  /* -------------------------------------------------------
+     GLOW BREATH
+     ------------------------------------------------------- */
+
+  @keyframes mobileAiGlow{
+
+    0%,100%{
+      transform:translateX(-50%) scale(.96);
+      opacity:.72;
+    }
+
+    50%{
+      transform:translateX(-50%) scale(1.035);
+      opacity:1;
+    }
+  }
+
+
+  /* -------------------------------------------------------
+     CORE BREATH
+     ------------------------------------------------------- */
+
+  @keyframes mobileAiCore{
+
+    0%,100%{
+      transform:translateX(-50%) scale(1);
+      filter:
+        drop-shadow(0 8px 20px rgba(92,55,220,.18));
+    }
+
+    50%{
+      transform:translateX(-50%) scale(1.025);
+      filter:
+        drop-shadow(0 10px 27px rgba(92,55,220,.30));
+    }
+  }
+
+
+  /* -------------------------------------------------------
+     ORBIT RING — VERY SLOW
+     ------------------------------------------------------- */
+
+  @keyframes mobileOrbit{
+
+    from{
+      transform:rotate(0deg);
+    }
+
+    to{
+      transform:rotate(360deg);
+    }
+  }
+
+
+  /* -------------------------------------------------------
+     DOT — ACTUAL ORBIT AROUND CORE
+     ------------------------------------------------------- */
+
+  @keyframes mobileOrbitDot{
+
+    0%{
+      transform:
+        rotate(0deg)
+        translateX(78px);
+    }
+
+    100%{
+      transform:
+        rotate(360deg)
+        translateX(78px);
+    }
+  }
+}
+
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+   --------------------------------------------------------- */
+
+@media (max-width:620px) and (prefers-reduced-motion:reduce){
+
+  .visual .glow,
+  .visual .glow::before,
+  .visual .glow::after,
+  .visual .ai-core{
+    animation:none !important;
+  }
+}
 </style>

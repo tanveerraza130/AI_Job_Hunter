@@ -142,3 +142,104 @@
 @media (max-width:520px) {
   .sources { grid-template-columns:1fr; }
 }
+
+/* ============================================================
+   SECTION 4 — MOBILE FINAL POLISH
+   ============================================================ */
+
+@media (max-width:700px){
+
+  .section{
+    min-height:0 !important;
+    height:auto !important;
+
+    padding:56px 0 60px !important;
+  }
+
+  .container{
+    width:100% !important;
+    max-width:430px !important;
+
+    margin:0 auto !important;
+    padding:0 !important;
+  }
+
+  .eyebrow{
+    font-size:9px !important;
+    letter-spacing:.17em !important;
+  }
+
+  .container h2{
+    font-size:36px !important;
+    line-height:1.02 !important;
+    letter-spacing:-.045em !important;
+  }
+
+  .container > p{
+    font-size:13px !important;
+    line-height:1.5 !important;
+  }
+
+
+  .sources{
+    width:calc(100% - 32px) !important;
+    max-width:374px !important;
+
+    margin-left:auto !important;
+    margin-right:auto !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+
+    gap:10px !important;
+  }
+
+
+  .source{
+    min-height:58px !important;
+
+    padding:10px 12px !important;
+
+    box-sizing:border-box !important;
+
+    border-radius:15px !important;
+  }
+
+  .source span{
+    font-size:11px !important;
+    line-height:1.25 !important;
+  }
+
+  .source b,
+  .source i{
+    font-size:12px !important;
+  }
+
+}
+
+
+@media (max-width:390px){
+
+  .sources{
+    width:calc(100% - 24px) !important;
+  }
+
+}
+
+
+@media (max-width:360px){
+
+  .sources{
+    width:calc(100% - 20px) !important;
+  }
+
+  .source{
+    min-height:55px !important;
+  }
+
+  .source span{
+    font-size:10px !important;
+  }
+
+}
+

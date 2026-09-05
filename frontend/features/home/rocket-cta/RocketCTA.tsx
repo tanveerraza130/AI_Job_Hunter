@@ -18,21 +18,13 @@ export default function RocketCTA() {
     <section className={styles.section} aria-label="Start your job search">
       <div className={styles.container}>
         <div className={styles.rocket} aria-hidden="true">
-          <svg
+          <img
+            src="/rocket2.png"
+            alt=""
             width="34"
             height="34"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
             aria-hidden="true"
-          >
-            <path d="M21 3 3.8 10.2c-.8.35-.75 1.5.08 1.75l6.15 1.9 1.9 6.15c.25.83 1.4.88 1.75.08L21 3Z" />
-            <path d="m10.1 13.85 5.15-5.15" />
-            <path d="m10.1 13.85-.05 5.25" />
-          </svg>
+          />
         </div>
 
         <div className={styles.copy}>
