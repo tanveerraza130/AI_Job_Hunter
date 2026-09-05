@@ -4,7 +4,6 @@ import Section1 from "./section1/Section1";
 import Section2 from "./section-2/Section2";
 import RocketCTA from "./rocket-cta/RocketCTA";
 import Section3 from "./section-3/Section3";
-import Section4 from "./section-4/Section4";
 import Section5 from "./section-5/Section5";
 import Section6 from "./section-6/Section6";
 import BrandMarquee from "./brand-marquee/BrandMarquee";
@@ -30,10 +29,6 @@ export default function HomePage() {
 
       <div className={`${styles.shell} ${styles.ai}`}>
         <Section3 />
-      </div>
-
-      <div className={`${styles.shell} ${styles.sources}`}>
-        <Section4 />
       </div>
 
       <div className={`${styles.shell} ${styles.tracking}`}>

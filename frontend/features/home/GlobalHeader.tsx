@@ -1,4 +1,16 @@
+"use client";
+
 import styles from "./GlobalHeader.module.css";
+
+const handleJoinFree = (
+  event: React.MouseEvent<HTMLAnchorElement>,
+) => {
+  event.preventDefault();
+
+  const token = localStorage.getItem("ai_job_hunter_token");
+
+  window.location.href = token ? "/dashboard" : "/signup";
+};
 
 export default function GlobalHeader() {
   return (
@@ -22,12 +34,12 @@ export default function GlobalHeader() {
         </nav>
 
         <div className={styles.actions}>
-          <a className={styles.signin} href="#">
-            Sign in
+          <a className={styles.signin} href="/login">
+            Log In
           </a>
 
-          <a className={styles.cta} href="#">
-            Get started <span>→</span>
+          <a className={styles.cta} href="/signup" onClick={handleJoinFree}>
+            Join Free <span>→</span>
           </a>
         </div>
 

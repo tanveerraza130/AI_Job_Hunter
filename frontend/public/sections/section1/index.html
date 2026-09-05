@@ -2582,8 +2582,8 @@ h1{
     </nav>
 
     <div class="header-actions">
-      <a class="signin" href="#">Sign in</a>
-      <a class="header-cta" href="#">Get started <span>→</span></a>
+      <a class="signin" href="/login">Log In</a>
+      <a class="header-cta" href="/signup" data-auth-cta>Join Free <span>→</span></a>
     </div>
   </div>
 </header>
@@ -2601,7 +2601,7 @@ h1{
       <p class="desc">One profile. Multiple job sources. AI-ranked opportunities — so you spend less time searching and more time applying.</p>
 
       <div class="ctas">
-        <a class="btn primary" href="#">Get started <span>→</span></a>
+        <a class="btn primary" href="/signup" data-auth-cta>Join Free <span>→</span></a>
         <a class="btn secondary" href="#"><span class="play">▶</span>See how it works</a>
       </div>
 
@@ -3122,6 +3122,19 @@ h1{
 
 
 
+
+<script>
+  document.querySelectorAll("[data-auth-cta]").forEach(function (cta) {
+    cta.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      var token = localStorage.getItem("ai_job_hunter_token");
+
+      window.location.href = token ? "/dashboard" : "/signup";
+    });
+  });
+</script>
+
 </body>
 </html>
 
@@ -3263,5 +3276,461 @@ h1{
 /* Header is now rendered globally by HomePage. */
 .site-header {
   display: none !important;
+}
+</style>
+
+<style id="hero-readability-final-20260905">
+/*
+  GO-LIVE HERO — READABILITY ONLY
+  Purpose:
+  Increase 3-panel typography for normal desktop viewing.
+  No position, size, spacing, connector, AI-core or card-geometry changes.
+*/
+
+/* Panel headings */
+.source-panel .panel-title,
+.result-panel .panel-title{
+  font-size:15px !important;
+  line-height:1.16 !important;
+}
+
+/* Panel supporting text */
+.source-panel .panel-sub,
+.result-panel .panel-sub{
+  font-size:10px !important;
+  line-height:1.35 !important;
+}
+
+/* Source names */
+.source-panel .source b{
+  font-size:12px !important;
+}
+
+/* "And more" */
+.source-panel .more-source{
+  font-size:10px !important;
+}
+
+/* AI understands */
+.visual .ai-understands h3{
+  font-size:15px !important;
+}
+
+.visual .ai-understands .check{
+  font-size:10px !important;
+}
+
+.visual .ai-understands .check i{
+  font-size:10px !important;
+}
+
+/* Job titles */
+.result-panel .job-title{
+  font-size:10px !important;
+  line-height:1.16 !important;
+}
+
+/* Company */
+.result-panel .company{
+  font-size:8.5px !important;
+}
+
+/* Location / employment metadata */
+.result-panel .meta{
+  font-size:7.5px !important;
+}
+
+/* Match score */
+.result-panel .match{
+  font-size:13px !important;
+}
+
+.result-panel .match small{
+  font-size:6.5px !important;
+}
+
+/* More jobs */
+.result-panel .more-jobs{
+  font-size:9.5px !important;
+}
+
+.result-panel .more-jobs span:last-child{
+  font-size:14px !important;
+}
+
+/*
+  Keep the mobile design compact.
+  The readability increase above is primarily for desktop.
+*/
+@media (max-width:620px){
+  .source-panel .panel-title,
+  .result-panel .panel-title{
+    font-size:15px !important;
+  }
+
+  .source-panel .panel-sub,
+  .result-panel .panel-sub{
+    font-size:10px !important;
+  }
+
+  .source-panel .source b{
+    font-size:11px !important;
+  }
+
+  .visual .ai-understands h3{
+    font-size:14px !important;
+  }
+
+  .visual .ai-understands .check{
+    font-size:9px !important;
+  }
+
+  .result-panel .job-title{
+    font-size:9px !important;
+  }
+
+  .result-panel .company{
+    font-size:8px !important;
+  }
+
+  .result-panel .meta{
+    font-size:7px !important;
+  }
+
+  .result-panel .match{
+    font-size:12px !important;
+  }
+
+  .result-panel .match small{
+    font-size:6px !important;
+  }
+}
+</style>
+
+<style id="section1-mobile-hero-redesign-20260905">
+/*
+=========================================================
+ SECTION 1 — MOBILE HERO REDESIGN
+ Mobile only. Desktop geometry remains untouched.
+=========================================================
+*/
+
+@media (max-width:620px){
+
+  /* ---------- HERO / MAIN COPY ---------- */
+
+  .hero{
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:hidden !important;
+  }
+
+  .wrap{
+    display:flex !important;
+    flex-direction:column !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    padding:34px 16px 48px !important;
+  }
+
+  .copy{
+    width:100% !important;
+    padding:0 !important;
+    text-align:center !important;
+  }
+
+  .badge{
+    margin:0 auto !important;
+    font-size:11px !important;
+    height:34px !important;
+    padding:0 13px !important;
+  }
+
+  .badge-icon{
+    width:22px !important;
+    height:22px !important;
+  }
+
+  h1{
+    max-width:360px !important;
+    margin:22px auto 16px !important;
+    font-size:42px !important;
+    line-height:1.02 !important;
+    letter-spacing:-.045em !important;
+  }
+
+  .desc{
+    max-width:350px !important;
+    margin:0 auto !important;
+    font-size:15px !important;
+    line-height:1.5 !important;
+  }
+
+  /* ---------- CTA ---------- */
+
+  .ctas{
+    width:100% !important;
+    margin-top:22px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    gap:10px !important;
+  }
+
+  .btn{
+    width:100% !important;
+    max-width:350px !important;
+    height:48px !important;
+    font-size:13px !important;
+  }
+
+  /* ---------- TRUSTED SOURCES ---------- */
+
+  .sources{
+    margin-top:20px !important;
+    text-align:center !important;
+  }
+
+  .sources-label{
+    font-size:10px !important;
+    margin-bottom:9px !important;
+  }
+
+  .source-row{
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    flex-wrap:wrap !important;
+    gap:9px 15px !important;
+  }
+
+  .source-row .logo{
+    font-size:11px !important;
+  }
+
+  /* ---------- MOBILE VISUAL ---------- */
+
+  .visual{
+    position:relative !important;
+    width:100% !important;
+    max-width:390px !important;
+    height:1010px !important;
+    margin:42px auto 0 !important;
+    transform:none !important;
+    overflow:visible !important;
+  }
+
+  /* ---------- AI UNDERSTANDS ---------- */
+
+  .visual .ai-understands{
+    position:absolute !important;
+    top:0 !important;
+    left:50% !important;
+    width:220px !important;
+    transform:translateX(-50%) !important;
+    text-align:center !important;
+    z-index:20 !important;
+  }
+
+  .visual .ai-understands h3{
+    margin:0 0 10px !important;
+    font-size:18px !important;
+    line-height:1.15 !important;
+    text-align:center !important;
+  }
+
+  .visual .ai-understands .checks{
+    width:180px !important;
+    margin:0 auto !important;
+    display:grid !important;
+    gap:7px !important;
+    text-align:left !important;
+  }
+
+  .visual .ai-understands .check{
+    min-height:21px !important;
+    font-size:11px !important;
+    gap:7px !important;
+  }
+
+  .visual .ai-understands .check i{
+    flex:0 0 20px !important;
+    width:20px !important;
+    height:20px !important;
+    font-size:10px !important;
+  }
+
+  /* ---------- SOURCE CARD ---------- */
+
+  .visual .source-panel{
+    position:absolute !important;
+    top:145px !important;
+    left:50% !important;
+    right:auto !important;
+    width:calc(100% - 28px) !important;
+    max-width:350px !important;
+    height:285px !important;
+    transform:translateX(-50%) !important;
+    padding:20px 12px 12px !important;
+    border-radius:18px !important;
+  }
+
+  .visual .source-panel .panel-title{
+    font-size:16px !important;
+    line-height:1.15 !important;
+  }
+
+  .visual .source-panel .panel-sub{
+    margin-top:7px !important;
+    font-size:10px !important;
+    line-height:1.3 !important;
+  }
+
+  .visual .source-list{
+    margin-top:13px !important;
+    gap:5px !important;
+  }
+
+  .visual .source{
+    height:34px !important;
+    padding:0 9px !important;
+    gap:8px !important;
+  }
+
+  .visual .source .mark{
+    flex:0 0 22px !important;
+    width:22px !important;
+    height:22px !important;
+    font-size:9px !important;
+  }
+
+  .visual .source b{
+    font-size:11px !important;
+  }
+
+  .visual .more-source{
+    font-size:10px !important;
+  }
+
+  /* ---------- AI CORE ---------- */
+
+  .visual .glow{
+    position:absolute !important;
+    left:50% !important;
+    top:445px !important;
+    width:150px !important;
+    height:150px !important;
+    transform:translateX(-50%) !important;
+  }
+
+  .visual .ai-core{
+    position:absolute !important;
+    left:50% !important;
+    top:459px !important;
+    width:122px !important;
+    height:122px !important;
+    transform:translateX(-50%) !important;
+  }
+
+  .visual .ai-label{
+    position:absolute !important;
+    left:50% !important;
+    top:588px !important;
+    transform:translateX(-50%) !important;
+    font-size:16px !important;
+    white-space:nowrap !important;
+  }
+
+  /* ---------- RESULT CARD ---------- */
+
+  .visual .result-panel{
+    position:absolute !important;
+    top:635px !important;
+    left:50% !important;
+    right:auto !important;
+    width:calc(100% - 28px) !important;
+    max-width:350px !important;
+    height:340px !important;
+    transform:translateX(-50%) !important;
+    padding:20px 12px 12px !important;
+    border-radius:18px !important;
+  }
+
+  .visual .result-panel .panel-title{
+    font-size:16px !important;
+    line-height:1.15 !important;
+  }
+
+  .visual .result-panel .panel-sub{
+    margin-top:7px !important;
+    margin-bottom:11px !important;
+    font-size:10px !important;
+    line-height:1.3 !important;
+  }
+
+  .visual .jobs{
+    gap:6px !important;
+  }
+
+  .visual .job{
+    height:72px !important;
+    padding:10px 43px 7px 36px !important;
+    border-radius:10px !important;
+  }
+
+  .visual .rank{
+    left:8px !important;
+    top:10px !important;
+    width:23px !important;
+    height:23px !important;
+    font-size:10px !important;
+  }
+
+  .visual .job-title{
+    max-width:none !important;
+    font-size:9px !important;
+    line-height:1.14 !important;
+    min-height:25px !important;
+  }
+
+  .visual .company{
+    margin-top:3px !important;
+    font-size:8px !important;
+  }
+
+  .visual .meta{
+    margin-top:2px !important;
+    font-size:7px !important;
+  }
+
+  .visual .match{
+    top:10px !important;
+    right:7px !important;
+    width:32px !important;
+    font-size:12px !important;
+  }
+
+  .visual .match small{
+    margin-top:2px !important;
+    font-size:6px !important;
+  }
+
+  .visual .more-jobs{
+    height:34px !important;
+    font-size:9px !important;
+  }
+
+  .visual .more-jobs span:last-child{
+    font-size:14px !important;
+  }
+
+  /* ---------- MOBILE: CONNECTORS OFF ---------- */
+
+  .visual .connectors{
+    display:none !important;
+  }
+
 }
 </style>

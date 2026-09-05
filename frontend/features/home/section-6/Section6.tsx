@@ -1,4 +1,17 @@
+"use client";
+
 import styles from "./Section6.module.css";
+
+
+const handleBuildProfile = (
+  event: React.MouseEvent<HTMLAnchorElement>,
+) => {
+  event.preventDefault();
+
+  const token = localStorage.getItem("ai_job_hunter_token");
+
+  window.location.href = token ? "/dashboard" : "/signup";
+};
 
 export default function Section6() {
   return (
@@ -27,8 +40,8 @@ export default function Section6() {
         </p>
 
         <div className={styles.actions}>
-          <a href="#get-started" className={styles.primary}>
-            <span className={styles.primaryText}>Build your profile</span>
+          <a href="/signup" className={styles.primary} onClick={handleBuildProfile}>
+            <span className={styles.primaryText}>Build Your Profile for Free</span>
             <span className={styles.arrow}>→</span>
           </a>
         </div>
