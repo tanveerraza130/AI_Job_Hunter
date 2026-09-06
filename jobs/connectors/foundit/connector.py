@@ -30,8 +30,9 @@ class FounditConnector(BaseConnector):
     SEARCH_LIMIT = 50
     MAX_SEARCH_PAGES = 50
 
-    def __init__(self, session=None) -> None:
-        self._api = FounditAPI(session=session)
+    def __init__(self, context=None) -> None:
+        self.context = context
+        self._api = FounditAPI()
 
     @property
     def name(self) -> str:

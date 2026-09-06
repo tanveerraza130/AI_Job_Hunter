@@ -66,7 +66,7 @@ Examples:
     parser.add_argument(
         "-c", "--connector",
         default="naukri",
-        choices=["naukri", "iimjobs", "all"],
+        choices=["naukri", "iimjobs", "foundit", "indeed", "all"],
         help=(
             "Job portal connector to use. "
             "'all' runs all enabled connectors sequentially "
@@ -147,6 +147,7 @@ Examples:
                 connectors = [
                     _create_connector("naukri", context),
                     _create_connector("iimjobs", context),
+                    _create_connector("foundit", context),
                 ]
             else:
                 connectors = [
