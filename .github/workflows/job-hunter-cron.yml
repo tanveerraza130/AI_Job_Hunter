@@ -135,7 +135,7 @@ jobs:
           echo "===== RUN AI JOB HUNTER ====="
           .ci-venv/bin/python -m jobs.cli \
             --profile crm_manager \
-            --connector naukri \
+            --connector all \
             --exporter duckdb
 
       - name: Validate production database

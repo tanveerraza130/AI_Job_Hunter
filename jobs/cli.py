@@ -221,14 +221,25 @@ def main() -> int:
 
 
             #
-            # Connector
+            # Connectors
             #
-            connector: BaseConnector = (
-                _create_connector(
-                    args.connector,
-                    context,
-                )
-            )
+            if args.connector.lower() == "all":
+                if not args.profile:
+                    raise RuntimeError(
+                        "Connector 'all' requires --profile"
+                    )
+
+                connectors: list[BaseConnector] = [
+                    _create_connector("naukri", context),
+                    _create_connector("iimjobs", context),
+                ]
+            else:
+                connectors = [
+                    _create_connector(
+                        args.connector,
+                        context,
+                    )
+                ]
 
 
             #
@@ -270,9 +281,7 @@ def main() -> int:
             # Engine
             #
             engine = Engine(
-                connectors=[
-                    connector
-                ],
+                connectors=connectors,
                 exporter=exporter,
                 db_path=db_path,
             )
