@@ -153,16 +153,35 @@ class DuckDBExporter(BaseExporter):
 
         data = [(c, c, created_at) for c in companies]
 
-        conn.executemany(
-            """
-            INSERT OR IGNORE INTO dim_company (
-                company_id,
-                canonical_name,
-                created_at
-            ) VALUES (?, ?, ?)
-            """,
-            data,
-        )
+        placeholders = ", ".join("?" for _ in data)
+        existing_ids = {
+            row[0]
+            for row in conn.execute(
+                f"""
+                SELECT company_id
+                FROM dim_company
+                WHERE company_id IN ({placeholders})
+                """,
+                [row[0] for row in data],
+            ).fetchall()
+        }
+
+        missing_data = [
+            row for row in data
+            if row[0] not in existing_ids
+        ]
+
+        if missing_data:
+            conn.executemany(
+                """
+                INSERT INTO dim_company (
+                    company_id,
+                    canonical_name,
+                    created_at
+                ) VALUES (?, ?, ?)
+                """,
+                missing_data,
+            )
 
     def _insert_locations(
         self,
@@ -183,16 +202,35 @@ class DuckDBExporter(BaseExporter):
 
         data = [(l, l, created_at) for l in locations]
 
-        conn.executemany(
-            """
-            INSERT OR IGNORE INTO dim_location (
-                location_id,
-                canonical_name,
-                created_at
-            ) VALUES (?, ?, ?)
-            """,
-            data,
-        )
+        placeholders = ", ".join("?" for _ in data)
+        existing_ids = {
+            row[0]
+            for row in conn.execute(
+                f"""
+                SELECT location_id
+                FROM dim_location
+                WHERE location_id IN ({placeholders})
+                """,
+                [row[0] for row in data],
+            ).fetchall()
+        }
+
+        missing_data = [
+            row for row in data
+            if row[0] not in existing_ids
+        ]
+
+        if missing_data:
+            conn.executemany(
+                """
+                INSERT INTO dim_location (
+                    location_id,
+                    canonical_name,
+                    created_at
+                ) VALUES (?, ?, ?)
+                """,
+                missing_data,
+            )
 
     def _insert_skills(
         self,
@@ -213,16 +251,35 @@ class DuckDBExporter(BaseExporter):
 
         data = [(s, s, created_at) for s in skills]
 
-        conn.executemany(
-            """
-            INSERT OR IGNORE INTO dim_skill (
-                skill_id,
-                name,
-                created_at
-            ) VALUES (?, ?, ?)
-            """,
-            data,
-        )
+        placeholders = ", ".join("?" for _ in data)
+        existing_ids = {
+            row[0]
+            for row in conn.execute(
+                f"""
+                SELECT skill_id
+                FROM dim_skill
+                WHERE skill_id IN ({placeholders})
+                """,
+                [row[0] for row in data],
+            ).fetchall()
+        }
+
+        missing_data = [
+            row for row in data
+            if row[0] not in existing_ids
+        ]
+
+        if missing_data:
+            conn.executemany(
+                """
+                INSERT INTO dim_skill (
+                    skill_id,
+                    name,
+                    created_at
+                ) VALUES (?, ?, ?)
+                """,
+                missing_data,
+            )
 
     def _insert_jobs(
         self,
@@ -277,9 +334,24 @@ class DuckDBExporter(BaseExporter):
                 None,  # search_id - reserved for future
             ))
 
+        # Preserve the existing production fact_jobs schema, which does
+        # not require a PRIMARY KEY/UNIQUE constraint. Implement the
+        # existing INSERT OR REPLACE intent explicitly: remove any
+        # previously persisted rows with the same deterministic IDs,
+        # then insert the current rows within the surrounding transaction.
+        job_ids = [(row[0],) for row in fact_rows]
+
         conn.executemany(
             """
-            INSERT OR REPLACE INTO fact_jobs (
+            DELETE FROM fact_jobs
+            WHERE job_id = ?
+            """,
+            job_ids,
+        )
+
+        conn.executemany(
+            """
+            INSERT INTO fact_jobs (
                 job_id,
                 title,
                 company_id,
@@ -330,18 +402,39 @@ class DuckDBExporter(BaseExporter):
             for skill in skills:
                 bridge_rows.append((job_id, skill))
 
-        if not bridge_rows:
+        # Keep the bridge synchronized with the current exported job
+        # state. Remove relationships for every exported job first,
+        # including jobs whose current skill list is empty. Then insert
+        # only the current skill relationships.
+        exported_job_ids = list({
+            f"{job.portal}:{job.job_id}"
+            for job in jobs
+            if job.portal and job.job_id
+        })
+
+        if not exported_job_ids:
             return
 
-        conn.executemany(
-            """
-            INSERT OR IGNORE INTO fact_jobs_skills (
-                job_id,
-                skill_id
-            ) VALUES (?, ?)
+        placeholders = ", ".join("?" for _ in exported_job_ids)
+
+        conn.execute(
+            f"""
+            DELETE FROM fact_jobs_skills
+            WHERE job_id IN ({placeholders})
             """,
-            bridge_rows,
+            exported_job_ids,
         )
+
+        if bridge_rows:
+            conn.executemany(
+                """
+                INSERT INTO fact_jobs_skills (
+                    job_id,
+                    skill_id
+                ) VALUES (?, ?)
+                """,
+                bridge_rows,
+            )
 
     def _collect_dimensions(
         self,

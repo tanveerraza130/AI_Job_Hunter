@@ -84,7 +84,24 @@ class ScoreRepository:
             pipeline_version: Version of the AI pipeline (defaults to AI_PIPELINE_VERSION).
         """
 
-        # ============================================================
+        # Preserve the existing upsert semantics without relying on a
+        # PRIMARY KEY/UNIQUE constraint. Production fact_job_scores does
+        # not have a physical constraint on the logical score key.
+        # Delete only the exact logical record being replaced, then insert
+        # the current score within the surrounding transaction.
+        self.connection.execute(
+            """
+            DELETE FROM fact_job_scores
+            WHERE job_id = ?
+              AND profile_id = ?
+              AND search_session_id = ?
+            """,
+            [
+                job_id,
+                profile_id,
+                search_session_id,
+            ],
+        )
 
         self.connection.execute(
             """
@@ -104,22 +121,6 @@ class ScoreRepository:
                 scored_at
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT (
-                job_id,
-                profile_id,
-                search_session_id
-            )
-            DO UPDATE SET
-                overall_score = excluded.overall_score,
-                skill_score = excluded.skill_score,
-                tool_score = excluded.tool_score,
-                experience_score = excluded.experience_score,
-                salary_score = excluded.salary_score,
-                work_mode_score = excluded.work_mode_score,
-                score_breakdown = excluded.score_breakdown,
-                scoring_version = excluded.scoring_version,
-                pipeline_version = excluded.pipeline_version,
-                scored_at = excluded.scored_at
             """,
             [
                 job_id,

@@ -12,6 +12,7 @@ class Portal(StrEnum):
 
     UNKNOWN = "unknown"
     NAUKRI = "naukri"
+    IIMJOBS = "iimjobs"
     LINKEDIN = "linkedin"
     INDEED = "indeed"
     FOUNDIT = "foundit"

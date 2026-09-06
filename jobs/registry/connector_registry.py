@@ -44,6 +44,13 @@ CONNECTOR_REGISTRY: dict[tuple[Portal, ConnectorType], ConnectorInfo] = {
         default=False,
     ),
 
+    # IIMJobs
+    (Portal.IIMJOBS, ConnectorType.API): ConnectorInfo(
+        portal=Portal.IIMJOBS,
+        connector_type=ConnectorType.API,
+        default=True,
+    ),
+
     # LinkedIn
     (Portal.LINKEDIN, ConnectorType.API): ConnectorInfo(
         portal=Portal.LINKEDIN,

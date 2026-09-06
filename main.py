@@ -66,7 +66,7 @@ Examples:
     parser.add_argument(
         "-c", "--connector",
         default="naukri",
-        choices=["naukri"],
+        choices=["naukri", "iimjobs"],
         help="Job portal connector to use (default: naukri)",
     )
 
