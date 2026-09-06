@@ -361,25 +361,173 @@ class ProfileJobFilter:
         """
         Filter jobs based on profile criteria.
 
-        Args:
-            jobs: List of jobs to filter.
-
-        Returns:
-            Tuple of (accepted_jobs, rejected_jobs)
+        Diagnostic mode reports the exact rejection stage and
+        per-rule counts without changing filtering behaviour.
         """
+        from collections import Counter
+
         accepted = []
         rejected = []
 
+        title_rejections = Counter()
+        keyword_rejections = Counter()
+        positive_rejections = []
+
         for job in jobs:
-            if self._is_accepted(job):
+
+            # ------------------------------------------------------
+            # 1. Negative title
+            # ------------------------------------------------------
+            if self._has_negative_title(job):
+                rejected.append(job)
+
+                title_lower = (job.title or "").lower()
+
+                matched = [
+                    title
+                    for title in self.profile.negative_titles
+                    if re.search(
+                        r"\\b" + re.escape(title) + r"\\b",
+                        title_lower,
+                        re.IGNORECASE,
+                    )
+                ]
+
+                if matched:
+                    for title in matched:
+                        title_rejections[title] += 1
+                else:
+                    title_rejections["<matched-but-unidentified>"] += 1
+
+                continue
+
+            # ------------------------------------------------------
+            # 2. Negative keyword
+            # ------------------------------------------------------
+            if self._has_negative_keyword(job):
+                rejected.append(job)
+
+                combined_text = (
+                    f"{job.title or ''} {job.description or ''}"
+                ).lower()
+
+                matched = [
+                    keyword
+                    for keyword in self.profile.negative_keywords
+                    if re.search(
+                        r"\\b" + re.escape(keyword) + r"\\b",
+                        combined_text,
+                        re.IGNORECASE,
+                    )
+                ]
+
+                if matched:
+                    for keyword in matched:
+                        keyword_rejections[keyword] += 1
+                else:
+                    keyword_rejections["<matched-but-unidentified>"] += 1
+
+                continue
+
+            # ------------------------------------------------------
+            # 3. Positive relevance
+            # ------------------------------------------------------
+            if self._positive_relevance(job):
                 accepted.append(job)
             else:
-                logger.info(
-                    "PROFILE FILTER REJECTED: %s | Company: %s",
-                    job.title,
-                    job.company,
-                )
                 rejected.append(job)
+                positive_rejections.append(job)
+
+        # ----------------------------------------------------------
+        # Detailed diagnostic report
+        # ----------------------------------------------------------
+
+        print("")
+        print("=" * 72)
+        print("CRM PROFILE FILTER — DETAILED RECONCILIATION")
+        print("=" * 72)
+
+        print(f"Jobs entering profile filter : {len(jobs):,}")
+        print(f"Accepted by CRM profile      : {len(accepted):,}")
+        print(f"Rejected by CRM profile      : {len(rejected):,}")
+        print("")
+
+        print("-" * 72)
+        print("REJECTION STAGE SUMMARY")
+        print("-" * 72)
+
+        title_total = sum(title_rejections.values())
+        keyword_total = sum(keyword_rejections.values())
+        positive_total = len(positive_rejections)
+
+        print(f"Negative TITLE rejection     : {title_total:,}")
+        print(f"Negative KEYWORD rejection   : {keyword_total:,}")
+        print(f"Positive relevance rejection : {positive_total:,}")
+        print(f"Accepted                     : {len(accepted):,}")
+        print(
+            f"Reconciled total             : "
+            f"{title_total + keyword_total + positive_total + len(accepted):,}"
+        )
+
+        print("")
+        print("-" * 72)
+        print("NEGATIVE TITLE — PER RULE")
+        print("-" * 72)
+
+        if title_rejections:
+            for rule, count in title_rejections.most_common():
+                print(f"{count:6,}  |  {rule}")
+        else:
+            print("No negative-title rejections.")
+
+        print("")
+        print("-" * 72)
+        print("NEGATIVE KEYWORD — PER RULE")
+        print("-" * 72)
+
+        if keyword_rejections:
+            for rule, count in keyword_rejections.most_common():
+                print(f"{count:6,}  |  {rule}")
+        else:
+            print("No negative-keyword rejections.")
+
+        print("")
+        print("-" * 72)
+        print("POSITIVE RELEVANCE REJECTIONS — SAMPLE")
+        print("-" * 72)
+
+        for job in positive_rejections[:30]:
+            print(
+                f"- {job.title or '<NO TITLE>'} | "
+                f"{job.company or '<NO COMPANY>'}"
+            )
+
+        print("")
+        print("-" * 72)
+        print("ACCEPTED CRM JOBS — SAMPLE")
+        print("-" * 72)
+
+        for job in accepted[:30]:
+            print(
+                f"+ {job.title or '<NO TITLE>'} | "
+                f"{job.company or '<NO COMPANY>'}"
+            )
+
+        print("=" * 72)
+        print("END CRM PROFILE FILTER DIAGNOSTIC")
+        print("=" * 72)
+        print("")
+
+        logger.info(
+            "PROFILE FILTER RESULT: accepted=%s rejected=%s "
+            "negative_title=%s negative_keyword=%s "
+            "positive_relevance=%s",
+            len(accepted),
+            len(rejected),
+            title_total,
+            keyword_total,
+            positive_total,
+        )
 
         return accepted, rejected
 

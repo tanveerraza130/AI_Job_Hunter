@@ -411,8 +411,42 @@ class Engine:
                         new_jobs.append(job)
 
                     else:
-                        self._registry.mark_seen(job)
-                        seen_count += 1
+                        # A registry entry + profile score does not guarantee
+                        # that the job was successfully persisted to fact_jobs.
+                        # If scoring committed but export did not complete,
+                        # the job becomes an orphaned score. Re-process it so
+                        # the exporter can restore the missing fact_jobs row.
+                        fact_job_exists = False
+
+                        # ScoreRepository owns the shared DuckDB connection
+                        # used by the engine repositories. Use that same
+                        # connection when verifying whether the job was
+                        # actually persisted to fact_jobs.
+                        fact_connection = self._score_repo.connection
+
+                        fact_job_exists = (
+                            fact_connection.execute(
+                                """
+                                SELECT 1
+                                FROM fact_jobs
+                                WHERE job_id = ?
+                                LIMIT 1
+                                """,
+                                [canonical_job_id],
+                            ).fetchone()
+                            is not None
+                        )
+
+                        if not fact_job_exists:
+                            logger.warning(
+                                "Recovering orphaned scored job %s: "
+                                "profile score exists but fact_jobs row is missing",
+                                canonical_job_id,
+                            )
+                            new_jobs.append(job)
+                        else:
+                            self._registry.mark_seen(job)
+                            seen_count += 1
 
                 else:
                     self._registry.mark_seen(job)
@@ -772,6 +806,26 @@ class Engine:
                 len(invalid_jobs),
             )
 
+            print("")
+            print("=" * 72)
+            print("ENGINE VALIDATION RECONCILIATION")
+            print("=" * 72)
+            print(
+                f"NEW after deduplication : {len(deduplicated_new):,}"
+            )
+            print(
+                f"Validator ACCEPTED      : {len(valid_jobs):,}"
+            )
+            print(
+                f"Validator REJECTED      : {len(invalid_jobs):,}"
+            )
+            print(
+                f"Validation reconciled   : "
+                f"{len(valid_jobs) + len(invalid_jobs):,}"
+            )
+            print("=" * 72)
+            print("")
+
             # ----------------------------------------------------------
             # Step 3.5:
             # Profile filtering ONLY NEW jobs
@@ -933,74 +987,36 @@ class Engine:
 
             # ----------------------------------------------------------
             # Step 5:
-            # Export ONLY NEW valid jobs
+            # Export the exact NEW jobs that already passed validation
+            # and profile filtering in Step 3/3.5.
             # ----------------------------------------------------------
 
-            valid_new: list[Job] = []
+            valid_new = list(valid_jobs)
 
-            if new_jobs:
-
-                # IMPORTANT:
-                # Re-deduplicate the exact NEW set used for export.
-                deduplicated_export_jobs = (
-                    self._deduplicator.deduplicate(
-                        new_jobs
-                    )
+            if valid_new:
+                self._exporter.export(
+                    valid_new,
+                    destination,
                 )
 
-                valid_new, invalid_new = (
-                    self._validator.validate_many(
-                        deduplicated_export_jobs
-                    )
-                )
-
-                # Apply profile filter to export set as well.
-                if profile_type and profile:
-                    filter_obj = (
-                        self._profile_filters.get(
-                            profile_type
-                        )
-                    )
-
-                    if filter_obj:
-                        (
-                            valid_new,
-                            rejected_new,
-                        ) = filter_obj.filter_jobs(
+                if self._registry is not None:
+                    try:
+                        self._registry.mark_seen_many(
                             valid_new
                         )
 
-                        logger.info(
-                            "Export filtering: "
-                            "accepted=%s rejected=%s",
+                        logger.debug(
+                            "Marked %s jobs as SEEN "
+                            "after export",
                             len(valid_new),
-                            len(rejected_new),
                         )
 
-                if valid_new:
-                    self._exporter.export(
-                        valid_new,
-                        destination,
-                    )
-
-                    if self._registry is not None:
-                        try:
-                            self._registry.mark_seen_many(
-                                valid_new
-                            )
-
-                            logger.debug(
-                                "Marked %s jobs as SEEN "
-                                "after export",
-                                len(valid_new),
-                            )
-
-                        except Exception as exc:
-                            logger.warning(
-                                "Failed to mark jobs as "
-                                "seen after export: %s",
-                                exc,
-                            )
+                    except Exception as exc:
+                        logger.warning(
+                            "Failed to mark jobs as "
+                            "seen after export: %s",
+                            exc,
+                        )
 
             # ----------------------------------------------------------
             # Step 6:
