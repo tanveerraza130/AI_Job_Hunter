@@ -66,8 +66,12 @@ Examples:
     parser.add_argument(
         "-c", "--connector",
         default="naukri",
-        choices=["naukri", "iimjobs"],
-        help="Job portal connector to use (default: naukri)",
+        choices=["naukri", "iimjobs", "all"],
+        help=(
+            "Job portal connector to use. "
+            "'all' runs all enabled connectors sequentially "
+            "(profile mode only). Default: naukri"
+        ),
     )
 
     parser.add_argument(
@@ -132,8 +136,23 @@ Examples:
             browser = playwright.chromium.launch(headless=False)
             context = browser.new_context()
 
-            # Instantiate connector and exporter
-            connector = _create_connector(args.connector, context)
+            # Instantiate connector(s) and exporter.
+            # "all" is the controlled multi-connector profile path.
+            if args.connector == "all":
+                if not args.profile:
+                    parser.error(
+                        "--connector all is supported only with --profile"
+                    )
+
+                connectors = [
+                    _create_connector("naukri", context),
+                    _create_connector("iimjobs", context),
+                ]
+            else:
+                connectors = [
+                    _create_connector(args.connector, context),
+                ]
+
             exporter = _create_exporter(args.exporter)
 
             # ========================================================
@@ -155,7 +174,7 @@ Examples:
 
             # Create engine
             engine = Engine(
-                connectors=[connector],
+                connectors=connectors,
                 exporter=exporter,
                 db_path=db_path,
             )
