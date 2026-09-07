@@ -105,6 +105,84 @@ class LinkedInAPI:
 
         return None
 
+    def search_job_cards(
+        self,
+        *,
+        keyword: str,
+        location: str,
+    ) -> list[dict]:
+        """Discover LinkedIn search cards with posting dates."""
+
+        params = (
+            f"keywords={quote(keyword)}"
+            f"&location={quote(location)}"
+        )
+
+        url = f"{self.BASE_URL}/jobs/search/?{params}"
+
+        response = self._get(url)
+
+        if response is None or response.status_code != 200:
+            return []
+
+        page = html.unescape(response.text)
+
+        # Each LinkedIn result is contained in one job-search-card.
+        # The card contains its job ID, URL and posting date.
+        pattern = re.compile(
+            r'<div[^>]+class=["\'][^"\']*job-search-card[^"\']*["\'][^>]*>'
+            r'(.*?)'
+            r'(?=<div[^>]+class=["\'][^"\']*job-search-card[^"\']*["\']|'
+            r'</li>)',
+            re.IGNORECASE | re.DOTALL,
+        )
+
+        cards = []
+        seen_ids = set()
+
+        for match in pattern.finditer(page):
+            card = match.group(0)
+
+            urn = re.search(
+                r'data-entity-urn=["\']urn:li:jobPosting:(\d+)["\']',
+                card,
+                re.IGNORECASE,
+            )
+
+            link = re.search(
+                r'href=["\'](https?://[^"\']*/jobs/view/[^"\']+)["\']',
+                card,
+                re.IGNORECASE,
+            )
+
+            posted = re.search(
+                r'<time[^>]+class=["\'][^"\']*'
+                r'job-search-card__listdate[^"\']*["\'][^>]+'
+                r'datetime=["\'](\d{4}-\d{2}-\d{2})["\']',
+                card,
+                re.IGNORECASE | re.DOTALL,
+            )
+
+            if not urn or not link:
+                continue
+
+            job_id = urn.group(1)
+
+            if job_id in seen_ids:
+                continue
+
+            job_url = html.unescape(link.group(1))
+            job_url = job_url.split("?")[0].rstrip("),.;")
+
+            cards.append({
+                "job_id": job_id,
+                "job_url": job_url,
+                "posted_date": posted.group(1) if posted else None,
+            })
+
+            seen_ids.add(job_id)
+
+        return cards
     def search_jobs(
         self,
         *,

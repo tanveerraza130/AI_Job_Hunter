@@ -7,6 +7,7 @@ This is initially isolated for feasibility validation.
 from __future__ import annotations
 
 from dataclasses import replace
+from datetime import date, timedelta
 
 from jobs.base import BaseConnector
 from jobs.enums import ConnectorType, Portal
@@ -41,7 +42,9 @@ class LinkedInConnector(BaseConnector):
         return "LinkedIn"
 
     def fetch_jobs(self, request: SearchRequest) -> list[Job]:
-        urls = self._api.search_jobs(
+        """Fetch only unique LinkedIn jobs posted within 15 days."""
+
+        cards = self._api.search_job_cards(
             keyword=request.keyword,
             location=request.location,
         )
@@ -49,30 +52,40 @@ class LinkedInConnector(BaseConnector):
         jobs: list[Job] = []
         seen_ids: set[str] = set()
 
-        # Do not slice the discovered URLs before checking the cache.
-        #
-        # LinkedIn search results can contain jobs already discovered by
-        # previous profile keywords. We should walk the complete cheap
-        # search-result list and continue past cache hits until the
-        # requested number of final jobs has been collected.
-        for url in urls:
-            # LinkedIn job IDs are embedded in /jobs/view/<id>/ URLs.
-            source_job_id = url.rstrip("/").rsplit("/", 1)[-1]
+        # LinkedIn-specific freshness window.
+        cutoff = date.today() - timedelta(days=15)
 
-            if not source_job_id or source_job_id in seen_ids:
+        for card in cards:
+            source_job_id = str(card.get("job_id") or "").strip()
+            job_url = str(card.get("job_url") or "").strip()
+            posted_date = card.get("posted_date")
+
+            if not source_job_id or not job_url:
                 continue
 
+            # Deduplicate BEFORE detail fetch.
+            if source_job_id in seen_ids:
+                continue
+
+            seen_ids.add(source_job_id)
+
+            # Missing/invalid dates are excluded.
+            if not posted_date:
+                continue
+
+            try:
+                posted = date.fromisoformat(posted_date)
+            except ValueError:
+                continue
+
+            # Never open an old LinkedIn detail page.
+            if posted < cutoff:
+                continue
+
+            # Existing connector cache.
             if source_job_id in self._job_cache:
-                cached_job = self._job_cache[source_job_id]
-
-                job = replace(
-                    cached_job,
-                    discovery_keyword=request.keyword,
-                )
-
-                if job.job_id:
-                    seen_ids.add(job.job_id)
-                    jobs.append(job)
+                job = self._job_cache[source_job_id]
+                jobs.append(job)
 
                 if (
                     request.max_jobs is not None
@@ -82,23 +95,23 @@ class LinkedInConnector(BaseConnector):
 
                 continue
 
-            payload = self._api.fetch_job_page(url)
+            # Expensive detail request happens only here,
+            # after deduplication and the 15-day filter.
+            payload = self._api.fetch_job_page(job_url)
 
             if not payload:
                 continue
 
             job = map_job(
                 payload,
-                job_url=url,
+                job_url=job_url,
                 discovery_keyword=request.keyword,
             )
 
-            if not job.job_id or job.job_id in seen_ids:
+            if not job.job_id:
                 continue
 
-            self._job_cache[source_job_id] = replace(job)
-
-            seen_ids.add(job.job_id)
+            self._job_cache[source_job_id] = job
             jobs.append(job)
 
             if (
@@ -106,8 +119,5 @@ class LinkedInConnector(BaseConnector):
                 and len(jobs) >= request.max_jobs
             ):
                 break
-
-        if request.max_jobs is not None:
-            jobs = jobs[:request.max_jobs]
 
         return jobs
