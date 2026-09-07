@@ -6,7 +6,7 @@ This is initially isolated for feasibility validation.
 
 from __future__ import annotations
 
-from dataclasses import replace
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, timedelta
 
 from jobs.base import BaseConnector
@@ -55,6 +55,33 @@ class LinkedInConnector(BaseConnector):
         # LinkedIn-specific freshness window.
         cutoff = date.today() - timedelta(days=15)
 
+        pending: list[tuple[str, str]] = []
+
+        def fetch_detail(item: tuple[str, str]):
+            source_job_id, job_url = item
+            payload = self._api.fetch_job_page(job_url)
+            return source_job_id, job_url, payload
+
+        def process_pending(items: list[tuple[str, str]]) -> None:
+            with ThreadPoolExecutor(max_workers=5) as executor:
+                results = executor.map(fetch_detail, items)
+
+                for source_job_id, job_url, payload in results:
+                    if not payload:
+                        continue
+
+                    job = map_job(
+                        payload,
+                        job_url=job_url,
+                        discovery_keyword=request.keyword,
+                    )
+
+                    if not job.job_id:
+                        continue
+
+                    self._job_cache[source_job_id] = job
+                    jobs.append(job)
+
         for card in cards:
             source_job_id = str(card.get("job_id") or "").strip()
             job_url = str(card.get("job_url") or "").strip()
@@ -84,8 +111,7 @@ class LinkedInConnector(BaseConnector):
 
             # Existing connector cache.
             if source_job_id in self._job_cache:
-                job = self._job_cache[source_job_id]
-                jobs.append(job)
+                jobs.append(self._job_cache[source_job_id])
 
                 if (
                     request.max_jobs is not None
@@ -95,24 +121,37 @@ class LinkedInConnector(BaseConnector):
 
                 continue
 
-            # Expensive detail request happens only here,
-            # after deduplication and the 15-day filter.
-            payload = self._api.fetch_job_page(job_url)
+            pending.append((source_job_id, job_url))
 
-            if not payload:
-                continue
+            # Fetch a bounded batch as soon as five candidates are ready,
+            # or when only the remaining max_jobs capacity is available.
+            if len(pending) >= 5 or (
+                request.max_jobs is not None
+                and len(pending) >= request.max_jobs - len(jobs)
+            ):
+                process_pending(pending)
+                pending.clear()
 
-            job = map_job(
-                payload,
-                job_url=job_url,
-                discovery_keyword=request.keyword,
-            )
+                if (
+                    request.max_jobs is not None
+                    and len(jobs) >= request.max_jobs
+                ):
+                    break
 
-            if not job.job_id:
-                continue
+        # Continue through remaining candidates in bounded batches.
+        while pending:
+            if request.max_jobs is not None:
+                remaining = request.max_jobs - len(jobs)
+                if remaining <= 0:
+                    break
+                batch_size = min(5, remaining)
+            else:
+                batch_size = 5
 
-            self._job_cache[source_job_id] = job
-            jobs.append(job)
+            batch = pending[:batch_size]
+            pending = pending[batch_size:]
+
+            process_pending(batch)
 
             if (
                 request.max_jobs is not None
@@ -120,4 +159,8 @@ class LinkedInConnector(BaseConnector):
             ):
                 break
 
-        return jobs
+        return (
+            jobs[:request.max_jobs]
+            if request.max_jobs is not None
+            else jobs
+        )
