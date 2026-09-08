@@ -13,7 +13,7 @@ Flow:
         ↓
     Validation
 
-This script does NOT publish to AWS or GitHub yet.
+This script publishes the production snapshot to S3 and GitHub.
 """
 
 from __future__ import annotations
@@ -103,6 +103,19 @@ def main() -> int:
     # STEP 1 — FETCH → MASTER DB
     # ------------------------------------------------------------
 
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Run the AI Job Hunter production pipeline."
+    )
+    parser.add_argument(
+        "--connector",
+        choices=["all", "linkedin"],
+        default="all",
+        help="Connector to run. Default: all (Naukri + IIMJobs + Foundit + LinkedIn).",
+    )
+    args = parser.parse_args()
+
     run_step(
         "STEP 1 — FETCH → MASTER DB",
         [
@@ -110,6 +123,8 @@ def main() -> int:
             str(MAIN_SCRIPT),
             "--profile",
             "crm_manager",
+            "--connector",
+            args.connector,
             "--exporter",
             "duckdb",
             "--output",
