@@ -147,17 +147,35 @@ def main() -> int:
         ],
     )
 
-    status = subprocess.run(
-        ["git", "status", "--short"],
+    staged = subprocess.run(
+        [
+            "git",
+            "diff",
+            "--cached",
+            "--name-only",
+            "--",
+            str(MINIMAL_DB.relative_to(ROOT)),
+        ],
         cwd=ROOT,
         text=True,
         capture_output=True,
         check=True,
     )
 
-    print(status.stdout)
+    staged_files = [
+        line.strip()
+        for line in staged.stdout.splitlines()
+        if line.strip()
+    ]
 
-    if not status.stdout.strip():
+    print("Staged minimal snapshot:")
+    if staged_files:
+        for file in staged_files:
+            print(f"  {file}")
+    else:
+        print("  (none)")
+
+    if not staged_files:
         print("✓ GitHub snapshot already current")
     else:
         run(
@@ -165,8 +183,11 @@ def main() -> int:
             [
                 "git",
                 "commit",
+                "--only",
                 "-m",
                 f"Update production snapshot {timestamp}",
+                "--",
+                str(MINIMAL_DB.relative_to(ROOT)),
             ],
         )
 
