@@ -18,6 +18,7 @@ The Master DB is NEVER modified.
 from __future__ import annotations
 
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import duckdb
 
@@ -29,15 +30,8 @@ DEFAULT_PRODUCTION_DB = PROJECT_ROOT / "output" / "job_hunter_production.duckdb"
 DEFAULT_MINIMAL_DB = PROJECT_ROOT / "output" / "job_hunter_production_minimal.duckdb"
 
 
-def remove_existing(path: Path) -> None:
-    """Remove an existing snapshot before rebuilding it."""
-    if path.exists():
-        path.unlink()
-
-
 def build_production_snapshot(master_db: Path, production_db: Path) -> None:
     """Build the rolling 30-day production database."""
-    remove_existing(production_db)
 
     source = duckdb.connect(
         str(master_db),
@@ -228,7 +222,6 @@ def build_production_snapshot(master_db: Path, production_db: Path) -> None:
 
 def build_minimal_snapshot(production_db: Path, minimal_db: Path) -> None:
     """Build the GitHub/minimal snapshot from production."""
-    remove_existing(minimal_db)
 
     source = duckdb.connect(
         str(production_db),
@@ -402,42 +395,60 @@ def main() -> int:
     )
 
     print()
-    print("===== BUILD PRODUCTION =====")
+    print("===== BUILD SNAPSHOT CANDIDATES =====")
 
-    build_production_snapshot(
-        master_db,
-        production_db,
-    )
+    with TemporaryDirectory(
+        prefix="ai_job_hunter_snapshot_",
+        dir=production_db.parent,
+    ) as temp_dir:
+        temp_root = Path(temp_dir)
+        production_candidate = temp_root / production_db.name
+        minimal_candidate = temp_root / minimal_db.name
 
-    production_con = duckdb.connect(
-        str(production_db),
-        read_only=True,
-    )
-    production_jobs = production_con.execute(
-        "SELECT COUNT(*) FROM fact_jobs"
-    ).fetchone()[0]
-    production_con.close()
+        print()
+        print("Building production candidate...")
+        build_production_snapshot(
+            master_db,
+            production_candidate,
+        )
 
-    print()
-    print("===== BUILD MINIMAL =====")
+        production_con = duckdb.connect(
+            str(production_candidate),
+            read_only=True,
+        )
+        production_jobs = production_con.execute(
+            "SELECT COUNT(*) FROM fact_jobs"
+        ).fetchone()[0]
+        production_con.close()
 
-    build_minimal_snapshot(
-        production_db,
-        minimal_db,
-    )
+        print()
+        print("Building minimal candidate...")
+        build_minimal_snapshot(
+            production_candidate,
+            minimal_candidate,
+        )
 
-    print()
-    print("===== VALIDATION =====")
+        print()
+        print("===== VALIDATION =====")
 
-    validate_database(
-        production_db,
-        expected_jobs=production_jobs,
-    )
+        validate_database(
+            production_candidate,
+            expected_jobs=production_jobs,
+        )
 
-    validate_database(
-        minimal_db,
-        expected_jobs=production_jobs,
-    )
+        validate_database(
+            minimal_candidate,
+            expected_jobs=production_jobs,
+        )
+
+        print()
+        print("===== PROMOTE VALIDATED SNAPSHOTS =====")
+
+        production_candidate.replace(production_db)
+        print(f"✓ Promoted production snapshot: {production_db}")
+
+        minimal_candidate.replace(minimal_db)
+        print(f"✓ Promoted minimal snapshot: {minimal_db}")
 
     print()
     print("=" * 70)
