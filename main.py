@@ -148,6 +148,7 @@ Examples:
                     _create_connector("naukri", context),
                     _create_connector("iimjobs", context),
                     _create_connector("foundit", context),
+                    _create_connector("linkedin", context),
                 ]
             else:
                 connectors = [
