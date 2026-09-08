@@ -18,6 +18,28 @@ from jobs.linkedin_posts.models import LinkedInHiringPost
 class LinkedInHiringPostRepository:
     """DuckDB persistence for LinkedIn hiring posts."""
 
+    @staticmethod
+    def _utc_timestamp(value: datetime | None) -> datetime | None:
+        """Normalize an aware datetime to a UTC-naive DuckDB timestamp."""
+        if value is None:
+            return None
+
+        if value.tzinfo is None:
+            return value
+
+        return value.astimezone(UTC).replace(tzinfo=None)
+
+    @staticmethod
+    def _attach_utc(value: datetime | None) -> datetime | None:
+        """Return a stored DuckDB timestamp as an aware UTC datetime."""
+        if value is None:
+            return None
+
+        if value.tzinfo is None:
+            return value.replace(tzinfo=UTC)
+
+        return value.astimezone(UTC)
+
     def __init__(self, connection: duckdb.DuckDBPyConnection) -> None:
         """Initialize with an active DuckDB connection."""
         self.connection = connection
@@ -84,7 +106,7 @@ class LinkedInHiringPostRepository:
                 post.author_url,
                 post.author_headline,
                 post.text,
-                post.posted_at,
+                self._utc_timestamp(post.posted_at),
                 post.company,
                 post.company_url,
                 post.location,
@@ -92,7 +114,7 @@ class LinkedInHiringPostRepository:
                 post.application_url,
                 post.contact_email,
                 post.discovery_query,
-                discovered_at,
+                self._utc_timestamp(discovered_at),
                 post.relevance_score,
                 raw_json,
             ],
@@ -143,7 +165,7 @@ class LinkedInHiringPostRepository:
             author_url=result[3],
             author_headline=result[4],
             text=result[5],
-            posted_at=result[6],
+            posted_at=self._attach_utc(result[6]),
             company=result[7],
             company_url=result[8],
             location=result[9],
@@ -151,7 +173,7 @@ class LinkedInHiringPostRepository:
             application_url=result[11],
             contact_email=result[12],
             discovery_query=result[13],
-            discovered_at=result[14],
+            discovered_at=self._attach_utc(result[14]),
             relevance_score=result[15],
             raw=raw or {},
         )
