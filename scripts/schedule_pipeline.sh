@@ -15,11 +15,18 @@ date
 echo "============================================================"
 
 if [ -f "$LOCK" ]; then
-    echo "⚠ Previous pipeline is still running. Skipping this run."
-    exit 0
+    LOCK_PID="$(cat "$LOCK" 2>/dev/null || true)"
+
+    if [ -n "$LOCK_PID" ] && kill -0 "$LOCK_PID" 2>/dev/null; then
+        echo "⚠ Previous pipeline is still running (PID $LOCK_PID). Skipping this run."
+        exit 0
+    fi
+
+    echo "⚠ Removing stale pipeline lock (PID ${LOCK_PID:-unknown})."
+    rm -f "$LOCK"
 fi
 
-touch "$LOCK"
+printf '%s\n' "$$" > "$LOCK"
 trap 'rm -f "$LOCK"' EXIT
 
 cd "$ROOT" || exit 1
