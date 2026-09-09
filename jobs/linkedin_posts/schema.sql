@@ -9,6 +9,7 @@
 CREATE TABLE IF NOT EXISTS linkedin_hiring_posts (
     post_id VARCHAR PRIMARY KEY,
     post_url VARCHAR NOT NULL,
+    portal VARCHAR NOT NULL DEFAULT 'linkedin_post',
 
     author_name VARCHAR,
     author_url VARCHAR,

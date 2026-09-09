@@ -40,6 +40,7 @@ def _schema(connection: duckdb.DuckDBPyConnection) -> None:
         CREATE TABLE linkedin_hiring_posts (
             post_id VARCHAR PRIMARY KEY,
             post_url VARCHAR NOT NULL,
+            portal VARCHAR NOT NULL DEFAULT 'linkedin_post',
             author_name VARCHAR,
             author_url VARCHAR,
             author_headline VARCHAR,
@@ -91,6 +92,7 @@ def test_parse_process_and_persist_hiring_post():
 
     assert post is not None
     assert post.post_id == "activity:987654321"
+    assert post.portal == "linkedin_post"
     assert post.author_name == "Test Recruiter"
     assert post.text.startswith("We are hiring a CRM Manager")
     assert post.posted_at == datetime(
@@ -135,6 +137,7 @@ def test_parse_process_and_persist_hiring_post():
 
         assert stored is not None
         assert stored.post_id == processed.post_id
+        assert stored.portal == "linkedin_post"
         assert stored.post_url == processed.post_url
         assert stored.author_name == processed.author_name
         assert stored.text == processed.text

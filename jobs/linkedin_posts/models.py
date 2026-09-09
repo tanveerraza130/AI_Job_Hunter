@@ -23,6 +23,7 @@ class LinkedInHiringPost:
 
     post_id: str
     post_url: str
+    portal: str = "linkedin_post"
 
     author_name: str | None = None
     author_url: str | None = None

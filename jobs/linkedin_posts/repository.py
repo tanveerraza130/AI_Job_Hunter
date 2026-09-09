@@ -81,6 +81,7 @@ class LinkedInHiringPostRepository:
             INSERT INTO linkedin_hiring_posts (
                 post_id,
                 post_url,
+                portal,
                 author_name,
                 author_url,
                 author_headline,
@@ -97,11 +98,12 @@ class LinkedInHiringPostRepository:
                 relevance_score,
                 raw
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             [
                 post.post_id,
                 post.post_url,
+                post.portal,
                 post.author_name,
                 post.author_url,
                 post.author_headline,
@@ -129,6 +131,7 @@ class LinkedInHiringPostRepository:
             SELECT
                 post_id,
                 post_url,
+                portal,
                 author_name,
                 author_url,
                 author_headline,
@@ -153,7 +156,7 @@ class LinkedInHiringPostRepository:
         if result is None:
             return None
 
-        raw = result[16]
+        raw = result[17]
 
         if isinstance(raw, str):
             raw = json.loads(raw)
@@ -161,19 +164,20 @@ class LinkedInHiringPostRepository:
         return LinkedInHiringPost(
             post_id=result[0],
             post_url=result[1],
-            author_name=result[2],
-            author_url=result[3],
-            author_headline=result[4],
-            text=result[5],
-            posted_at=self._attach_utc(result[6]),
-            company=result[7],
-            company_url=result[8],
-            location=result[9],
-            role=result[10],
-            application_url=result[11],
-            contact_email=result[12],
-            discovery_query=result[13],
-            discovered_at=self._attach_utc(result[14]),
-            relevance_score=result[15],
+            portal=result[2],
+            author_name=result[3],
+            author_url=result[4],
+            author_headline=result[5],
+            text=result[6],
+            posted_at=self._attach_utc(result[7]),
+            company=result[8],
+            company_url=result[9],
+            location=result[10],
+            role=result[11],
+            application_url=result[12],
+            contact_email=result[13],
+            discovery_query=result[14],
+            discovered_at=self._attach_utc(result[15]),
+            relevance_score=result[16],
             raw=raw or {},
         )
