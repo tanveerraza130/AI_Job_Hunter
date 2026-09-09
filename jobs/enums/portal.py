@@ -14,6 +14,7 @@ class Portal(StrEnum):
     NAUKRI = "naukri"
     IIMJOBS = "iimjobs"
     LINKEDIN = "linkedin"
+    LINKEDIN_POST = "linkedin_post"
     INDEED = "indeed"
     FOUNDIT = "foundit"
     INSTAHYRE = "instahyre"

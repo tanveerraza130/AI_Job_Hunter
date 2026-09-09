@@ -57,6 +57,13 @@ CONNECTOR_REGISTRY: dict[tuple[Portal, ConnectorType], ConnectorInfo] = {
         connector_type=ConnectorType.API,
         default=False,
     ),
+
+    # LinkedIn Hiring Posts
+    (Portal.LINKEDIN_POST, ConnectorType.API): ConnectorInfo(
+        portal=Portal.LINKEDIN_POST,
+        connector_type=ConnectorType.API,
+        default=True,
+    ),
     (Portal.LINKEDIN, ConnectorType.PLAYWRIGHT): ConnectorInfo(
         portal=Portal.LINKEDIN,
         connector_type=ConnectorType.PLAYWRIGHT,
