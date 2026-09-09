@@ -159,3 +159,42 @@ def test_missing_social_media_posting_is_rejected():
     assert parser.parse(
         "https://www.linkedin.com/posts/example-activity-123/"
     ) is None
+
+def test_rich_hiring_fields_are_extracted():
+    """Hiring metadata is extracted from the post body and page HTML."""
+    html = """
+    <html>
+      <head>
+        <script type="application/ld+json">
+        {
+          "@type": "SocialMediaPosting",
+          "@id": "https://www.linkedin.com/posts/example-activity-987654321/",
+          "headline": "🚀 We're Hiring: Campaign Ops",
+          "datePublished": "2026-09-09T06:08:28.948Z",
+          "author": {
+            "@type": "Person",
+            "name": "Test Recruiter",
+            "url": "https://www.linkedin.com/in/test-recruiter"
+          },
+          "articleBody": "🚀 We're Hiring: Campaign Ops\\n📍 Location: Mumbai (Freshers) / Gurgaon (Experienced)\\n\\nFirstHive is looking for an experienced Campaign Manager to drive impactful marketing campaigns."
+        }
+        </script>
+      </head>
+      <body>
+        <p>Contact: recruiter@example.com</p>
+      </body>
+    </html>
+    """
+
+    parser = LinkedInHiringPostParser(session=FakeSession(html))
+
+    post = parser.parse(
+        "https://www.linkedin.com/posts/example-activity-987654321/"
+    )
+
+    assert post is not None
+    assert post.role == "Campaign Ops"
+    assert post.company == "FirstHive"
+    assert post.location == "Mumbai (Freshers) / Gurgaon (Experienced)"
+    assert post.contact_email == "recruiter@example.com"
+    assert post.application_url is None

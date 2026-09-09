@@ -198,14 +198,70 @@ class LinkedInHiringPostParser:
 
         posted_at = self._parse_datetime(candidate.get("datePublished"))
 
+        normalized_text = text.strip()
+
+        role = None
+        company = None
+        location = None
+        contact_email = None
+        application_url = None
+
+        role_match = re.search(
+            r"(?im)^\s*(?:🚀\s*)?(?:we['’]re|we are)\s+hiring\s*[:\-–—]?\s*(.+?)\s*$",
+            normalized_text,
+        )
+        if role_match:
+            role = role_match.group(1).strip()
+
+        company_match = re.search(
+            r"(?im)^\s*(.+?)\s+is looking for\s+",
+            normalized_text,
+        )
+        if company_match:
+            company = company_match.group(1).strip()
+
+        location_match = re.search(
+            r"(?im)^\s*(?:📍\s*)?location\s*:\s*(.+?)\s*$",
+            normalized_text,
+        )
+        if location_match:
+            location = location_match.group(1).strip()
+
+        email_match = re.search(
+            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b",
+            normalized_text,
+        )
+        if not email_match:
+            email_match = re.search(
+                r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b",
+                page,
+            )
+        if email_match:
+            contact_email = email_match.group(0)
+
+        url_matches = re.findall(
+            r"https?://[^\s<>]+",
+            normalized_text,
+        )
+        for value in url_matches:
+            cleaned = value.rstrip(".,);]}")
+            if "linkedin.com" not in cleaned.lower():
+                application_url = cleaned
+                break
+
         return LinkedInHiringPost(
             post_id=post_id,
             post_url=url,
             author_name=author_name,
             author_url=author_url,
             author_headline=author_headline,
-            text=text.strip(),
+            text=normalized_text,
             posted_at=posted_at,
+            company=company,
+            location=location,
+            role=role,
+            application_url=application_url,
+            contact_email=contact_email,
             discovery_query=discovery_query,
             discovered_at=discovered_at,
             raw=candidate,
