@@ -658,7 +658,11 @@ export default function MobileFilters({
                       )}
 
                       <span>
-                        {value || "All portals"}
+                        {value === "linkedin"
+                          ? "LinkedIn Jobs"
+                          : value === "linkedin_post"
+                            ? "LinkedIn Post"
+                            : value || "All portals"}
                       </span>
                     </button>
                   ))}
