@@ -2,6 +2,10 @@ name: AI Job Hunter Pipeline
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "30 2 * * *"
+    - cron: "30 6 * * *"
+    - cron: "30 11 * * *"
 
 concurrency:
   group: ai-job-hunter-production
@@ -16,7 +20,9 @@ jobs:
     env:
       S3_BUCKET: ai-job-hunter-production-db
       S3_KEY: job_hunter.duckdb
-      DB_PATH: output/job_hunter_production.duckdb
+      MASTER_DB: output/job_hunter.duckdb
+      PRODUCTION_DB: output/job_hunter_production.duckdb
+      MINIMAL_DB: output/job_hunter_production_minimal.duckdb
       PLAYWRIGHT_HEADLESS: "true"
 
     steps:
@@ -112,14 +118,7 @@ jobs:
               browser.close()
           PY2
 
-      - name: Download production database
-        run: |
-          mkdir -p output
-          aws s3 cp \
-            "s3://${S3_BUCKET}/${S3_KEY}" \
-            "${DB_PATH}"
-
-      - name: Backup production database
+      - name: Backup current production database
         run: |
           TIMESTAMP=$(date -u +"%Y%m%d_%H%M%S")
           aws s3 cp \
@@ -128,61 +127,74 @@ jobs:
 
       - name: Run AI Job Hunter
         run: |
-          echo "===== FINAL PYTHON CHECK ====="
-          .ci-venv/bin/python --version
-          .ci-venv/bin/python -c "import duckdb, playwright, yaml; print('DuckDB:', duckdb.__version__); print('Playwright: OK'); print('PyYAML:', yaml.__version__)"
-
           echo "===== RUN AI JOB HUNTER ====="
+          rm -f output/job_hunter.duckdb
+
           .ci-venv/bin/python -m jobs.cli \
             --profile crm_manager \
             --connector all \
             --exporter duckdb
 
+          test -s output/job_hunter.duckdb
+
+      - name: Build production snapshots
+        run: |
+          .ci-venv/bin/python scripts/build_production_snapshot.py
+
       - name: Validate production database
         run: |
-          .ci-venv/bin/python - <<'PY'
+          .ci-venv/bin/python - <<'PY2'
           import duckdb
           from pathlib import Path
 
           db = Path("output/job_hunter_production.duckdb")
 
           if not db.exists():
-              raise SystemExit("Production database was not created.")
+              raise SystemExit("Production snapshot was not created.")
 
           conn = duckdb.connect(str(db), read_only=True)
-
-          tables = {
-              row[0]
-              for row in conn.execute(
-                  "SHOW TABLES"
-              ).fetchall()
-          }
 
           required = {
               "fact_jobs",
               "fact_job_scores",
+              "fact_jobs_skills",
+              "dim_company",
+              "dim_location",
+              "dim_skill",
               "job_registry",
               "search_session",
+          }
+
+          tables = {
+              row[0]
+              for row in conn.execute("SHOW TABLES").fetchall()
           }
 
           missing = required - tables
 
           if missing:
               raise SystemExit(
-                  f"Missing required tables: {sorted(missing)}"
+                  f"Production DB missing tables: {sorted(missing)}"
               )
 
-          count = conn.execute(
+          jobs = conn.execute(
               "SELECT COUNT(*) FROM fact_jobs"
           ).fetchone()[0]
 
-          if count == 0:
-              raise SystemExit("fact_jobs is empty.")
+          scores = conn.execute(
+              "SELECT COUNT(*) FROM fact_job_scores"
+          ).fetchone()[0]
 
-          print(f"Production DB validated: {count} jobs")
+          if jobs <= 0:
+              raise SystemExit("Production DB contains zero jobs.")
+
+          if scores <= 0:
+              raise SystemExit("Production DB contains zero scores.")
+
+          print(f"Production DB validated: {jobs} jobs, {scores} scores")
 
           conn.close()
-          PY
+          PY2
 
       - name: Upload candidate database
         run: |
@@ -192,7 +204,7 @@ jobs:
           echo "CANDIDATE_KEY=${CANDIDATE_KEY}" >> "$GITHUB_ENV"
 
           aws s3 cp \
-            "${DB_PATH}" \
+            "${PRODUCTION_DB}" \
             "s3://${S3_BUCKET}/${CANDIDATE_KEY}"
 
       - name: Validate candidate database
@@ -214,6 +226,10 @@ jobs:
           required = {
               "fact_jobs",
               "fact_job_scores",
+              "fact_jobs_skills",
+              "dim_company",
+              "dim_location",
+              "dim_skill",
               "job_registry",
               "search_session",
           }
