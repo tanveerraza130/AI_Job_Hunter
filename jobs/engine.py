@@ -827,6 +827,27 @@ class Engine:
             print("")
 
             # ----------------------------------------------------------
+            # Registry lifecycle:
+            # Validator-rejected NEW jobs must not remain NEW forever.
+            # They have completed processing and should become REJECTED.
+            # ----------------------------------------------------------
+
+            if invalid_jobs and self._registry is not None:
+                for job in invalid_jobs:
+                    try:
+                        self._registry.mark_rejected(
+                            job,
+                            reason="Validation rejected",
+                        )
+                    except Exception as exc:
+                        logger.warning(
+                            "Failed to mark validation-rejected job "
+                            "%s as REJECTED: %s",
+                            job.job_id,
+                            exc,
+                        )
+
+            # ----------------------------------------------------------
             # Step 3.5:
             # Profile filtering ONLY NEW jobs
             # ----------------------------------------------------------
@@ -852,6 +873,23 @@ class Engine:
                         len(filtered_jobs),
                         len(rejected_jobs),
                     )
+
+                    # Profile-rejected NEW jobs have completed the
+                    # profile decision and must not remain NEW.
+                    if rejected_jobs and self._registry is not None:
+                        for job in rejected_jobs:
+                            try:
+                                self._registry.mark_rejected(
+                                    job,
+                                    reason="Profile filter rejected",
+                                )
+                            except Exception as exc:
+                                logger.warning(
+                                    "Failed to mark profile-rejected job "
+                                    "%s as REJECTED: %s",
+                                    job.job_id,
+                                    exc,
+                                )
 
                     valid_jobs = filtered_jobs
 
