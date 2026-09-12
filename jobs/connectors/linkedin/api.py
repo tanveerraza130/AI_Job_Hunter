@@ -31,13 +31,16 @@ class LinkedInAPI:
         min_delay: float = 0.0,
         max_delay: float = 0.0,
         max_retries: int = 2,
+        detail_min_delay: float = 1.0,
     ) -> None:
         self.session = session or requests.Session()
         self.timeout = timeout
         self.min_delay = min_delay
         self.max_delay = max_delay
         self.max_retries = max_retries
+        self.detail_min_delay = detail_min_delay
         self._last_request_at = 0.0
+        self._last_detail_request_at = 0.0
 
         self.session.headers.update(
             {
@@ -228,9 +231,37 @@ class LinkedInAPI:
     def fetch_job_page(self, url: str) -> dict[str, Any] | None:
         """Fetch and parse a public LinkedIn JobPosting JSON-LD block."""
 
-        response = self._get(url)
+        # LinkedIn rate-limits rapid job-detail requests. Keep detail
+        # requests sequential and paced while leaving search discovery fast.
+        elapsed = time.monotonic() - self._last_detail_request_at
+        if elapsed < self.detail_min_delay:
+            time.sleep(self.detail_min_delay - elapsed)
 
-        if response is None or response.status_code != 200:
+        response = self.session.get(
+            url,
+            timeout=self.timeout,
+            allow_redirects=True,
+        )
+        self._last_detail_request_at = time.monotonic()
+
+        if response.status_code == 429:
+            retry_after = response.headers.get("Retry-After")
+
+            try:
+                wait_seconds = min(float(retry_after), 30.0)
+            except (TypeError, ValueError):
+                wait_seconds = 5.0
+
+            time.sleep(wait_seconds)
+
+            response = self.session.get(
+                url,
+                timeout=self.timeout,
+                allow_redirects=True,
+            )
+            self._last_detail_request_at = time.monotonic()
+
+        if response.status_code != 200:
             return None
 
         page = html.unescape(response.text)
