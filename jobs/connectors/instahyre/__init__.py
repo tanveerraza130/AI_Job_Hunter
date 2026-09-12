@@ -1,0 +1,3 @@
+"""
+Instahyre connector.
+"""
