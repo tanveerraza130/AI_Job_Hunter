@@ -28,9 +28,9 @@ logger = logging.getLogger(__name__)
 class InstahyreConnector(BaseConnector):
     PORTAL = Portal.INSTAHYRE
     CONNECTOR_TYPE = ConnectorType.API
-    VERSION = "0.2.0"
+    VERSION = "0.3.0"
 
-    PAGE_SIZE = 20
+    PAGE_SIZE = 35
     MAX_PAGES = 50
 
     # Never hammer the public endpoint.
@@ -44,10 +44,8 @@ class InstahyreConnector(BaseConnector):
         self.context = context
         self._api = InstahyreAPI()
 
-        # Progressive inventory cache.
-        self._page_cache: dict[int, list[dict[str, Any]]] = {}
-        self._next_offset = 0
-        self._source_exhausted = False
+        # Request pacing is shared across searches, but search results
+        # are no longer stored as a broad global inventory.
         self._last_request_at = 0.0
 
     @property
@@ -213,29 +211,31 @@ class InstahyreConnector(BaseConnector):
                 self.MIN_REQUEST_INTERVAL - elapsed
             )
 
-    def _fetch_next_page(self) -> bool:
-        if self._source_exhausted:
-            return False
-
-        if len(self._page_cache) >= self.MAX_PAGES:
-            return False
-
-        offset = self._next_offset
+    def _fetch_page(
+        self,
+        request: SearchRequest,
+        offset: int,
+    ) -> list[dict[str, Any]]:
+        """Fetch one server-filtered Instahyre search page."""
 
         self._pace()
 
         try:
             payload = self._api.fetch_page(
+                keyword=str(request.keyword or "").strip(),
+                location=str(request.location or "").strip(),
                 offset=offset,
             )
         except InstahyreAPIError as exc:
             logger.warning(
-                "Instahyre inventory temporarily unavailable "
-                "at offset=%s: %s",
+                "Instahyre search temporarily unavailable "
+                "(keyword=%r location=%r offset=%s): %s",
+                request.keyword,
+                request.location,
                 offset,
                 exc,
             )
-            return False
+            return []
 
         self._last_request_at = time.monotonic()
 
@@ -243,86 +243,38 @@ class InstahyreConnector(BaseConnector):
 
         if not isinstance(objects, list):
             logger.warning(
-                "Instahyre returned invalid objects at offset=%s",
+                "Instahyre returned invalid objects "
+                "(keyword=%r location=%r offset=%s)",
+                request.keyword,
+                request.location,
                 offset,
             )
-            self._source_exhausted = True
-            return False
+            return []
 
-        if not objects:
-            self._source_exhausted = True
-            return False
-
-        self._page_cache[offset] = [
+        return [
             item
             for item in objects
             if isinstance(item, dict)
         ]
 
-        self._next_offset = (
-            offset + self.PAGE_SIZE
-        )
-
-        if len(objects) < self.PAGE_SIZE:
-            self._source_exhausted = True
-
-        logger.info(
-            "Instahyre inventory page offset=%s "
-            "received=%s cached_pages=%s",
-            offset,
-            len(objects),
-            len(self._page_cache),
-        )
-
-        return True
-
-    def _cached_items(self) -> list[dict[str, Any]]:
-        items: list[dict[str, Any]] = []
-        seen: set[str] = set()
-
-        for offset in sorted(self._page_cache):
-            for item in self._page_cache[offset]:
-                job_id = self._job_id(item)
-
-                if not job_id or job_id in seen:
-                    continue
-
-                seen.add(job_id)
-                items.append(item)
-
-        return items
-
     def _find_matches(
         self,
         request: SearchRequest,
+        items: list[dict[str, Any]],
     ) -> list[Job]:
+        """Enrich and map server-filtered Instahyre search results."""
+
         keyword = str(
             request.keyword or ""
-        ).strip()
-
-        location = str(
-            request.location or ""
         ).strip()
 
         result: list[Job] = []
         seen: set[str] = set()
 
-        for item in self._cached_items():
+        for item in items:
             job_id = self._job_id(item)
 
             if not job_id or job_id in seen:
-                continue
-
-            if not self._keyword_match(
-                item,
-                keyword,
-            ):
-                continue
-
-            if not self._location_match(
-                item,
-                location,
-            ):
                 continue
 
             seen.add(job_id)
@@ -398,6 +350,8 @@ class InstahyreConnector(BaseConnector):
         self,
         request: SearchRequest,
     ) -> list[Job]:
+        """Fetch jobs using Instahyre's public server-side search."""
+
         if not request.keyword:
             return []
 
@@ -407,34 +361,50 @@ class InstahyreConnector(BaseConnector):
         ):
             return []
 
-        # Always search everything already cached first.
-        matches = self._find_matches(request)
+        # Instahyre's public endpoint currently returns 35 objects
+        # per search page. Fetch only the requested keyword/location
+        # inventory instead of downloading the broad global feed.
+        page_size = self.PAGE_SIZE
+        offset = 0
+        pages_fetched = 0
+        all_items: list[dict[str, Any]] = []
+        seen_ids: set[str] = set()
 
-        if (
-            request.max_jobs is not None
-            and len(matches) >= request.max_jobs
-        ):
-            return matches[:request.max_jobs]
+        while pages_fetched < self.MAX_PAGES:
+            items = self._fetch_page(
+                request,
+                offset,
+            )
 
-        # Progressively expand the inventory only when necessary.
-        while not self._source_exhausted:
-            if len(self._page_cache) >= self.MAX_PAGES:
+            if not items:
                 break
 
-            fetched = self._fetch_next_page()
+            for item in items:
+                job_id = self._job_id(item)
 
-            if not fetched:
-                break
+                if not job_id or job_id in seen_ids:
+                    continue
 
-            matches = self._find_matches(request)
+                seen_ids.add(job_id)
+                all_items.append(item)
 
+            pages_fetched += 1
+
+            # We can stop as soon as we have enough candidates to
+            # satisfy max_jobs. Final profile relevance remains the
+            # responsibility of the existing Engine pipeline.
             if (
                 request.max_jobs is not None
-                and len(matches) >= request.max_jobs
+                and len(all_items) >= request.max_jobs
             ):
                 break
 
-        if request.max_jobs is not None:
-            return matches[:request.max_jobs]
+            if len(items) < page_size:
+                break
 
-        return matches
+            offset += page_size
+
+        return self._find_matches(
+            request,
+            all_items,
+        )

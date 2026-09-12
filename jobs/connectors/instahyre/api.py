@@ -24,8 +24,18 @@ class InstahyreAPI:
     BASE_URL = "https://www.instahyre.com"
     SEARCH_PATH = "/api/v1/job_search"
 
-    PAGE_SIZE = 20
+    # Instahyre currently returns 35 objects per public search request.
+    # This is the API response page size, not our SearchRequest.page_size.
+    PAGE_SIZE = 35
     TIMEOUT = 30
+
+    LOCATION_MAP = {
+        "delhi": "Delhi",
+        "delhi ncr": "Delhi / NCR",
+        "gurugram": "Gurgaon",
+        "gurgaon": "Gurgaon",
+        "noida": "Noida",
+    }
 
     MAX_RETRIES = 4
     REQUEST_DELAY = 1.5
@@ -49,13 +59,29 @@ class InstahyreAPI:
             }
         )
 
-    def fetch_page(self, offset: int = 0) -> dict[str, Any]:
-        """Fetch one public Instahyre job-search page."""
+    @classmethod
+    def normalize_location(cls, location: str) -> str:
+        """Map AI Job Hunter locations to Instahyre's public vocabulary."""
+        normalized = " ".join(str(location or "").lower().split())
+
+        return cls.LOCATION_MAP.get(
+            normalized,
+            str(location or "").strip(),
+        )
+
+    def fetch_page(
+        self,
+        keyword: str,
+        location: str,
+        offset: int = 0,
+    ) -> dict[str, Any]:
+        """Fetch one server-filtered public Instahyre search page."""
 
         params = {
-            "company_size": 0,
-            "isLandingPage": "true",
+            "skills": keyword,
+            "jobLocations": self.normalize_location(location),
             "job_type": 0,
+            "company_size": 0,
             "offset": offset,
             "source": "opportunities",
         }

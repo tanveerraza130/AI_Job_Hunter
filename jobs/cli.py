@@ -234,6 +234,7 @@ def main() -> int:
                     _create_connector("iimjobs", context),
                     _create_connector("foundit", context),
                     _create_connector("linkedin", context),
+                    _create_connector("instahyre", context),
                 ]
             else:
                 connectors = [
