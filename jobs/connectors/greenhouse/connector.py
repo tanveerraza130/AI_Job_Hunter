@@ -22,6 +22,7 @@ intelligence, persistence, or application logic.
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Any
 
 from jobs.base import BaseConnector
@@ -60,6 +61,23 @@ class GreenhouseConnector(BaseConnector):
                 if token.strip()
             ]
 
+            catalog_path = os.getenv(
+                "GREENHOUSE_BOARD_CATALOG",
+                "config/greenhouse_boards.txt",
+            )
+
+            catalog = Path(catalog_path)
+
+            if catalog.exists():
+                catalog_tokens = [
+                    line.strip()
+                    for line in catalog.read_text().splitlines()
+                    if line.strip()
+                    and not line.lstrip().startswith("#")
+                ]
+
+                board_tokens.extend(catalog_tokens)
+
         self.board_tokens = list(
             dict.fromkeys(board_tokens or [])
         )
@@ -68,6 +86,10 @@ class GreenhouseConnector(BaseConnector):
             token: GreenhouseAPI(token)
             for token in self.board_tokens
         }
+
+        # Cache each public board inventory once per connector run.
+        # Multiple profiles/search requests can reuse the same board data.
+        self._job_cache: dict[str, list[dict[str, Any]]] = {}
 
     @property
     def name(self) -> str:
@@ -79,25 +101,16 @@ class GreenhouseConnector(BaseConnector):
         request: SearchRequest,
     ) -> bool:
         """
-        Apply source-local keyword/location candidate matching.
+        Apply only safe source-level candidate constraints.
 
-        Keyword is checked against title and full public JD.
-        Location is checked against the Greenhouse location field.
+        Greenhouse does not perform profile/keyword relevance
+        matching. Search keywords belong to the shared profile
+        filtering layer so that semantically relevant jobs whose
+        titles differ from the literal search keyword are not lost.
 
-        Empty criteria do not exclude a job.
+        Location may still be used as a source-level constraint
+        because it is an explicit SearchRequest boundary.
         """
-        title = str(
-            item.get("title") or ""
-        )
-
-        content = str(
-            item.get("content") or ""
-        )
-
-        keyword = (
-            request.keyword or ""
-        ).strip().lower()
-
         location_data = item.get("location")
 
         if isinstance(location_data, dict):
@@ -111,37 +124,14 @@ class GreenhouseConnector(BaseConnector):
 
         location = location.lower()
 
-        keyword_match = (
-            not keyword
-            or keyword in (
-                title + "\n" + content
-            ).lower()
-        )
-
         requested_location = (
             request.location or ""
         ).strip().lower()
 
-        location_match = (
+        return (
             not requested_location
             or requested_location in location
         )
-
-        return keyword_match and location_match
-
-    @staticmethod
-    def _safe_max_jobs(
-        request: SearchRequest,
-    ) -> int | None:
-        if request.max_jobs is None:
-            return None
-
-        try:
-            value = int(request.max_jobs)
-        except (TypeError, ValueError):
-            return 0
-
-        return max(value, 0)
 
     def fetch_jobs(
         self,
@@ -150,11 +140,6 @@ class GreenhouseConnector(BaseConnector):
         """
         Fetch and normalize relevant jobs from configured boards.
         """
-        max_jobs = self._safe_max_jobs(request)
-
-        if max_jobs == 0:
-            return []
-
         if not self.board_tokens:
             return []
 
@@ -164,9 +149,12 @@ class GreenhouseConnector(BaseConnector):
         for board_token in self.board_tokens:
             api = self._apis[board_token]
 
-            items = api.fetch_jobs(
-                content=True,
-            )
+            if board_token not in self._job_cache:
+                self._job_cache[board_token] = api.fetch_jobs(
+                    content=True,
+                )
+
+            items = self._job_cache[board_token]
 
             for item in items:
                 if not self._matches(
@@ -201,11 +189,5 @@ class GreenhouseConnector(BaseConnector):
                     continue
 
                 jobs.append(job)
-
-                if (
-                    max_jobs is not None
-                    and len(jobs) >= max_jobs
-                ):
-                    return jobs
 
         return jobs
