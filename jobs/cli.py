@@ -229,20 +229,15 @@ def main() -> int:
                         "Connector 'all' requires --profile"
                     )
 
-                connectors: list[BaseConnector] = [
-                    _create_connector("naukri", context),
-                    _create_connector("iimjobs", context),
-                    _create_connector("foundit", context),
-                    _create_connector("linkedin", context),
-                    _create_connector("instahyre", context),
+                connector_names = [
+                    "naukri",
+                    "iimjobs",
+                    "foundit",
+                    "linkedin",
+                    "greenhouse",
                 ]
             else:
-                connectors = [
-                    _create_connector(
-                        args.connector,
-                        context,
-                    )
-                ]
+                connector_names = [args.connector]
 
 
             #
@@ -281,23 +276,62 @@ def main() -> int:
 
 
             #
-            # Engine
+            # Engine / execution
             #
+            if args.connector.lower() == "all":
+                for connector_name in connector_names:
+                    print(
+                        f"\n{'=' * 60}\n"
+                        f"▶ Running connector: {connector_name}\n"
+                        f"{'=' * 60}"
+                    )
+
+                    connector = _create_connector(
+                        connector_name,
+                        context,
+                    )
+
+                    engine = Engine(
+                        connectors=[connector],
+                        exporter=exporter,
+                        db_path=db_path,
+                    )
+
+                    try:
+                        summary: ExecutionSummary = engine.run(
+                            requests,
+                            destination,
+                            profile_type=profile_type,
+                        )
+
+                        _print_summary(
+                            summary,
+                            args.exporter,
+                        )
+                    finally:
+                        engine.close()
+
+                return 0
+
+            connector = _create_connector(
+                connector_names[0],
+                context,
+            )
+
             engine = Engine(
-                connectors=connectors,
+                connectors=[connector],
                 exporter=exporter,
                 db_path=db_path,
             )
 
-
-            summary: ExecutionSummary = (
-                engine.run(
+            try:
+                summary = engine.run(
                     requests,
                     destination,
                     profile_type=profile_type,
                 )
-            )
-
+            finally:
+                engine.close()
 
             _print_summary(
                 summary,

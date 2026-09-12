@@ -152,17 +152,15 @@ Examples:
                         "--connector all is supported only with --profile"
                     )
 
-                connectors = [
-                    _create_connector("naukri", context),
-                    _create_connector("iimjobs", context),
-                    _create_connector("foundit", context),
-                    _create_connector("linkedin", context),
-                    _create_connector("greenhouse", context),
+                connector_names = [
+                    "naukri",
+                    "iimjobs",
+                    "foundit",
+                    "linkedin",
+                    "greenhouse",
                 ]
             else:
-                connectors = [
-                    _create_connector(args.connector, context),
-                ]
+                connector_names = [args.connector]
 
             exporter = _create_exporter(args.exporter)
 
@@ -183,13 +181,6 @@ Examples:
             )
             db_path: Path = destination
 
-            # Create engine
-            engine = Engine(
-                connectors=connectors,
-                exporter=exporter,
-                db_path=db_path,
-            )
-
             if args.keyword:
                 # Keyword mode - single request
                 request = SearchRequest(
@@ -197,16 +188,16 @@ Examples:
                     location=args.locations[0],
                     max_jobs=args.max_jobs,
                 )
-                summary = engine.run(request, destination)
+                requests = [request]
             else:
                 # Profile mode - build search plan
                 profile = load_profile(args.profile)
-                search_requests = build_search_plan(profile, args.locations)
+                requests = build_search_plan(profile, args.locations)
 
                 # SearchRequest is frozen, so never mutate max_jobs in-place.
                 # Rebuild each request while preserving all existing fields.
                 if args.max_jobs is not None:
-                    search_requests = [
+                    requests = [
                         SearchRequest(
                             keyword=request.keyword,
                             location=request.location,
@@ -224,27 +215,76 @@ Examples:
                             page_size=request.page_size,
                             max_jobs=args.max_jobs,
                         )
-                        for request in search_requests
+                        for request in requests
                     ]
 
-                # FIX: Pass profile_type to engine.run()
+            if args.connector.lower() == "all":
+                for connector_name in connector_names:
+                    print(
+                        f"\n{'=' * 60}\n"
+                        f"▶ Running connector: {connector_name}\n"
+                        f"{'=' * 60}"
+                    )
+
+                    connector = _create_connector(
+                        connector_name,
+                        context,
+                    )
+                    engine = Engine(
+                        connectors=[connector],
+                        exporter=exporter,
+                        db_path=db_path,
+                    )
+
+                    try:
+                        summary = engine.run(
+                            requests,
+                            destination,
+                            profile_type=args.profile if not args.keyword else None,
+                        )
+                        _print_summary(summary, args.exporter)
+
+                        if summary.errors:
+                            print(
+                                f"❌ {connector_name}: "
+                                f"{len(summary.errors)} error(s).",
+                                file=sys.stderr,
+                            )
+                            return 1
+                    finally:
+                        engine.close()
+
+                return 0
+
+            connector = _create_connector(
+                connector_names[0],
+                context,
+            )
+            engine = Engine(
+                connectors=[connector],
+                exporter=exporter,
+                db_path=db_path,
+            )
+
+            try:
                 summary = engine.run(
-                    search_requests,
+                    requests,
                     destination,
-                    profile_type=args.profile,
+                    profile_type=args.profile if not args.keyword else None,
                 )
+                _print_summary(summary, args.exporter)
 
-            _print_summary(summary, args.exporter)
+                if summary.errors:
+                    print(
+                        f"❌ Fetch completed with "
+                        f"{len(summary.errors)} error(s).",
+                        file=sys.stderr,
+                    )
+                    return 1
 
-            if summary.errors:
-                print(
-                    f"❌ Fetch completed with "
-                    f"{len(summary.errors)} error(s).",
-                    file=sys.stderr,
-                )
-                return 1
-
-            return 0
+                return 0
+            finally:
+                engine.close()
 
         except Exception as exc:
             print(f"❌ Error: {exc}", file=sys.stderr)
