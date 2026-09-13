@@ -104,7 +104,7 @@ class WorkdayConnector(BaseConnector):
                         break
 
                     payload = api.search_jobs(
-                        search_text="",
+                        search_text=request.keyword,
                         offset=offset,
                         limit=page_size,
                     )

@@ -80,3 +80,44 @@ def test_workday_max_jobs_applies_after_location_filter():
 
     assert len(jobs) == 2
     assert [job.job_id for job in jobs] == ["2", "4"]
+
+def test_workday_search_uses_request_keyword():
+    connector = WorkdayConnector()
+
+    request = SearchRequest(
+        keyword="CRM",
+        location="India",
+        page_size=20,
+        max_jobs=1,
+    )
+
+    with (
+        patch(
+            "jobs.connectors.workday.connector.WorkdayDiscovery.load",
+            return_value=[
+                (
+                    "example.wd5.myworkdayjobs.com",
+                    "example",
+                    "Careers",
+                )
+            ],
+        ),
+        patch(
+            "jobs.connectors.workday.connector.WorkdayDiscovery.discover_live",
+            return_value=[],
+        ),
+        patch(
+            "jobs.connectors.workday.connector.WorkdayAPI.search_jobs",
+            return_value={
+                "total": 0,
+                "jobPostings": [],
+            },
+        ) as mock_search,
+    ):
+        connector.fetch_jobs(request)
+
+    mock_search.assert_called_once_with(
+        search_text="CRM",
+        offset=0,
+        limit=20,
+    )
