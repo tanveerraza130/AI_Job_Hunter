@@ -21,6 +21,7 @@ class Portal(StrEnum):
     CUTSHORT = "cutshort"
     WELLFOUND = "wellfound"
     GREENHOUSE = "greenhouse"
+    WORKDAY = "workday"
     LEVER = "lever"
     ASHBY = "ashby"
     COMPANY = "company"  # Direct company career page

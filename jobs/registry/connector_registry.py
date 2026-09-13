@@ -117,6 +117,13 @@ CONNECTOR_REGISTRY: dict[tuple[Portal, ConnectorType], ConnectorInfo] = {
         default=True,
     ),
 
+    # Workday
+    (Portal.WORKDAY, ConnectorType.API): ConnectorInfo(
+        portal=Portal.WORKDAY,
+        connector_type=ConnectorType.API,
+        default=True,
+    ),
+
     # Lever
     (Portal.LEVER, ConnectorType.API): ConnectorInfo(
         portal=Portal.LEVER,
