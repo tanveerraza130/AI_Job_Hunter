@@ -139,6 +139,21 @@ class WorkdayConnector(BaseConnector):
                         if not external_path:
                             continue
 
+                        # Pre-filter using Workday's search-result location.
+                        # This avoids unnecessary detail API calls for non-matching jobs.
+                        if request.location:
+                            raw_search_location = item.get("locationsText")
+
+                            # Only pre-filter when Workday supplied a location.
+                            # If absent, retain the existing detail-based filter.
+                            if raw_search_location:
+                                search_location = (
+                                    raw_search_location
+                                ).strip().lower()
+
+                                if request.location.strip().lower() not in search_location:
+                                    continue
+
                         detail = api.fetch_job_detail(
                             external_path
                         )
