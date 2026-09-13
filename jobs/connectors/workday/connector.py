@@ -24,6 +24,7 @@ class WorkdayConnector(BaseConnector):
     def __init__(self, context=None) -> None:
         self.context = context
         self._seen_external_paths: set[str] = set()
+        self._discovered_boards: list[tuple[str, str, str]] | None = None
 
     @property
     def name(self) -> str:
@@ -54,28 +55,33 @@ class WorkdayConnector(BaseConnector):
         jobs = []
         seen_ids: set[str] = set()
 
-        # Refresh the generated discovery cache when possible.
+        # Discover and validate Workday boards once per connector run.
         # If the public discovery source is unavailable or incomplete,
         # retain the last known-good cache instead of dropping coverage.
-        cached_boards = WorkdayDiscovery.load(
-            self.DISCOVERY_FILE
-        )
-
-        discovered_boards = WorkdayDiscovery(
-            timeout=20
-        ).discover_live()
-
-        if discovered_boards:
-            boards = sorted(
-                set(cached_boards)
-                | set(discovered_boards)
+        if self._discovered_boards is None:
+            cached_boards = WorkdayDiscovery.load(
+                self.DISCOVERY_FILE
             )
-            WorkdayDiscovery.save(
-                boards,
-                self.DISCOVERY_FILE,
-            )
-        else:
-            boards = cached_boards
+
+            discovered_boards = WorkdayDiscovery(
+                timeout=20
+            ).discover_live()
+
+            if discovered_boards:
+                boards = sorted(
+                    set(cached_boards)
+                    | set(discovered_boards)
+                )
+                WorkdayDiscovery.save(
+                    boards,
+                    self.DISCOVERY_FILE,
+                )
+            else:
+                boards = cached_boards
+
+            self._discovered_boards = boards
+
+        boards = self._discovered_boards
 
         if not boards:
             return jobs
