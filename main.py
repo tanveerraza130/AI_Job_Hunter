@@ -73,6 +73,7 @@ Examples:
             "linkedin",
             "indeed",
             "greenhouse",
+            "workday",
             "all",
         ],
         help=(
@@ -158,6 +159,7 @@ Examples:
                     "foundit",
                     "linkedin",
                     "greenhouse",
+                    "workday",
                 ]
             else:
                 connector_names = [args.connector]
