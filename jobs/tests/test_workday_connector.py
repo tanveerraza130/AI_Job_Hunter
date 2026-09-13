@@ -19,6 +19,52 @@ def _job(job_id: str, location: str) -> Job:
     )
 
 
+def test_workday_deduplicates_external_path_across_keyword_requests(monkeypatch):
+    connector = WorkdayConnector()
+
+    detail_calls = []
+
+    class FakeAPI:
+        def search_jobs(self, search_text, offset, limit):
+            return {
+                "total": 1,
+                "jobPostings": [
+                    {
+                        "externalPath": "/job/123",
+                        "locationsText": "India",
+                    }
+                ],
+            }
+
+        def fetch_job_detail(self, external_path):
+            detail_calls.append(external_path)
+            return {
+                "jobPostingInfo": {
+                    "title": "CRM Manager",
+                    "jobDescription": "CRM role",
+                    "location": "India",
+                    "jobReqId": "REQ-123",
+                }
+            }
+
+    monkeypatch.setattr(
+        "jobs.connectors.workday.connector.WorkdayAPI",
+        lambda **kwargs: FakeAPI(),
+    )
+    monkeypatch.setattr(
+        "jobs.connectors.workday.connector.WorkdayDiscovery.discover_live",
+        lambda self: [("example.com", "tenant", "site")],
+    )
+
+    request_1 = SearchRequest(keyword="CRM Manager", location="India", max_jobs=10)
+    request_2 = SearchRequest(keyword="Lifecycle Marketing", location="India", max_jobs=10)
+
+    connector.fetch_jobs(request_1)
+    connector.fetch_jobs(request_2)
+
+    assert detail_calls == ["/job/123"]
+
+
 def test_workday_max_jobs_applies_after_location_filter():
     connector = WorkdayConnector()
 

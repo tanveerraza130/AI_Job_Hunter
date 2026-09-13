@@ -23,6 +23,7 @@ class WorkdayConnector(BaseConnector):
 
     def __init__(self, context=None) -> None:
         self.context = context
+        self._seen_external_paths: set[str] = set()
 
     @property
     def name(self) -> str:
@@ -153,6 +154,11 @@ class WorkdayConnector(BaseConnector):
 
                                 if request.location.strip().lower() not in search_location:
                                     continue
+
+                        if external_path in self._seen_external_paths:
+                            continue
+
+                        self._seen_external_paths.add(external_path)
 
                         detail = api.fetch_job_detail(
                             external_path
