@@ -14,6 +14,10 @@ import {
   getApplicationsBulk,
   updateApplication,
 } from "@/lib/api";
+import {
+  publishApplicationStatus,
+  subscribeApplicationStatus,
+} from "@/lib/applicationStatusSync";
 
 import type { ApplicationStatus as ApiApplicationStatus } from "@/lib/api";
 
@@ -93,6 +97,28 @@ export default function DashboardMobile(
     Record<string, MobileStatus>
   >({});
 
+  /*
+   * Keep Mobile Dashboard synchronized with status changes
+   * made from Job Details or Desktop Dashboard.
+   */
+  useEffect(() => {
+    return subscribeApplicationStatus((event) => {
+      setStatusMap((current) => {
+        const next = { ...current };
+
+        if (event.status === "not_applied") {
+          delete next[event.jobId];
+        } else {
+          next[event.jobId] =
+            displayStatus(event.status);
+        }
+
+        return next;
+      });
+    });
+  }, []);
+
+
   const [
     activeTab,
     setActiveTab,
@@ -168,6 +194,11 @@ export default function DashboardMobile(
           return next;
         });
 
+        publishApplicationStatus(
+          jobId,
+          "not_applied",
+        );
+
         return;
       }
 
@@ -190,6 +221,11 @@ export default function DashboardMobile(
           ...current,
           [jobId]: displayStatus(savedStatus),
         }));
+
+        publishApplicationStatus(
+          jobId,
+          savedStatus,
+        );
       }
     } catch (error) {
       console.error(

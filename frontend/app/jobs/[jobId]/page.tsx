@@ -15,6 +15,10 @@ import { getApplication, getJobDetail, getMyProfile, updateApplication } from "@
 import type { ApplicationStatus } from "@/lib/api";
 import type { JobDetail, ScoreBreakdown } from "@/types/job";
 import {
+  publishApplicationStatus,
+  subscribeApplicationStatus,
+} from "@/lib/applicationStatusSync";
+import {
   getApplyReturnState,
   markApplyReturned,
   setApplyAwaitingReturn,
@@ -40,7 +44,36 @@ export default function JobDetailPage({
 
   const [profileId,setProfileId]=useState<string | null>(null);
   const [job,setJob]=useState<JobDetail|null>(null); const [loading,setLoading]=useState(true); const [error,setError]=useState<string|null>(null);
-  const [status,setStatus]=useState<ApplicationStatus>("saved");
+  const [status, setStatus] =
+    useState<ApplicationStatus | "not_applied">(
+      "not_applied",
+    );
+
+  /*
+   * Keep Job Details synchronized with Dashboard and other
+   * status-changing surfaces in the same browser tab.
+   */
+  useEffect(() => {
+    if (!job?.job_id) return;
+
+    return subscribeApplicationStatus((event) => {
+      if (
+        String(event.jobId) !==
+        String(job.job_id)
+      ) {
+        return;
+      }
+
+      if (event.status === "not_applied") {
+        setStatus("not_applied");
+        setNotes("");
+        return;
+      }
+
+      setStatus(event.status);
+    });
+  }, [job?.job_id]);
+
   const [openMobileSection, setOpenMobileSection] =
     useState<string | null>(null);
 
@@ -186,7 +219,7 @@ export default function JobDetailPage({
    * ============================================================
    */
   useEffect(() => {
-    function handleReturn() {
+    async function handleReturn() {
       /*
        * Same lifecycle guard as Dashboard.
        */
@@ -235,7 +268,9 @@ export default function JobDetailPage({
       /*
        * Apply was started and the browser has returned.
        *
-       * Use the same conversion used by Dashboard.
+       * First refresh the real application status from
+       * the backend so Job Details and Dashboard reflect
+       * any status already saved by the Apply flow.
        */
       if (shared.awaitingReturn) {
         const returned = markApplyReturned();
@@ -245,6 +280,43 @@ export default function JobDetailPage({
           String(returned.jobId) ===
             String(job.job_id)
         ) {
+          try {
+            const application = await getApplication(
+              job.job_id,
+            );
+
+            if (application.application) {
+              const savedStatus =
+                application.application.status;
+
+              setStatus(savedStatus);
+              setNotes(
+                application.application.notes || "",
+              );
+
+              publishApplicationStatus(
+                job.job_id,
+                savedStatus,
+              );
+
+              setShowApplyPrompt(null);
+              return;
+            }
+
+            setStatus("not_applied");
+            setNotes("");
+
+            publishApplicationStatus(
+              job.job_id,
+              "not_applied",
+            );
+          } catch (error) {
+            console.error(
+              "Failed to refresh application after Apply:",
+              error,
+            );
+          }
+
           setShowApplyPrompt(
             String(returned.jobId),
           );
@@ -486,7 +558,50 @@ export default function JobDetailPage({
       cancelled = true;
     };
   }, [jobId]);
-  async function saveApplication(nextStatus:ApplicationStatus=status){if(!job||!profileId||saving)return;try{setSaving(true);const r=await updateApplication(job.job_id,{status:nextStatus,applied_at:nextStatus==="applied"?new Date().toISOString():undefined,notes});setStatus(r.application.status);setNotes(r.application.notes||"");}catch(e){console.error(e);setError("Unable to save application changes.");}finally{setSaving(false);}}
+  async function saveApplication(
+    nextStatus: ApplicationStatus,
+  ) {
+    if (!job || !profileId || saving) return;
+
+    try {
+      setSaving(true);
+      setError(null);
+
+      const response = await updateApplication(
+        job.job_id,
+        {
+          status: nextStatus,
+          applied_at:
+            nextStatus === "applied"
+              ? new Date().toISOString()
+              : undefined,
+          notes,
+        },
+      );
+
+      const savedApplication =
+        response.application;
+
+      setStatus(savedApplication.status);
+      setNotes(savedApplication.notes || "");
+
+      publishApplicationStatus(
+        job.job_id,
+        savedApplication.status,
+      );
+    } catch (error) {
+      console.error(
+        "Failed to save application:",
+        error,
+      );
+
+      setError(
+        "Unable to save application changes.",
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
   const score=job?.score; const breakdown:ScoreBreakdown|null=score?.score_breakdown??job?.score_breakdown??null; const paragraphs=useMemo(()=>splitDescription(job?.description),[job?.description]);
   if (loading || !profileId) {
     return (

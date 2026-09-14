@@ -25,10 +25,10 @@ import { setApplyAwaitingReturn } from "@/lib/applyReturnState";
 type Props = {
   job: JobDetail;
   score: JobDetail["score"];
-  status: ApplicationStatus;
+  status: ApplicationStatus | "not_applied";
   saving: boolean;
   saveApplication: (
-    nextStatus?: ApplicationStatus,
+    nextStatus: ApplicationStatus,
   ) => Promise<void>;
   showApplyPrompt?: boolean;
   onApplyConfirmed?: () => void;
@@ -201,9 +201,11 @@ export default function JobHeader({
   }, [desktopStatusOpen]);
 
   const desktopStatusLabel =
-    desktopStatusOptions.find(
-      (option) => option.value === status,
-    )?.label || "Application Pending";
+    status === "not_applied"
+      ? "Not Applied"
+      : desktopStatusOptions.find(
+          (option) => option.value === status,
+        )?.label || "Application Pending";
 
   return (
     <section className={styles.hero}>

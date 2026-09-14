@@ -10,6 +10,10 @@ import {
   MapPin,
 } from "lucide-react";
 import { deleteApplication, getApplicationsBulk, updateApplication } from "@/lib/api";
+import {
+  publishApplicationStatus,
+  subscribeApplicationStatus,
+} from "@/lib/applicationStatusSync";
 import type { Job } from "@/types/job";
 import { formatDisplayText } from "@/lib/display";
 import {
@@ -174,6 +178,28 @@ export default function JobTable({
   const [statusMap, setStatusMap] = useState<
     Record<string, ApplicationStatus>
   >({});
+
+  /*
+   * Keep Dashboard desktop synchronized with status changes
+   * made from Job Details or another dashboard surface.
+   */
+  useEffect(() => {
+    return subscribeApplicationStatus((event) => {
+      setStatusMap((current) => {
+        const next = { ...current };
+
+        if (event.status === "not_applied") {
+          delete next[event.jobId];
+        } else {
+          next[event.jobId] =
+            displayStatus(event.status);
+        }
+
+        return next;
+      });
+    });
+  }, []);
+
   const [filter, setFilter] = useState<
     "ALL" | "Applied" | "Not Applied" | "Saved"
   >("ALL");
@@ -461,6 +487,11 @@ export default function JobTable({
           return next;
         });
 
+        publishApplicationStatus(
+          jobId,
+          "not_applied",
+        );
+
         return;
       }
 
@@ -472,12 +503,22 @@ export default function JobTable({
             : null,
       });
 
-      setStatusMap((current) => ({
-        ...current,
-        [jobId]: displayStatus(
-          response.application?.status,
-        ),
-      }));
+      const savedStatus =
+        response.application?.status;
+
+      if (savedStatus) {
+        setStatusMap((current) => ({
+          ...current,
+          [jobId]: displayStatus(
+            savedStatus,
+          ),
+        }));
+
+        publishApplicationStatus(
+          jobId,
+          savedStatus,
+        );
+      }
     } catch (error) {
       console.error(
         "Failed to update application status:",
