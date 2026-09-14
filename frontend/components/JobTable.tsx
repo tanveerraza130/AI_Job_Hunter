@@ -68,7 +68,7 @@ const apiStatus = (
   if (status === "Offer") return "offer";
   if (status === "Not Relevant") return "not_relevant";
 
-  return "saved";
+  throw new Error(`Invalid application status: ${status}`);
 };
 
 

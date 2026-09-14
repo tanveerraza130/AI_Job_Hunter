@@ -64,6 +64,7 @@ const displayStatus = (
 const apiStatus = (
   status: MobileStatus,
 ): ApiApplicationStatus => {
+  if (status === "Saved") return "saved";
   if (status === "Pending") return "pending";
   if (status === "Applied") return "applied";
   if (status === "Interview") return "interview";
@@ -71,7 +72,7 @@ const apiStatus = (
   if (status === "Offer") return "offer";
   if (status === "Not Relevant") return "not_relevant";
 
-  return "saved";
+  throw new Error(`Invalid application status: ${status}`);
 };
 
     
