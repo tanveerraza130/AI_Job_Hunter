@@ -4,9 +4,9 @@ import styles from "./MobileTabs.module.css";
 
 type MobileTab =
   | "ALL"
-  | "Saved"
   | "Applied"
-  | "Interview";
+  | "Not Applied"
+  | "Saved";
 
 interface Props {
   activeTab: MobileTab;
@@ -24,9 +24,9 @@ export default function MobileTabs({
       "ALL",
       `All (${totalJobs.toLocaleString("en-IN")})`,
     ],
-    ["Saved", "Saved"],
     ["Applied", "Applied"],
-    ["Interview", "Interview"],
+    ["Not Applied", "Not Applied"],
+    ["Saved", "Saved"],
   ] as const;
 
   return (

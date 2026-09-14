@@ -175,7 +175,7 @@ export default function JobTable({
     Record<string, ApplicationStatus>
   >({});
   const [filter, setFilter] = useState<
-    "ALL" | "Saved" | "Applied" | "Interview"
+    "ALL" | "Applied" | "Not Applied" | "Saved"
   >("ALL");
 
   const [waitingForApplyReturn, setWaitingForApplyReturn] = useState<
@@ -527,7 +527,7 @@ export default function JobTable({
     <section className="mj-wrapper">
 
       <div className="mj-tabs">
-        {(["ALL", "Saved", "Applied", "Interview"] as const).map(
+        {(["ALL", "Applied", "Not Applied", "Saved"] as const).map(
           (value) => (
             <button
               key={value}

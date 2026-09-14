@@ -43,9 +43,9 @@ type MobileStatus =
 
 type MobileTab =
   | "ALL"
-  | "Saved"
   | "Applied"
-  | "Interview";
+  | "Not Applied"
+  | "Saved";
 
 const displayStatus = (
   status?: string,
