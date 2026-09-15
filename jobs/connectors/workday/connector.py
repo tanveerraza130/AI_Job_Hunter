@@ -25,6 +25,10 @@ class WorkdayConnector(BaseConnector):
         self.context = context
         self._seen_external_paths: set[str] = set()
         self._discovered_boards: list[tuple[str, str, str]] | None = None
+        self._board_location_facets: dict[
+            tuple[str, str, str],
+            list[dict[str, str]],
+        ] = {}
 
     @property
     def name(self) -> str:
@@ -46,7 +50,82 @@ class WorkdayConnector(BaseConnector):
             job.location or ""
         ).strip().lower()
 
-        return requested_location in location
+        aliases = {
+            "delhi": {"delhi", "new delhi"},
+            "gurugram": {"gurugram", "gurgaon"},
+            "noida": {"noida"},
+            "bangalore": {"bangalore", "bengaluru"},
+            "mumbai": {"mumbai"},
+            "hyderabad": {"hyderabad"},
+            "pune": {"pune"},
+            "kolkata": {"kolkata", "calcutta"},
+        }
+
+        targets = aliases.get(
+            requested_location,
+            {requested_location},
+        )
+
+        return any(
+            target in location
+            for target in targets
+        )
+
+    @staticmethod
+    def _location_facet_ids(
+        facets,
+        requested_location: str,
+    ) -> list[str]:
+        requested = requested_location.strip().lower()
+
+        if not requested:
+            return []
+
+        aliases = {
+            "delhi": {"delhi", "new delhi"},
+            "gurugram": {"gurugram", "gurgaon"},
+            "noida": {"noida"},
+            "bangalore": {"bangalore", "bengaluru"},
+            "mumbai": {"mumbai"},
+            "hyderabad": {"hyderabad"},
+            "pune": {"pune"},
+            "kolkata": {"kolkata", "calcutta"},
+        }
+
+        targets = aliases.get(
+            requested,
+            {requested},
+        )
+
+        ids: list[str] = []
+
+        def collect(values) -> None:
+            if not isinstance(values, list):
+                return
+
+            for value in values:
+                if not isinstance(value, dict):
+                    continue
+
+                descriptor = str(
+                    value.get("descriptor") or ""
+                ).strip().lower()
+
+                facet_id = str(
+                    value.get("id") or ""
+                ).strip()
+
+                if facet_id and any(
+                    target in descriptor
+                    for target in targets
+                ):
+                    ids.append(facet_id)
+
+                collect(value.get("values"))
+
+        collect(facets)
+
+        return list(dict.fromkeys(ids))
 
     def fetch_jobs(
         self,
@@ -103,6 +182,98 @@ class WorkdayConnector(BaseConnector):
                 offset = 0
                 page_size = 20
 
+                if request.location:
+                    board_key = (host, tenant, site)
+
+                    if board_key not in self._board_location_facets:
+                        facet_payload = api.search_jobs(
+                            search_text="",
+                            offset=0,
+                            limit=page_size,
+                        )
+
+                        location_values = []
+
+                        def find_location_facet(values) -> None:
+                            if not isinstance(values, list):
+                                return
+
+                            for value in values:
+                                if not isinstance(value, dict):
+                                    continue
+
+                                if (
+                                    value.get("facetParameter")
+                                    == "locations"
+                                ):
+                                    collect_location_values(
+                                        value.get("values")
+                                    )
+                                    return
+
+                                find_location_facet(
+                                    value.get("values")
+                                )
+
+                        def collect_location_values(values) -> None:
+                            if not isinstance(values, list):
+                                return
+
+                            for value in values:
+                                if not isinstance(value, dict):
+                                    continue
+
+                                descriptor = str(
+                                    value.get("descriptor") or ""
+                                ).strip()
+
+                                facet_id = str(
+                                    value.get("id") or ""
+                                ).strip()
+
+                                if facet_id and descriptor:
+                                    location_values.append(
+                                        {
+                                            "descriptor": descriptor,
+                                            "id": facet_id,
+                                        }
+                                    )
+
+                                collect_location_values(
+                                    value.get("values")
+                                )
+
+                        find_location_facet(
+                            facet_payload.get("facets", [])
+                        )
+
+                        self._board_location_facets[board_key] = (
+                            location_values
+                        )
+
+                    location_facet_ids = self._location_facet_ids(
+                        self._board_location_facets[board_key],
+                        request.location,
+                    )
+
+                    if not location_facet_ids:
+                        continue
+
+                    payload = api.search_jobs(
+                        search_text=request.keyword,
+                        offset=0,
+                        limit=page_size,
+                        applied_facets={
+                            "locations": location_facet_ids,
+                        },
+                    )
+                else:
+                    payload = api.search_jobs(
+                        search_text=request.keyword,
+                        offset=offset,
+                        limit=page_size,
+                    )
+
                 while True:
                     if (
                         request.max_jobs is not None
@@ -110,11 +281,19 @@ class WorkdayConnector(BaseConnector):
                     ):
                         break
 
-                    payload = api.search_jobs(
-                        search_text=request.keyword,
-                        offset=offset,
-                        limit=page_size,
-                    )
+                    if offset > 0:
+                        payload = api.search_jobs(
+                            search_text=request.keyword,
+                            offset=offset,
+                            limit=page_size,
+                            applied_facets=(
+                                {
+                                    "locations": location_facet_ids,
+                                }
+                                if request.location
+                                else None
+                            ),
+                        )
 
                     items = payload.get("jobPostings", [])
 
@@ -145,21 +324,6 @@ class WorkdayConnector(BaseConnector):
 
                         if not external_path:
                             continue
-
-                        # Pre-filter using Workday's search-result location.
-                        # This avoids unnecessary detail API calls for non-matching jobs.
-                        if request.location:
-                            raw_search_location = item.get("locationsText")
-
-                            # Only pre-filter when Workday supplied a location.
-                            # If absent, retain the existing detail-based filter.
-                            if raw_search_location:
-                                search_location = (
-                                    raw_search_location
-                                ).strip().lower()
-
-                                if request.location.strip().lower() not in search_location:
-                                    continue
 
                         if external_path in self._seen_external_paths:
                             continue
