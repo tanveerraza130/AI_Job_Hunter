@@ -372,8 +372,9 @@ class IIMJobsConnector(BaseConnector):
         seen_ids: set[str] = set()
 
         page = 0
+        max_pages = 2
 
-        while True:
+        while page < max_pages:
             payload = self._api.fetch_keyword(
                 page=page,
                 keyword_id=keyword_id,

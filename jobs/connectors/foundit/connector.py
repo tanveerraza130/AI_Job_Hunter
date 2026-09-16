@@ -28,7 +28,7 @@ class FounditConnector(BaseConnector):
     VERSION = "0.2.0"
 
     SEARCH_LIMIT = 50
-    MAX_SEARCH_PAGES = 50
+    MAX_SEARCH_PAGES = 2
 
     def __init__(self, context=None) -> None:
         self.context = context
