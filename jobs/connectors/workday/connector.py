@@ -181,6 +181,8 @@ class WorkdayConnector(BaseConnector):
 
                 offset = 0
                 page_size = 20
+                max_pages = 2
+                pages_fetched = 0
 
                 if request.location:
                     board_key = (host, tenant, site)
@@ -274,7 +276,7 @@ class WorkdayConnector(BaseConnector):
                         limit=page_size,
                     )
 
-                while True:
+                while pages_fetched < max_pages:
                     if (
                         request.max_jobs is not None
                         and len(jobs) >= request.max_jobs
@@ -363,6 +365,7 @@ class WorkdayConnector(BaseConnector):
                         break
 
                     offset += len(items)
+                    pages_fetched += 1
 
                     total = payload.get("total")
                     if isinstance(total, int) and offset >= total:
