@@ -183,6 +183,26 @@ class JobRegistry:
         else:
             logger.debug("Job already exists: %s at %s", job.title, job.company)
 
+    def get_existing_portal_job_ids(
+        self,
+        portal: str,
+        portal_job_ids: Iterable[str],
+    ) -> set[str]:
+        """
+        Return portal job IDs already present in the registry.
+
+        Args:
+            portal: Source portal.
+            portal_job_ids: Portal-provided job IDs to check.
+
+        Returns:
+            set[str]: IDs already present in the registry.
+        """
+        return self.repo.get_existing_portal_job_ids(
+            portal=portal,
+            portal_job_ids=portal_job_ids,
+        )
+
     def _transition_to(
         self,
         job: Job,

@@ -161,6 +161,46 @@ class JobRegistryRepository:
         ).fetchone()
         return result is not None
 
+    def get_existing_portal_job_ids(
+        self,
+        portal: str,
+        portal_job_ids: Iterable[str],
+    ) -> set[str]:
+        """
+        Return portal job IDs that already exist in the registry.
+
+        Performs one bulk query instead of one query per job.
+
+        Args:
+            portal: Source portal.
+            portal_job_ids: Portal-provided job IDs to check.
+
+        Returns:
+            set[str]: IDs already present in the registry.
+        """
+        ids = {
+            str(job_id).strip()
+            for job_id in portal_job_ids
+            if job_id is not None and str(job_id).strip()
+        }
+
+        if not ids:
+            return set()
+
+        placeholders = ", ".join("?" for _ in ids)
+
+        rows = self.connection.execute(
+            f"""
+            SELECT portal_job_id
+            FROM job_registry
+            WHERE portal = ?
+              AND portal_job_id IN ({placeholders})
+            """,
+            [portal, *sorted(ids)],
+        ).fetchall()
+
+        return {row[0] for row in rows if row[0]}
+
     def _portal_job_id_exists(self, portal: str, portal_job_id: str) -> bool:
         """
         Check if a portal_job_id already exists for the given portal.
