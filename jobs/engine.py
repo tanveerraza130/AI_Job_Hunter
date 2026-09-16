@@ -329,9 +329,9 @@ class Engine:
 
         if hasattr(connector, "set_candidate_gate"):
             connector.set_candidate_gate(
-                lambda portal, job_ids: self._filter_connector_candidates(
+                lambda portal, portal_job_ids: self._filter_connector_candidates(
                     portal=portal,
-                    portal_job_ids=job_ids,
+                    portal_job_ids=portal_job_ids,
                     profile_type=profile_type,
                 )
             )
