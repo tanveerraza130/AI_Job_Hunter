@@ -313,6 +313,7 @@ class Engine:
         self,
         connector: BaseConnector,
         session_id: UUID,
+        profile_type: str | None = None,
     ) -> None:
         """
         Set repository context on connectors that support it.
@@ -321,6 +322,18 @@ class Engine:
             connector.set_repositories(
                 self._raw_repo,
                 session_id,
+            )
+
+        if hasattr(connector, "set_registry"):
+            connector.set_registry(self._registry)
+
+        if hasattr(connector, "set_candidate_gate"):
+            connector.set_candidate_gate(
+                lambda portal, job_ids: self._filter_connector_candidates(
+                    portal=portal,
+                    portal_job_ids=job_ids,
+                    profile_type=profile_type,
+                )
             )
 
     # ------------------------------------------------------------------
@@ -358,6 +371,59 @@ class Engine:
                 "Failed to save job to registry: %s",
                 exc,
             )
+
+    def _filter_connector_candidates(
+        self,
+        portal: str,
+        portal_job_ids: list[str],
+        profile_type: str | None = None,
+    ) -> set[str]:
+        """Return source job IDs that still require detail processing."""
+        if not portal_job_ids:
+            return set()
+
+        if self._registry is None:
+            return set(portal_job_ids)
+
+        if not profile_type or self._score_repo is None:
+            return set(portal_job_ids)
+
+        existing_ids = self._registry.get_existing_portal_job_ids(
+            portal=portal,
+            portal_job_ids=portal_job_ids,
+        )
+
+        if not existing_ids:
+            return set(portal_job_ids)
+
+        canonical_ids = {
+            f"{portal}:{job_id}"
+            for job_id in existing_ids
+        }
+
+        scored_ids = self._score_repo.get_scored_job_ids(
+            job_ids=canonical_ids,
+            profile_id=profile_type,
+        )
+
+        if not scored_ids:
+            return set(portal_job_ids)
+
+        fact_job_ids = self._score_repo.get_existing_fact_job_ids(
+            job_ids=scored_ids,
+        )
+
+        reusable_ids = {
+            job_id.split(":", 1)[1]
+            for job_id in fact_job_ids
+            if job_id.startswith(f"{portal}:")
+        }
+
+        return {
+            job_id
+            for job_id in portal_job_ids
+            if job_id not in reusable_ids
+        }
 
     def _classify_registry_jobs(
         self,
@@ -690,6 +756,7 @@ class Engine:
                 self._set_connector_context(
                     connector,
                     session_id,
+                    profile_type=profile_type,
                 )
 
             # ----------------------------------------------------------

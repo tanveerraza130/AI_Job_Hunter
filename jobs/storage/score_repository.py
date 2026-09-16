@@ -65,6 +65,60 @@ class ScoreRepository:
 
         return result is not None
 
+    def get_scored_job_ids(
+        self,
+        job_ids: set[str],
+        profile_id: str,
+    ) -> set[str]:
+        """
+        Return job IDs already scored for the given profile.
+        """
+        if not job_ids:
+            return set()
+
+        placeholders = ", ".join("?" for _ in job_ids)
+
+        rows = self.connection.execute(
+            f"""
+            SELECT job_id
+            FROM fact_job_scores
+            WHERE profile_id = ?
+              AND job_id IN ({placeholders})
+            """,
+            [profile_id, *sorted(job_ids)],
+        ).fetchall()
+
+        return {
+            row[0]
+            for row in rows
+            if row[0]
+        }
+
+    def get_existing_fact_job_ids(
+        self,
+        job_ids: set[str],
+    ) -> set[str]:
+        """Return fact_jobs IDs that already exist."""
+        if not job_ids:
+            return set()
+
+        placeholders = ", ".join("?" for _ in job_ids)
+
+        rows = self.connection.execute(
+            f"""
+            SELECT job_id
+            FROM fact_jobs
+            WHERE job_id IN ({placeholders})
+            """,
+            sorted(job_ids),
+        ).fetchall()
+
+        return {
+            row[0]
+            for row in rows
+            if row[0]
+        }
+
     def save_score_result(
         self,
         job_id: str,

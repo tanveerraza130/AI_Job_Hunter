@@ -58,6 +58,22 @@ class BaseConnector(ABC):
         """
         pass
 
+    def set_registry(self, registry: Any) -> None:
+        """
+        Set the central job registry on connectors that support early lookup.
+
+        Connectors that do not implement an early registry gate may ignore this
+        hook.
+
+        Args:
+            registry: JobRegistry instance.
+        """
+        pass
+
+    def set_candidate_gate(self, gate) -> None:
+        """Set an optional early candidate-filter callback."""
+        pass
+
 
 # =============================================================================
 # END OF FILE
