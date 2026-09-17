@@ -24,6 +24,18 @@ class LinkedInAPI:
 
     BASE_URL = "https://www.linkedin.com"
 
+    LOCATION_GEO_IDS = {
+        "Delhi": "106187582",
+        "Gurugram": "106442238",
+        "Noida": "104869687",
+        "Bangalore": "105214831",
+        "Bengaluru": "105214831",
+        "Mumbai": "90009639",
+        "Hyderabad": "105556991",
+        "Pune": "112419263",
+        "Kolkata": "104878698",
+    }
+
     def __init__(
         self,
         *,
@@ -118,10 +130,18 @@ class LinkedInAPI:
     ) -> list[dict]:
         """Discover LinkedIn search cards with posting dates."""
 
-        params = (
-            f"keywords={quote(keyword)}"
-            f"&location={quote(location)}"
-        )
+        # Restrict LinkedIn server-side results to the same
+        # 15-day freshness window enforced by the connector.
+        geo_id = self.LOCATION_GEO_IDS.get(location.strip())
+
+        params = f"keywords={quote(keyword)}"
+
+        if geo_id:
+            params += f"&geoId={quote(geo_id)}"
+        else:
+            params += f"&location={quote(location)}"
+
+        params += "&f_TPR=r1296000"
 
         url = f"{self.BASE_URL}/jobs/search/?{params}"
 
@@ -168,6 +188,40 @@ class LinkedInAPI:
                 re.IGNORECASE | re.DOTALL,
             )
 
+            title_match = re.search(
+                r'<h3[^>]+class=["\'][^"\']*'
+                r'base-search-card__title[^"\']*["\'][^>]*>'
+                r'(.*?)'
+                r'</h3>',
+                card,
+                re.IGNORECASE | re.DOTALL,
+            )
+
+            title = None
+            if title_match:
+                title = re.sub(
+                    r"\s+",
+                    " ",
+                    html.unescape(title_match.group(1)),
+                ).strip()
+
+            location_match = re.search(
+                r'<span[^>]+class=["\'][^"\']*'
+                r'job-search-card__location[^"\']*["\'][^>]*>'
+                r'(.*?)'
+                r'</span>',
+                card,
+                re.IGNORECASE | re.DOTALL,
+            )
+
+            location = None
+            if location_match:
+                location = re.sub(
+                    r"\s+",
+                    " ",
+                    html.unescape(location_match.group(1)),
+                ).strip()
+
             if not urn or not link:
                 continue
 
@@ -183,6 +237,8 @@ class LinkedInAPI:
                 "job_id": job_id,
                 "job_url": job_url,
                 "posted_date": posted.group(1) if posted else None,
+                "title": title,
+                "location": location,
             })
 
             seen_ids.add(job_id)
