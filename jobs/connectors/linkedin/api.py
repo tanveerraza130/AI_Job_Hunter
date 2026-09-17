@@ -11,6 +11,7 @@ import html
 import json
 import random
 import re
+import threading
 import time
 from typing import Any
 from urllib.parse import quote, urljoin
@@ -41,6 +42,7 @@ class LinkedInAPI:
         self.detail_min_delay = detail_min_delay
         self._last_request_at = 0.0
         self._last_detail_request_at = 0.0
+        self._detail_lock = threading.Lock()
 
         self.session.headers.update(
             {
@@ -231,35 +233,53 @@ class LinkedInAPI:
     def fetch_job_page(self, url: str) -> dict[str, Any] | None:
         """Fetch and parse a public LinkedIn JobPosting JSON-LD block."""
 
-        # LinkedIn rate-limits rapid job-detail requests. Keep detail
-        # requests sequential and paced while leaving search discovery fast.
-        elapsed = time.monotonic() - self._last_detail_request_at
-        if elapsed < self.detail_min_delay:
-            time.sleep(self.detail_min_delay - elapsed)
+        # Serialize actual detail HTTP requests so concurrent workers
+        # cannot create request bursts that trigger LinkedIn rate limits.
+        with self._detail_lock:
+            elapsed = (
+                time.monotonic()
+                - self._last_detail_request_at
+            )
 
-        response = self.session.get(
-            url,
-            timeout=self.timeout,
-            allow_redirects=True,
-        )
-        self._last_detail_request_at = time.monotonic()
-
-        if response.status_code == 429:
-            retry_after = response.headers.get("Retry-After")
-
-            try:
-                wait_seconds = min(float(retry_after), 30.0)
-            except (TypeError, ValueError):
-                wait_seconds = 5.0
-
-            time.sleep(wait_seconds)
+            if elapsed < self.detail_min_delay:
+                time.sleep(
+                    self.detail_min_delay - elapsed
+                )
 
             response = self.session.get(
                 url,
                 timeout=self.timeout,
                 allow_redirects=True,
             )
-            self._last_detail_request_at = time.monotonic()
+
+            self._last_detail_request_at = (
+                time.monotonic()
+            )
+
+            if response.status_code == 429:
+                retry_after = response.headers.get(
+                    "Retry-After"
+                )
+
+                try:
+                    wait_seconds = min(
+                        float(retry_after),
+                        30.0,
+                    )
+                except (TypeError, ValueError):
+                    wait_seconds = 5.0
+
+                time.sleep(wait_seconds)
+
+                response = self.session.get(
+                    url,
+                    timeout=self.timeout,
+                    allow_redirects=True,
+                )
+
+                self._last_detail_request_at = (
+                    time.monotonic()
+                )
 
         if response.status_code != 200:
             return None
