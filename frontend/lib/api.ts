@@ -10,6 +10,11 @@ async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("ai_job_hunter_token")
+      : null;
+
   const response = await fetch(
     `${API_BASE_URL}${endpoint}`,
     {
@@ -17,6 +22,9 @@ async function apiRequest<T>(
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
+        ...(token
+          ? { Authorization: `Bearer ${token}` }
+          : {}),
         ...(options.headers || {}),
       },
     },
