@@ -9448,3 +9448,39 @@ body {
 /* ============================================================
    END — MOBILE JOB DETAILS BOTTOM CTA ALIGNMENT ONLY
    ============================================================ */
+
+/* ============================================================
+   JOB CARD — PLAIN SKILLS / TOOLS / DETAILS
+   Apply Now, Location and Experience intentionally untouched.
+   ============================================================ */
+
+.mj-evidence {
+  background: #fff;
+  border-color: #d9dee7;
+}
+
+.mj-label {
+  color: #111;
+}
+
+.mj-chip-skill,
+.mj-chip-tool,
+.mj-more {
+  color: #111;
+  background: #fff;
+  border-color: #d9dee7;
+}
+
+.mj-details {
+  color: #111;
+  background: #fff;
+  border-color: #d9dee7;
+}
+
+.mj-card>.mj-actions .mj-details:hover {
+  color: #111;
+  background: #fff;
+  border-color: #d9dee7;
+  transform: none;
+  box-shadow: none;
+}

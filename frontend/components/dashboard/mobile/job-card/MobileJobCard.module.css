@@ -1306,3 +1306,35 @@
   }
 }
 
+
+/* ============================================================
+   MOBILE JOB CARD — PLAIN SKILLS / TOOLS / DETAILS
+   Apply Now, Location and Experience intentionally untouched.
+   ============================================================ */
+
+.detailLabel {
+  color: #111;
+}
+
+.skillChip,
+.toolChip {
+  background: #fff;
+  border-color: #d9dee7;
+  color: #111;
+}
+
+.moreButton {
+  background: #fff;
+  border-color: #d9dee7;
+  color: #111;
+}
+
+.moreButton:hover {
+  background: #fff;
+  border-color: #d9dee7;
+}
+
+.detailsLink {
+  color: #111;
+}
+
