@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Dashboard from "@/components/dashboard/Dashboard";
+import SessionRedirect from "@/components/auth/SessionRedirect";
 
 function DashboardAuthHandler({
   onReady,
@@ -66,7 +67,7 @@ export default function DashboardPage() {
         />
       </Suspense>
 
-      {authReady && <Dashboard />}
+      {authReady && <SessionRedirect mode="dashboard"><Dashboard /></SessionRedirect>}
     </>
   );
 }
