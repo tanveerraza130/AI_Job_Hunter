@@ -12,8 +12,11 @@ from duckdb import DuckDBPyConnection
 from fastapi import APIRouter, Depends, Query
 
 from api.config import settings
+from api.account_store import get_profile
 from api.database import get_db
+from api.location_policy import location_sql
 from api.schemas import DashboardSummaryResponse
+from api.routes.profile import current_user
 
 router = APIRouter()
 
@@ -105,6 +108,7 @@ async def get_dashboard_summary(
     posted_date_from: Optional[str] = Query(None),
     posted_date_to: Optional[str] = Query(None),
     min_score: Optional[float] = Query(None),
+    user=Depends(current_user),
     db: DuckDBPyConnection = Depends(get_db),
 ) -> DashboardSummaryResponse:
     """
@@ -112,11 +116,59 @@ async def get_dashboard_summary(
     used by the jobs result set.
     """
 
+    user_profile = get_profile(user["user_id"])
+
+    if not user_profile:
+        from fastapi import HTTPException
+
+        raise HTTPException(
+            status_code=400,
+            detail="Complete your profile before viewing jobs.",
+        )
+
+    if user_profile["profile_id"] != profile_id:
+        from fastapi import HTTPException
+
+        raise HTTPException(
+            status_code=403,
+            detail="Profile does not belong to the authenticated user.",
+        )
+
     params: list[object] = [
         profile_id,
     ]
 
+    normalized_locations = list(
+        dict.fromkeys(
+            value.strip()
+            for value in location
+            if value and value.strip()
+        )
+    )
+
     conditions: list[str] = []
+
+    if normalized_locations:
+        location_conditions = []
+
+        for selected_location in normalized_locations:
+            location_conditions.append(
+                """
+                LOWER(COALESCE(l.canonical_name, ''))
+                LIKE LOWER(?)
+                """
+            )
+            params.append(
+                f"%{selected_location}%"
+            )
+
+        conditions.append(
+            "("
+            + " OR ".join(location_conditions)
+            + ")"
+        )
+    else:
+        conditions.append(location_sql())
 
     if min_score is not None:
         conditions.append(

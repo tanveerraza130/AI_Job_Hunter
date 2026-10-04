@@ -21,6 +21,13 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 
 from api.config import settings
 from api.database import get_db
+from api.location_policy import (
+    ALLOWED_LOCATIONS,
+    location_sql,
+    normalize_location,
+)
+from api.account_store import get_profile
+from api.routes.profile import current_user
 from jobs.profiles.loader import ConfigLoader
 
 from api.schemas import (
@@ -73,6 +80,7 @@ async def list_jobs(
     tool: list[str] = Query(default=[]),
     relevance: list[str] = Query(default=["gte_30"]),
     posted_date_from: Optional[str] = Query(None),
+    user=Depends(current_user),
     posted_date_to: Optional[str] = Query(None),
     sort: str = Query("newest"),
     db: DuckDBPyConnection = Depends(get_db),
@@ -99,6 +107,15 @@ async def list_jobs(
         but all values use the same AI relevance ranking.
     """
 
+    # Enforce that the requested profile belongs to the authenticated user.
+    user_profile = get_profile(user["user_id"])
+
+    if not user_profile or user_profile["profile_id"] != profile_id:
+        raise HTTPException(
+            status_code=403,
+            detail="Profile does not belong to the authenticated user.",
+        )
+
     sort_mode = (sort or "score").strip().lower()
 
     allowed_sorts = {
@@ -122,11 +139,13 @@ async def list_jobs(
         else None
     )
 
-    normalized_locations = [
-        value.strip()
-        for value in location
-        if value and value.strip()
-    ]
+    normalized_locations = list(
+        dict.fromkeys(
+            value.strip()
+            for value in location
+            if value and value.strip()
+        )
+    )
 
     normalized_skills = [
         value.strip().lower()
@@ -200,16 +219,10 @@ async def list_jobs(
         profile_id,
     ]
 
-    if min_score is not None:
-        where_conditions.append(
-            "s.overall_score >= ?"
-        )
-        params.append(min_score)
-
     if normalized_locations:
         location_conditions = []
 
-        for location_value in normalized_locations:
+        for selected_location in normalized_locations:
             location_conditions.append(
                 """
                 LOWER(COALESCE(l.canonical_name, ''))
@@ -217,12 +230,22 @@ async def list_jobs(
                 """
             )
             params.append(
-                f"%{location_value}%"
+                f"%{selected_location}%"
             )
 
         where_conditions.append(
-            "(" + " OR ".join(location_conditions) + ")"
+            "("
+            + " OR ".join(location_conditions)
+            + ")"
         )
+    else:
+        where_conditions.append(location_sql())
+
+    if min_score is not None:
+        where_conditions.append(
+            "s.overall_score >= ?"
+        )
+        params.append(min_score)
 
     if normalized_company:
         where_conditions.append(
@@ -936,6 +959,7 @@ async def get_job_filter_options(
     profile_id: str = Query(
         settings.default_profile
     ),
+    user=Depends(current_user),
     db: DuckDBPyConnection = Depends(get_db),
 ) -> dict:
     """
@@ -952,98 +976,26 @@ async def get_job_filter_options(
     # --------------------------------------------------------
     # Locations
     # --------------------------------------------------------
+    #
+    # The dropdown exposes all supported cities.
+    # The selected location(s) are applied by the jobs query.
+    # --------------------------------------------------------
 
-    raw_locations = [
-        row[0]
-        for row in db.execute(
-            """
-            SELECT DISTINCT
-                UPPER(
-                    TRIM(
-                        COALESCE(
-                            l.canonical_name,
-                            ''
-                        )
-                    )
-                )
-            FROM fact_jobs j
-            LEFT JOIN dim_location l
-                ON j.location_id = l.location_id
-            JOIN fact_job_scores s
-                ON j.job_id = s.job_id
-               AND s.profile_id = ?
-            WHERE l.canonical_name IS NOT NULL
-              AND TRIM(l.canonical_name) <> ''
-            """,
-            [profile_id],
-        ).fetchall()
-    ]
+    profile = get_profile(user["user_id"])
 
-    aliases = {
-        "GURGAON": "GURUGRAM",
-        "BANGALORE": "BENGALURU",
-        "BANGALORE RURAL": "BENGALURU",
-        "BENGALURU": "BENGALURU",
-        "NEWDELHI": "NEW DELHI",
-        "NEW DELHI": "NEW DELHI",
-        "GANDHINAGAR": "GANDHI NAGAR",
-        "GANDHI NAGAR": "GANDHI NAGAR",
-        "DELHI / NCR": "DELHI",
-        "DELHI/NCR": "DELHI",
-    }
-
-    locations: set[str] = set()
-
-    for raw in raw_locations:
-        if not raw:
-            continue
-
-        text = str(raw)
-
-        text = re.sub(
-            r"\bHYBRID\s*-\s*",
-            "",
-            text,
+    if not profile:
+        raise HTTPException(
+            status_code=400,
+            detail="Complete your profile before viewing jobs.",
         )
 
-        # Remove parenthetical area names:
-        # GURUGRAM(SECTOR 48) -> GURUGRAM
-        text = re.sub(
-            r"\s*\([^)]*\)",
-            "",
-            text,
+    if profile["profile_id"] != profile_id:
+        raise HTTPException(
+            status_code=403,
+            detail="Profile does not belong to the authenticated user.",
         )
 
-        # A location string can contain multiple cities.
-        # Keep each city as a separate selectable value.
-        for token in text.split(","):
-            city = re.sub(
-                r"\s+",
-                " ",
-                token,
-            ).strip()
-
-            if not city:
-                continue
-
-            city = aliases.get(
-                city,
-                city,
-            )
-
-            if city in {
-                "INDIA",
-                "HARYANA",
-                "UTTAR PRADESH",
-                "UNITED STATES",
-                "DAMAN & DIU",
-                "LAKSHADWEEP",
-                "DELHI / NCR",
-                "DELHI/NCR",
-            }:
-                continue
-
-            locations.add(city)
+    locations = set(ALLOWED_LOCATIONS)
 
     # --------------------------------------------------------
     # Job-specific matched skills/tools
@@ -1151,11 +1103,26 @@ async def get_job(
     profile_id: str = Query(
         settings.default_profile
     ),
+    user=Depends(current_user),
     db: DuckDBPyConnection = Depends(get_db),
 ) -> JobDetail:
     """
     Return complete details for one job.
     """
+
+    user_profile = get_profile(user["user_id"])
+
+    if not user_profile:
+        raise HTTPException(
+            status_code=400,
+            detail="Complete your profile before viewing jobs.",
+        )
+
+    if user_profile["profile_id"] != profile_id:
+        raise HTTPException(
+            status_code=403,
+            detail="Profile does not belong to the authenticated user.",
+        )
 
     query = """
         WITH latest_score AS (
@@ -1224,6 +1191,18 @@ async def get_job(
             AND s.rn = 1
 
         WHERE j.job_id = ?
+          AND (
+              LOWER(COALESCE(l.canonical_name, '')) LIKE '%delhi%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%noida%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%gurgaon%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%gurugram%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%bengaluru%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%bangalore%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%mumbai%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%hyderabad%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%kolkata%'
+              OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%pune%'
+          )
     """
 
     results = db.execute(
