@@ -302,15 +302,31 @@ class LinkedInAPI:
                     self.detail_min_delay - elapsed
                 )
 
-            response = self.session.get(
-                url,
-                timeout=self.timeout,
-                allow_redirects=True,
-            )
+            response = None
 
-            self._last_detail_request_at = (
-                time.monotonic()
-            )
+            for attempt in range(3):
+                try:
+                    response = self.session.get(
+                        url,
+                        timeout=self.timeout,
+                        allow_redirects=True,
+                    )
+                    self._last_detail_request_at = (
+                        time.monotonic()
+                    )
+                    break
+                except requests.RequestException:
+                    self._last_detail_request_at = (
+                        time.monotonic()
+                    )
+
+                    if attempt == 2:
+                        return None
+
+                    time.sleep(2 ** attempt)
+
+            if response is None:
+                return None
 
             if response.status_code == 429:
                 retry_after = response.headers.get(
