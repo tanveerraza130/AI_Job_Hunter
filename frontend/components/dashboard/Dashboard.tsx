@@ -836,55 +836,6 @@ export default function Dashboard() {
 
   const totalPages = Math.max(1, Math.ceil(totalJobs / PAGE_SIZE));
 
-  /*
-   * SECURITY / CONSISTENCY GATE
-   *
-   * Never render the dashboard's job data while the
-   * authenticated profile is unresolved.
-   *
-   * This prevents a manually supplied URL such as:
-   * /dashboard?profile_id=crm_manager
-   *
-   * from ever triggering CRM Manager dashboard requests
-   * for a Data Analyst account.
-   */
-  if (!profileReady || !profileId) {
-    return (
-      <main className={styles.root}>
-        <div
-          style={{
-            minHeight: "60vh",
-            display: "grid",
-            placeItems: "center",
-            padding: "40px 20px",
-          }}
-        >
-          <div
-            style={{
-              textAlign: "center",
-              color: "var(--ajh-color-text-muted)",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "14px",
-                fontWeight: 600,
-                color: "var(--ajh-color-text-primary)",
-                marginBottom: "6px",
-              }}
-            >
-              Preparing your dashboard
-            </div>
-
-            <div style={{ fontSize: "12px" }}>
-              Loading your assigned job profile…
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
   const presentationProps = {
     profileId,
     totalJobs,
