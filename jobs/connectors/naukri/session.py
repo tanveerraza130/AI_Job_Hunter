@@ -77,6 +77,32 @@ class NaukriSession:
         logger.info(">>> self.api type: %s", type(self.api) if self.api else "None")
         logger.info("API client initialized from captured browser request")
 
+    def _apply_stealth(self) -> None:
+        """
+        Hide common headless-detection signals.
+
+        This does NOT bypass any access control — it only makes the
+        automated browser report itself the way a real Chrome does.
+        """
+        page = self.browser_page
+        try:
+            page.add_init_script(
+                """
+                Object.defineProperty(navigator, 'webdriver', {
+                    get: () => undefined
+                });
+                window.chrome = { runtime: {} };
+                Object.defineProperty(navigator, 'plugins', {
+                    get: () => [1, 2, 3, 4, 5]
+                });
+                Object.defineProperty(navigator, 'languages', {
+                    get: () => ['en-US', 'en']
+                });
+                """
+            )
+        except Exception:
+            pass
+
     def load_cookies(self) -> None:
         """
         Load cookies from file into browser context.
@@ -154,7 +180,7 @@ class NaukriSession:
 
         # Navigate to homepage
         page.goto(BASE_URL, wait_until="networkidle")
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(200)
 
         # Check for profile icon
         if page.locator(PROFILE_ICON).count() > 0:

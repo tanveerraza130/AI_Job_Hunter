@@ -16,10 +16,10 @@ SEARCH_API_PATH = "/jobapi/v3/search"
 # Browser Timeouts (milliseconds)
 # =============================================================================
 
-SEARCH_TIMEOUT_MS = 30_000
-PAGE_LOAD_TIMEOUT_MS = 45_000
+SEARCH_TIMEOUT_MS = 5_000
+PAGE_LOAD_TIMEOUT_MS = 10_000
 
-NETWORK_RESPONSE_TIMEOUT_MS = 30_000
+NETWORK_RESPONSE_TIMEOUT_MS = 5_000
 
 # =============================================================================
 # Search Defaults
@@ -47,7 +47,7 @@ WAIT_UNTIL = "domcontentloaded"
 
 RETRY_COUNT = 3
 
-RETRY_DELAY_SECONDS = 2
+RETRY_DELAY_SECONDS = 0.5
 
 
 # =============================================================================

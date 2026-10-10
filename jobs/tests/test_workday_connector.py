@@ -52,6 +52,10 @@ def test_workday_deduplicates_external_path_across_keyword_requests(monkeypatch)
         lambda **kwargs: FakeAPI(),
     )
     monkeypatch.setattr(
+        "jobs.connectors.workday.connector.WorkdayDiscovery.load",
+        lambda path: [],
+    )
+    monkeypatch.setattr(
         "jobs.connectors.workday.connector.WorkdayDiscovery.discover_live",
         lambda self: [("example.com", "tenant", "site")],
     )

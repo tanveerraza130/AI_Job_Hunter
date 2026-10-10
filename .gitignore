@@ -59,3 +59,16 @@ debug/*.webp
 
 # Root debug logs
 debug.log
+
+# ---- Backup patterns (added 2026-10-10) ----
+*.before-*
+*.before_*
+*.before.*
+*.bak-*
+*.bak.*
+*.recovery-*
+frontend/.backups/
+frontend/.recovery-backups/
+debug/*.zip
+debug/naukri_benchmark/
+debug/ground_truth_*.csv

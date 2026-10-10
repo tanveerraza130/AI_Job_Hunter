@@ -46,7 +46,7 @@ from .session import NaukriSession
 logger = logging.getLogger(__name__)
 
 
-API_CAPTURE_TIMEOUT_SECONDS = 15
+API_CAPTURE_TIMEOUT_SECONDS = 3
 PAGE_NAVIGATION_TIMEOUT_SECONDS = 30
 
 # Diagnostic experiment: bounded relevance pagination.
@@ -395,7 +395,7 @@ class NaukriConnector(BaseConnector):
                 if captured_payload is not None:
                     break
 
-                self.page.wait_for_timeout(100)
+                self.page.wait_for_timeout(20)
 
             if parse_error is not None:
                 raise RuntimeError(

@@ -391,7 +391,16 @@ negative_keywords:
 
 locations:
 
+# Use canonical forms that all 5 connectors understand.
+# "Delhi NCR" is split into its constituent cities because
+# portals return DIFFERENT results for "Delhi" vs "Delhi NCR"
+# vs "Gurugram" vs "Noida".
 - "Delhi"
-- "Delhi NCR"
-- "Gurugram"
+- "Gurgaon"
 - "Noida"
+- "Bangalore"
+- "Mumbai"
+- "Hyderabad"
+- "Pune"
+- "Kolkata"
+- "Chennai"

@@ -137,6 +137,13 @@ class LinkedInConnector(BaseConnector):
                 if item[0] in allowed_ids
             ]
 
+        # Respect max_jobs before issuing expensive detail requests.
+        if request.max_jobs is not None:
+            remaining = request.max_jobs - len(jobs)
+            if remaining <= 0:
+                return jobs[:request.max_jobs]
+            fetch_candidates = fetch_candidates[:remaining]
+
         pending: list[tuple[str, str]] = list(fetch_candidates)
 
         def fetch_detail(item: tuple[str, str]):
@@ -144,11 +151,11 @@ class LinkedInConnector(BaseConnector):
             payload = self._api.fetch_job_page(job_url)
             return source_job_id, job_url, payload
 
-        def process_pending(items: list[tuple[str, str]]) -> None:
-            with ThreadPoolExecutor(max_workers=5) as executor:
-                results = executor.map(fetch_detail, items)
-
-                for source_job_id, job_url, payload in results:
+        if pending:
+            with ThreadPoolExecutor(max_workers=24) as executor:
+                for source_job_id, job_url, payload in executor.map(
+                    fetch_detail, pending
+                ):
                     if not payload:
                         continue
 
@@ -164,25 +171,11 @@ class LinkedInConnector(BaseConnector):
                     self._job_cache[source_job_id] = job
                     jobs.append(job)
 
-        while pending:
-            if request.max_jobs is not None:
-                remaining = request.max_jobs - len(jobs)
-                if remaining <= 0:
-                    break
-                batch_size = min(5, remaining)
-            else:
-                batch_size = 5
-
-            batch = pending[:batch_size]
-            pending = pending[batch_size:]
-
-            process_pending(batch)
-
-            if (
-                request.max_jobs is not None
-                and len(jobs) >= request.max_jobs
-            ):
-                break
+                    if (
+                        request.max_jobs is not None
+                        and len(jobs) >= request.max_jobs
+                    ):
+                        break
 
         return (
             jobs[:request.max_jobs]

@@ -212,7 +212,7 @@ def main() -> int:
             # Browser
             #
             browser = playwright.chromium.launch(
-                headless=True
+                headless=False   # Naukri requires visible browser
             )
 
             context: BrowserContext = (

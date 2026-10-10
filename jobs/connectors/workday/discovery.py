@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -11,7 +12,13 @@ class WorkdayDiscovery:
     """Discover public Workday career boards dynamically."""
 
     CDX_URL = "https://web.archive.org/cdx/search/cdx"
+    REGISTRY_URL = (
+        "https://raw.githubusercontent.com/"
+        "Feashliaa/job-board-aggregator/main/data/workday_companies.json"
+    )
     ENVIRONMENTS = ("wd1", "wd3", "wd5", "wd12")
+    MAX_WORKERS = 10
+
     BOARD_PATTERN = re.compile(
         r"^https://(?P<host>[^/]+\.myworkdayjobs\.com)"
         r"/wday/cxs/(?P<tenant>[^/]+)/(?P<site>[^/]+)"
@@ -28,7 +35,60 @@ class WorkdayDiscovery:
         self.timeout = timeout
         self.session = session or requests.Session()
 
-    def discover(self) -> list[tuple[str, str, str]]:
+    def discover_registry(
+        self,
+    ) -> list[tuple[str, str, str]]:
+        """Load Workday boards from the public registry."""
+
+        try:
+            response = self.session.get(
+                self.REGISTRY_URL,
+                timeout=self.timeout,
+            )
+            response.raise_for_status()
+            data = response.json()
+        except (
+            requests.RequestException,
+            ValueError,
+        ):
+            return []
+
+        candidates: set[tuple[str, str, str]] = set()
+
+        if not isinstance(data, list):
+            return []
+
+        for item in data:
+            parts = str(item).strip().split("|")
+
+            if len(parts) != 3:
+                continue
+
+            tenant, instance, site = (
+                part.strip()
+                for part in parts
+            )
+
+            if not all((tenant, instance, site)):
+                continue
+
+            host = f"{tenant}.{instance}.myworkdayjobs.com"
+
+            candidates.add(
+                (
+                    host.lower(),
+                    tenant,
+                    site,
+                )
+            )
+
+        return sorted(candidates)
+
+    def discover_cdx(
+        self,
+    ) -> list[tuple[str, str, str]]:
+        """Discover Workday boards through Internet Archive CDX."""
+
         candidates: set[tuple[str, str, str]] = set()
 
         for environment in self.ENVIRONMENTS:
@@ -68,38 +128,91 @@ class WorkdayDiscovery:
 
         return sorted(candidates)
 
+    def discover(self) -> list[tuple[str, str, str]]:
+        """Discover boards from the registry, with CDX fallback."""
+
+        registry_boards = self.discover_registry()
+
+        if registry_boards:
+            return registry_boards
+
+        return self.discover_cdx()
+
+    def _validate_board(
+        self,
+        board: tuple[str, str, str],
+    ) -> tuple[str, str, str] | None:
+        """Validate one Workday board."""
+
+        from .api import WorkdayAPI, WorkdayAPIError
+
+        host, tenant, site = board
+
+        try:
+            api = WorkdayAPI(
+                host=host,
+                tenant=tenant,
+                site=site,
+                timeout=self.timeout,
+            )
+
+            payload = api.search_jobs(
+                search_text="",
+                offset=0,
+                limit=1,
+            )
+
+            if not isinstance(
+                payload.get("jobPostings"),
+                list,
+            ):
+                return None
+
+            return board
+
+        except (WorkdayAPIError, ValueError):
+            return None
+
     def validate(
         self,
         boards: list[tuple[str, str, str]],
     ) -> list[tuple[str, str, str]]:
-        from .api import WorkdayAPI, WorkdayAPIError
+        """Validate Workday boards with bounded concurrency."""
+
+        if not boards:
+            return []
 
         live: list[tuple[str, str, str]] = []
 
-        for host, tenant, site in boards:
-            try:
-                api = WorkdayAPI(
-                    host=host,
-                    tenant=tenant,
-                    site=site,
-                    session=self.session,
-                    timeout=self.timeout,
-                )
-                payload = api.search_jobs(
-                    search_text="",
-                    offset=0,
-                    limit=20,
-                )
+        workers = min(
+            self.MAX_WORKERS,
+            len(boards),
+        )
 
-                if isinstance(payload.get("jobPostings"), list):
-                    live.append((host, tenant, site))
+        with ThreadPoolExecutor(
+            max_workers=workers,
+        ) as executor:
+            futures = {
+                executor.submit(
+                    self._validate_board,
+                    board,
+                ): board
+                for board in boards
+            }
 
-            except (WorkdayAPIError, ValueError):
-                continue
+            for future in as_completed(futures):
+                board = future.result()
 
-        return live
+                if board is not None:
+                    live.append(board)
 
-    def discover_live(self) -> list[tuple[str, str, str]]:
+        return sorted(set(live))
+
+    def discover_live(
+        self,
+    ) -> list[tuple[str, str, str]]:
+        """Discover and validate live Workday boards."""
+
         return self.validate(self.discover())
 
     @staticmethod

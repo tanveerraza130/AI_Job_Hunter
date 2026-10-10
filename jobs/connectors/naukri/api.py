@@ -34,11 +34,11 @@ logger = logging.getLogger(__name__)
 # Configuration
 # ---------------------------------------------------------------------------
 
-MAX_RETRIES = 3
+MAX_RETRIES = 2
 REQUEST_TIMEOUT_SECONDS = 30
 
-INITIAL_BACKOFF_SECONDS = 1.5
-MAX_BACKOFF_SECONDS = 12.0
+INITIAL_BACKOFF_SECONDS = 0.5
+MAX_BACKOFF_SECONDS = 2.0
 
 JITTER_MIN_SECONDS = 0.25
 JITTER_MAX_SECONDS = 0.75

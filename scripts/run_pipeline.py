@@ -99,10 +99,6 @@ def main() -> int:
             f"Missing publish script: {PUBLISH_SCRIPT}"
         )
 
-    # ------------------------------------------------------------
-    # STEP 1 — FETCH → MASTER DB
-    # ------------------------------------------------------------
-
     import argparse
 
     parser = argparse.ArgumentParser(
@@ -110,65 +106,105 @@ def main() -> int:
     )
     parser.add_argument(
         "--connector",
-        choices=["all", "linkedin"],
+        choices=[
+            "all",
+            "naukri",
+            "iimjobs",
+            "foundit",
+            "linkedin",
+            "greenhouse",
+        ],
         default="all",
-        help="Connector to run. Default: all (Naukri + IIMJobs + Foundit + LinkedIn).",
+        help=(
+            "Connector to run. Default: all "
+            "(Naukri + IIMJobs + Foundit + LinkedIn + Greenhouse)."
+        ),
     )
     args = parser.parse_args()
 
-    run_step(
-        "STEP 1 — FETCH → MASTER DB",
-        [
-            sys.executable,
-            str(MAIN_SCRIPT),
-            "--profile",
-            "crm_manager",
-            "--connector",
-            args.connector,
-            "--exporter",
-            "duckdb",
-            "--output",
-            str(ROOT / "output"),
-        ],
-    )
+    if args.connector == "all":
+        connector_names = [
+            "naukri",
+            "iimjobs",
+            "foundit",
+            "linkedin",
+            "greenhouse",
+        ]
+    else:
+        connector_names = [args.connector]
 
-    # ------------------------------------------------------------
-    # STEP 2
-    # ------------------------------------------------------------
+    for connector_name in connector_names:
+        print()
+        print("=" * 70)
+        print(
+            f"🚀 STARTING CONNECTOR: "
+            f"{connector_name.upper()}"
+        )
+        print("=" * 70)
 
-    # ------------------------------------------------------------
-    # STEP 2 — BUILD PRODUCTION + MINIMAL
-    # ------------------------------------------------------------
+        # --------------------------------------------------------
+        # STEP 1 — FETCH → MASTER DB
+        # --------------------------------------------------------
 
-    run_step(
-        "STEP 2 — BUILD PRODUCTION + MINIMAL SNAPSHOTS",
-        [
-            sys.executable,
-            str(BUILD_SCRIPT),
-            "--master-db",
-            str(ROOT / "output" / "job_hunter.duckdb"),
-            "--production-db",
-            str(ROOT / "output" / "job_hunter_production.duckdb"),
-            "--minimal-db",
-            str(ROOT / "output" / "job_hunter_production_minimal.duckdb"),
-        ],
-    )
+        run_step(
+            f"{connector_name.upper()} — FETCH → MASTER DB",
+            [
+                sys.executable,
+                str(MAIN_SCRIPT),
+                "--profile",
+                "crm_manager",
+                "--connector",
+                connector_name,
+                "--exporter",
+                "duckdb",
+                "--output",
+                str(ROOT / "output"),
+            ],
+        )
 
-    # ------------------------------------------------------------
-    # STEP 3 — PUBLISH PRODUCTION
-    # ------------------------------------------------------------
+        # --------------------------------------------------------
+        # STEP 2 — BUILD PRODUCTION + MINIMAL
+        # --------------------------------------------------------
 
-    run_step(
-        "STEP 3 — PUBLISH TO S3 + GITHUB",
-        [
-            sys.executable,
-            str(PUBLISH_SCRIPT),
-        ],
-    )
+        run_step(
+            f"{connector_name.upper()} — BUILD PRODUCTION + MINIMAL",
+            [
+                sys.executable,
+                str(BUILD_SCRIPT),
+                "--master-db",
+                str(ROOT / "output" / "job_hunter.duckdb"),
+                "--production-db",
+                str(ROOT / "output" / "job_hunter_production.duckdb"),
+                "--minimal-db",
+                str(
+                    ROOT
+                    / "output"
+                    / "job_hunter_production_minimal.duckdb"
+                ),
+            ],
+        )
 
-    # ------------------------------------------------------------
-    # COMPLETE
-    # ------------------------------------------------------------
+        # --------------------------------------------------------
+        # STEP 3 — PUBLISH → AWS + GITHUB
+        # --------------------------------------------------------
+
+        run_step(
+            f"{connector_name.upper()} — PUBLISH → AWS + GITHUB",
+            [
+                sys.executable,
+                str(PUBLISH_SCRIPT),
+            ],
+        )
+
+        print()
+        print("=" * 70)
+        print(
+            f"✓ {connector_name.upper()} COMPLETE AND LIVE"
+        )
+        print(
+            "Starting next connector..."
+        )
+        print("=" * 70)
 
     print()
     print("=" * 70)
@@ -177,24 +213,24 @@ def main() -> int:
 
     print()
     print("Final flow:")
-    print("  Fetch")
-    print("      ↓")
-    print("  Master DB")
-    print("      ↓")
-    print("  Production DB — rolling 30 days")
-    print("      ↓")
-    print("  Minimal DB")
-    print("      ↓")
-    print("  S3 Production")
-    print("      ↓")
-    print("  GitHub Minimal Snapshot")
-    print("      ↓")
-    print("  AWS automatic DB refresh")
-    print("      ↓")
-    print("  Live Frontend")
+    print(
+        "  Naukri → FETCH → MASTER → BUILD → AWS/GitHub → LIVE"
+    )
+    print(
+        "  IIMJobs → FETCH → MASTER → BUILD → AWS/GitHub → LIVE"
+    )
+    print(
+        "  Foundit → FETCH → MASTER → BUILD → AWS/GitHub → LIVE"
+    )
+    print(
+        "  LinkedIn → FETCH → MASTER → BUILD → AWS/GitHub → LIVE"
+    )
+    print(
+        "  Greenhouse → FETCH → MASTER → BUILD → AWS/GitHub → LIVE"
+    )
 
     print()
-    print("✓ End-to-end production publish complete")
+    print("✓ End-to-end connector-by-connector production publish complete")
 
     return 0
 

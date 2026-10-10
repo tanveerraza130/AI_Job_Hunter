@@ -8,7 +8,10 @@ Application entry point.
 from __future__ import annotations
 
 import argparse
+import logging
+import subprocess
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -20,6 +23,76 @@ from jobs.profiles import build_search_plan, load_profile
 from jobs.search import SearchRequest
 
 
+def _publish_connector_to_production(root: Path, connector_name: str) -> None:
+    """Build and publish the current Master DB after one connector completes."""
+    build_script = root / "scripts" / "build_production_snapshot.py"
+    publish_script = root / "scripts" / "publish_production.py"
+
+    print()
+    print("=" * 70)
+    print(f"🚀 PUBLISHING {connector_name.upper()} TO LIVE")
+    print("=" * 70)
+
+    started_at = time.monotonic()
+
+    def run_step(name: str, command: list[str]) -> None:
+        step_started = time.monotonic()
+
+        print()
+        print("-" * 70)
+        print(name)
+        print("-" * 70)
+        print("$", " ".join(command))
+
+        result = subprocess.run(
+            command,
+            cwd=root,
+        )
+
+        elapsed = time.monotonic() - step_started
+
+        if result.returncode != 0:
+            print()
+            print(f"❌ {name} FAILED")
+            print(f"Elapsed: {elapsed:.1f}s")
+            raise RuntimeError(
+                f"{connector_name}: {name} failed "
+                f"(exit code {result.returncode})"
+            )
+
+        print(f"✓ {name} PASS ({elapsed:.1f}s)")
+
+    run_step(
+        f"{connector_name.upper()} — BUILD PRODUCTION SNAPSHOT",
+        [
+            sys.executable,
+            str(build_script),
+            "--master-db",
+            str(root / "output" / "job_hunter.duckdb"),
+            "--production-db",
+            str(root / "output" / "job_hunter_production.duckdb"),
+            "--minimal-db",
+            str(root / "output" / "job_hunter_production_minimal.duckdb"),
+        ],
+    )
+
+    run_step(
+        f"{connector_name.upper()} — PUBLISH LIVE",
+        [
+            sys.executable,
+            str(publish_script),
+        ],
+    )
+
+    elapsed = time.monotonic() - started_at
+
+    print()
+    print("=" * 70)
+    print(f"✓ {connector_name.upper()} LIVE PUBLISH COMPLETE")
+    print(f"Total publish time: {elapsed:.1f}s")
+    print("=" * 70)
+
+
 def main() -> int:
     """
     Main entry point for the CLI.
@@ -27,6 +100,12 @@ def main() -> int:
     Returns:
         int: Exit code (0 for success, 1 for error).
     """
+    logging.basicConfig(
+        level=logging.WARNING,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        stream=sys.stdout,
+    )
+    logging.getLogger("jobs.engine").setLevel(logging.INFO)
     parser = argparse.ArgumentParser(
         description="AI Job Hunter - Search and export job listings.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -73,7 +152,6 @@ Examples:
             "linkedin",
             "indeed",
             "greenhouse",
-            "workday",
             "all",
         ],
         help=(
@@ -159,7 +237,6 @@ Examples:
                     "foundit",
                     "linkedin",
                     "greenhouse",
-                    "workday",
                 ]
             else:
                 connector_names = [args.connector]
@@ -255,6 +332,25 @@ Examples:
                             return 1
                     finally:
                         engine.close()
+
+                    print()
+                    print(
+                        f"✓ {connector_name.upper()} complete. "
+                        "Starting next connector..."
+                    )
+
+                # ------------------------------------------------
+                # PUBLISH ONCE AT THE END (not per connector)
+                # ------------------------------------------------
+                print()
+                print("=" * 70)
+                print("🚀 PUBLISHING ALL CONNECTORS TO LIVE (single publish)")
+                print("=" * 70)
+
+                _publish_connector_to_production(
+                    Path(__file__).resolve().parent,
+                    "all",
+                )
 
                 return 0
 

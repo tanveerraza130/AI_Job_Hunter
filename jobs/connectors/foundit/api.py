@@ -27,7 +27,8 @@ class FounditAPI:
     SEARCH_PATH = "/middleware/jobsearch"
     DETAIL_PATH = "/middleware/jobdetail/{job_id}"
 
-    REQUEST_TIMEOUT = 30
+    REQUEST_TIMEOUT = 8
+    MAX_RETRIES = 2
 
     def __init__(
         self,

@@ -59,6 +59,7 @@ from __future__ import annotations
 
 import logging
 import platform
+import time
 from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -66,6 +67,7 @@ from pathlib import Path
 from uuid import UUID, uuid4
 
 import duckdb
+from jobs.utils.search_cache import SearchCache
 
 from jobs.base import BaseConnector
 from jobs.enums import (
@@ -749,6 +751,24 @@ class Engine:
             )
 
             # ----------------------------------------------------------
+            # Search cache — skip recently fetched keyword+city pairs
+            # ----------------------------------------------------------
+            search_cache = None
+            skipped_by_cache = 0
+            try:
+                if self._connection is not None:
+                    search_cache = SearchCache(
+                        self._connection,
+                        ttl_days=3,   # 3-day cache: fresh but fast
+                    )
+            except Exception as _exc:
+                logger.warning(
+                    "Failed to initialize search cache: %s",
+                    _exc,
+                )
+                search_cache = None
+
+            # ----------------------------------------------------------
             # Give connectors current session context
             # ----------------------------------------------------------
 
@@ -766,17 +786,65 @@ class Engine:
             all_jobs: list[Job] = []
             errors: list[str] = []
 
+            # ----------------------------------------------------------
+            # Rejection tracking — captures job flow through pipeline
+            # ----------------------------------------------------------
+            rejection_stats = {
+                "raw_fetched": 0,
+                "already_seen": 0,
+                "validation_failed": 0,
+                "profile_filter_rejected": 0,
+                "exported": 0,
+            }
+
+            # Per-keyword-per-city metrics for later reporting
+            per_search_metrics: list[dict] = []
+
+            fetch_started_monotonic = time.monotonic()
+
             for index, request in enumerate(
                 request_list,
                 1,
             ):
+                search_started_monotonic = time.monotonic()
+                jobs_before = len(all_jobs)
+
                 logger.info(
-                    "Search %s/%s: %s in %s",
+                    "[%03d/%03d] START | %s | %s | %s",
                     index,
                     len(request_list),
+                    self._connectors[0].name if self._connectors else "unknown",
                     request.keyword,
                     request.location,
                 )
+
+                # ---------------------------------------------------
+                # Cache check: skip if same portal+keyword+city
+                # was searched recently
+                # ---------------------------------------------------
+                if search_cache is not None:
+                    portal_name = (
+                        self._connectors[0].name.lower()
+                        if self._connectors else ""
+                    )
+                    try:
+                        if search_cache.should_skip(
+                            portal=portal_name,
+                            keyword=request.keyword,
+                            location=request.location,
+                        ):
+                            skipped_by_cache += 1
+                            logger.info(
+                                "[%03d/%03d] SKIP (cache) | %s | %s | %s",
+                                index,
+                                len(request_list),
+                                portal_name,
+                                request.keyword,
+                                request.location,
+                            )
+                            continue
+                    except Exception as _exc:
+                        logger.debug("Cache check failed: %s", _exc)
 
                 try:
                     # Each SearchRequest gets its own raw-data ID.
@@ -792,13 +860,73 @@ class Engine:
                                 raw_search_id
                             )
 
-                    jobs = self.execute(
-                        request
-                    )
-
+                    jobs = self.execute(request)
                     all_jobs.extend(jobs)
 
+                    search_elapsed = (
+                        time.monotonic()
+                        - search_started_monotonic
+                    )
+
+                    # Record per-search metrics
+                    per_search_metrics.append({
+                        "index": index,
+                        "keyword": request.keyword,
+                        "location": request.location,
+                        "jobs_found": len(jobs),
+                        "jobs_new": len(all_jobs) - jobs_before,
+                        "elapsed_seconds": round(search_elapsed, 2),
+                        "raw_jobs_from_connector": len(jobs),
+                    })
+
+                    rejection_stats["raw_fetched"] += len(jobs)
+
+                    # Record in cache
+                    if search_cache is not None:
+                        try:
+                            search_cache.record(
+                                portal=portal_name,
+                                keyword=request.keyword,
+                                location=request.location,
+                                jobs_found=len(jobs),
+                                jobs_exported=0,
+                            )
+                        except Exception as _exc:
+                            logger.debug("Cache record failed: %s", _exc)
+                    run_elapsed = (
+                        time.monotonic()
+                        - fetch_started_monotonic
+                    )
+                    average_elapsed = run_elapsed / index
+                    remaining_searches = len(request_list) - index
+                    eta_seconds = average_elapsed * remaining_searches
+
+                    logger.info(
+                        "[%03d/%03d] DONE | %s | %s | "
+                        "jobs=%d | elapsed=%.1fs | total=%.1fmin | ETA=%.1fmin",
+                        index,
+                        len(request_list),
+                        request.keyword,
+                        request.location,
+                        len(all_jobs) - jobs_before,
+                        search_elapsed,
+                        run_elapsed / 60,
+                        eta_seconds / 60,
+                    )
+
                 except Exception as exc:
+                    search_elapsed = (
+                        time.monotonic()
+                        - search_started_monotonic
+                    )
+                    logger.exception(
+                        "[%03d/%03d] FAILED | %s | %s | elapsed=%.1fs",
+                        index,
+                        len(request_list),
+                        request.keyword,
+                        request.location,
+                        search_elapsed,
+                    )
                     errors.append(
                         f"Search '{request.keyword}' "
                         f"failed: {exc}"
@@ -899,6 +1027,9 @@ class Engine:
             # They have completed processing and should become REJECTED.
             # ----------------------------------------------------------
 
+            # Track validation failures
+            rejection_stats["validation_failed"] = len(invalid_jobs)
+
             if invalid_jobs and self._registry is not None:
                 for job in invalid_jobs:
                     try:
@@ -907,12 +1038,14 @@ class Engine:
                             reason="Validation rejected",
                         )
                     except Exception as exc:
-                        logger.warning(
-                            "Failed to mark validation-rejected job "
-                            "%s as REJECTED: %s",
-                            job.job_id,
-                            exc,
-                        )
+                        msg = str(exc)
+                        if "Invalid transition" not in msg:
+                            logger.warning(
+                                "Failed to mark validation-rejected "
+                                "job %s as REJECTED: %s",
+                                job.job_id,
+                                exc,
+                            )
 
             # ----------------------------------------------------------
             # Step 3.5:
@@ -941,6 +1074,9 @@ class Engine:
                         len(rejected_jobs),
                     )
 
+                    # Track profile filter rejections
+                    rejection_stats["profile_filter_rejected"] = len(rejected_jobs)
+
                     # Profile-rejected NEW jobs have completed the
                     # profile decision and must not remain NEW.
                     if rejected_jobs and self._registry is not None:
@@ -951,12 +1087,19 @@ class Engine:
                                     reason="Profile filter rejected",
                                 )
                             except Exception as exc:
-                                logger.warning(
-                                    "Failed to mark profile-rejected job "
-                                    "%s as REJECTED: %s",
-                                    job.job_id,
-                                    exc,
-                                )
+                                # "Invalid transition: REJECTED -> REJECTED"
+                                # is expected when the job was already
+                                # rejected in a previous run. Ignore.
+                                msg = str(exc)
+                                if "Invalid transition" in msg:
+                                    pass  # already rejected — fine
+                                else:
+                                    logger.warning(
+                                        "Failed to mark profile-rejected "
+                                        "job %s as REJECTED: %s",
+                                        job.job_id,
+                                        exc,
+                                    )
 
                     valid_jobs = filtered_jobs
 
@@ -1009,6 +1152,48 @@ class Engine:
                     len(valid_jobs),
                 )
 
+                # Batched scoring:
+                #   - score every job in memory
+                #   - flush every 100 rows in ONE DuckDB transaction
+                #   - fall back to per-row save if save_many() unavailable
+                BATCH_SIZE = 100
+                batch: list[tuple] = []
+                total_saved = 0
+
+                has_save_many = hasattr(
+                    self._score_repo, "save_many"
+                )
+
+                def _flush(batch_rows: list[tuple]) -> None:
+                    nonlocal total_saved
+                    if not batch_rows:
+                        return
+                    if has_save_many:
+                        self._score_repo.save_many(batch_rows)
+                        total_saved += len(batch_rows)
+                        logger.info(
+                            "Flushed %s score rows (total=%s)",
+                            len(batch_rows),
+                            total_saved,
+                        )
+                    else:
+                        # Fallback path (unchanged behavior)
+                        for (
+                            j_id,
+                            p_id,
+                            s_id,
+                            s_result,
+                            p_ver,
+                        ) in batch_rows:
+                            self._score_repo.save_score_result(
+                                job_id=j_id,
+                                profile_id=p_id,
+                                search_session_id=s_id,
+                                score_result=s_result,
+                                pipeline_version=p_ver,
+                            )
+                            total_saved += 1
+
                 for index, job in enumerate(
                     valid_jobs,
                     1,
@@ -1021,60 +1206,31 @@ class Engine:
                             job.job_id,
                         )
 
-                        # ----------------------------------------------
-                        # Intelligence extraction
-                        # ----------------------------------------------
-
                         intelligence = (
-                            extractor.extract_from_job(
-                                job
-                            )
+                            extractor.extract_from_job(job)
                         )
 
-                        logger.info(
-                            "Intelligence extracted for %s",
-                            job.job_id,
+                        result = scoring_engine.score_job(
+                            intelligence,
+                            job_title=job.title,
+                            job_description=job.description,
                         )
-                        # ----------------------------------------------
-                        # Scoring
-                        # ----------------------------------------------
-
-                        result = (
-                            scoring_engine.score_job(
-                                intelligence,
-                                job_title=job.title,
-                                job_description=(
-                                    job.description
-                                ),
-                            )
-                        )
-
-                        logger.info(
-                            "Score computed for %s: %s",
-                            job.job_id,
-                            result.score,
-                        )
-
-                        # ----------------------------------------------
-                        # Persist score
-                        # ----------------------------------------------
 
                         canonical_job_id = self._canonical_job_id(job)
 
-                        self._score_repo.save_score_result(
-                            job_id=canonical_job_id,
-                            profile_id=profile_type,
-                            search_session_id=session_id,
-                            score_result=result,
-                            pipeline_version=(
-                                AI_PIPELINE_VERSION
-                            ),
+                        batch.append(
+                            (
+                                canonical_job_id,
+                                profile_type,
+                                session_id,
+                                result,
+                                AI_PIPELINE_VERSION,
+                            )
                         )
 
-                        logger.info(
-                            "Score saved for %s",
-                            job.job_id,
-                        )
+                        if len(batch) >= BATCH_SIZE:
+                            _flush(batch)
+                            batch.clear()
 
                     except Exception as exc:
                         logger.exception(
@@ -1082,8 +1238,16 @@ class Engine:
                             job.job_id,
                             exc,
                         )
-
                         raise
+
+                # Flush any remaining rows
+                _flush(batch)
+                batch.clear()
+
+                logger.info(
+                    "Scoring complete: %s rows saved",
+                    total_saved,
+                )
 
             else:
                 logger.info(
@@ -1097,6 +1261,9 @@ class Engine:
             # ----------------------------------------------------------
 
             valid_new = list(valid_jobs)
+
+            # Track exported
+            rejection_stats["exported"] = len(valid_new)
 
             if valid_new:
                 self._exporter.export(
@@ -1141,6 +1308,70 @@ class Engine:
                     "Session repository not initialized"
                 )
 
+            # ----------------------------------------------------------
+            # Save per-search metrics to CSV (avoid 10KB metadata limit)
+            # ----------------------------------------------------------
+            metrics_csv_path = None
+            if per_search_metrics:
+                try:
+                    import csv as _csv
+                    from pathlib import Path as _Path
+
+                    metrics_dir = _Path("output") / "session_metrics"
+                    metrics_dir.mkdir(parents=True, exist_ok=True)
+
+                    metrics_csv_path = (
+                        metrics_dir
+                        / f"session_{str(session_id)[:8]}_metrics.csv"
+                    )
+
+                    with metrics_csv_path.open("w", newline="") as _f:
+                        writer = _csv.DictWriter(
+                            _f,
+                            fieldnames=[
+                                "index",
+                                "keyword",
+                                "location",
+                                "jobs_found",
+                                "jobs_new",
+                                "elapsed_seconds",
+                                "raw_jobs_from_connector",
+                            ],
+                        )
+                        writer.writeheader()
+                        writer.writerows(per_search_metrics)
+
+                    logger.info(
+                        "Per-search metrics saved: %s (%d rows)",
+                        metrics_csv_path,
+                        len(per_search_metrics),
+                    )
+                except Exception as _exc:
+                    logger.warning(
+                        "Failed to save per-search metrics CSV: %s",
+                        _exc,
+                    )
+                    metrics_csv_path = None
+
+            # Compute already_seen count
+            rejection_stats["already_seen"] = (
+                rejection_stats["raw_fetched"]
+                - rejection_stats["validation_failed"]
+                - rejection_stats["profile_filter_rejected"]
+                - rejection_stats["exported"]
+            )
+
+            # Summary stats for metadata (keep < 10 KB)
+            _metrics_summary = {
+                "total_searches": len(request_list),
+                "skipped_by_cache": skipped_by_cache,
+                "metrics_csv_path": (
+                    str(metrics_csv_path)
+                    if metrics_csv_path else None
+                ),
+                "rejection_stats": rejection_stats,
+            }
+
             if errors:
 
                 self._session_repo.complete_session(
@@ -1160,6 +1391,7 @@ class Engine:
                     error_message="; ".join(
                         errors[:3]
                     ),
+                    metadata=_metrics_summary,
                 )
 
             else:
@@ -1178,6 +1410,7 @@ class Engine:
                     invalid_jobs=len(invalid_jobs),
                     exported_jobs=len(valid_new),
                     duration_ms=duration_ms,
+                    metadata=_metrics_summary,
                 )
 
             # ----------------------------------------------------------

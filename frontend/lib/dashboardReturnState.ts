@@ -37,7 +37,7 @@ export function saveDashboardReturnState(
   if (typeof window === "undefined") return;
 
   try {
-    sessionStorage.setItem(
+    localStorage.setItem(
       DASHBOARD_RETURN_STATE_KEY,
       JSON.stringify(state),
     );
@@ -52,7 +52,7 @@ export function readDashboardReturnState():
   if (typeof window === "undefined") return null;
 
   try {
-    const raw = sessionStorage.getItem(
+    const raw = localStorage.getItem(
       DASHBOARD_RETURN_STATE_KEY,
     );
 
@@ -80,7 +80,7 @@ export function clearDashboardReturnState() {
   if (typeof window === "undefined") return;
 
   try {
-    sessionStorage.removeItem(
+    localStorage.removeItem(
       DASHBOARD_RETURN_STATE_KEY,
     );
   } catch {

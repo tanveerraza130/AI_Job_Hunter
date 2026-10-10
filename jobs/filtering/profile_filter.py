@@ -193,31 +193,10 @@ class ProfileJobFilter:
         combined = f"{title} {description}"
 
         # ------------------------------------------------------
-        # Explicit CRM / MarTech role titles
-        # ------------------------------------------------------
-        strong_role_signals = (
-            "crm",
-            "martech",
-            "mar tech",
-            "lifecycle marketing",
-            "retention marketing",
-            "customer lifecycle",
-            "customer engagement",
-            "marketing automation",
-            "campaign management",
-            "campaign automation",
-            "customer journey",
-            "journey orchestration",
-            "personalization",
-            "loyalty marketing",
-        )
-
-        if any(signal in title for signal in strong_role_signals):
-            return True
-
-        # ------------------------------------------------------
-        # Technical / engineering roles cannot be rescued by
-        # CRM tools or generic CRM terminology.
+        # Technical / engineering roles MUST be checked FIRST.
+        #
+        # A title like "Dynamics 365 CRM Developer" contains "crm"
+        # but is still a technical role and must be rejected.
         # ------------------------------------------------------
         technical_title_signals = (
             "developer",
@@ -237,10 +216,133 @@ class ProfileJobFilter:
             "implementation consultant",
             "system administrator",
             "powerbuilder",
+            "technical lead",
+            "technical manager",
+            "d365",
+            "dynamics 365",
+            "dynamics crm",
+            "salesforce developer",
+            "salesforce admin",
+            "salesforce administrator",
+            "copilot",
+            "power platform",
+            # Added: reject these non-CRM roles
+            "architect",
+            "data analyst",
+            "business analyst",
+            "system admin",
+            "administrator",
+            "veeva",
+            "zoho",
+            "shopify",
+            "back office",
+            "banking",
+            "real estate",
+            "field executive",
+            "field sales",
+            "offline sales",
+            "it sales",
+            "pre-sale",
+            "pre sale",
+            "pre sales",
+            "investor relations",
+            "political",
+            "publisher",
+            "meta ads",
+            "google ads",
+            "search ads",
+            "social media",
+            "debt recovery",
+            "loan against",
+            "franchise service",
+            "sales transformation",
+            # Final additions
+            "immigration",
+            "social campaign",
+            "publisher campaign",
+            "political campaign",
+            "meta ads campaign",
+            "google ads campaign",
+            "search ads campaign",
+            "hyper personalization",
+            "hyperpersonalization",
+            "email marketing specialist",
+            "ecommerce",
+            "e-commerce",
         )
 
         if any(signal in title for signal in technical_title_signals):
             return False
+
+        # ------------------------------------------------------
+        # Reject if title contains sales-specific signals
+        # even when CRM/retention keyword is present
+        # ------------------------------------------------------
+        sales_overrides = (
+            "sales",
+            "client servicing",
+            "client success",
+            "client retention",
+            "upsell",
+            "cross-sell",
+            "cross sell",
+            "field",
+            "door to door",
+            "real estate",
+            "insurance",
+            "loan",
+        )
+
+        # Only reject if title has "sales" AND not other strong CRM signals
+        title_sales = any(sig in title for sig in sales_overrides)
+        title_strong_crm = any(
+            sig in title for sig in (
+                "crm manager", "crm executive", "crm lead", "crm head",
+                "head of crm", "crm specialist", "crm analyst",
+                "lifecycle marketing", "retention marketing",
+                "loyalty marketing", "marketing automation",
+                "marketing automation manager", "martech manager",
+                "customer lifecycle", "crm campaign",
+            )
+        )
+
+        if title_sales and not title_strong_crm:
+            return False
+
+        # ------------------------------------------------------
+        # Explicit CRM / MarTech role titles
+        # ------------------------------------------------------
+        strong_role_signals = (
+            "crm",
+            "martech",
+            "mar tech",
+            "lifecycle marketing",
+            "retention marketing",
+            "retention manager",
+            "retention lead",
+            "retention head",
+            "retention specialist",
+            "retention executive",
+            "retention analyst",
+            "customer lifecycle",
+            "customer engagement",
+            "marketing automation",
+            "campaign management",
+            "campaign automation",
+            "campaign manager",
+            "customer journey",
+            "journey orchestration",
+            "personalization",
+            "loyalty marketing",
+            "loyalty manager",
+            "loyalty lead",
+            "customer marketing",
+            "customer retention",
+            "growth crm",
+        )
+
+        if any(signal in title for signal in strong_role_signals):
+            return True
 
         # ------------------------------------------------------
         # Dedicated CRM / MarTech platforms
@@ -387,7 +489,7 @@ class ProfileJobFilter:
                     title
                     for title in self.profile.negative_titles
                     if re.search(
-                        r"\\b" + re.escape(title) + r"\\b",
+                        r"\b" + re.escape(title) + r"\b",
                         title_lower,
                         re.IGNORECASE,
                     )
@@ -415,7 +517,7 @@ class ProfileJobFilter:
                     keyword
                     for keyword in self.profile.negative_keywords
                     if re.search(
-                        r"\\b" + re.escape(keyword) + r"\\b",
+                        r"\b" + re.escape(keyword) + r"\b",
                         combined_text,
                         re.IGNORECASE,
                     )
