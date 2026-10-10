@@ -405,3 +405,43 @@ export async function deleteApplication(
     },
   );
 }
+
+// ============================================================
+// USER PREFERENCES (cross-device filter sync)
+// ============================================================
+
+export interface UserPreferences {
+  page: number;
+  mobilePage: number;
+  search: string;
+  company: string;
+  locations: string[];
+  skills: string[];
+  tools: string[];
+  portal: string;
+  relevance: string[];
+  sort: string;
+  postedDateFrom: string;
+  postedDateTo: string;
+}
+
+export async function getUserPreferences(): Promise<{
+  preferences: { filters: UserPreferences; updated_at: string | null } | null;
+}> {
+  return apiRequest("/preferences");
+}
+
+export async function saveUserPreferences(
+  filters: UserPreferences,
+): Promise<{ saved: boolean }> {
+  return apiRequest("/preferences", {
+    method: "PUT",
+    body: JSON.stringify(filters),
+  });
+}
+
+export async function clearUserPreferences(): Promise<{ cleared: boolean }> {
+  return apiRequest("/preferences", {
+    method: "DELETE",
+  });
+}

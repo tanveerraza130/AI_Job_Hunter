@@ -2,7 +2,14 @@
 import "./DashboardTokens.css";
 
 import { useEffect, useRef, useState } from "react";
-import { getDashboardSummary, getJobFilterOptions, getJobs, getMyProfile } from "@/lib/api";
+import {
+  getDashboardSummary,
+  getJobFilterOptions,
+  getJobs,
+  getMyProfile,
+  getUserPreferences,
+  saveUserPreferences,
+} from "@/lib/api";
 import type { DashboardSummary, Job, JobFilterOptions } from "@/types/job";
 import DashboardMobile from "./DashboardMobile";
 import DashboardDesktop from "./DashboardDesktop";
@@ -84,6 +91,64 @@ export default function Dashboard() {
   const [postedDateTo, setPostedDateTo] = useState(
     returnState?.postedDateTo ?? "",
   );
+
+  /*
+   * LOAD FILTERS FROM BACKEND (cross-device sync)
+   *
+   * On first mount (once profile is ready), fetch the user's
+   * saved preferences from the backend. If found, apply them.
+   *
+   * This runs ONCE per mount. Local localStorage already gives
+   * instant filter restore for same-device, but backend sync
+   * brings in filters from OTHER devices.
+   */
+  useEffect(() => {
+    if (!profileReady) return;
+
+    let cancelled = false;
+
+    async function loadBackendPreferences() {
+      try {
+        const response = await getUserPreferences();
+        if (cancelled) return;
+
+        const filters = response?.preferences?.filters;
+        if (!filters) return;
+
+        // Apply backend filters only if the values differ
+        // from current state (prevents extra re-renders).
+        if (filters.search !== search) setSearch(filters.search ?? "");
+        if (filters.company !== company) setCompany(filters.company ?? "");
+        if (Array.isArray(filters.locations)) setLocations(filters.locations);
+        if (Array.isArray(filters.skills)) setSkills(filters.skills);
+        if (Array.isArray(filters.tools)) setTools(filters.tools);
+        if (filters.portal !== portal) setPortal(filters.portal ?? "");
+        if (Array.isArray(filters.relevance)) {
+          setRelevance(filters.relevance as typeof relevance);
+        }
+        if (filters.sort !== sort) setSort(filters.sort as typeof sort);
+        if (filters.postedDateFrom !== postedDateFrom) {
+          setPostedDateFrom(filters.postedDateFrom ?? "");
+        }
+        if (filters.postedDateTo !== postedDateTo) {
+          setPostedDateTo(filters.postedDateTo ?? "");
+        }
+
+        console.info("✓ Loaded filters from backend (cross-device sync)");
+      } catch (err) {
+        // 401 or no saved preferences — silent fallback
+        console.debug("No backend preferences found:", err);
+      }
+    }
+
+    loadBackendPreferences();
+
+    return () => {
+      cancelled = true;
+    };
+    // Intentionally runs once when profileReady becomes true
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileReady]);
 
   const requestId = useRef(0);
   const previousPageRef = useRef(1);
@@ -256,34 +321,47 @@ export default function Dashboard() {
   }, []);
 
   /*
-   * AUTO-SAVE FILTERS TO LOCALSTORAGE
+   * AUTO-SAVE FILTERS — localStorage + backend (cross-device)
    *
    * Whenever any filter changes, persist the current dashboard
-   * state to localStorage (300ms debounced). This ensures
-   * filters survive page refresh and tab close.
+   * state to BOTH localStorage AND the backend (300ms debounced).
+   *
+   * localStorage: fast, survives refresh + tab close (same device)
+   * backend:      cross-device sync (login from anywhere)
    */
   useEffect(() => {
     if (!profileReady) return;
 
     const timer = setTimeout(() => {
+      const state = {
+        page: Math.max(1, page),
+        mobilePage: Math.max(1, mobilePageRef.current),
+        search,
+        company,
+        locations,
+        skills,
+        tools,
+        portal,
+        relevance,
+        sort,
+        postedDateFrom,
+        postedDateTo,
+      };
+
+      // 1. Save to localStorage (fast, same device)
       try {
-        saveDashboardReturnState({
-          page: Math.max(1, page),
-          mobilePage: Math.max(1, mobilePageRef.current),
-          search,
-          company,
-          locations,
-          skills,
-          tools,
-          portal,
-          relevance,
-          sort,
-          postedDateFrom,
-          postedDateTo,
-        });
+        saveDashboardReturnState(state);
       } catch (err) {
-        console.warn("Failed to save dashboard state:", err);
+        console.warn("Failed to save dashboard state to localStorage:", err);
       }
+
+      // 2. Save to backend (cross-device sync)
+      saveUserPreferences({
+        ...state,
+        relevance: relevance as string[],
+      }).catch((err) => {
+        console.warn("Failed to save preferences to backend:", err);
+      });
     }, 300);
 
     return () => clearTimeout(timer);
