@@ -24,6 +24,8 @@ import type { Job } from "@/types/job";
 
 import MobileScore from "./MobileScore";
 import JobStatusPrompt from "@/features/job-status/JobStatusPrompt";
+import JobStatusMenu from "@/features/job-status/JobStatusMenu";
+import { getStatusConfig } from "@/features/job-status/jobStatus.config";
 import styles from "./MobileJobCard.module.css";
 
 export type MobileStatus =
@@ -35,6 +37,22 @@ export type MobileStatus =
   | "Rejected"
   | "Offer"
   | "Not Relevant";
+
+/** Convert display status → lowercase API value for JobStatusMenu */
+const apiStatusLower = (
+  status: MobileStatus,
+): "not_applied" | "saved" | "pending" | "applied" | "interview" | "offer" | "rejected" | "not_relevant" => {
+  if (status === "Saved") return "saved";
+  if (status === "Pending") return "pending";
+  if (status === "Applied") return "applied";
+  if (status === "Interview") return "interview";
+  if (status === "Offer") return "offer";
+  if (status === "Rejected") return "rejected";
+  if (status === "Not Relevant") return "not_relevant";
+  return "not_applied";
+};
+
+
 
 const experience = (
   min?: number | null,
@@ -121,23 +139,6 @@ function MobileJobCard({
   profileId,
   onJobOpen,
 }: Props) {
-  const [statusOpen, setStatusOpen] = useState(false);
-
-  const statusOptions: MobileStatus[] = [
-    "Not Applied",
-    "Saved",
-    "Pending",
-    "Applied",
-    "Interview",
-    "Offer",
-    "Rejected",
-    "Not Relevant",
-  ];
-
-  const statusLabel =
-    status === "Pending"
-      ? "Application Pending"
-      : status;
 
   const score =
     job.overall_score;
@@ -477,58 +478,25 @@ function MobileJobCard({
         </Link>
 
         <div className={styles.statusControl}>
-          <button
-            type="button"
-            className={styles.statusButton}
-            aria-expanded={statusOpen}
-            aria-haspopup="listbox"
-            onClick={() =>
-              setStatusOpen((open) => !open)
-            }
-          >
-            <span>{statusLabel}</span>
-            <ChevronDown
-              size={13}
-              className={
-                statusOpen
-                  ? styles.statusChevronOpen
-                  : ""
-              }
-            />
-          </button>
-
-          {statusOpen && (
-            <div
-              className={styles.statusMenu}
-              role="listbox"
-              aria-label="Job Status"
-            >
-              {statusOptions.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  role="option"
-                  aria-selected={status === option}
-                  className={`${styles.statusOption} ${
-                    status === option
-                      ? styles.statusOptionSelected
-                      : ""
-                  }`}
-                  onClick={async () => {
-                    setStatusOpen(false);
-                    await onStatusChange(
-                      job.job_id,
-                      option,
-                    );
-                  }}
-                >
-                  {option === "Pending"
-                    ? "Application Pending"
-                    : option}
-                </button>
-              ))}
-            </div>
-          )}
+          <JobStatusMenu
+            status={apiStatusLower(status)}
+            onChange={async (nextStatus) => {
+              const display =
+                nextStatus === "not_applied"
+                  ? "Not Applied"
+                  : ({
+                      saved: "Saved",
+                      pending: "Pending",
+                      applied: "Applied",
+                      interview: "Interview",
+                      offer: "Offer",
+                      rejected: "Rejected",
+                      not_relevant: "Not Relevant",
+                    }[nextStatus] as MobileStatus);
+              await onStatusChange(job.job_id, display);
+            }}
+            direction="up"
+          />
         </div>
 
         {job.job_url && (

@@ -1,3 +1,6 @@
+/* ============================================================
+   Job Status — Badge
+   ============================================================ */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -18,6 +21,7 @@
   flex: 0 0 auto;
 }
 
+/* Legacy statuses (kept for backwards compatibility) */
 .pending {
   color: #9a5b00;
   background: #fff5df;
@@ -48,6 +52,9 @@
   background: #98a2b3;
 }
 
+/* ============================================================
+   Prompt (inline "Applied / Not yet" prompt)
+   ============================================================ */
 .prompt {
   width: 100%;
   box-sizing: border-box;
@@ -91,54 +98,129 @@
   border: 1px solid #d0d5dd;
 }
 
+/* ============================================================
+   Menu (JobStatusMenu component)
+   ============================================================ */
 .menu {
   position: relative;
   display: inline-block;
+  z-index: 30;
 }
 
 .menuTrigger {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  place-items: center;
-  color: #667085;
-  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #dfe3e8;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  list-style: none;
+  transition: all 120ms ease;
+  white-space: nowrap;
 }
 
-.menuTrigger::-webkit-details-marker {
-  display: none;
+.menuTrigger:hover {
+  filter: brightness(0.97);
+}
+
+.triggerIcon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.triggerLabel {
+  font-size: 12px;
+}
+
+.chevron,
+.chevronOpen {
+  transition: transform 150ms ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
 }
 
 .menuPanel {
   position: absolute;
   right: 0;
-  z-index: 20;
+  top: calc(100% + 6px);
+  z-index: 100;
   display: flex;
-  min-width: 170px;
+  min-width: 220px;
+  max-width: 280px;
   flex-direction: column;
   gap: 2px;
-  margin-top: 4px;
-  padding: 5px;
+  padding: 6px;
   border: 1px solid #e4e7ec;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #ffffff;
-  box-shadow: 0 8px 24px rgb(16 24 40 / 12%);
+  box-shadow: 0 12px 32px rgb(16 24 40 / 14%);
+  animation: menuFadeIn 120ms ease;
 }
 
-.menuPanel button {
-  padding: 8px 10px;
-  color: #344054;
-  background: transparent;
+.menuPanel[data-direction="up"] {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuItem,
+.menuItemActive {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 8px;
+  background: transparent;
+  color: #344054;
+  font-size: 13px;
+  font-weight: 600;
   text-align: left;
-  font-size: 12px;
   cursor: pointer;
+  transition: background 100ms ease;
 }
 
-.menuPanel button:hover,
-.menuPanel button.selected {
-  background: #f2f4f7;
+.menuItem:hover {
+  background: #f9fafb;
+}
+
+.menuItemActive {
+  background: #f5f3ff;
+}
+
+.menuIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 14px;
+  flex: 0 0 22px;
+}
+
+.menuLabel {
+  flex: 1 1 auto;
+}
+
+.checkMark {
+  font-size: 14px;
+  font-weight: 800;
+  margin-left: auto;
 }

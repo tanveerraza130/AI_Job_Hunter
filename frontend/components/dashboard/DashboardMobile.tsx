@@ -47,9 +47,14 @@ type MobileStatus =
 
 type MobileTab =
   | "ALL"
-  | "Applied"
   | "Not Applied"
-  | "Saved";
+  | "Saved"
+  | "Pending"
+  | "Applied"
+  | "Interview"
+  | "Offer"
+  | "Rejected"
+  | "Not Relevant";
 
 const displayStatus = (
   status?: string,
@@ -247,6 +252,15 @@ export default function DashboardMobile(
       ) === activeTab;
     });
 
+  // Count jobs per status for tab badges
+  const countsByStatus: Partial<Record<MobileTab, number>> = {};
+  for (const job of props.jobs) {
+    const status =
+      statusMap[job.job_id] || "Not Applied";
+    countsByStatus[status as MobileTab] =
+      (countsByStatus[status as MobileTab] || 0) + 1;
+  }
+
   const {
     filtersOpen,
     loading,
@@ -414,6 +428,7 @@ export default function DashboardMobile(
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         totalJobs={props.totalJobs}
+        countsByStatus={countsByStatus}
       />
 
       <section className={styles.jobsSection}>
