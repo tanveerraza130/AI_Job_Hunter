@@ -22,13 +22,13 @@
 .tab,
 .tabActive {
   flex: 0 0 auto;
-  min-height: 34px;
-  padding: 6px 12px;
+  min-height: 38px;
+  padding: 8px 14px;
   border: 1px solid #e1e5ed;
   border-radius: 999px;
   background: #ffffff;
   color: #475467;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
@@ -57,12 +57,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  margin-left: 6px;
   border-radius: 999px;
   background: #6366f1;
   color: #ffffff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
+  line-height: 1;
 }
