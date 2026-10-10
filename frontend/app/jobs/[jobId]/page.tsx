@@ -9,6 +9,8 @@ import Responsibilities from "./components/Responsibilities/Responsibilities";
 import Requirements from "./components/Requirements/Requirements";
 import Company from "./components/Company/Company";
 import SimilarJobs from "./components/SimilarJobs/SimilarJobs";
+import JobStatusMenu from "@/features/job-status/JobStatusMenu";
+import JobStatusPrompt from "@/features/job-status/JobStatusPrompt";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getApplication, getJobDetail, getMyProfile, updateApplication } from "@/lib/api";
@@ -280,46 +282,43 @@ export default function JobDetailPage({
           String(returned.jobId) ===
             String(job.job_id)
         ) {
-          try {
-            const application = await getApplication(
-              job.job_id,
-            );
-
-            if (application.application) {
-              const savedStatus =
-                application.application.status;
-
-              setStatus(savedStatus);
-              setNotes(
-                application.application.notes || "",
-              );
-
-              publishApplicationStatus(
-                job.job_id,
-                savedStatus,
-              );
-
-              setShowApplyPrompt(null);
-              return;
-            }
-
-            setStatus("not_applied");
-            setNotes("");
-
-            publishApplicationStatus(
-              job.job_id,
-              "not_applied",
-            );
-          } catch (error) {
-            console.error(
-              "Failed to refresh application after Apply:",
-              error,
-            );
-          }
-
+          /*
+           * Show the prompt IMMEDIATELY — do not wait for
+           * the network. Backend refresh happens in the
+           * background so status stays in sync without
+           * blocking the UI.
+           */
           setShowApplyPrompt(
             String(returned.jobId),
           );
+
+          void (async () => {
+            try {
+              const application = await getApplication(
+                job.job_id,
+              );
+
+              if (application.application) {
+                const savedStatus =
+                  application.application.status;
+
+                setStatus(savedStatus);
+                setNotes(
+                  application.application.notes || "",
+                );
+
+                publishApplicationStatus(
+                  job.job_id,
+                  savedStatus,
+                );
+              }
+            } catch (error) {
+              console.error(
+                "Failed to refresh application after Apply:",
+                error,
+              );
+            }
+          })();
         }
       }
     }
@@ -388,83 +387,13 @@ export default function JobDetailPage({
     };
   }, [job]);
 
-  const [mobileStatusOpen, setMobileStatusOpen] =
-    useState(false);
 
-  const mobileStatusOptions: {
-    value: ApplicationStatus;
-    label: string;
-  }[] = [
-    { value: "saved", label: "Saved" },
-    { value: "pending", label: "Application pending" },
-    { value: "applied", label: "Applied" },
-    { value: "interview", label: "Interview" },
-    { value: "offer", label: "Offer" },
-    { value: "rejected", label: "Rejected" },
-    { value: "not_relevant", label: "Not relevant" },
-  ];
-
-  function handleMobileStatusChange(
-    nextStatus: ApplicationStatus,
-  ) {
-    setMobileStatusOpen(false);
-    saveApplication(nextStatus);
-  }
 
   function toggleMobileSection(section: string) {
-    setOpenMobileSection((current) =>
-      current === section ? null : section,
-    );
   }
 
   // Close the mobile status menu when the user clicks/taps
   // anywhere outside the status control.
-  useEffect(() => {
-    if (!mobileStatusOpen) return;
-
-    function mobileStatusOutsideClose(event: PointerEvent) {
-      const target = event.target as Node | null;
-      const statusControl = document.querySelector(
-        ".job-details-mobile-status",
-      );
-
-      if (
-        statusControl &&
-        target &&
-        !statusControl.contains(target)
-      ) {
-        setMobileStatusOpen(false);
-      }
-    }
-
-    function mobileStatusEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setMobileStatusOpen(false);
-      }
-    }
-
-    document.addEventListener(
-      "pointerdown",
-      mobileStatusOutsideClose,
-    );
-
-    document.addEventListener(
-      "keydown",
-      mobileStatusEscape,
-    );
-
-    return () => {
-      document.removeEventListener(
-        "pointerdown",
-        mobileStatusOutsideClose,
-      );
-
-      document.removeEventListener(
-        "keydown",
-        mobileStatusEscape,
-      );
-    };
-  }, [mobileStatusOpen]);
 
  const [notes,setNotes]=useState(""); const [saving,setSaving]=useState(false);
   useEffect(() => {
@@ -630,23 +559,27 @@ export default function JobDetailPage({
         status={status}
         saving={saving}
         saveApplication={saveApplication}
-        showApplyPrompt={showApplyPrompt === String(job.job_id)}
-        onApplyConfirmed={() => {
-          saveApplication("applied");
-          setShowApplyPrompt(null);
-          clearApplyReturnState();
-        }}
-        onApplyNotYet={() => {
-          saveApplication("pending");
-          setShowApplyPrompt(null);
-          clearApplyReturnState();
-        }}
-        onApplyNotRelevant={() => {
-          saveApplication("not_relevant");
-          setShowApplyPrompt(null);
-          clearApplyReturnState();
-        }}
       />
+
+      {showApplyPrompt === String(job.job_id) && (
+        <JobStatusPrompt
+          onApplied={() => {
+            saveApplication("applied");
+            setShowApplyPrompt(null);
+            clearApplyReturnState();
+          }}
+          onNotYet={() => {
+            saveApplication("pending");
+            setShowApplyPrompt(null);
+            clearApplyReturnState();
+          }}
+          onNotRelevant={() => {
+            saveApplication("not_relevant");
+            setShowApplyPrompt(null);
+            clearApplyReturnState();
+          }}
+        />
+      )}
 
 
 
@@ -1027,116 +960,6 @@ export default function JobDetailPage({
         currentJob={job}
         profileId={profileId}
       />
-
-      <div className="job-details-mobile-actions">
-
-        <button
-          type="button"
-          className={`job-details-mobile-save ${
-            status === "saved" ? "is-saved" : ""
-          }`}
-          aria-label={status === "saved" ? "Saved" : "Save job"}
-          onClick={() => saveApplication("saved")}
-          disabled={saving}
-        >
-          {status === "saved" ? "♥" : "♡"}
-        </button>
-
-        <div className="job-details-mobile-status">
-          <button
-            type="button"
-            className="job-details-mobile-status-trigger"
-            aria-expanded={mobileStatusOpen}
-            aria-haspopup="listbox"
-            aria-label="Job Status"
-            onClick={() =>
-              setMobileStatusOpen((open) => !open)
-            }
-            disabled={saving}
-          >
-            <span>
-              {status === "saved" && "Saved"}
-              {status === "pending" && "Application Pending"}
-              {status === "applied" && "Applied"}
-              {status === "interview" && "Interview"}
-              {status === "offer" && "Offer"}
-              {status === "rejected" && "Rejected"}
-              {status === "not_relevant" && "Not Relevant"}
-            </span>
-
-            <span
-              className={`job-details-mobile-status-chevron ${
-                mobileStatusOpen ? "is-open" : ""
-              }`}
-              aria-hidden="true"
-            >
-              ⌄
-            </span>
-          </button>
-
-          {mobileStatusOpen && (
-            <div
-              className="job-details-mobile-status-menu"
-              role="listbox"
-              aria-label="Job Status options"
-            >
-              {mobileStatusOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  role="option"
-                  aria-selected={status === option.value}
-                  className={`job-details-mobile-status-option ${
-                    status === option.value
-                      ? "is-selected"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    handleMobileStatusChange(option.value)
-                  }
-                >
-                  <span>{option.label}</span>
-
-                  {status === option.value && (
-                    <span
-                      className="job-details-mobile-status-check"
-                      aria-hidden="true"
-                    >
-                      ✓
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {job.job_url && (
-          <button
-            type="button"
-            className="job-details-mobile-apply"
-            onClick={() => {
-              if (!job.job_url) {
-                return;
-              }
-              const exactJobId = String(job.job_id);
-
-              setApplyAwaitingReturn(
-                exactJobId,
-              );
-
-              window.open(
-                job.job_url,
-                "_blank",
-                "noopener,noreferrer",
-              );
-            }}
-          >
-            Apply Now ↗
-          </button>
-        )}
-
-      </div>
 
     </main>
   );

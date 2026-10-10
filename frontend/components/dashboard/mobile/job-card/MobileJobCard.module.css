@@ -1364,3 +1364,312 @@
   color: #111;
 }
 
+
+/* ============================================================
+   MOBILE JOB CARD — 3-button bottom row
+   Job Details | Status | Apply Now — equal height, no drift.
+   ============================================================ */
+@media (max-width: 767px) {
+
+  .jobCardBottom {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    gap: 6px !important;
+
+    width: 100% !important;
+    margin-top: 10px !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+  /* Job Details — pinned left */
+  .jobCardBottom .detailsLink {
+    flex: 0 0 auto !important;
+
+    width: 96px !important;
+    min-width: 96px !important;
+    max-width: 96px !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 10px !important;
+
+    font-size: 11px !important;
+    font-weight: 800 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  /* Status — middle, natural width */
+  .jobCardBottom .statusControl {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: none !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  /* Apply Now — pinned right */
+  .jobCardBottom .applyButton {
+    flex: 0 0 auto !important;
+
+    width: 96px !important;
+    min-width: 96px !important;
+    max-width: 96px !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 4px !important;
+
+    border-radius: 10px !important;
+
+    font-size: 11px !important;
+    font-weight: 800 !important;
+
+    white-space: nowrap !important;
+
+    transform: none !important;
+  }
+
+  /* Kill the old negative offsets */
+  .jobCardBottom .statusControl,
+  .jobCardBottom .applyButton {
+    translate: none !important;
+    left: auto !important;
+    right: auto !important;
+  }
+}
+
+/* ============================================================
+   MOBILE JOB CARD — 3-button row, fully fluid across ALL widths
+   Grid: fixed side buttons + fluid status middle.
+   Guarantees no overflow down to 320px.
+   ============================================================ */
+@media (max-width: 767px) {
+
+  .jobCardBottom {
+    display: grid !important;
+
+    /* 1fr holds the two side buttons proportionally; middle flexes */
+    grid-template-columns:
+      minmax(78px, 0.9fr)
+      minmax(84px, 1.1fr)
+      minmax(84px, 0.9fr) !important;
+
+    align-items: center !important;
+
+    gap: 6px !important;
+
+    width: 100% !important;
+    margin-top: 10px !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+  /* All three share the same height */
+  .jobCardBottom .detailsLink,
+  .jobCardBottom .statusControl,
+  .jobCardBottom .statusControl > *,
+  .jobCardBottom .applyButton {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 4px !important;
+
+    border-radius: 10px !important;
+
+    font-size: 11px !important;
+    font-weight: 800 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    transform: none !important;
+    translate: none !important;
+  }
+
+  /* The menuTrigger inside the status column must fill its cell */
+  .jobCardBottom .statusControl > button,
+  .jobCardBottom .statusControl > div > button {
+    width: 100% !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 6px !important;
+    justify-content: space-between !important;
+    font-size: 11px !important;
+  }
+
+  /* Label inside trigger must shrink with ellipsis */
+  .jobCardBottom .statusControl button > span {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  .jobCardBottom .statusControl button > svg {
+    flex: 0 0 auto !important;
+  }
+}
+
+/* ------- Very narrow phones: tighten further ------- */
+@media (max-width: 380px) {
+  .jobCardBottom {
+    grid-template-columns:
+      minmax(70px, 0.9fr)
+      minmax(74px, 1.1fr)
+      minmax(74px, 0.9fr) !important;
+    gap: 5px !important;
+  }
+
+  .jobCardBottom .detailsLink,
+  .jobCardBottom .statusControl,
+  .jobCardBottom .statusControl > *,
+  .jobCardBottom .applyButton {
+    font-size: 10px !important;
+    padding: 0 6px !important;
+  }
+}
+
+/* ============================================================
+   MOBILE JOB CARD — widen middle status column
+   Status labels like "Not Applied" / "Interview" must not
+   truncate to "Not Ap...". Shift grid weight to the middle.
+   ============================================================ */
+@media (max-width: 767px) {
+  .jobCardBottom {
+    grid-template-columns:
+      minmax(72px, 0.8fr)
+      minmax(104px, 1.5fr)
+      minmax(72px, 0.85fr) !important;
+    gap: 6px !important;
+  }
+
+  /* Shrink side buttons' font slightly so they don't fight for space */
+  .jobCardBottom .detailsLink,
+  .jobCardBottom .applyButton {
+    font-size: 10.5px !important;
+    padding: 0 6px !important;
+    gap: 3px !important;
+  }
+
+  /* Status column gets preference */
+  .jobCardBottom .statusControl > button,
+  .jobCardBottom .statusControl > div > button {
+    font-size: 11px !important;
+    padding: 0 8px !important;
+  }
+}
+
+/* ------- Narrow phones ------- */
+@media (max-width: 380px) {
+  .jobCardBottom {
+    grid-template-columns:
+      minmax(66px, 0.75fr)
+      minmax(96px, 1.6fr)
+      minmax(66px, 0.8fr) !important;
+    gap: 5px !important;
+  }
+
+  .jobCardBottom .detailsLink,
+  .jobCardBottom .applyButton {
+    font-size: 10px !important;
+    padding: 0 5px !important;
+  }
+
+  .jobCardBottom .statusControl > button,
+  .jobCardBottom .statusControl > div > button {
+    font-size: 10.5px !important;
+    padding: 0 6px !important;
+  }
+}
+
+/* ============================================================
+   MOBILE JOB CARD — Apply Now emphasis
+   Bolder weight, stronger background, subtle lift.
+   ============================================================ */
+@media (max-width: 767px) {
+  .jobCardBottom .applyButton {
+    font-weight: 900 !important;
+    letter-spacing: 0.2px !important;
+    font-size: 11.5px !important;
+
+    background: linear-gradient(
+      135deg,
+      #5c43ef 0%,
+      #4930df 100%
+    ) !important;
+
+    color: #ffffff !important;
+
+    box-shadow:
+      0 6px 14px rgba(80, 56, 232, 0.28),
+      0 2px 4px rgba(80, 56, 232, 0.15) !important;
+  }
+
+  .jobCardBottom .applyButton svg {
+    stroke-width: 2.6 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .jobCardBottom .applyButton {
+    font-size: 10.5px !important;
+    font-weight: 900 !important;
+  }
+}

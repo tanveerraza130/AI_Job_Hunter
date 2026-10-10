@@ -12303,11 +12303,11 @@ body {
 
     box-sizing: border-box !important;
 
-    border: 1px solid #d8d2ff !important;
+    /* border: removed to allow inline status tint */
     border-radius: 11px !important;
 
-    background: #fff !important;
-    color: #293754 !important;
+    /* background: removed to allow inline status tint */
+    /* color: removed to allow inline status tint */
 
     font-family: inherit !important;
   }

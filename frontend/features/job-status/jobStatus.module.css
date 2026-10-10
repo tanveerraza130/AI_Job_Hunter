@@ -254,3 +254,264 @@
   background: #d1d5db;
   border-radius: 3px;
 }
+
+/* ============================================================
+   Mobile Bottom Sheet — status picker
+   Rendered via portal into document.body.
+   Only active when JobStatusMenu detects mobile viewport.
+   ============================================================ */
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(17, 24, 39, 0.45);
+  backdrop-filter: blur(2px);
+  animation: sheetFadeIn 160ms ease-out;
+}
+
+@keyframes sheetFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: #ffffff;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  box-shadow: 0 -12px 40px rgba(16, 24, 40, 0.18);
+  animation: sheetSlideUp 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes sheetSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.sheetHandle {
+  width: 40px;
+  height: 4px;
+  margin: 4px auto 10px;
+  border-radius: 999px;
+  background: #d0d5dd;
+  flex: 0 0 auto;
+}
+
+.sheetTitle {
+  padding: 0 12px 8px;
+  color: #172033;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+}
+
+.sheetList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: 4px;
+}
+
+.sheetItem {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #172033;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+
+.sheetItem:hover,
+.sheetItem:active {
+  background: #f5f3ff;
+}
+
+.sheetItemActive {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.sheetItemLabel {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sheetCheck {
+  flex: 0 0 auto;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sheetList::-webkit-scrollbar { width: 6px; }
+.sheetList::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   Mobile bottom sheet — force full viewport width
+   Guards against any parent transform / overflow affecting
+   position:fixed descendants.
+   ============================================================ */
+@media (max-width: 767px) {
+  .sheetBackdrop {
+    width: 100vw !important;
+    height: 100vh !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+  }
+
+  .sheet {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    left: 0 !important;
+    right: auto !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* ============================================================
+   JobStatusPrompt — modal overlay
+   Freezes background interaction via backdrop + body scroll lock.
+   Renders via portal into document.body.
+   ============================================================ */
+.promptBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(3px);
+  animation: promptFadeIn 160ms ease-out;
+}
+
+@keyframes promptFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Override the old inline-prompt style — now centered modal */
+.prompt {
+  position: fixed !important;
+  z-index: 99999 !important;
+
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+
+  width: calc(100vw - 32px) !important;
+  max-width: 440px !important;
+
+  box-sizing: border-box !important;
+
+  padding: 20px !important;
+
+  background: #ffffff !important;
+  border: 1px solid #e4e7ec !important;
+  border-radius: 16px !important;
+
+  box-shadow:
+    0 24px 60px rgba(17, 24, 39, 0.25),
+    0 8px 24px rgba(17, 24, 39, 0.12) !important;
+
+  animation: promptScaleIn 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes promptScaleIn {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.prompt .promptTitle {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: #172033 !important;
+  text-align: center !important;
+  margin-bottom: 16px !important;
+  line-height: 1.3 !important;
+}
+
+.prompt .actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.prompt .actions button {
+  width: 100% !important;
+  min-height: 46px !important;
+  padding: 0 16px !important;
+  border-radius: 10px !important;
+
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  font-family: inherit !important;
+
+  cursor: pointer !important;
+
+  box-sizing: border-box !important;
+
+  transition: filter 120ms ease, transform 80ms ease;
+}
+
+.prompt .actions button:hover {
+  filter: brightness(0.96);
+}
+
+.prompt .actions button:active {
+  transform: scale(0.985);
+}
+
+.prompt .appliedButton {
+  background: #07885a !important;
+  color: #ffffff !important;
+  border: 1px solid #07885a !important;
+}
+
+.prompt .notYetButton {
+  background: #ffffff !important;
+  color: #344054 !important;
+  border: 1px solid #d0d5dd !important;
+}
+
+@media (max-width: 480px) {
+  .prompt {
+    width: calc(100vw - 24px) !important;
+    padding: 18px !important;
+    border-radius: 14px !important;
+  }
+
+  .prompt .promptTitle {
+    font-size: 16px !important;
+  }
+
+  .prompt .actions button {
+    min-height: 44px !important;
+    font-size: 13.5px !important;
+  }
+}

@@ -9484,3 +9484,140 @@ body {
   transform: none;
   box-shadow: none;
 }
+
+/* ============================================================
+   DESKTOP JOB CARD — right rail action buttons
+   Status / View details / Apply now — equal width + equal height
+   Appended last so it wins the cascade without !important.
+   Desktop only (>= 768px).
+   ============================================================ */
+@media (min-width: 768px) {
+
+  .mj-card > .mj-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 160px;
+    min-width: 160px;
+    max-width: 160px;
+  }
+
+  /* Force every direct button / link / wrapper in the rail to same box */
+  .mj-card > .mj-actions > .mj-save,
+  .mj-card > .mj-actions > .mj-status,
+  .mj-card > .mj-actions > .mj-details,
+  .mj-card > .mj-actions > .mj-apply,
+  .mj-card > .mj-actions > button,
+  .mj-card > .mj-actions > a,
+  .mj-card > .mj-actions > div {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+
+    margin: 0 !important;
+    padding: 0 12px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 6px !important;
+
+    border-radius: 10px !important;
+
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* The bookmark pill sits ABOVE the rail (top-right of card).
+     Leave it alone — it's not part of the 3-button stack. */
+  .mj-card > .mj-actions > .mj-bookmark,
+  .mj-card > .mj-actions > button[aria-label*="Save"],
+  .mj-card > .mj-actions > button[aria-label*="save"] {
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    padding: 0 !important;
+    align-self: flex-end !important;
+  }
+
+  /* Status menu wrapper must fill the rail so trigger stretches */
+  .mj-card > .mj-actions > [data-open] {
+    width: 100% !important;
+    display: block !important;
+  }
+}
+
+/* ============================================================
+   DESKTOP JOB CARD — force Status trigger to match rail buttons
+   The .menuTrigger lives in jobStatus.module.css and has its own
+   inline-flex / min-height — override it inside the rail only.
+   ============================================================ */
+@media (min-width: 768px) {
+
+  .mj-card > .mj-actions [data-open] {
+    width: 100% !important;
+    display: block !important;
+    position: relative !important;
+  }
+
+  .mj-card > .mj-actions [data-open] > button {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+
+    margin: 0 !important;
+    padding: 0 12px !important;
+
+    box-sizing: border-box !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 6px !important;
+
+    border-radius: 10px !important;
+
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  .mj-card > .mj-actions [data-open] > button > span {
+    flex: 0 1 auto !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+  }
+
+  .mj-card > .mj-actions [data-open] > button > svg {
+    flex: 0 0 auto !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
+}

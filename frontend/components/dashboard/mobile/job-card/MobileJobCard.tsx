@@ -495,7 +495,6 @@ function MobileJobCard({
                     }[nextStatus] as MobileStatus);
               await onStatusChange(job.job_id, display);
             }}
-            direction="up"
           />
         </div>
 

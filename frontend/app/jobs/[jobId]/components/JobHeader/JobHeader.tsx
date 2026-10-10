@@ -30,10 +30,6 @@ type Props = {
   saveApplication: (
     nextStatus: ApplicationStatus,
   ) => Promise<void>;
-  showApplyPrompt?: boolean;
-  onApplyConfirmed?: () => void;
-  onApplyNotYet?: () => void;
-  onApplyNotRelevant?: () => void;
   onApplyStarted?: () => void;
 };
 
@@ -106,10 +102,6 @@ export default function JobHeader({
   saving,
   saveApplication,
   onApplyStarted,
-  showApplyPrompt,
-  onApplyConfirmed,
-  onApplyNotYet,
-  onApplyNotRelevant,
 }: Props) {
   const scoreValue =
     score?.overall_score != null
@@ -380,41 +372,6 @@ export default function JobHeader({
 
           {job.job_url && (
             <div className={styles.applyAction}>
-              {showApplyPrompt && (
-                <div
-                  className={styles.applyPrompt}
-                  role="dialog"
-                  aria-label="Application status"
-                >
-                  <div className={styles.applyPromptTitle}>
-                    Did you apply for this job?
-                  </div>
-
-                  <div className={styles.applyPromptActions}>
-                    <button
-                      type="button"
-                      onClick={onApplyConfirmed}
-                    >
-                      ✓ Yes, Applied
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={onApplyNotYet}
-                    >
-                      Not Yet
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={onApplyNotRelevant}
-                    >
-                      Not Relevant
-                    </button>
-                  </div>
-                </div>
-              )}
-
               <button
                 type="button"
                 className={styles.applyButton}

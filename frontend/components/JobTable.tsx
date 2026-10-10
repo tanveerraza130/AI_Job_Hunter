@@ -883,6 +883,7 @@ export default function JobTable({
 
                 <JobStatusMenu
                   status={apiStatusLower(status)}
+                  triggerClassName="mj-status"
                   onChange={async (nextStatus) => {
                     const display =
                       nextStatus === "not_applied"
@@ -898,7 +899,6 @@ export default function JobTable({
                           }[nextStatus] as ApplicationStatus);
                     await updateStatus(job.job_id, display);
                   }}
-                  direction="up"
                 />
 
                 <Link
@@ -937,57 +937,6 @@ export default function JobTable({
                   </button>
                 )}
 
-                {showApplyPrompt === job.job_id && (
-                  <div
-                    className="mj-apply-prompt"
-                    role="dialog"
-                    aria-label="Application status"
-                  >
-                    <div className="mj-apply-prompt-title">
-                      Did you apply for this job?
-                    </div>
-
-                    <div className="mj-apply-prompt-actions">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          updateStatus(job.job_id, "Applied");
-                          setShowApplyPrompt(null);
-                          setWaitingForApplyReturn(null);
-                          clearApplyReturnState();
-                        }}
-                      >
-                        ✓ Yes, Applied
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowApplyPrompt(null);
-                          setWaitingForApplyReturn(null);
-                          clearApplyReturnState();
-                        }}
-                      >
-                        Not Yet
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          updateStatus(
-                            job.job_id,
-                            "Not Relevant",
-                          );
-                          setShowApplyPrompt(null);
-                          setWaitingForApplyReturn(null);
-                          clearApplyReturnState();
-                        }}
-                      >
-                        Not Relevant
-                      </button>
-                    </div>
-                  </div>
-                )}
               </div>
             </article>
           );
