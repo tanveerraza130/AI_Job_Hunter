@@ -1,8 +1,10 @@
 """
-User preferences store — cross-device dashboard filter persistence.
+Persistent per-user dashboard filter preferences (cross-device sync).
 
-Each user has exactly ONE preferences row (upsert semantics).
-Filters are stored as JSON so the shape can evolve without migrations.
+Stored in a SEPARATE DuckDB file (data/preferences.duckdb) to avoid
+conflicts with the API's read-only job database.
+
+Ownership is enforced by user_id.
 """
 
 from __future__ import annotations
@@ -15,28 +17,31 @@ from typing import Any
 
 import duckdb
 
-from api.config import settings
-
 logger = logging.getLogger(__name__)
 
 
-_db_path = Path(settings.db_path)
+DB_PATH = Path("data/preferences.duckdb")
 
 
-def _get_connection() -> duckdb.DuckDBPyConnection:
-    conn = duckdb.connect(str(_db_path))
-    return conn
+def _connect() -> duckdb.DuckDBPyConnection:
+    """
+    Open the preferences database.
+
+    Schema-changing DDL is performed separately in _ensure_table().
+    """
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    return duckdb.connect(str(DB_PATH))
 
 
 def _ensure_table() -> None:
     """Create user_preferences table if it doesn't exist."""
-    conn = _get_connection()
+    conn = _connect()
     try:
         conn.execute(
             """
             CREATE TABLE IF NOT EXISTS user_preferences (
                 user_id     VARCHAR PRIMARY KEY,
-                filters     JSON NOT NULL,
+                filters     VARCHAR NOT NULL,
                 updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
             """
@@ -48,8 +53,9 @@ def _ensure_table() -> None:
 # Ensure table exists at import time
 try:
     _ensure_table()
+    logger.info("preferences_store ready at %s", DB_PATH)
 except Exception as exc:
-    logger.warning("Failed to ensure user_preferences table: %s", exc)
+    logger.warning("Failed to ensure preferences table: %s", exc)
 
 
 def get_preferences(user_id: str) -> dict[str, Any] | None:
@@ -57,8 +63,10 @@ def get_preferences(user_id: str) -> dict[str, Any] | None:
     if not user_id:
         return None
 
-    conn = _get_connection()
+    conn = _connect()
     try:
+        _ensure_table()  # Safety net
+
         row = conn.execute(
             """
             SELECT filters, updated_at
@@ -74,13 +82,11 @@ def get_preferences(user_id: str) -> dict[str, Any] | None:
         raw_filters = row[0]
         updated_at = row[1]
 
-        # DuckDB returns JSON as string; parse to dict
+        # Parse JSON string
         if isinstance(raw_filters, str):
             filters = json.loads(raw_filters)
-        elif isinstance(raw_filters, dict):
-            filters = raw_filters
         else:
-            filters = json.loads(str(raw_filters))
+            filters = raw_filters
 
         return {
             "filters": filters,
@@ -98,15 +104,17 @@ def save_preferences(user_id: str, filters: dict[str, Any]) -> None:
     if not isinstance(filters, dict):
         raise ValueError("filters must be a dict")
 
-    # Size guard — 50KB max
     serialized = json.dumps(filters)
     if len(serialized) > 50_000:
         raise ValueError("filters payload too large (max 50KB)")
 
-    conn = _get_connection()
+    conn = _connect()
     try:
+        _ensure_table()  # Safety net
+
         now = datetime.now(UTC)
-        # DuckDB doesn't support ON CONFLICT for all versions; use DELETE + INSERT
+
+        # DuckDB doesn't guarantee ON CONFLICT on all versions → delete + insert
         conn.execute(
             "DELETE FROM user_preferences WHERE user_id = ?",
             [user_id],
@@ -127,8 +135,10 @@ def clear_preferences(user_id: str) -> None:
     if not user_id:
         return
 
-    conn = _get_connection()
+    conn = _connect()
     try:
+        _ensure_table()  # Safety net
+
         conn.execute(
             "DELETE FROM user_preferences WHERE user_id = ?",
             [user_id],

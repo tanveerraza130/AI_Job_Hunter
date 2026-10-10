@@ -85,3 +85,7 @@ jobs/connectors/linkedin_posts/__init__.py
 debug/*.logfvxcvxv
 *.broken_*
 *.broken-*
+
+# User preferences DB
+data/preferences.duckdb
+data/preferences.duckdb.wal
