@@ -30,8 +30,8 @@ export const STATUS_CONFIG: StatusConfig[] = [
     label: "Not Applied",
     icon: "",
     color: "#667085",
-    bg: "#f2f4f7",
-    border: "#dfe3e8",
+    bg: "#ffffff",
+    border: "#c4cad3",
     order: 0,
   },
   {

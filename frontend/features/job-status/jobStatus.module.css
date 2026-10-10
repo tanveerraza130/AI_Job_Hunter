@@ -515,3 +515,12 @@
     font-size: 13.5px !important;
   }
 }
+
+/* ============================================================
+   "Not Applied" trigger — dashed border to signal untouched
+   Targets the shared menuTrigger when the pill has the default
+   gray tint applied via inline style.
+   ============================================================ */
+.menuTrigger[style*="border-color: rgb(196, 202, 211)"] {
+  border-style: dashed !important;
+}

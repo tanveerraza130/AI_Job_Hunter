@@ -406,6 +406,18 @@ export async function deleteApplication(
   );
 }
 
+/**
+ * Fetch the authenticated user's per-status application counts.
+ * Returns keys like: { saved: 3, pending: 1, applied: 5, ... }
+ */
+export async function getApplicationSummary(): Promise<
+  Record<string, number>
+> {
+  return apiRequest<Record<string, number>>("/applications", {
+    method: "GET",
+  });
+}
+
 // ============================================================
 // USER PREFERENCES (cross-device filter sync)
 // ============================================================

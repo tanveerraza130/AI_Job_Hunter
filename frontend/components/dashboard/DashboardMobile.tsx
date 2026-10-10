@@ -8,6 +8,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { getApplicationSummary } from "@/lib/api";
 
 import {
   deleteApplication,
@@ -120,6 +121,21 @@ export default function DashboardMobile(
 
         return next;
       });
+
+      // Reconcile global tab counts shortly after any status change.
+      // Give the backend a moment to persist, then refetch the summary.
+      setTimeout(() => {
+        void (async () => {
+          try {
+            const data = await getApplicationSummary();
+            if (data) {
+              setStatusCounts(data as Record<string, number>);
+            }
+          } catch {
+            /* non-fatal */
+          }
+        })();
+      }, 400);
     });
   }, []);
 
@@ -128,6 +144,29 @@ export default function DashboardMobile(
     activeTab,
     setActiveTab,
   ] = useState<MobileTab>("ALL");
+
+  const [statusCounts, setStatusCounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadCounts() {
+      try {
+        const data = await getApplicationSummary();
+        if (!cancelled && data) {
+          setStatusCounts(data as Record<string, number>);
+        }
+      } catch {
+        /* non-fatal */
+      }
+    }
+    void loadCounts();
+    const onFocus = () => void loadCounts();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("focus", onFocus);
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -252,13 +291,37 @@ export default function DashboardMobile(
       ) === activeTab;
     });
 
-  // Count jobs per status for tab badges
+  // Count jobs per status for tab badges.
+  // Prefer the global per-user summary when available so counts reflect
+  // the entire record, not just the current page. Fall back to page-local
+  // counting if the summary hasn't loaded yet.
   const countsByStatus: Partial<Record<MobileTab, number>> = {};
-  for (const job of props.jobs) {
-    const status =
-      statusMap[job.job_id] || "Not Applied";
-    countsByStatus[status as MobileTab] =
-      (countsByStatus[status as MobileTab] || 0) + 1;
+  if (Object.keys(statusCounts).length > 0) {
+    const lowerToDisplay: Record<string, MobileTab> = {
+      saved: "Saved",
+      pending: "Pending",
+      applied: "Applied",
+      interview: "Interview",
+      offer: "Offer",
+      rejected: "Rejected",
+      not_relevant: "Not Relevant",
+    };
+    let tracked = 0;
+    for (const [apiKey, displayKey] of Object.entries(lowerToDisplay)) {
+      const n = statusCounts[apiKey] || 0;
+      if (n > 0) countsByStatus[displayKey] = n;
+      tracked += n;
+    }
+    // Not Applied = total filtered jobs minus all tracked statuses.
+    const notApplied = Math.max(0, (props.totalJobs || 0) - tracked);
+    if (notApplied > 0) countsByStatus["Not Applied"] = notApplied;
+  } else {
+    for (const job of props.jobs) {
+      const status =
+        statusMap[job.job_id] || "Not Applied";
+      countsByStatus[status as MobileTab] =
+        (countsByStatus[status as MobileTab] || 0) + 1;
+    }
   }
 
   const {

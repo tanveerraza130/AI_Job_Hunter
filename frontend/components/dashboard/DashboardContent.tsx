@@ -4,6 +4,7 @@ import { CalendarDays, ChevronDown, Search, SlidersHorizontal, X } from "lucide-
 import { formatDisplayText } from "@/lib/display";
 import { useEffect, useRef, useState } from "react";
 import JobTable from "@/components/JobTable";
+import { getApplicationSummary } from "@/lib/api";
 import DashboardFilters from "./DashboardFilters";
 import DashboardHero from "./DashboardHero";
 import DashboardStats from "./DashboardStats";
@@ -26,6 +27,31 @@ function formatProfileName(profileId: string) {
 
 export default function DashboardContent(props: DashboardPresentationProps) {
   const { filtersOpen, setFiltersOpen } = props;
+
+  const [statusCounts, setStatusCounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadCounts() {
+      try {
+        const data = await getApplicationSummary();
+        if (!cancelled && data) {
+          setStatusCounts(data as Record<string, number>);
+        }
+      } catch {
+        // Non-fatal — tabs fall back to per-page counts
+      }
+    }
+    void loadCounts();
+
+    // Refresh when status changes elsewhere
+    const onFocus = () => void loadCounts();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("focus", onFocus);
+    };
+  }, []);
   const filterButtonRef = useRef<HTMLButtonElement | null>(null);
   const filterCardRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -166,6 +192,7 @@ export default function DashboardContent(props: DashboardPresentationProps) {
               profileId={props.profileId}
               totalJobs={props.totalJobs}
               onJobOpen={props.onJobOpen}
+              statusCounts={statusCounts}
             />
 
             {props.totalJobs > 20 && (

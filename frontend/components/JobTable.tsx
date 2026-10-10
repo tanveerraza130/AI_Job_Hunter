@@ -65,6 +65,13 @@ interface Props {
   profileId: string;
   totalJobs: number;
   onJobOpen: (jobId?: string) => void;
+  /**
+   * Per-status counts across the user's ENTIRE application record.
+   * Keys are lowercase api values: saved, pending, applied, interview,
+   * offer, rejected, not_relevant. Missing keys = 0.
+   * When provided, tab counts reflect global totals, not just this page.
+   */
+  statusCounts?: Record<string, number>;
 }
 
 const displayStatus = (status?: string): ApplicationStatus => {
@@ -191,6 +198,7 @@ export default function JobTable({
   profileId,
   totalJobs,
   onJobOpen,
+  statusCounts,
 }: Props) {
   const [statusMap, setStatusMap] = useState<
     Record<string, ApplicationStatus>
@@ -605,7 +613,7 @@ export default function JobTable({
                   isActive ? "mj-tab mj-tab-active" : "mj-tab"
                 }
               >
-                {`All (${jobs.length})`}
+                {`All (${totalJobs})`}
               </button>
             );
           }
@@ -613,9 +621,36 @@ export default function JobTable({
           const cfg = getStatusConfig(apiValue);
           const tabValue = cfg.display as typeof filter;
           const isActive = filter === tabValue;
-          const count = jobs.filter(
-            (j) => (statusMap[j.job_id] || "Not Applied") === tabValue,
-          ).length;
+
+          // Count from global summary when available; else fall back to page-scoped.
+          const TRACKED_STATUSES = [
+            "saved",
+            "pending",
+            "applied",
+            "interview",
+            "offer",
+            "rejected",
+            "not_relevant",
+          ] as const;
+
+          let count: number;
+
+          if (statusCounts) {
+            if (apiValue === "not_applied") {
+              // Not Applied = total filtered jobs minus all tracked statuses
+              const trackedTotal = TRACKED_STATUSES.reduce(
+                (sum, s) => sum + (statusCounts[s] || 0),
+                0,
+              );
+              count = Math.max(0, totalJobs - trackedTotal);
+            } else {
+              count = statusCounts[apiValue] || 0;
+            }
+          } else {
+            count = jobs.filter(
+              (j) => (statusMap[j.job_id] || "Not Applied") === tabValue,
+            ).length;
+          }
 
           return (
             <button
