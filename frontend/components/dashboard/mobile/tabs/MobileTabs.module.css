@@ -1,16 +1,16 @@
 .tabs {
   width: 100%;
-  margin: 8px 0 12px;
-  padding: 0 4px;
+  margin: 12px 0 16px;
+  padding: 0 12px;
   box-sizing: border-box;
 }
 
 .scroll {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 4px 4px 8px;
+  padding: 4px 4px 10px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -22,8 +22,8 @@
 .tab,
 .tabActive {
   flex: 0 0 auto;
-  min-height: 38px;
-  padding: 8px 14px;
+  min-height: 40px;
+  padding: 10px 16px;
   border: 1px solid #e1e5ed;
   border-radius: 999px;
   background: #ffffff;
