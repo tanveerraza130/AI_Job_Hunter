@@ -16,6 +16,8 @@ import {
 } from "@/lib/applicationStatusSync";
 import type { Job } from "@/types/job";
 import { formatDisplayText } from "@/lib/display";
+import JobStatusMenu from "@/features/job-status/JobStatusMenu";
+import { MOBILE_TAB_ORDER, getStatusConfig } from "@/features/job-status/jobStatus.config";
 import {
   getApplyReturnState,
   markApplyReturned,
@@ -41,6 +43,21 @@ type ApiApplicationStatus =
   | "rejected"
   | "offer"
   | "not_relevant";
+
+/** Convert display status → lowercase API value for JobStatusMenu */
+const apiStatusLower = (
+  status: ApplicationStatus,
+): "not_applied" | "saved" | "pending" | "applied" | "interview" | "offer" | "rejected" | "not_relevant" => {
+  if (status === "Saved") return "saved";
+  if (status === "Pending") return "pending";
+  if (status === "Applied") return "applied";
+  if (status === "Interview") return "interview";
+  if (status === "Offer") return "offer";
+  if (status === "Rejected") return "rejected";
+  if (status === "Not Relevant") return "not_relevant";
+  return "not_applied";
+};
+
 
 
 interface Props {
@@ -201,7 +218,15 @@ export default function JobTable({
   }, []);
 
   const [filter, setFilter] = useState<
-    "ALL" | "Applied" | "Not Applied" | "Saved"
+    | "ALL"
+    | "Not Applied"
+    | "Saved"
+    | "Pending"
+    | "Applied"
+    | "Interview"
+    | "Offer"
+    | "Rejected"
+    | "Not Relevant"
   >("ALL");
 
   const [waitingForApplyReturn, setWaitingForApplyReturn] = useState<
@@ -568,24 +593,44 @@ export default function JobTable({
     <section className="mj-wrapper">
 
       <div className="mj-tabs">
-        {(["ALL", "Applied", "Not Applied", "Saved"] as const).map(
-          (value) => (
+        {MOBILE_TAB_ORDER.map((apiValue) => {
+          if (apiValue === "ALL") {
+            const isActive = filter === "ALL";
+            return (
+              <button
+                key="ALL"
+                type="button"
+                onClick={() => setFilter("ALL")}
+                className={
+                  isActive ? "mj-tab mj-tab-active" : "mj-tab"
+                }
+              >
+                {`All (${jobs.length})`}
+              </button>
+            );
+          }
+
+          const cfg = getStatusConfig(apiValue);
+          const tabValue = cfg.display as typeof filter;
+          const isActive = filter === tabValue;
+          const count = jobs.filter(
+            (j) => (statusMap[j.job_id] || "Not Applied") === tabValue,
+          ).length;
+
+          return (
             <button
-              key={value}
+              key={apiValue}
               type="button"
-              onClick={() => setFilter(value)}
+              onClick={() => setFilter(tabValue)}
               className={
-                filter === value
-                  ? "mj-tab mj-tab-active"
-                  : "mj-tab"
+                isActive ? "mj-tab mj-tab-active" : "mj-tab"
               }
             >
-              {value === "ALL"
-                ? `All (${jobs.length})`
-                : value}
+              {cfg.display}
+              {count > 0 ? ` (${count})` : ""}
             </button>
-          ),
-        )}
+          );
+        })}
       </div>
 
       <div className="mj-list">
@@ -836,30 +881,25 @@ export default function JobTable({
                   />
                 </button>
 
-                <select
-                  value={status}
-                  onChange={(event) =>
-                    updateStatus(
-                      job.job_id,
-                      event.target.value as ApplicationStatus,
-                    )
-                  }
-                  className="mj-status"
-                  aria-label={`Application status for ${job.title}`}
-                >
-                  <option value="Not Applied">
-                    Not Applied
-                  </option>
-                  <option value="Saved">Saved</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Applied">Applied</option>
-                  <option value="Interview">Interview</option>
-                  <option value="Rejected">Rejected</option>
-                  <option value="Offer">Offer</option>
-                  <option value="Not Relevant">
-                    Not Relevant
-                  </option>
-                </select>
+                <JobStatusMenu
+                  status={apiStatusLower(status)}
+                  onChange={async (nextStatus) => {
+                    const display =
+                      nextStatus === "not_applied"
+                        ? "Not Applied"
+                        : ({
+                            saved: "Saved",
+                            pending: "Pending",
+                            applied: "Applied",
+                            interview: "Interview",
+                            offer: "Offer",
+                            rejected: "Rejected",
+                            not_relevant: "Not Relevant",
+                          }[nextStatus] as ApplicationStatus);
+                    await updateStatus(job.job_id, display);
+                  }}
+                  compact
+                />
 
                 <Link
                   href={href}

@@ -79,9 +79,6 @@ export default function JobStatusMenu({
           color: currentConfig.color,
         }}
       >
-        <span className={styles.triggerIcon}>
-          {currentConfig.icon}
-        </span>
         {!compact && (
           <span className={styles.triggerLabel}>
             {currentConfig.display}
@@ -128,9 +125,6 @@ export default function JobStatusMenu({
                   color: isActive ? cfg.color : undefined,
                 }}
               >
-                <span className={styles.menuIcon}>
-                  {cfg.icon}
-                </span>
                 <span className={styles.menuLabel}>
                   {cfg.label}
                 </span>

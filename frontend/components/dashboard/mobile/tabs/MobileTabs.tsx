@@ -74,7 +74,7 @@ export default function MobileTabs({
                   : undefined
               }
             >
-              {cfg.icon} {cfg.display}
+              {cfg.display}
               {typeof count === "number" && count > 0 && (
                 <span className={styles.badge}>{count}</span>
               )}
