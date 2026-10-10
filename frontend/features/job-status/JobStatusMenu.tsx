@@ -13,8 +13,6 @@ type Props = {
   onChange: (
     status: JobStatus | "not_applied",
   ) => void | Promise<void>;
-  /** Optional: compact mode for tight spaces */
-  compact?: boolean;
   /** Optional: direction of dropdown */
   direction?: "up" | "down";
 };
@@ -22,7 +20,6 @@ type Props = {
 export default function JobStatusMenu({
   status,
   onChange,
-  compact = false,
   direction = "down",
 }: Props) {
   const [open, setOpen] = useState(false);
@@ -79,11 +76,9 @@ export default function JobStatusMenu({
           color: currentConfig.color,
         }}
       >
-        {!compact && (
-          <span className={styles.triggerLabel}>
-            {currentConfig.display}
-          </span>
-        )}
+        <span className={styles.triggerLabel}>
+          {currentConfig.display}
+        </span>
         <svg
           width="10"
           height="10"

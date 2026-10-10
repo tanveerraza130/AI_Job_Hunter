@@ -898,7 +898,7 @@ export default function JobTable({
                           }[nextStatus] as ApplicationStatus);
                     await updateStatus(job.job_id, display);
                   }}
-                  compact
+                  direction="up"
                 />
 
                 <Link
