@@ -683,7 +683,8 @@ async def list_jobs(
 
                 AND s.rn = 1
 
-            WHERE {where_clause}
+            WHERE j.is_active IS NOT FALSE
+              AND ({where_clause})
         ),
 
         ranked_jobs AS (
@@ -1074,6 +1075,7 @@ async def get_job_filter_options(
             FROM fact_jobs
             WHERE portal IS NOT NULL
               AND TRIM(portal) <> ''
+              AND is_active IS NOT FALSE
             ORDER BY portal
             """
         ).fetchall()
@@ -1191,6 +1193,7 @@ async def get_job(
             AND s.rn = 1
 
         WHERE j.job_id = ?
+          AND j.is_active IS NOT FALSE
           AND (
               LOWER(COALESCE(l.canonical_name, '')) LIKE '%delhi%'
               OR LOWER(COALESCE(l.canonical_name, '')) LIKE '%noida%'

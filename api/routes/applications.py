@@ -12,10 +12,12 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, Field
 
 from api.application_store import (
+    count_dead_reports,
     delete_application,
     get_application,
     get_applications,
     get_application_summary,
+    report_job_dead,
     upsert_application,
 )
 from api.account_store import get_profile
@@ -147,3 +149,47 @@ async def applications(
         }
 
     return get_application_summary(user_id)
+
+# ============================================================
+# Job-liveness: user reports a job as dead
+# ============================================================
+
+@router.post("/{job_id}/report-dead")
+async def report_dead(
+    job_id: str,
+    user: Annotated[dict, Depends(get_current_user)],
+):
+    """
+    User reports a job URL as dead/expired/no-longer-applyable.
+
+    Records this user's report idempotently and returns the current
+    distinct-user report count. The pipeline-side worker reads this
+    table daily and flips fact_jobs.is_active = FALSE once the
+    threshold (5 distinct users) is reached.
+    """
+    try:
+        result = report_job_dead(user["user_id"], job_id)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to record report: {exc}",
+        ) from exc
+
+    return {
+        "job_id": job_id,
+        "reported_dead_count": result["dead_report_count"],
+        "hidden_for_you": True,
+    }
+
+
+@router.get("/{job_id}/dead-report-count")
+async def dead_report_count(
+    job_id: str,
+    user: Annotated[dict, Depends(get_current_user)],
+):
+    """Return how many distinct users have reported this job as dead."""
+    return {
+        "job_id": job_id,
+        "reported_dead_count": count_dead_reports(job_id),
+    }
+

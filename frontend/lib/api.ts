@@ -418,6 +418,19 @@ export async function getApplicationSummary(): Promise<
   });
 }
 
+/**
+ * Report a job as dead/expired/no-longer-applyable.
+ * Idempotent per user. Returns the current distinct-user report count.
+ */
+export async function reportJobDead(
+  jobId: string,
+): Promise<{ job_id: string; reported_dead_count: number }> {
+  return apiRequest<{ job_id: string; reported_dead_count: number }>(
+    `/applications/${encodeURIComponent(jobId)}/report-dead`,
+    { method: "POST" },
+  );
+}
+
 // ============================================================
 // USER PREFERENCES (cross-device filter sync)
 // ============================================================

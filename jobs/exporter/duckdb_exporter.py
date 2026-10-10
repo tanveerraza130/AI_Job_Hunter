@@ -122,7 +122,12 @@ class DuckDBExporter(BaseExporter):
                 experience_max INTEGER,
                 employment_type VARCHAR,
                 created_at TIMESTAMP,
-                search_id VARCHAR
+                search_id VARCHAR,
+                is_active BOOLEAN DEFAULT TRUE,
+                last_seen_at TIMESTAMP,
+                url_status VARCHAR DEFAULT 'unknown',
+                url_checked_at TIMESTAMP,
+                reported_dead_count INTEGER DEFAULT 0
             )
         """)
 
@@ -339,16 +344,10 @@ class DuckDBExporter(BaseExporter):
         # existing INSERT OR REPLACE intent explicitly: remove any
         # previously persisted rows with the same deterministic IDs,
         # then insert the current rows within the surrounding transaction.
-        job_ids = [(row[0],) for row in fact_rows]
-
-        conn.executemany(
-            """
-            DELETE FROM fact_jobs
-            WHERE job_id = ?
-            """,
-            job_ids,
-        )
-
+        # UPSERT: preserve row (and its liveness metadata) if job_id exists,
+        # otherwise insert as new. last_seen_at is always refreshed.
+        # is_active is forced TRUE on upsert (a job returned by the pipeline
+        # is by definition still alive in the source portal).
         conn.executemany(
             """
             INSERT INTO fact_jobs (
@@ -367,8 +366,27 @@ class DuckDBExporter(BaseExporter):
                 experience_max,
                 employment_type,
                 created_at,
-                search_id
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                search_id,
+                is_active,
+                last_seen_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE, NOW())
+            ON CONFLICT (job_id) DO UPDATE SET
+                title = EXCLUDED.title,
+                company_id = EXCLUDED.company_id,
+                location_id = EXCLUDED.location_id,
+                salary_min = EXCLUDED.salary_min,
+                salary_max = EXCLUDED.salary_max,
+                salary_currency = EXCLUDED.salary_currency,
+                description = EXCLUDED.description,
+                job_url = EXCLUDED.job_url,
+                portal = EXCLUDED.portal,
+                posted_date = EXCLUDED.posted_date,
+                experience_min = EXCLUDED.experience_min,
+                experience_max = EXCLUDED.experience_max,
+                employment_type = EXCLUDED.employment_type,
+                search_id = EXCLUDED.search_id,
+                is_active = TRUE,
+                last_seen_at = NOW()
             """,
             fact_rows,
         )

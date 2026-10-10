@@ -10,6 +10,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { deleteApplication, getApplicationsBulk, updateApplication } from "@/lib/api";
+import { reportJobDead } from "@/lib/api";
 import {
   publishApplicationStatus,
   subscribeApplicationStatus,
@@ -17,6 +18,7 @@ import {
 import type { Job } from "@/types/job";
 import { formatDisplayText } from "@/lib/display";
 import JobStatusMenu from "@/features/job-status/JobStatusMenu";
+import { addReportedDeadId, getReportedDeadIds } from "@/lib/reportedDeadStore";
 import { MOBILE_TAB_ORDER, getStatusConfig } from "@/features/job-status/jobStatus.config";
 import {
   getApplyReturnState,
@@ -244,6 +246,9 @@ export default function JobTable({
   const [showApplyPrompt, setShowApplyPrompt] = useState<
     string | null
   >(null);
+
+  // Bumps when the user reports a job so we re-render and hide it.
+  const [reportedDeadVersion, setReportedDeadVersion] = useState(0);
 
   useEffect(() => {
     function handleReturn() {
@@ -560,10 +565,25 @@ export default function JobTable({
     }
   }
 
-  const filtered = jobs.filter((job) => {
-    if (filter === "ALL") return true;
-    return (statusMap[job.job_id] || "Not Applied") === filter;
-  });
+  async function handleReportDead(jobId: string) {
+    try {
+      await reportJobDead(jobId);
+      addReportedDeadId(jobId);
+      setReportedDeadVersion((v) => v + 1);
+    } catch (err) {
+      console.error("Report dead failed:", err);
+    }
+  }
+
+  const reportedDeadIds = getReportedDeadIds();
+
+  const filtered = jobs
+    .filter((job) => !reportedDeadIds.has(String(job.job_id)))
+    .filter((job) => {
+      if (filter === "ALL") return true;
+      return (statusMap[job.job_id] || "Not Applied") === filter;
+    });
+  void reportedDeadVersion; // subscribe to re-render on report
 
   if (!jobs.length) {
     const profileName = formatDisplayText(
@@ -919,6 +939,7 @@ export default function JobTable({
                 <JobStatusMenu
                   status={apiStatusLower(status)}
                   triggerClassName="mj-status"
+                  onReportDead={() => handleReportDead(job.job_id)}
                   onChange={async (nextStatus) => {
                     const display =
                       nextStatus === "not_applied"

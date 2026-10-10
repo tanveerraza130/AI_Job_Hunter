@@ -1,0 +1,15 @@
+[Unit]
+Description=AI Job Hunter — daily prune of stale jobs
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/AI_Job_Hunter
+Environment="PATH=/home/ubuntu/AI_Job_Hunter/.venv/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/home/ubuntu/AI_Job_Hunter/.venv/bin/python3 /home/ubuntu/AI_Job_Hunter/scripts/prune_stale_jobs.py --days 30
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec=600

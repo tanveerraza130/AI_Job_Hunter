@@ -524,3 +524,65 @@
 .menuTrigger[style*="border-color: rgb(196, 202, 211)"] {
   border-style: dashed !important;
 }
+
+/* ============================================================
+   Report-as-dead items in dropdown + sheet
+   ============================================================ */
+.menuDivider {
+  height: 1px;
+  margin: 4px 6px;
+  background: #e4e7ec;
+}
+
+.menuItemReport {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #b42318;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+
+.menuItemReport:hover {
+  background: #fef3f2;
+}
+
+.sheetDivider {
+  height: 1px;
+  margin: 6px 12px;
+  background: #e4e7ec;
+  flex: 0 0 auto;
+}
+
+.sheetItemReport {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #b42318;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+
+.sheetItemReport:hover,
+.sheetItemReport:active {
+  background: #fef3f2;
+}

@@ -429,7 +429,8 @@ async def get_dashboard_summary(
                 ON j.job_id = s.job_id
                AND s.rn = 1
 
-            WHERE {where_clause}
+            WHERE j.is_active IS NOT FALSE
+              AND ({where_clause})
         )
 
         SELECT

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getApplicationSummary } from "@/lib/api";
+import { getReportedDeadIds } from "@/lib/reportedDeadStore";
 
 import {
   deleteApplication,
@@ -279,17 +280,21 @@ export default function DashboardMobile(
     }
   }
 
-  const filteredJobs =
-    props.jobs.filter((job) => {
-      if (activeTab === "ALL") {
-        return true;
-      }
+  const reportedDeadIds = getReportedDeadIds();
 
-      return (
-        statusMap[job.job_id] ||
-        "Not Applied"
-      ) === activeTab;
-    });
+  const filteredJobs =
+    props.jobs
+      .filter((job) => !reportedDeadIds.has(String(job.job_id)))
+      .filter((job) => {
+        if (activeTab === "ALL") {
+          return true;
+        }
+
+        return (
+          statusMap[job.job_id] ||
+          "Not Applied"
+        ) === activeTab;
+      });
 
   // Count jobs per status for tab badges.
   // Prefer the global per-user summary when available so counts reflect

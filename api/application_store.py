@@ -253,3 +253,89 @@ def get_application_summary(
 
     finally:
         connection.close()
+
+
+def report_job_dead(
+    user_id: str,
+    job_id: str,
+) -> dict:
+    """
+    Record that the given user reported this job as dead.
+
+    Idempotent — re-reporting the same job by the same user
+    updates the timestamp but does not double-count.
+    Returns the current distinct-user report count.
+    """
+    if not user_id:
+        raise ValueError("user_id is required")
+    if not job_id:
+        raise ValueError("job_id is required")
+
+    connection = _connect()
+
+    try:
+        # Upsert a minimal application row (status stays 'saved' if new).
+        # We use ON CONFLICT so we don't clobber any existing status.
+        connection.execute(
+            """
+            INSERT INTO applications (
+                user_id,
+                job_id,
+                profile_id,
+                status,
+                notes,
+                reported_dead_at,
+                updated_at,
+                created_at
+            )
+            VALUES (?, ?, '', 'saved', '', NOW(), NOW(), NOW())
+            ON CONFLICT (user_id, job_id) DO UPDATE SET
+                reported_dead_at = NOW(),
+                updated_at = NOW()
+            """,
+            [user_id, job_id],
+        )
+
+        count_row = connection.execute(
+            """
+            SELECT COUNT(DISTINCT user_id)
+            FROM applications
+            WHERE job_id = ?
+              AND reported_dead_at IS NOT NULL
+            """,
+            [job_id],
+        ).fetchone()
+
+        count = int(count_row[0]) if count_row else 0
+
+        connection.commit() if hasattr(connection, "commit") else None
+        return {"job_id": job_id, "dead_report_count": count}
+
+    finally:
+        connection.close()
+
+
+def count_dead_reports(
+    job_id: str,
+) -> int:
+    """Return the number of distinct users who reported this job as dead."""
+    if not job_id:
+        return 0
+
+    connection = _connect()
+
+    try:
+        row = connection.execute(
+            """
+            SELECT COUNT(DISTINCT user_id)
+            FROM applications
+            WHERE job_id = ?
+              AND reported_dead_at IS NOT NULL
+            """,
+            [job_id],
+        ).fetchone()
+
+        return int(row[0]) if row else 0
+
+    finally:
+        connection.close()

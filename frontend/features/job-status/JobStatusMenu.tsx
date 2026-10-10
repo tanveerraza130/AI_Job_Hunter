@@ -12,6 +12,8 @@ type Props = {
   direction?: "up" | "down";
   /** Optional extra class applied to the trigger button (for host page styling). */
   triggerClassName?: string;
+  /** Optional: called when user taps "Report as dead". */
+  onReportDead?: () => void | Promise<void>;
 };
 
 const MOBILE_BREAKPOINT = 767;
@@ -30,7 +32,7 @@ function useIsMobile() {
   return isMobile;
 }
 
-export default function JobStatusMenu({ status, onChange, triggerClassName }: Props) {
+export default function JobStatusMenu({ status, onChange, triggerClassName, onReportDead }: Props) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [coords, setCoords] = useState<{
@@ -87,6 +89,13 @@ export default function JobStatusMenu({ status, onChange, triggerClassName }: Pr
   const handleSelect = async (value: JobStatus | "not_applied") => {
     setOpen(false);
     await onChange(value);
+  };
+
+  const handleReportDead = async () => {
+    setOpen(false);
+    if (onReportDead) {
+      await onReportDead();
+    }
   };
 
   // Outside click + Escape
@@ -207,6 +216,22 @@ export default function JobStatusMenu({ status, onChange, triggerClassName }: Pr
         role="menu"
       >
         {menuItems}
+
+        {onReportDead && (
+          <>
+            <div className={styles.menuDivider} />
+            <button
+              type="button"
+              role="menuitem"
+              className={styles.menuItemReport}
+              onClick={handleReportDead}
+            >
+              <span className={styles.menuLabel}>
+                Report as dead
+              </span>
+            </button>
+          </>
+        )}
       </div>,
       document.body,
     );
@@ -259,6 +284,22 @@ export default function JobStatusMenu({ status, onChange, triggerClassName }: Pr
                 </button>
               );
             })}
+
+            {onReportDead && (
+              <>
+                <div className={styles.sheetDivider} />
+                <button
+                  type="button"
+                  role="menuitem"
+                  className={styles.sheetItemReport}
+                  onClick={handleReportDead}
+                >
+                  <span className={styles.sheetItemLabel}>
+                    Report as dead
+                  </span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </>,

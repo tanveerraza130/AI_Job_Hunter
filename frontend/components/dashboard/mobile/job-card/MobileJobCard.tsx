@@ -24,7 +24,9 @@ import type { Job } from "@/types/job";
 
 import MobileScore from "./MobileScore";
 import JobStatusPrompt from "@/features/job-status/JobStatusPrompt";
+import { addReportedDeadId } from "@/lib/reportedDeadStore";
 import JobStatusMenu from "@/features/job-status/JobStatusMenu";
+import { reportJobDead } from "@/lib/api";
 import { getStatusConfig } from "@/features/job-status/jobStatus.config";
 import styles from "./MobileJobCard.module.css";
 
@@ -286,6 +288,18 @@ function MobileJobCard({
       0,
     );
 
+  async function handleReportDead() {
+    try {
+      await reportJobDead(job.job_id);
+      addReportedDeadId(job.job_id);
+      // Parent DashboardMobile filters on next render via reportedDeadStore.
+      // Force a re-render by triggering a status-change notification.
+      window.dispatchEvent(new Event("focus"));
+    } catch (err) {
+      console.error("Report dead failed:", err);
+    }
+  }
+
   const href =
     `/jobs/${encodeURIComponent(job.job_id)}` +
     `?profile_id=${encodeURIComponent(profileId)}`;
@@ -480,6 +494,7 @@ function MobileJobCard({
         <div className={styles.statusControl}>
           <JobStatusMenu
             status={apiStatusLower(status)}
+            onReportDead={handleReportDead}
             onChange={async (nextStatus) => {
               const display =
                 nextStatus === "not_applied"
