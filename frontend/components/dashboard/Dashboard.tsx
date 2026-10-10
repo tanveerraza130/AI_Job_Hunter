@@ -255,6 +255,53 @@ export default function Dashboard() {
     };
   }, []);
 
+  /*
+   * AUTO-SAVE FILTERS TO LOCALSTORAGE
+   *
+   * Whenever any filter changes, persist the current dashboard
+   * state to localStorage (300ms debounced). This ensures
+   * filters survive page refresh and tab close.
+   */
+  useEffect(() => {
+    if (!profileReady) return;
+
+    const timer = setTimeout(() => {
+      try {
+        saveDashboardReturnState({
+          page: Math.max(1, page),
+          mobilePage: Math.max(1, mobilePageRef.current),
+          search,
+          company,
+          locations,
+          skills,
+          tools,
+          portal,
+          relevance,
+          sort,
+          postedDateFrom,
+          postedDateTo,
+        });
+      } catch (err) {
+        console.warn("Failed to save dashboard state:", err);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [
+    profileReady,
+    page,
+    search,
+    company,
+    locations,
+    skills,
+    tools,
+    portal,
+    relevance,
+    sort,
+    postedDateFrom,
+    postedDateTo,
+  ]);
+
   useEffect(() => {
     if (!profileReady || !profileId) return;
 
