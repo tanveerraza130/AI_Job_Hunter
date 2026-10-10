@@ -72,3 +72,16 @@ frontend/.recovery-backups/
 debug/*.zip
 debug/naukri_benchmark/
 debug/ground_truth_*.csv
+
+# ---- Junk patterns (added 2026-10-10) ----
+frontend/...
+frontend/index.html
+frontend/public/Old\ Way\ copy.png
+frontend/public/*.png
+jobs/connectors/iimjobs/*.broken_*
+jobs/connectors/iimjobs/*.broken-*
+jobs/connectors/indeed/
+jobs/connectors/linkedin_posts/__init__.py
+debug/*.logfvxcvxv
+*.broken_*
+*.broken-*
