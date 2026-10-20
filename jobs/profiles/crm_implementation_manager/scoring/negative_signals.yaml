@@ -1,0 +1,75 @@
+# Negative Scoring Signals for CRM Implementation Manager Profile
+#
+# These signals apply a scoring penalty to jobs that match any pattern.
+# Each matched signal adds penalty_per_signal to the total penalty.
+# Total penalty is capped at max_penalty.
+
+version: 1
+
+penalty_per_signal: 20.0
+max_penalty: 100.0
+
+signals:
+  # Support tiers
+  - "\\bL1 Support\\b"
+  - "\\bL2 Support\\b"
+  - "\\bL3 Support\\b"
+  - "\\bHelpdesk\\b"
+  - "\\bHelp Desk\\b"
+  - "\\bService Desk\\b"
+  - "\\bCustomer Support\\b"
+  - "\\bTechnical Support\\b"
+
+  # Sales
+  - "\\bSales Executive\\b"
+  - "\\bSales Manager\\b"
+  - "\\bBusiness Development\\b"
+  - "\\bInside Sales\\b"
+  - "\\bField Sales\\b"
+  - "\\bCold Calling\\b"
+  - "\\bTelesales\\b"
+  - "\\bTelecalling\\b"
+
+  # Engineering / dev
+  - "\\bSoftware Engineer\\b"
+  - "\\bSoftware Developer\\b"
+  - "\\bFull Stack Developer\\b"
+  - "\\bBackend Developer\\b"
+  - "\\bFrontend Developer\\b"
+  - "\\bJava Developer\\b"
+  - "\\bPython Developer\\b"
+  - "\\bPHP Developer\\b"
+
+  # QA / testing
+  - "\\bQA Engineer\\b"
+  - "\\bManual Testing\\b"
+  - "\\bAutomation Testing\\b"
+  - "\\bSelenium\\b"
+  - "\\bTest Automation\\b"
+
+  # Hardware / network / field
+  - "\\bNetwork Engineer\\b"
+  - "\\bField Engineer\\b"
+  - "\\bHardware Engineer\\b"
+  - "\\bInstallation Engineer\\b"
+  - "\\bTelecom Engineer\\b"
+  - "\\bRack Mounting\\b"
+  - "\\bNetwork Cabling\\b"
+
+# Roles that must remain negative even when CRM platform is mentioned.
+# These are engineering/development/support roles, not implementation-delivery roles.
+
+technical_signals:
+  - '\bImplementation Engineer\b'
+  - '\bSupport Engineer\b'
+  - '\bTechnical Support Engineer\b'
+  - '\bQA Engineer\b'
+  - '\bTest Engineer\b'
+  - '\bSoftware Engineer\b'
+  - '\bSoftware Developer\b'
+  - '\bSAP ABAP\b'
+  - '\bSAP Basis\b'
+  - '\bOracle Developer\b'
+  - '\bSiebel Consultant\b'
+  - '\bDevOps Engineer\b'
+  - '\bSite Reliability Engineer\b'

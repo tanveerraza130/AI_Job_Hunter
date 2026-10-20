@@ -1,0 +1,82 @@
+category:
+  name: crm_platforms
+items:
+- name: Dynamics CRM
+  aliases:
+  - dynamics crm
+  - microsoft dynamics crm
+- name: Freshsales
+  aliases:
+  - freshsales
+  - freshworks crm
+  - freshworks
+- name: HubSpot
+  aliases:
+  - hubspot
+  - hubspot crm
+- name: LeadSquared
+  aliases:
+  - leadsquared
+  - lead squared
+- name: Microsoft Dynamics 365
+  aliases:
+  - dynamics 365
+  - d365
+  - ms dynamics 365
+  - microsoft dynamics 365
+- name: Oracle CRM
+  aliases:
+  - oracle crm
+  - oracle sales cloud
+  - oracle service cloud
+- name: Pipedrive
+  aliases:
+  - pipedrive
+  - pipedrive crm
+- name: Salesforce
+  aliases:
+  - salesforce
+  - sfdc
+  - salesforce crm
+  - salesforce.com
+- name: Sales Cloud
+  aliases:
+  - sales cloud
+  - salesforce sales cloud
+- name: Salesforce CPQ
+  aliases:
+  - salesforce cpq
+  - cpq
+- name: Salesforce Marketing Cloud
+  aliases:
+  - salesforce marketing cloud
+  - sfmc
+- name: SAP CRM
+  aliases:
+  - sap crm
+  - sap customer relationship management
+- name: Service Cloud
+  aliases:
+  - service cloud
+  - salesforce service cloud
+- name: ServiceNow
+  aliases:
+  - servicenow
+  - service now
+- name: SugarCRM
+  aliases:
+  - sugarcrm
+  - sugar crm
+- name: Zoho CRM
+  aliases:
+  - zoho crm
+  - zoho
+  - zoho crm plus
+- name: Zoho Creator
+  aliases:
+  - zoho creator platform
+  - zoho low code
+- name: Zoho One
+  aliases:
+  - zoho one
+  - zoho suite

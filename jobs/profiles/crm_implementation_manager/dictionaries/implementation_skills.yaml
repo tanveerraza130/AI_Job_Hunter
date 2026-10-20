@@ -1,0 +1,168 @@
+category:
+  name: implementation_skills
+items:
+- name: A/B Testing
+  aliases:
+  - ab testing
+  - split testing
+- name: API Integration
+  aliases:
+  - api implementation
+- name: BRD Writing
+  aliases:
+  - brd
+  - business requirements document
+- name: Change Management
+  aliases:
+  - ocm
+- name: CRM Configuration
+  aliases:
+  - platform configuration
+  - system configuration
+- name: Cross-functional Leadership
+  aliases:
+  - matrix leadership
+- name: Customer Onboarding
+  aliases:
+  - client onboarding
+  - user onboarding
+- name: Customer Training
+  aliases:
+  - end user training
+  - user enablement
+- name: Cutover Planning
+  aliases:
+  - migration cutover
+- name: Data Integration
+  aliases:
+  - data sync
+  - etl
+- name: Data Mapping
+  aliases:
+  - field mapping
+- name: Data Migration
+  aliases:
+  - data import
+  - legacy migration
+- name: Data Validation
+  aliases:
+  - data cleansing
+  - data quality
+- name: End-to-End Implementation
+  aliases:
+  - e2e implementation
+- name: FRD Writing
+  aliases:
+  - frd
+  - functional requirements document
+  - functional specification
+- name: Gap Analysis
+  aliases:
+  - fit gap analysis
+- name: Go-Live Management
+  aliases:
+  - go live
+  - launch management
+  - production launch
+- name: Implementation Lifecycle
+  aliases:
+  - implementation phases
+- name: Payment Workflows
+  aliases:
+  - payment gateway integration
+- name: Product Adoption
+  aliases:
+  - adoption strategy
+  - user adoption
+- name: Project Management
+  aliases:
+  - program management
+  - project delivery
+- name: Reconciliation
+  aliases:
+  - payment reconciliation
+- name: Requirements Gathering
+  aliases:
+  - requirements analysis
+  - requirements discovery
+  - requirements elicitation
+- name: Solution Design
+  aliases:
+  - solution architecture
+  - system design
+- name: Stakeholder Management
+  aliases:
+  - stakeholder communication
+- name: Test Planning
+  aliases:
+  - test strategy
+lookup:
+  a b testing: A/B Testing
+  ab testing: A/B Testing
+  split testing: A/B Testing
+  api integration: API Integration
+  api implementation: API Integration
+  brd writing: BRD Writing
+  brd: BRD Writing
+  business requirements document: BRD Writing
+  change management: Change Management
+  ocm: Change Management
+  crm configuration: CRM Configuration
+  system configuration: CRM Configuration
+  platform configuration: CRM Configuration
+  cross functional leadership: Cross-functional Leadership
+  matrix leadership: Cross-functional Leadership
+  customer onboarding: Customer Onboarding
+  client onboarding: Customer Onboarding
+  user onboarding: Customer Onboarding
+  customer training: Customer Training
+  end user training: Customer Training
+  user enablement: Customer Training
+  cutover planning: Cutover Planning
+  migration cutover: Cutover Planning
+  data integration: Data Integration
+  data sync: Data Integration
+  etl: Data Integration
+  data mapping: Data Mapping
+  field mapping: Data Mapping
+  data migration: Data Migration
+  data import: Data Migration
+  legacy migration: Data Migration
+  data validation: Data Validation
+  data quality: Data Validation
+  data cleansing: Data Validation
+  end to end implementation: End-to-End Implementation
+  e2e implementation: End-to-End Implementation
+  frd writing: FRD Writing
+  frd: FRD Writing
+  functional requirements document: FRD Writing
+  functional specification: FRD Writing
+  gap analysis: Gap Analysis
+  fit gap analysis: Gap Analysis
+  go live management: Go-Live Management
+  go live: Go-Live Management
+  production launch: Go-Live Management
+  launch management: Go-Live Management
+  implementation lifecycle: Implementation Lifecycle
+  implementation phases: Implementation Lifecycle
+  payment workflows: Payment Workflows
+  payment gateway integration: Payment Workflows
+  product adoption: Product Adoption
+  user adoption: Product Adoption
+  adoption strategy: Product Adoption
+  project management: Project Management
+  program management: Project Management
+  project delivery: Project Management
+  reconciliation: Reconciliation
+  payment reconciliation: Reconciliation
+  requirements gathering: Requirements Gathering
+  requirements discovery: Requirements Gathering
+  requirements elicitation: Requirements Gathering
+  requirements analysis: Requirements Gathering
+  solution design: Solution Design
+  solution architecture: Solution Design
+  system design: Solution Design
+  stakeholder management: Stakeholder Management
+  stakeholder communication: Stakeholder Management
+  test planning: Test Planning
+  test strategy: Test Planning

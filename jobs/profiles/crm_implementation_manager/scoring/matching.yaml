@@ -1,0 +1,264 @@
+version: 3
+
+mandatory_skills:
+- Implementation
+- Requirements Gathering
+- UAT
+- Go-Live
+
+preferred_skills:
+- Solution Design
+- Data Migration
+- API Integration
+- Stakeholder Management
+- Customer Onboarding
+- Project Management
+- Workflow Automation
+- Change Management
+
+skill_mapping:
+  # Implementation lifecycle
+  End-to-End Implementation: End-to-End Implementation
+  Implementation Lifecycle: Implementation Lifecycle
+  Requirements Gathering: Requirements Gathering
+  Requirements Discovery: Requirements Gathering
+  Solution Design: Solution Design
+  Solution Architecture: Solution Design
+  BRD: BRD
+  FRD: FRD
+  Functional Specification: BRD
+  Gap Analysis: Gap Analysis
+  Fit-Gap Analysis: Gap Analysis
+  Process Mapping: Process Mapping
+  Configuration Management: Configuration Management
+  Customization: Customization
+  Data Migration: Data Migration
+  Data Mapping: Data Migration
+  Data Validation: Data Validation
+
+  # Testing & launch
+  UAT: UAT
+  User Acceptance Testing: UAT
+  Test Planning: Test Planning
+  Test Case Preparation: Test Planning
+  Regression Testing: Regression Testing
+  Go-Live: Go-Live
+  Cutover Planning: Go-Live
+  Hypercare: Hypercare
+  Post-Go-Live Support: Hypercare
+
+  # Customer-facing
+  Customer Onboarding: Customer Onboarding
+  Client Onboarding: Customer Onboarding
+  Customer Training: Customer Training
+  End-User Training: Customer Training
+  Change Management: Change Management
+  Adoption Strategy: Product Adoption
+  Product Adoption: Product Adoption
+  User Adoption: Product Adoption
+  Stakeholder Management: Stakeholder Management
+  Executive Communication: Stakeholder Management
+  Customer Success: Customer Success
+
+  # Delivery management
+  Project Planning: Project Management
+  Project Management: Project Management
+  Program Management: Project Management
+  Cross-functional Leadership: Cross-functional Leadership
+  Risk Management: Risk Management
+  Issue Management: Risk Management
+  Resource Planning: Resource Planning
+  Budgeting: Budgeting
+  Timeline Management: Project Management
+  Scope Management: Project Management
+  Escalation Management: Stakeholder Management
+
+  # Integrations
+  API Integration: API Integration
+  REST APIs: API Integration
+  SOAP APIs: API Integration
+  Webhooks: API Integration
+  Middleware Integration: API Integration
+  Third-Party Integration: API Integration
+  SSO Integration: API Integration
+  Single Sign-On: API Integration
+  Data Integration: Data Integration
+  ETL: Data Integration
+
+  # Automation
+  Workflow Automation: Workflow Automation
+  Process Automation: Workflow Automation
+  Business Process Automation: Workflow Automation
+  CRM Configuration: CRM Configuration
+  CRM Customization: Customization
+  Business Rules: CRM Configuration
+  Validation Rules: CRM Configuration
+
+  # Agile
+  Agile Delivery: Agile Delivery
+  Scrum: Agile Delivery
+  Sprint Planning: Agile Delivery
+  Backlog Management: Agile Delivery
+  Kanban: Agile Delivery
+  Waterfall: Agile Delivery
+
+  # Payments
+  Payment Workflows: Payment Workflows
+  Payment Gateway Integration: Payment Workflows
+  Reconciliation: Reconciliation
+  Wallet: Payments
+  Ledger: Payments
+
+job_skill_mapping:
+  CRM Implementation:
+  - End-to-End Implementation
+  - Implementation Lifecycle
+  Requirements:
+  - Requirements Gathering
+  Solution Design:
+  - Solution Design
+  UAT:
+  - UAT
+  Go-Live:
+  - Go-Live
+  Hypercare:
+  - Hypercare
+  Data Migration:
+  - Data Migration
+  Integration:
+  - API Integration
+  Automation:
+  - Workflow Automation
+  Project Management:
+  - Project Management
+  Stakeholder Management:
+  - Stakeholder Management
+  Change Management:
+  - Change Management
+  Customer Onboarding:
+  - Customer Onboarding
+  Product Adoption:
+  - Product Adoption
+  Customer Training:
+  - Customer Training
+  Configuration:
+  - CRM Configuration
+  Agile:
+  - Agile Delivery
+
+job_skill_aliases:
+  implementation:
+  - End-to-End Implementation
+  deployment:
+  - Go-Live
+  cutover:
+  - Go-Live
+  roll-out:
+  - Go-Live
+  discovery:
+  - Requirements Gathering
+  brd:
+  - BRD
+  frd:
+  - FRD
+  srs:
+  - BRD
+  uat:
+  - UAT
+  api:
+  - API Integration
+  rest:
+  - API Integration
+  soap:
+  - API Integration
+  webhook:
+  - API Integration
+  workflow:
+  - Workflow Automation
+  automation:
+  - Workflow Automation
+  onboarding:
+  - Customer Onboarding
+  training:
+  - Customer Training
+
+evidence_scoring:
+  method: capability_saturation
+  core_evidence_weight: 1.0
+  default_evidence_weight: 0.35
+  saturation_constant: 3.0
+  max_score: 100.0
+  strength_limit: 8
+
+capability_groups:
+  implementation_lifecycle:
+    weight: 1.0
+    minimum_evidence: 2
+    capabilities:
+    - End-to-End Implementation
+    - Implementation Lifecycle
+    - Requirements Gathering
+    - Solution Design
+    - Gap Analysis
+    - Process Mapping
+    - UAT
+    - Go-Live
+    - Hypercare
+    - Cutover Planning
+
+  project_delivery:
+    weight: 1.0
+    minimum_evidence: 1
+    capabilities:
+    - Project Management
+    - Program Management
+    - Resource Planning
+    - Risk Management
+    - Timeline Management
+    - Scope Management
+    - Agile Delivery
+    - Cross-functional Leadership
+
+  customer_success:
+    weight: 1.0
+    minimum_evidence: 1
+    capabilities:
+    - Customer Onboarding
+    - Client Onboarding
+    - Customer Training
+    - Product Adoption
+    - Change Management
+    - Customer Success
+    - Stakeholder Management
+
+  integration_and_data:
+    weight: 0.9
+    minimum_evidence: 1
+    capabilities:
+    - API Integration
+    - Data Integration
+    - Data Migration
+    - Middleware Integration
+    - ETL
+    - Webhooks
+    - SSO Integration
+
+  crm_configuration:
+    weight: 0.9
+    minimum_evidence: 1
+    capabilities:
+    - CRM Configuration
+    - Customization
+    - Workflow Automation
+    - Business Rules
+    - Validation Rules
+
+  payments_and_fintech:
+    weight: 0.7
+    minimum_evidence: 1
+    capabilities:
+    - Payment Workflows
+    - Payment Gateway Integration
+    - Reconciliation
+    - Wallet
+    - Ledger

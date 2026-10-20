@@ -1,0 +1,97 @@
+category:
+  name: target_industries
+items:
+- name: Automotive Tech
+  aliases:
+  - auto tech
+  - mobility tech
+- name: B2B SaaS
+  aliases:
+  - b2b software
+  - enterprise saas
+- name: CRM Software
+  aliases:
+  - crm platform
+  - crm solutions
+  - crm vendor
+- name: EdTech
+  aliases:
+  - education technology
+  - learning platform
+- name: Enterprise Software
+  aliases:
+  - enterprise applications
+  - enterprise platform
+  - erp
+- name: FinTech
+  aliases:
+  - financial services
+  - financial technology
+- name: HealthTech
+  aliases:
+  - healthcare saas
+  - healthcare technology
+- name: HRTech
+  aliases:
+  - hr technology
+  - hrms platform
+- name: Marketplace
+  aliases:
+  - ecommerce marketplace
+  - online marketplace
+- name: MarTech
+  aliases:
+  - marketing technology
+- name: Payments
+  aliases:
+  - fintech payments
+  - payment processing
+- name: Travel Tech
+  aliases:
+  - travel platform
+  - travel technology
+- name: Workflow Automation SaaS
+  aliases:
+  - process automation saas
+  - workflow software
+lookup:
+  automotive tech: Automotive Tech
+  auto tech: Automotive Tech
+  mobility tech: Automotive Tech
+  b2b saas: B2B SaaS
+  b2b software: B2B SaaS
+  enterprise saas: B2B SaaS
+  crm software: CRM Software
+  crm vendor: CRM Software
+  crm platform: CRM Software
+  crm solutions: CRM Software
+  edtech: EdTech
+  education technology: EdTech
+  learning platform: EdTech
+  enterprise software: Enterprise Software
+  enterprise applications: Enterprise Software
+  erp: Enterprise Software
+  enterprise platform: Enterprise Software
+  fintech: FinTech
+  financial technology: FinTech
+  financial services: FinTech
+  healthtech: HealthTech
+  healthcare technology: HealthTech
+  healthcare saas: HealthTech
+  hrtech: HRTech
+  hr technology: HRTech
+  hrms platform: HRTech
+  marketplace: Marketplace
+  online marketplace: Marketplace
+  ecommerce marketplace: Marketplace
+  martech: MarTech
+  marketing technology: MarTech
+  payments: Payments
+  payment processing: Payments
+  fintech payments: Payments
+  travel tech: Travel Tech
+  travel technology: Travel Tech
+  travel platform: Travel Tech
+  workflow automation saas: Workflow Automation SaaS
+  workflow software: Workflow Automation SaaS
+  process automation saas: Workflow Automation SaaS

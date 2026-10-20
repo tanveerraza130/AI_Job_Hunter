@@ -1,0 +1,14 @@
+# Intelligence Categories for CRM Implementation Manager Profile
+# Maps profile concepts to intelligence category names.
+# Version: 1.0.1
+
+categories:
+  skills: "implementation_skills"
+  tools: "crm_platforms"
+  concepts: "implementation_concepts"
+  integrations: "integration_tools"
+  project_mgmt: "project_tools"
+  industries: "target_industries"
+  channels: "integration_tools"
+  analytics: "project_tools"
+  bsps: "integration_tools"

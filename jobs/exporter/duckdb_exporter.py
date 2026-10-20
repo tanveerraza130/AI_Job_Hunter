@@ -131,6 +131,15 @@ class DuckDBExporter(BaseExporter):
             )
         """)
 
+        # DuckDB does not enforce a column-level PRIMARY KEY clause
+        # declared inside CREATE TABLE IF NOT EXISTS on all versions.
+        # An explicit unique index is required for ON CONFLICT (job_id)
+        # to work in the UPSERT path.
+        conn.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_fact_jobs_job_id
+            ON fact_jobs(job_id)
+        """)
+
         conn.execute("""
             CREATE TABLE IF NOT EXISTS fact_jobs_skills (
                 job_id VARCHAR,

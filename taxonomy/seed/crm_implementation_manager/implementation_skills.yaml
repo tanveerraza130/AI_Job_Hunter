@@ -1,0 +1,125 @@
+category:
+  name: implementation_skills
+items:
+- name: A/B Testing
+  aliases:
+  - ab testing
+  - split testing
+- name: API Integration
+  aliases:
+  - api integration
+  - api implementation
+- name: BRD Writing
+  aliases:
+  - brd
+  - business requirements document
+- name: Change Management
+  aliases:
+  - change management
+  - ocm
+- name: CRM Configuration
+  aliases:
+  - crm configuration
+  - system configuration
+  - platform configuration
+- name: Cross-functional Leadership
+  aliases:
+  - cross functional leadership
+  - cross-functional leadership
+  - matrix leadership
+- name: Customer Onboarding
+  aliases:
+  - customer onboarding
+  - client onboarding
+  - user onboarding
+- name: Customer Training
+  aliases:
+  - customer training
+  - end user training
+  - end-user training
+  - user enablement
+- name: Cutover Planning
+  aliases:
+  - cutover planning
+  - migration cutover
+- name: Data Integration
+  aliases:
+  - data integration
+  - data sync
+  - etl
+- name: Data Mapping
+  aliases:
+  - data mapping
+  - field mapping
+- name: Data Migration
+  aliases:
+  - data migration
+  - data import
+  - legacy migration
+- name: Data Validation
+  aliases:
+  - data validation
+  - data quality
+  - data cleansing
+- name: End-to-End Implementation
+  aliases:
+  - end to end implementation
+  - end-to-end implementation
+  - e2e implementation
+- name: FRD Writing
+  aliases:
+  - frd
+  - functional requirements document
+  - functional specification
+- name: Gap Analysis
+  aliases:
+  - gap analysis
+  - fit gap analysis
+  - fit-gap analysis
+- name: Go-Live Management
+  aliases:
+  - go live
+  - go-live
+  - production launch
+  - launch management
+- name: Implementation Lifecycle
+  aliases:
+  - implementation lifecycle
+  - implementation phases
+- name: Payment Workflows
+  aliases:
+  - payment workflows
+  - payment gateway integration
+- name: Product Adoption
+  aliases:
+  - product adoption
+  - user adoption
+  - adoption strategy
+- name: Project Management
+  aliases:
+  - project management
+  - program management
+  - project delivery
+- name: Reconciliation
+  aliases:
+  - reconciliation
+  - payment reconciliation
+- name: Requirements Gathering
+  aliases:
+  - requirements gathering
+  - requirements discovery
+  - requirements elicitation
+  - requirements analysis
+- name: Solution Design
+  aliases:
+  - solution design
+  - solution architecture
+  - system design
+- name: Stakeholder Management
+  aliases:
+  - stakeholder management
+  - stakeholder communication
+- name: Test Planning
+  aliases:
+  - test planning
+  - test strategy

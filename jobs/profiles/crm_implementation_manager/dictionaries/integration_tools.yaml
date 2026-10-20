@@ -1,0 +1,100 @@
+category:
+  name: integration_tools
+items:
+- name: Apigee
+  aliases:
+  - google apigee
+- name: Celigo
+  aliases:
+  - celigo integrator
+- name: Dell Boomi
+  aliases:
+  - boomi
+  - boomi atomsphere
+- name: Kong
+  aliases:
+  - kong api gateway
+  - kong gateway
+- name: Make.com
+  aliases:
+  - integromat
+- name: Middleware
+  aliases:
+  - integration middleware
+- name: MuleSoft
+  aliases:
+  - anypoint
+  - mule esb
+- name: Postman
+  aliases:
+  - postman collections
+- name: REST APIs
+  aliases:
+  - rest api
+  - restful api
+  - restful apis
+- name: SnapLogic
+  aliases:
+  - snaplogic ipaas
+- name: SOAP APIs
+  aliases:
+  - soap api
+  - soap web services
+- name: SSO
+  aliases:
+  - saml
+  - single sign on
+- name: Tray.io
+  aliases:
+  - tray platform
+- name: Webhooks
+  aliases:
+  - webhook
+  - webhook integration
+- name: Workato
+  aliases:
+  - workato automation
+- name: Zapier
+  aliases:
+  - zapier automation
+lookup:
+  apigee: Apigee
+  google apigee: Apigee
+  celigo: Celigo
+  celigo integrator: Celigo
+  dell boomi: Dell Boomi
+  boomi: Dell Boomi
+  boomi atomsphere: Dell Boomi
+  kong: Kong
+  kong gateway: Kong
+  kong api gateway: Kong
+  make com: Make.com
+  integromat: Make.com
+  middleware: Middleware
+  integration middleware: Middleware
+  mulesoft: MuleSoft
+  anypoint: MuleSoft
+  mule esb: MuleSoft
+  postman: Postman
+  postman collections: Postman
+  rest apis: REST APIs
+  rest api: REST APIs
+  restful api: REST APIs
+  restful apis: REST APIs
+  snaplogic: SnapLogic
+  snaplogic ipaas: SnapLogic
+  soap apis: SOAP APIs
+  soap api: SOAP APIs
+  soap web services: SOAP APIs
+  sso: SSO
+  single sign on: SSO
+  saml: SSO
+  tray io: Tray.io
+  tray platform: Tray.io
+  webhooks: Webhooks
+  webhook: Webhooks
+  webhook integration: Webhooks
+  workato: Workato
+  workato automation: Workato
+  zapier: Zapier
+  zapier automation: Zapier

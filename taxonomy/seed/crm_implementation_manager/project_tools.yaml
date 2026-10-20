@@ -1,0 +1,23 @@
+category:
+  name: project_tools
+items:
+- name: Asana
+  aliases:
+  - asana
+  - asana projects
+- name: Basecamp
+  aliases:
+  - basecamp
+  - basecamp projects
+- name: ClickUp
+  aliases:
+  - clickup
+  - click up
+- name: Microsoft Project
+  aliases:
+  - ms project
+  - microsoft project
+- name: Smartsheet
+  aliases:
+  - smartsheet
+  - smart sheet

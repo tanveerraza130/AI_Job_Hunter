@@ -1,0 +1,52 @@
+# Bonus Rules for CRM Implementation Manager Profile
+
+version: 1
+
+skill_bonuses:
+  - skill: "Salesforce"
+    bonus: 2.0
+    min_count: 1
+  - skill: "Microsoft Dynamics 365"
+    bonus: 2.0
+    min_count: 1
+  - skill: "API Integration"
+    bonus: 2.0
+    min_count: 1
+  - skill: "Data Migration"
+    bonus: 1.5
+    min_count: 1
+  - skill: "SQL"
+    bonus: 1.5
+    min_count: 1
+  - skill: "UAT"
+    bonus: 1.0
+    min_count: 1
+  - skill: "Go-Live"
+    bonus: 1.0
+    min_count: 1
+
+tool_bonuses:
+  - tool: "Salesforce"
+    bonus: 3.0
+    min_count: 1
+  - tool: "Microsoft Dynamics 365"
+    bonus: 2.5
+    min_count: 1
+  - tool: "Zoho CRM"
+    bonus: 2.0
+    min_count: 1
+  - tool: "HubSpot"
+    bonus: 2.0
+    min_count: 1
+  - tool: "Freshsales"
+    bonus: 1.5
+    min_count: 1
+  - tool: "LeadSquared"
+    bonus: 1.5
+    min_count: 1
+  - tool: "MuleSoft"
+    bonus: 1.5
+    min_count: 1
+  - tool: "Jira"
+    bonus: 1.0
+    min_count: 1

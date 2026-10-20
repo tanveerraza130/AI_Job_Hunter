@@ -1,0 +1,84 @@
+# Title Matching Rules for CRM Implementation Manager Profile
+#
+# Precedence:
+#   1. Strong titles (100 pts)
+#   2. Weak titles (30 pts)
+#   3. Pattern matching (fallback)
+#   4. No match → 0
+
+version: 1
+
+strong:
+  score: 100.0
+  titles:
+    - "crm implementation manager"
+    - "crm implementation lead"
+    - "crm delivery manager"
+    - "crm solutions manager"
+    - "crm solutions delivery manager"
+    - "crm program manager"
+    - "crm deployment manager"
+    - "enterprise crm manager"
+    - "crm onboarding manager"
+    - "implementation manager"
+    - "implementation lead"
+    - "senior implementation manager"
+    - "technical implementation manager"
+    - "enterprise implementation manager"
+    - "saas implementation manager"
+    - "implementation program manager"
+    - "client implementation manager"
+    - "customer implementation manager"
+    - "customer onboarding manager"
+    - "client onboarding manager"
+    - "solution delivery manager"
+    - "solutions delivery manager"
+    - "enterprise delivery manager"
+    - "professional services manager"
+    - "delivery manager saas"
+    - "technical delivery manager"
+    - "salesforce implementation manager"
+    - "salesforce delivery manager"
+    - "dynamics 365 implementation manager"
+    - "dynamics crm delivery manager"
+    - "zoho crm implementation manager"
+    - "hubspot implementation manager"
+    - "freshsales implementation manager"
+    - "leadsquared implementation manager"
+
+weak:
+  score: 30.0
+  titles:
+    - "implementation specialist"
+    - "implementation consultant"
+    - "implementation analyst"
+    - "crm consultant"
+    - "salesforce consultant"
+    - "dynamics consultant"
+    - "crm administrator"
+    - "project manager crm"
+    - "crm project manager"
+
+patterns:
+  - pattern: "crm implementation"
+    score: 95.0
+  - pattern: "crm delivery"
+    score: 90.0
+  - pattern: "implementation manager"
+    score: 90.0
+  - pattern: "implementation lead"
+    score: 88.0
+  - pattern: "solution delivery"
+    score: 85.0
+  - pattern: "delivery manager"
+    score: 80.0
+  - pattern: "professional services"
+    score: 78.0
+  - pattern: "onboarding manager"
+    score: 75.0
+  - pattern: "salesforce"
+    score: 70.0
+  - pattern: "dynamics"
+    score: 68.0
+  - pattern: "customer success"
+    score: 60.0

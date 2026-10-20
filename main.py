@@ -127,7 +127,11 @@ Examples:
     )
     search_group.add_argument(
         "-p", "--profile",
-        help="Profile name (e.g., 'crm_manager')",
+        help=(
+            "Profile name(s), comma-separated. "
+            "Example: 'crm_manager,crm_implementation_manager'. "
+            "Each profile runs independently."
+        ),
     )
 
     parser.add_argument(
@@ -185,34 +189,37 @@ Examples:
         ),
     )
 
+    parser.add_argument(
+        "--max-locations",
+        type=int,
+        default=None,
+        help=(
+            "Only fetch the first N locations per profile (in declared order). "
+            "Useful for fast testing. Default: all locations."
+        ),
+    )
+
     args = parser.parse_args()
+
+    # Multi-profile: parse comma-separated list into a clean list.
+    profile_list: list[str] = []
+    if args.profile:
+        profile_list = [
+            p.strip()
+            for p in args.profile.split(",")
+            if p.strip()
+        ]
+        if not profile_list:
+            parser.error("--profile must contain at least one profile name")
+
 
     # ------------------------------------------------------------
     # Resolve locations
     # ------------------------------------------------------------
-    # Profile mode may use locations defined by the profile.
-    # Keyword mode still requires --location.
-    if args.profile and not args.locations:
-        profile_for_locations = load_profile(args.profile)
-
-        profile_locations = getattr(
-            profile_for_locations,
-            "locations",
-            None,
-        )
-
-        if not profile_locations:
-            raise ValueError(
-                f"No locations configured for profile '{args.profile}'. "
-                "Provide --location."
-            )
-
-        args.locations = profile_locations
-
-    if not args.locations:
-        parser.error(
-            "--location is required when using --keyword"
-        )
+    # Keyword mode requires --location.
+    # Profile mode resolves locations per profile inside the loop below.
+    if args.keyword and not args.locations:
+        parser.error("--location is required when using --keyword")
 
     with sync_playwright() as playwright:
         browser = None
@@ -269,9 +276,9 @@ Examples:
                 )
                 requests = [request]
             else:
-                # Profile mode - build search plan
-                profile = load_profile(args.profile)
-                requests = build_search_plan(profile, args.locations)
+                # Profile mode - placeholder; real requests are built
+                # inside the connector loop, one per profile.
+                requests = []
 
                 # SearchRequest is frozen, so never mutate max_jobs in-place.
                 # Rebuild each request while preserving all existing fields.
@@ -299,43 +306,84 @@ Examples:
 
             if args.connector.lower() == "all":
                 for connector_name in connector_names:
-                    print(
-                        f"\n{'=' * 60}\n"
-                        f"▶ Running connector: {connector_name}\n"
-                        f"{'=' * 60}"
-                    )
-
-                    connector = _create_connector(
-                        connector_name,
-                        context,
-                    )
-                    engine = Engine(
-                        connectors=[connector],
-                        exporter=exporter,
-                        db_path=db_path,
-                    )
-
-                    try:
-                        summary = engine.run(
-                            requests,
-                            destination,
-                            profile_type=args.profile if not args.keyword else None,
+                    # Iterate each profile inside each connector.
+                    for profile_name in profile_list:
+                        print(
+                            f"\n{'=' * 60}\n"
+                            f"▶ Connector: {connector_name}  |  Profile: {profile_name}\n"
+                            f"{'=' * 60}"
                         )
-                        _print_summary(summary, args.exporter)
 
-                        if summary.errors:
+                        # Build this profile's requests.
+                        profile = load_profile(profile_name)
+                        profile_locations = getattr(profile, "locations", None) or []
+
+                        if args.max_locations is not None:
+                            profile_locations = profile_locations[:args.max_locations]
+
+                        if not profile_locations:
                             print(
-                                f"❌ {connector_name}: "
-                                f"{len(summary.errors)} error(s).",
+                                f"❌ Profile '{profile_name}' has no locations configured.",
                                 file=sys.stderr,
                             )
                             return 1
-                    finally:
-                        engine.close()
+
+                        profile_requests = build_search_plan(profile, profile_locations)
+
+                        if args.max_jobs is not None:
+                            profile_requests = [
+                                SearchRequest(
+                                    keyword=r.keyword,
+                                    location=r.location,
+                                    page=r.page,
+                                    per_page=r.per_page,
+                                    experience=r.experience,
+                                    salary_min=r.salary_min,
+                                    salary_max=r.salary_max,
+                                    work_mode=r.work_mode,
+                                    employment_type=r.employment_type,
+                                    company=r.company,
+                                    easy_apply_only=r.easy_apply_only,
+                                    posted_within_days=r.posted_within_days,
+                                    skills=list(r.skills),
+                                    page_size=r.page_size,
+                                    max_jobs=args.max_jobs,
+                                )
+                                for r in profile_requests
+                            ]
+
+                        connector = _create_connector(connector_name, context)
+                        engine = Engine(
+                            connectors=[connector],
+                            exporter=exporter,
+                            db_path=db_path,
+                        )
+
+                        try:
+                            summary = engine.run(
+                                profile_requests,
+                                destination,
+                                profile_type=profile_name,
+                            )
+                            _print_summary(summary, args.exporter)
+
+                            if summary.errors:
+                                print(
+                                    f"❌ {connector_name}/{profile_name}: "
+                                    f"{len(summary.errors)} error(s).",
+                                    file=sys.stderr,
+                                )
+                                return 1
+                        finally:
+                            engine.close()
+
+                        print(
+                            f"✓ {connector_name.upper()} / {profile_name} complete."
+                        )
 
                     print()
                     print(
-                        f"✓ {connector_name.upper()} complete. "
+                        f"✓ {connector_name.upper()} done (all profiles). "
                         "Starting next connector..."
                     )
 
@@ -354,35 +402,81 @@ Examples:
 
                 return 0
 
-            connector = _create_connector(
-                connector_names[0],
-                context,
-            )
-            engine = Engine(
-                connectors=[connector],
-                exporter=exporter,
-                db_path=db_path,
-            )
-
-            try:
-                summary = engine.run(
-                    requests,
-                    destination,
-                    profile_type=args.profile if not args.keyword else None,
+            # Single-connector path — iterate each profile.
+            for profile_name in profile_list:
+                print(
+                    f"\n{'=' * 60}\n"
+                    f"▶ Connector: {connector_names[0]}  |  Profile: {profile_name}\n"
+                    f"{'=' * 60}"
                 )
-                _print_summary(summary, args.exporter)
 
-                if summary.errors:
+                profile = load_profile(profile_name)
+                profile_locations = getattr(profile, "locations", None) or []
+
+                if args.max_locations is not None:
+                    profile_locations = profile_locations[:args.max_locations]
+
+                if not profile_locations:
                     print(
-                        f"❌ Fetch completed with "
-                        f"{len(summary.errors)} error(s).",
+                        f"❌ Profile '{profile_name}' has no locations configured.",
                         file=sys.stderr,
                     )
                     return 1
 
-                return 0
-            finally:
-                engine.close()
+                profile_requests = build_search_plan(profile, profile_locations)
+
+                if args.max_jobs is not None:
+                    profile_requests = [
+                        SearchRequest(
+                            keyword=r.keyword,
+                            location=r.location,
+                            page=r.page,
+                            per_page=r.per_page,
+                            experience=r.experience,
+                            salary_min=r.salary_min,
+                            salary_max=r.salary_max,
+                            work_mode=r.work_mode,
+                            employment_type=r.employment_type,
+                            company=r.company,
+                            easy_apply_only=r.easy_apply_only,
+                            posted_within_days=r.posted_within_days,
+                            skills=list(r.skills),
+                            page_size=r.page_size,
+                            max_jobs=args.max_jobs,
+                        )
+                        for r in profile_requests
+                    ]
+
+                connector = _create_connector(connector_names[0], context)
+                engine = Engine(
+                    connectors=[connector],
+                    exporter=exporter,
+                    db_path=db_path,
+                )
+
+                try:
+                    summary = engine.run(
+                        profile_requests,
+                        destination,
+                        profile_type=profile_name,
+                    )
+                    _print_summary(summary, args.exporter)
+
+                    if summary.errors:
+                        print(
+                            f"❌ {connector_names[0]}/{profile_name}: "
+                            f"{len(summary.errors)} error(s).",
+                            file=sys.stderr,
+                        )
+                        return 1
+                finally:
+                    engine.close()
+
+                print(
+                    f"✓ {connector_names[0].upper()} / {profile_name} complete."
+                )
+
+            return 0
 
         except Exception as exc:
             print(f"❌ Error: {exc}", file=sys.stderr)

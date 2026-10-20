@@ -1,0 +1,13 @@
+# LLM Scoring Configuration (Future Phase)
+
+version: 1
+
+enabled: false
+
+provider: openai
+
+model: gpt-4
+
+prompt: null
+
+fallback_enabled: true

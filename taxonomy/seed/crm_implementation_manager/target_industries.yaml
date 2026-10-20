@@ -1,0 +1,68 @@
+category:
+  name: target_industries
+items:
+- name: Automotive Tech
+  aliases:
+  - automotive tech
+  - auto tech
+  - mobility tech
+- name: B2B SaaS
+  aliases:
+  - b2b saas
+  - b2b software
+  - enterprise saas
+- name: CRM Software
+  aliases:
+  - crm software
+  - crm vendor
+  - crm platform
+  - crm solutions
+- name: EdTech
+  aliases:
+  - edtech
+  - education technology
+  - learning platform
+- name: Enterprise Software
+  aliases:
+  - enterprise applications
+  - erp
+  - enterprise platform
+- name: FinTech
+  aliases:
+  - fintech
+  - financial technology
+  - financial services
+- name: HealthTech
+  aliases:
+  - healthtech
+  - healthcare technology
+  - healthcare saas
+- name: HRTech
+  aliases:
+  - hrtech
+  - hr technology
+  - hrms platform
+- name: Marketplace
+  aliases:
+  - marketplace
+  - online marketplace
+  - ecommerce marketplace
+- name: MarTech
+  aliases:
+  - martech
+  - marketing technology
+- name: Payments
+  aliases:
+  - payments
+  - payment processing
+  - fintech payments
+- name: Travel Tech
+  aliases:
+  - travel tech
+  - travel technology
+  - travel platform
+- name: Workflow Automation SaaS
+  aliases:
+  - workflow automation saas
+  - workflow software
+  - process automation saas

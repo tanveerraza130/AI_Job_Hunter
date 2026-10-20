@@ -1,0 +1,15 @@
+version: 3.2.0
+schema_version: 2
+build_id: c91f4bc1
+build_date: '2026-10-10T21:36:44.623466'
+categories:
+- crm_platforms
+- implementation_concepts
+- implementation_skills
+- integration_tools
+- project_tools
+- target_industries
+statistics:
+  canonical_items: 108
+  flatten_depth: 1
+  compiler_version: 3.2.0

@@ -1,0 +1,153 @@
+category:
+  name: implementation_concepts
+items:
+- name: Agile Delivery
+  aliases:
+  - agile delivery
+  - agile methodology
+  - scrum methodology
+  - kanban board
+- name: Business Process Automation
+  aliases:
+  - business process automation
+  - process automation
+  - bpa
+- name: Client Success Management
+  aliases:
+  - client success
+  - customer success
+  - csm
+  - customer success management
+- name: Configuration vs Customization
+  aliases:
+  - configuration vs customization
+  - config vs custom
+  - out of the box
+  - ootb
+- name: Cross-functional Delivery
+  aliases:
+  - cross functional delivery
+  - cross-functional team
+- name: Customer Journey Mapping
+  aliases:
+  - customer journey mapping
+  - journey mapping
+  - user journey mapping
+- name: Data Governance
+  aliases:
+  - data governance
+  - data stewardship
+  - data quality management
+- name: Discovery Workshop
+  aliases:
+  - discovery workshop
+  - discovery session
+  - requirements workshop
+  - kickoff workshop
+- name: Escalation Management
+  aliases:
+  - escalation management
+  - issue escalation
+  - escalation matrix
+- name: Governance Model
+  aliases:
+  - governance model
+  - project governance
+  - delivery governance
+  - steering committee
+- name: Hypercare
+  aliases:
+  - hypercare
+  - hyper care
+  - post go live support
+  - stabilization period
+- name: Implementation Methodology
+  aliases:
+  - implementation methodology
+  - implementation framework
+  - delivery methodology
+- name: Integration Architecture
+  aliases:
+  - integration architecture
+  - integration design
+- name: KPI Tracking
+  aliases:
+  - kpi tracking
+  - metrics tracking
+  - performance metrics
+- name: Master Data Management
+  aliases:
+  - master data management
+  - mdm
+- name: Process Mapping
+  aliases:
+  - process mapping
+  - business process mapping
+  - as-is process
+  - to-be process
+- name: Program Governance
+  aliases:
+  - program governance
+  - program management office
+  - pmo
+- name: Project Lifecycle
+  aliases:
+  - project lifecycle
+  - sdlc
+  - project phases
+- name: Requirements Traceability
+  aliases:
+  - requirements traceability
+  - requirement traceability matrix
+  - rtm
+- name: Risk Register
+  aliases:
+  - risk register
+  - raid log
+  - risk log
+- name: Roadmap Planning
+  aliases:
+  - roadmap planning
+  - delivery roadmap
+  - implementation roadmap
+- name: Scope Management
+  aliases:
+  - scope management
+  - scope creep
+  - change request
+- name: Service Level Agreement
+  aliases:
+  - service level agreement
+  - sla
+  - slas
+- name: Solution Blueprint
+  aliases:
+  - solution blueprint
+  - sdd
+- name: Stakeholder Alignment
+  aliases:
+  - stakeholder alignment
+  - stakeholder buy in
+- name: System Integration Testing
+  aliases:
+  - system integration testing
+  - sit
+  - integration testing
+- name: User Acceptance Testing
+  aliases:
+  - user acceptance testing
+  - uat
+  - business acceptance testing
+- name: Value Realization
+  aliases:
+  - value realization
+  - roi realization
+  - business value
+- name: Work Breakdown Structure
+  aliases:
+  - work breakdown structure
+  - wbs
+- name: Workflow Automation
+  aliases:
+  - workflow automation
+  - workflow management

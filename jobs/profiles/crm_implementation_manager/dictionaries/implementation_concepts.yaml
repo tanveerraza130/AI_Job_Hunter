@@ -1,0 +1,216 @@
+category:
+  name: implementation_concepts
+items:
+- name: Agile Delivery
+  aliases:
+  - agile methodology
+  - kanban board
+  - scrum methodology
+- name: Business Process Automation
+  aliases:
+  - bpa
+  - process automation
+- name: Client Success Management
+  aliases:
+  - client success
+  - csm
+  - customer success
+  - customer success management
+- name: Configuration vs Customization
+  aliases:
+  - config vs custom
+  - ootb
+  - out of the box
+- name: Cross-functional Delivery
+  aliases:
+  - cross functional team
+- name: Customer Journey Mapping
+  aliases:
+  - journey mapping
+  - user journey mapping
+- name: Data Governance
+  aliases:
+  - data quality management
+  - data stewardship
+- name: Discovery Workshop
+  aliases:
+  - discovery session
+  - kickoff workshop
+  - requirements workshop
+- name: Escalation Management
+  aliases:
+  - escalation matrix
+  - issue escalation
+- name: Governance Model
+  aliases:
+  - delivery governance
+  - project governance
+  - steering committee
+- name: Hypercare
+  aliases:
+  - hyper care
+  - post go live support
+  - stabilization period
+- name: Implementation Methodology
+  aliases:
+  - delivery methodology
+  - implementation framework
+- name: Integration Architecture
+  aliases:
+  - integration design
+- name: KPI Tracking
+  aliases:
+  - metrics tracking
+  - performance metrics
+- name: Master Data Management
+  aliases:
+  - mdm
+- name: Process Mapping
+  aliases:
+  - as is process
+  - business process mapping
+  - to be process
+- name: Program Governance
+  aliases:
+  - pmo
+  - program management office
+- name: Project Lifecycle
+  aliases:
+  - project phases
+  - sdlc
+- name: Requirements Traceability
+  aliases:
+  - requirement traceability matrix
+  - rtm
+- name: Risk Register
+  aliases:
+  - raid log
+  - risk log
+- name: Roadmap Planning
+  aliases:
+  - delivery roadmap
+  - implementation roadmap
+- name: Scope Management
+  aliases:
+  - change request
+  - scope creep
+- name: Service Level Agreement
+  aliases:
+  - sla
+  - slas
+- name: Solution Blueprint
+  aliases:
+  - sdd
+- name: Stakeholder Alignment
+  aliases:
+  - stakeholder buy in
+- name: System Integration Testing
+  aliases:
+  - integration testing
+  - sit
+- name: User Acceptance Testing
+  aliases:
+  - business acceptance testing
+  - uat
+- name: Value Realization
+  aliases:
+  - business value
+  - roi realization
+- name: Work Breakdown Structure
+  aliases:
+  - wbs
+- name: Workflow Automation
+  aliases:
+  - workflow management
+lookup:
+  agile delivery: Agile Delivery
+  agile methodology: Agile Delivery
+  scrum methodology: Agile Delivery
+  kanban board: Agile Delivery
+  business process automation: Business Process Automation
+  process automation: Business Process Automation
+  bpa: Business Process Automation
+  client success management: Client Success Management
+  client success: Client Success Management
+  customer success: Client Success Management
+  csm: Client Success Management
+  customer success management: Client Success Management
+  configuration vs customization: Configuration vs Customization
+  config vs custom: Configuration vs Customization
+  out of the box: Configuration vs Customization
+  ootb: Configuration vs Customization
+  cross functional delivery: Cross-functional Delivery
+  cross functional team: Cross-functional Delivery
+  customer journey mapping: Customer Journey Mapping
+  journey mapping: Customer Journey Mapping
+  user journey mapping: Customer Journey Mapping
+  data governance: Data Governance
+  data stewardship: Data Governance
+  data quality management: Data Governance
+  discovery workshop: Discovery Workshop
+  discovery session: Discovery Workshop
+  requirements workshop: Discovery Workshop
+  kickoff workshop: Discovery Workshop
+  escalation management: Escalation Management
+  issue escalation: Escalation Management
+  escalation matrix: Escalation Management
+  governance model: Governance Model
+  project governance: Governance Model
+  delivery governance: Governance Model
+  steering committee: Governance Model
+  hypercare: Hypercare
+  hyper care: Hypercare
+  post go live support: Hypercare
+  stabilization period: Hypercare
+  implementation methodology: Implementation Methodology
+  implementation framework: Implementation Methodology
+  delivery methodology: Implementation Methodology
+  integration architecture: Integration Architecture
+  integration design: Integration Architecture
+  kpi tracking: KPI Tracking
+  metrics tracking: KPI Tracking
+  performance metrics: KPI Tracking
+  master data management: Master Data Management
+  mdm: Master Data Management
+  process mapping: Process Mapping
+  business process mapping: Process Mapping
+  as is process: Process Mapping
+  to be process: Process Mapping
+  program governance: Program Governance
+  program management office: Program Governance
+  pmo: Program Governance
+  project lifecycle: Project Lifecycle
+  sdlc: Project Lifecycle
+  project phases: Project Lifecycle
+  requirements traceability: Requirements Traceability
+  requirement traceability matrix: Requirements Traceability
+  rtm: Requirements Traceability
+  risk register: Risk Register
+  raid log: Risk Register
+  risk log: Risk Register
+  roadmap planning: Roadmap Planning
+  delivery roadmap: Roadmap Planning
+  implementation roadmap: Roadmap Planning
+  scope management: Scope Management
+  scope creep: Scope Management
+  change request: Scope Management
+  service level agreement: Service Level Agreement
+  sla: Service Level Agreement
+  slas: Service Level Agreement
+  solution blueprint: Solution Blueprint
+  sdd: Solution Blueprint
+  stakeholder alignment: Stakeholder Alignment
+  stakeholder buy in: Stakeholder Alignment
+  system integration testing: System Integration Testing
+  sit: System Integration Testing
+  integration testing: System Integration Testing
+  user acceptance testing: User Acceptance Testing
+  uat: User Acceptance Testing
+  business acceptance testing: User Acceptance Testing
+  value realization: Value Realization
+  roi realization: Value Realization
+  business value: Value Realization
+  work breakdown structure: Work Breakdown Structure
+  wbs: Work Breakdown Structure
+  workflow automation: Workflow Automation
+  workflow management: Workflow Automation

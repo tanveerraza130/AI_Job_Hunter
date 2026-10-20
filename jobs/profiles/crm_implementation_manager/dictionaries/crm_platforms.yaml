@@ -1,0 +1,110 @@
+category:
+  name: crm_platforms
+items:
+- name: Dynamics CRM
+  aliases:
+  - microsoft dynamics crm
+- name: Freshsales
+  aliases:
+  - freshworks
+  - freshworks crm
+- name: HubSpot
+  aliases:
+  - hubspot crm
+- name: LeadSquared
+  aliases:
+  - lead squared
+- name: Microsoft Dynamics 365
+  aliases:
+  - d365
+  - dynamics 365
+  - ms dynamics 365
+- name: Oracle CRM
+  aliases:
+  - oracle sales cloud
+  - oracle service cloud
+- name: Pipedrive
+  aliases:
+  - pipedrive crm
+- name: Sales Cloud
+  aliases:
+  - salesforce sales cloud
+- name: Salesforce
+  aliases:
+  - salesforce com
+  - salesforce crm
+  - sfdc
+- name: Salesforce CPQ
+  aliases:
+  - cpq
+- name: Salesforce Marketing Cloud
+  aliases:
+  - sfmc
+- name: SAP CRM
+  aliases:
+  - sap customer relationship management
+- name: Service Cloud
+  aliases:
+  - salesforce service cloud
+- name: ServiceNow
+  aliases:
+  - service now
+- name: SugarCRM
+  aliases:
+  - sugar crm
+- name: Zoho Creator
+  aliases:
+  - zoho creator platform
+  - zoho low code
+- name: Zoho CRM
+  aliases:
+  - zoho
+  - zoho crm plus
+- name: Zoho One
+  aliases:
+  - zoho suite
+lookup:
+  dynamics crm: Dynamics CRM
+  microsoft dynamics crm: Dynamics CRM
+  freshsales: Freshsales
+  freshworks crm: Freshsales
+  freshworks: Freshsales
+  hubspot: HubSpot
+  hubspot crm: HubSpot
+  leadsquared: LeadSquared
+  lead squared: LeadSquared
+  microsoft dynamics 365: Microsoft Dynamics 365
+  dynamics 365: Microsoft Dynamics 365
+  d365: Microsoft Dynamics 365
+  ms dynamics 365: Microsoft Dynamics 365
+  oracle crm: Oracle CRM
+  oracle sales cloud: Oracle CRM
+  oracle service cloud: Oracle CRM
+  pipedrive: Pipedrive
+  pipedrive crm: Pipedrive
+  salesforce: Salesforce
+  sfdc: Salesforce
+  salesforce crm: Salesforce
+  salesforce com: Salesforce
+  sales cloud: Sales Cloud
+  salesforce sales cloud: Sales Cloud
+  salesforce cpq: Salesforce CPQ
+  cpq: Salesforce CPQ
+  salesforce marketing cloud: Salesforce Marketing Cloud
+  sfmc: Salesforce Marketing Cloud
+  sap crm: SAP CRM
+  sap customer relationship management: SAP CRM
+  service cloud: Service Cloud
+  salesforce service cloud: Service Cloud
+  servicenow: ServiceNow
+  service now: ServiceNow
+  sugarcrm: SugarCRM
+  sugar crm: SugarCRM
+  zoho crm: Zoho CRM
+  zoho: Zoho CRM
+  zoho crm plus: Zoho CRM
+  zoho creator: Zoho Creator
+  zoho creator platform: Zoho Creator
+  zoho low code: Zoho Creator
+  zoho one: Zoho One
+  zoho suite: Zoho One

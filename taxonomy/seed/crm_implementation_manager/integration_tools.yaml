@@ -1,0 +1,73 @@
+category:
+  name: integration_tools
+items:
+- name: Apigee
+  aliases:
+  - apigee
+  - google apigee
+- name: Celigo
+  aliases:
+  - celigo
+  - celigo integrator
+- name: Dell Boomi
+  aliases:
+  - dell boomi
+  - boomi
+  - boomi atomsphere
+- name: Kong
+  aliases:
+  - kong
+  - kong gateway
+  - kong api gateway
+- name: Make.com
+  aliases:
+  - make.com
+  - integromat
+- name: Middleware
+  aliases:
+  - middleware
+  - integration middleware
+- name: MuleSoft
+  aliases:
+  - mulesoft
+  - anypoint
+  - mule esb
+- name: Postman
+  aliases:
+  - postman
+  - postman collections
+- name: REST APIs
+  aliases:
+  - rest api
+  - restful api
+  - restful apis
+- name: SnapLogic
+  aliases:
+  - snaplogic
+  - snaplogic ipaas
+- name: SOAP APIs
+  aliases:
+  - soap api
+  - soap web services
+- name: SSO
+  aliases:
+  - sso
+  - single sign on
+  - single sign-on
+  - saml
+- name: Tray.io
+  aliases:
+  - tray.io
+  - tray platform
+- name: Webhooks
+  aliases:
+  - webhook
+  - webhook integration
+- name: Workato
+  aliases:
+  - workato
+  - workato automation
+- name: Zapier
+  aliases:
+  - zapier
+  - zapier automation
