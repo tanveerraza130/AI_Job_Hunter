@@ -19,7 +19,7 @@ GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
 
 
-def get_google_login_url(mode: str = "signin") -> str:
+def get_google_login_url(mode: str, state: str) -> str:
     if mode not in {"signin", "signup"}:
         mode = "signin"
 
@@ -30,7 +30,7 @@ def get_google_login_url(mode: str = "signin") -> str:
         "scope": "openid email profile",
         "access_type": "offline",
         "prompt": "select_account",
-        "state": mode,
+        "state": state,
     }
 
     return f"{GOOGLE_AUTH_URL}?{urlencode(params)}"

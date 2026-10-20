@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Dashboard from "@/components/dashboard/Dashboard";
 import SessionRedirect from "@/components/auth/SessionRedirect";
@@ -11,41 +11,57 @@ function DashboardAuthHandler({
   onReady: () => void;
 }) {
   const searchParams = useSearchParams();
+  const handledRef = useRef(false);
 
   useEffect(() => {
-    const token = searchParams.get("token");
+    if (handledRef.current) return;
+    handledRef.current = true;
+
+    const code = searchParams.get("code");
+    const state = searchParams.get("state");
     const googleSuccess = searchParams.get("google_success");
 
-    /*
-     * Google authentication arrives at:
-     * /dashboard?google_success=1&token=...
-     *
-     * Store the token BEFORE Dashboard mounts.
-     * This prevents Dashboard from starting with an empty
-     * localStorage token and entering the loading state.
-     */
-    if (googleSuccess === "1" && token) {
-      localStorage.setItem(
-        "ai_job_hunter_token",
-        token,
-      );
-
-      /*
-       * Remove the temporary OAuth query parameters
-       * without causing another navigation/remount.
-       */
+    if (googleSuccess === "1" && code && state) {
+      // Remove callback parameters before making the exchange request.
       window.history.replaceState(
         {},
         document.title,
         "/dashboard",
       );
+
+      void (async () => {
+        try {
+          const response = await fetch("/api/v1/auth/google/exchange", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            cache: "no-store",
+            body: JSON.stringify({ code, state }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Google authorization-code exchange failed.");
+          }
+
+          const exchange = await response.json();
+          if (typeof exchange.access_token !== "string") {
+            throw new Error("Google exchange returned no access token.");
+          }
+
+          localStorage.setItem(
+            "ai_job_hunter_token",
+            exchange.access_token,
+          );
+          onReady();
+        } catch {
+          localStorage.removeItem("ai_job_hunter_token");
+          window.location.replace("/login");
+        }
+      })();
+
+      return;
     }
 
-    /*
-     * Dashboard may now safely mount because:
-     * - Google token has been stored, if present
-     * - normal email-login sessions already have their token
-     */
+    // Existing non-Google sessions can mount the dashboard normally.
     onReady();
   }, [searchParams, onReady]);
 

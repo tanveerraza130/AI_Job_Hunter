@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import {
   BriefcaseBusiness,
   Check,
@@ -172,12 +172,14 @@ export default function AuthPage({
   const [showPassword, setShowPassword] = useState(false);
   const [profileCompletionRequired, setProfileCompletionRequired] =
     useState(false);
+  const googleExchangeHandledRef = useRef(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
     const googleSuccess = params.get("google_success");
-    const googleToken = params.get("token");
+    const googleCode = params.get("code");
+    const googleState = params.get("state");
     const googleEmail = params.get("email");
     const googleAccountCreated = params.get("account_created");
     const googleProfileComplete = params.get("profile_complete");
@@ -223,30 +225,61 @@ export default function AuthPage({
       );
     }
 
-    if (googleSuccess === "1" && googleToken) {
-      localStorage.setItem(
-        "ai_job_hunter_token",
-        googleToken,
-      );
+    if (googleSuccess === "1" && googleCode && googleState) {
+      if (googleExchangeHandledRef.current) return;
+      googleExchangeHandledRef.current = true;
 
-      setAuthMethod("google");
-
-      if (googleAccountCreated === "1") {
-        setAuthMode("signup");
-        setStep("profile");
-      } else if (googleProfileComplete === "0") {
-        setAuthMode("signin");
-        setStep("profile");
-      } else {
-        setAuthMode("signin");
-        continueAfterAuthentication(true);
-      }
-
+      // Remove OAuth parameters from browser history before exchanging the code.
       window.history.replaceState(
         {},
         document.title,
         window.location.pathname,
       );
+
+      void (async () => {
+        try {
+          const response = await fetch("/api/v1/auth/google/exchange", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            cache: "no-store",
+            body: JSON.stringify({
+              code: googleCode,
+              state: googleState,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Google authorization-code exchange failed.");
+          }
+
+          const exchange = await response.json();
+          if (typeof exchange.access_token !== "string") {
+            throw new Error("Google exchange returned no access token.");
+          }
+
+          localStorage.setItem(
+            "ai_job_hunter_token",
+            exchange.access_token,
+          );
+          setAuthMethod("google");
+
+          if (exchange.account_created) {
+            setAuthMode("signup");
+            setStep("profile");
+          } else if (!exchange.profile_complete) {
+            setAuthMode("signin");
+            setStep("profile");
+          } else {
+            setAuthMode("signin");
+            continueAfterAuthentication(true);
+          }
+        } catch {
+          setGoogleError(
+            "Google sign-in could not be completed. Please try again.",
+          );
+          setLoginError("");
+        }
+      })();
     }
   }, []);
   const [showConfirmPassword, setShowConfirmPassword] =

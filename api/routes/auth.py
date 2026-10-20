@@ -3,11 +3,12 @@ Authentication API routes.
 """
 
 from typing import Annotated
+from urllib.parse import urlencode
+import secrets
 from datetime import datetime, timedelta, timezone
 import hashlib
-import secrets
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, EmailStr, Field
@@ -31,6 +32,12 @@ from api.config import settings
 from api.google_oauth import (
     authenticate_google_user,
     get_google_login_url,
+)
+from api.oauth_transactions import (
+    create_oauth_state,
+    consume_oauth_state,
+    create_authorization_code,
+    consume_authorization_code,
 )
 
 
@@ -61,6 +68,39 @@ def _google_oauth_configured() -> bool:
     )
 
 
+
+OAUTH_STATE_COOKIE = "ai_job_hunter_oauth_state"
+OAUTH_STATE_COOKIE_PATH = "/api/v1/auth/google"
+
+
+class GoogleCodeExchangeRequest(BaseModel):
+    code: str = Field(min_length=20, max_length=200)
+    state: str = Field(min_length=20, max_length=200)
+
+
+def _oauth_cookie_secure() -> bool:
+    return bool(
+        settings.google_redirect_uri
+        and settings.google_redirect_uri.lower().startswith("https://")
+    )
+
+
+def _clear_oauth_cookie(response: RedirectResponse) -> RedirectResponse:
+    response.delete_cookie(
+        key=OAUTH_STATE_COOKIE,
+        path=OAUTH_STATE_COOKIE_PATH,
+        secure=_oauth_cookie_secure(),
+        httponly=True,
+        samesite="lax",
+    )
+    return response
+
+
+def _frontend_redirect(path: str, params: dict) -> RedirectResponse:
+    url = f"{settings.frontend_url.rstrip('/')}{path}?{urlencode(params)}"
+    return RedirectResponse(url=url, status_code=302)
+
+
 @router.get("/google/start")
 async def google_start(mode: str = "signin"):
     if not _google_oauth_configured():
@@ -69,101 +109,166 @@ async def google_start(mode: str = "signin"):
             detail="Google sign-in is not configured.",
         )
 
-    return RedirectResponse(
-        url=get_google_login_url(mode),
+    if mode not in {"signin", "signup"}:
+        raise HTTPException(status_code=400, detail="Invalid Google login mode.")
+
+    state = secrets.token_urlsafe(32)
+    create_oauth_state(state, mode)
+
+    response = RedirectResponse(
+        url=get_google_login_url(mode, state),
         status_code=302,
     )
+    response.set_cookie(
+        key=OAUTH_STATE_COOKIE,
+        value=state,
+        max_age=600,
+        httponly=True,
+        secure=_oauth_cookie_secure(),
+        samesite="lax",
+        path=OAUTH_STATE_COOKIE_PATH,
+    )
+    return response
 
 
 @router.get("/google/callback")
 async def google_callback(
+    request: Request,
     code: str,
-    state: str = "signin",
+    state: str | None = None,
 ):
     if not _google_oauth_configured():
         raise HTTPException(
             status_code=503,
             detail="Google sign-in is not configured.",
         )
-    result = authenticate_google_user(
-        code,
-        mode=state,
-    )
+
+    cookie_state = request.cookies.get(OAUTH_STATE_COOKIE)
+    if (
+        not state
+        or not cookie_state
+        or not secrets.compare_digest(state, cookie_state)
+    ):
+        raise HTTPException(status_code=400, detail="Invalid OAuth state.")
+
+    mode = consume_oauth_state(state)
+    if mode is None:
+        raise HTTPException(
+            status_code=400,
+            detail="OAuth state is invalid, expired, or already used.",
+        )
+
+    result = authenticate_google_user(code, mode=mode)
 
     if result.get("status") == "account_not_found":
-        return RedirectResponse(
-            url=(
-                f"{settings.frontend_url}/signup"
-                "?google_error=account_not_found"
-                f"&email={result['email']}"
-            ),
-            status_code=302,
+        response = _frontend_redirect(
+            "/signup",
+            {
+                "google_error": "account_not_found",
+                "email": result["email"],
+            },
         )
+        return _clear_oauth_cookie(response)
 
     if result.get("status") == "account_exists":
-        return RedirectResponse(
-            url=(
-                f"{settings.frontend_url}/signup"
-                "?google_error=account_exists"
-                f"&email={result['email']}"
-            ),
-            status_code=302,
+        response = _frontend_redirect(
+            "/signup",
+            {
+                "google_error": "account_exists",
+                "email": result["email"],
+            },
         )
+        return _clear_oauth_cookie(response)
 
-    profile = get_profile(
-        result["user"]["user_id"]
+    profile = get_profile(result["user"]["user_id"])
+    profile_complete = profile is not None
+
+    authorization_code = secrets.token_urlsafe(32)
+    create_authorization_code(
+        authorization_code,
+        state,
+        {
+            "user_id": result["user"]["user_id"],
+            "user": result["user"],
+            "account_created": bool(result.get("account_created")),
+            "profile_complete": profile_complete,
+        },
     )
 
-    result["profile_complete"] = profile is not None
+    if mode == "signup" and result.get("account_created"):
+        path = "/signup"
+        params = {
+            "google_success": "1",
+            "account_created": "1",
+            "code": authorization_code,
+            "state": state,
+            "email": result["user"]["email"],
+        }
+    elif profile_complete:
+        path = "/dashboard"
+        params = {
+            "google_success": "1",
+            "code": authorization_code,
+            "state": state,
+        }
+    else:
+        path = "/login"
+        params = {
+            "google_success": "1",
+            "profile_complete": "0",
+            "code": authorization_code,
+            "state": state,
+            "email": result["user"]["email"],
+        }
 
-    # Google signup:
-    # - New account -> continue to profile form.
-    # - Existing account -> treat as successful login and go to dashboard.
-    if state == "signup":
-        if result.get("account_created"):
-            return RedirectResponse(
-                url=(
-                    f"{settings.frontend_url}/signup"
-                    "?google_success=1"
-                    f"&account_created=1"
-                    f"&token={result['access_token']}"
-                    f"&email={result['user']['email']}"
-                ),
-                status_code=302,
-            )
+    response = _frontend_redirect(path, params)
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
-        return RedirectResponse(
-            url=(
-                f"{settings.frontend_url}/dashboard"
-                "?google_success=1"
-                f"&token={result['access_token']}"
-            ),
-            status_code=302,
+
+@router.post("/google/exchange")
+async def google_exchange(
+    payload: GoogleCodeExchangeRequest,
+    request: Request,
+):
+    cookie_state = request.cookies.get(OAUTH_STATE_COOKIE)
+    if (
+        not cookie_state
+        or not secrets.compare_digest(payload.state, cookie_state)
+    ):
+        raise HTTPException(status_code=400, detail="Invalid OAuth exchange.")
+
+    result = consume_authorization_code(payload.code, payload.state)
+    if result is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Authorization code is invalid, expired, or already used.",
         )
 
-    # Google signin with an existing account.
-    # Authentication succeeds first; profile completion controls
-    # whether the user continues to the profile form or dashboard.
-    if result.get("profile_complete"):
-        return RedirectResponse(
-            url=(
-                f"{settings.frontend_url}/dashboard"
-                "?google_success=1"
-                f"&token={result['access_token']}"
-            ),
-            status_code=302,
-        )
+    access_token = create_access_token(result["user_id"])
 
-    return RedirectResponse(
-        url=(
-            f"{settings.frontend_url}/login"
-            "?google_success=1"
-            "&profile_complete=0"
-            f"&token={result['access_token']}"
-            f"&email={result['user']['email']}"
-        ),
-        status_code=302,
+    response = {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": result["user"],
+        "account_created": result["account_created"],
+        "profile_complete": result["profile_complete"],
+    }
+
+    from fastapi.responses import JSONResponse
+
+    json_response = JSONResponse(content=response)
+    json_response.headers["Cache-Control"] = "no-store"
+    json_response.headers["Pragma"] = "no-cache"
+    json_response.delete_cookie(
+        key=OAUTH_STATE_COOKIE,
+        path=OAUTH_STATE_COOKIE_PATH,
+        secure=_oauth_cookie_secure(),
+        httponly=True,
+        samesite="lax",
     )
+    return json_response
 
 
 @router.post("/check-email")
