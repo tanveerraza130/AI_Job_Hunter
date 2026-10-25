@@ -1,318 +1,361 @@
 profile_id: crm_implementation_manager
 profile_name: CRM Implementation Manager
-version: 1
+version: 2
 enabled: true
 priority: 1
+
+# =============================================================================
+# SEARCH EXCLUSIONS (title-level, applied before positive scoring)
+# =============================================================================
 search_exclude:
-- Implementation Engineer
-- Network Implementation Engineer
-- Telecom Implementation Engineer
-- Field Engineer
-- Installation Engineer
-- Hardware Engineer
-- QA Engineer
-- Test Engineer
-- Software Developer
-- Software Engineer
-- Full Stack Developer
-- Backend Developer
-- Frontend Developer
-- DevOps Engineer
-- Support Engineer
-- L1 Support
-- L2 Support
-- Technical Support Engineer
-- SAP ABAP
-- SAP Basis
-- Oracle Developer
-- Java Developer
-- .NET Developer
+  # Engineering / developer titles
+  - Software Engineer
+  - Software Developer
+  - Full Stack Developer
+  - Backend Developer
+  - Frontend Developer
+  - Mobile Developer
+  - QA Engineer
+  - Test Engineer
+  - DevOps Engineer
+  - Site Reliability Engineer
+  - Implementation Engineer
+  - Network Implementation Engineer
+  - Telecom Implementation Engineer
+  - Field Engineer
+  - Installation Engineer
+  - Hardware Engineer
+  # SAP / ERP / Oracle noise
+  - SAP ABAP
+  - SAP Basis
+  - SAP Consultant
+  - Oracle Developer
+  - Oracle Consultant
+  # Support noise
+  - L1 Support
+  - L2 Support
+  - Technical Support Engineer
+  - Customer Support
+  - Help Desk
+  - Service Desk
+
+# =============================================================================
+# SEARCH KEYWORDS (used to query connectors)
+# =============================================================================
 search_keywords:
-- CRM Implementation Manager
-- CRM Implementation Lead
-- CRM Delivery Manager
-- CRM Solutions Manager
-- CRM Solutions Delivery Manager
-- CRM Program Manager
-- CRM Deployment Manager
-- Enterprise CRM Manager
-- CRM Onboarding Manager
-- Salesforce Implementation Manager
-- Salesforce Delivery Manager
-- Dynamics 365 Implementation Manager
-- Dynamics CRM Delivery Manager
-- Zoho CRM Implementation Manager
-- HubSpot Implementation Manager
-- Freshsales Implementation Manager
-- LeadSquared Implementation Manager
-- Microsoft Dynamics Implementation Manager
-- Implementation Manager
-- Implementation Lead
-- Senior Implementation Manager
-- Technical Implementation Manager
-- Enterprise Implementation Manager
-- SaaS Implementation Manager
-- Implementation Program Manager
-- Client Implementation Manager
-- Customer Implementation Manager
-- Customer Onboarding Manager
-- Client Onboarding Manager
-- Solution Delivery Manager
-- Solutions Delivery Manager
-- Enterprise Delivery Manager
-- Professional Services Manager
-- Delivery Manager SaaS
-- Technical Delivery Manager
+  # Primary titles (target role family)
+  - CRM Implementation Manager
+  - CRM Implementation Lead
+  - Senior Implementation Manager
+  - Implementation Manager
+  - Implementation Lead
+  - Technical Implementation Manager
+  - Enterprise Implementation Manager
+  - SaaS Implementation Manager
+  - Implementation Program Manager
+  - Implementation Project Manager
+  - Client Implementation Manager
+  - Customer Implementation Manager
+  - Customer Onboarding Manager
+  - Onboarding Manager
+  - Deployment Manager
+  - Professional Services Manager
+  - Solution Delivery Manager
+  - Solutions Delivery Manager
+  - CRM Delivery Manager
+  - CRM Solutions Manager
+  - CRM Solutions Delivery Manager
+  - CRM Program Manager
+  - CRM Deployment Manager
+  - CRM Onboarding Manager
+  # Platform-specific
+  - Salesforce Implementation Manager
+  - Salesforce Delivery Manager
+  - SFMC Platform Implementation Lead
+  - Salesforce Marketing Cloud Implementation Manager
+  - Dynamics 365 Implementation Manager
+  - Dynamics CRM Delivery Manager
+  - Zoho CRM Implementation Manager
+  - HubSpot Implementation Manager
+  - Freshsales Implementation Manager
+  - LeadSquared Implementation Manager
+  - Microsoft Dynamics Implementation Manager
+
+# =============================================================================
+# POSITIVE SKILLS (from CV — all directly evidenced)
+# =============================================================================
 skills:
-- End-to-End Implementation
-- Implementation Lifecycle
-- Requirements Gathering
-- Requirements Discovery
-- Solution Design
-- Solution Architecture
-- BRD
-- FRD
-- Functional Specification
-- Gap Analysis
-- Fit-Gap Analysis
-- Process Mapping
-- Configuration Management
-- Customization
-- Data Migration
-- Data Mapping
-- Data Validation
-- UAT
-- User Acceptance Testing
-- Test Planning
-- Test Case Preparation
-- Regression Testing
-- Go-Live
-- Cutover Planning
-- Hypercare
-- Post-Go-Live Support
-- Customer Onboarding
-- Client Onboarding
-- Customer Training
-- End-User Training
-- Change Management
-- Adoption Strategy
-- Product Adoption
-- User Adoption
-- Stakeholder Management
-- Executive Communication
-- Customer Success
-- Project Planning
-- Project Management
-- Program Management
-- Cross-functional Leadership
-- Risk Management
-- Issue Management
-- Resource Planning
-- Budgeting
-- Timeline Management
-- Scope Management
-- Escalation Management
-- API Integration
-- REST APIs
-- SOAP APIs
-- Webhooks
-- Middleware Integration
-- Third-Party Integration
-- SSO Integration
-- Single Sign-On
-- Data Integration
-- ETL
-- Workflow Automation
-- Process Automation
-- Business Process Automation
-- CRM Configuration
-- CRM Customization
-- Business Rules
-- Validation Rules
-- Agile Delivery
-- Scrum
-- Sprint Planning
-- Backlog Management
-- Kanban
-- Waterfall
-- Payment Workflows
-- Payment Gateway Integration
-- Reconciliation
-- Wallet
-- Ledger
+  - End-to-End Implementation
+  - Implementation Lifecycle
+  - Requirements Gathering
+  - Requirements Discovery
+  - Solution Design
+  - Solution Architecture
+  - BRD
+  - FRD
+  - Functional Specification
+  - Gap Analysis
+  - Process Mapping
+  - Configuration Management
+  - Customization
+  - Data Migration
+  - Data Mapping
+  - Data Validation
+  - UAT
+  - User Acceptance Testing
+  - Test Planning
+  - Regression Testing
+  - Go-Live
+  - Cutover Planning
+  - Hypercare
+  - Post-Go-Live Support
+  - Customer Onboarding
+  - Client Onboarding
+  - Customer Training
+  - End-User Training
+  - Change Management
+  - Adoption Strategy
+  - Product Adoption
+  - User Adoption
+  - Stakeholder Management
+  - Executive Communication
+  - Customer Success
+  - Project Planning
+  - Project Management
+  - Program Management
+  - Cross-functional Leadership
+  - Risk Management
+  - Issue Management
+  - Resource Planning
+  - Budgeting
+  - Timeline Management
+  - Scope Management
+  - Escalation Management
+  - Integration
+  - API Integration
+  - REST APIs
+  - SOAP APIs
+  - Webhooks
+  - Middleware Integration
+  - Third-Party Integration
+  - SSO Integration
+  - Data Integration
+  - ETL
+  - Workflow Automation
+  - Process Automation
+  - Business Process Automation
+  - CRM Configuration
+  - CRM Customization
+  - Business Rules
+  - Validation Rules
+  - Agile Delivery
+  - Scrum
+  - Sprint Planning
+  - Backlog Management
+  - Kanban
+  - Waterfall
+  - Payment Workflows
+  - Payment Gateway Integration
+  - Reconciliation
+  - Wallet
+  - Ledger
+
+# =============================================================================
+# TOOLS (only CV-evidenced)
+# =============================================================================
 tools:
-- Salesforce
-- Sales Cloud
-- Service Cloud
-- Salesforce CPQ
-- Salesforce Marketing Cloud
-- Microsoft Dynamics 365
-- Dynamics CRM
-- SAP CRM
-- Oracle CRM
-- SugarCRM
-- Zoho CRM
-- HubSpot
-- Freshsales
-- Freshworks CRM
-- LeadSquared
-- Pipedrive
-- Zoho One
-- Zoho Creator
-- Salesforce Essentials
-- MuleSoft
-- Dell Boomi
-- Workato
-- Zapier
-- Tray.io
-- SnapLogic
-- Celigo
-- Postman
-- Apigee
-- Kong
-- Jira
-- Confluence
-- Asana
-- Monday.com
-- ClickUp
-- Trello
-- MS Project
-- Smartsheet
-- Basecamp
-- SQL
-- Power BI
-- Tableau
-- Looker
-- Snowflake
-- BigQuery
-- Redshift
-- K2
-- Nintex
-- Power Automate
-- UiPath
-- Zoho Flow
-- Make.com
-- Microsoft Power Platform
-- Power Apps
-- DocuSign
-- Adobe Sign
-- NSDL Aadhaar eSign
-- Leegality
-- Digio
-- Razorpay
-- PayU
-- Cashfree
-- BillDesk
-- Stripe
-- CCAvenue
-- Twilio
-- Gupshup
-- Exotel
-- Knowlarity
+  - Salesforce
+  - Sales Cloud
+  - Service Cloud
+  - Salesforce Marketing Cloud
+  - LeadSquared
+  - LeadSquared CRM
+  - Jira
+  - Confluence
+  - REST APIs
+  - Payment Gateway
+  - NSDL Aadhaar eSign
+  - NSDL Aadhaar OTP eSign
+  - CMS
+  - Workflow Automation
+  - Power Automate
+  - Razorpay
+  - PayU
+  - Cashfree
+  - Stripe
+  - Twilio
+  - MS Project
+  - Smartsheet
+
 experience_min: 8
 experience_max: 12
+
 salary_min: null
 salary_max: null
+
 work_modes:
-- remote
-- hybrid
-- onsite
+  - remote
+  - hybrid
+  - onsite
+
+# =============================================================================
+# NEGATIVE TITLES (reject if in title)
+# =============================================================================
 negative_titles:
-- Implementation Engineer
-- Network Engineer
-- Telecom Engineer
-- Field Engineer
-- Hardware Engineer
-- Installation Engineer
-- Support Engineer
-- QA Engineer
-- Test Engineer
-- Software Developer
-- Software Engineer
-- Full Stack Developer
-- Backend Developer
-- Frontend Developer
-- Mobile Developer
-- DevOps Engineer
-- Site Reliability Engineer
-- Implementation Executive
-- Implementation Associate
-- Implementation Trainee
-- Implementation Intern
-- Junior Implementation
-- L1 Support
-- L2 Support
-- L3 Support
-- Technical Support
-- Customer Support
-- Help Desk
-- Service Desk
-- SAP ABAP
-- SAP Basis
-- SAP Consultant
-- Oracle Developer
-- Oracle Consultant
-- PeopleSoft Consultant
-- Siebel Consultant
-- Sales Executive
-- Sales Manager
-- Business Development Executive
-- Business Development Manager
-- Inside Sales
-- Field Sales
-- Account Executive
-- Account Manager Sales
-- ERP Implementation Manager
-- HRMS Implementation Manager
-- Payroll Implementation Manager
-- WMS Implementation Manager
-- POS Implementation Manager
-- Billing Implementation Engineer
+  # Engineering / developer
+  - Software Engineer
+  - Software Developer
+  - Full Stack Developer
+  - Backend Developer
+  - Frontend Developer
+  - Mobile Developer
+  - DevOps Engineer
+  - Site Reliability Engineer
+  - QA Engineer
+  - Test Engineer
+  - Data Engineer
+  - Data Scientist
+  - ML Engineer
+  - Network Engineer
+  - Telecom Engineer
+  - Field Engineer
+  - Hardware Engineer
+  - Installation Engineer
+  - Implementation Engineer
+  - Implementation Executive
+  - Implementation Associate
+  - Implementation Trainee
+  - Implementation Intern
+  - Junior Implementation
+  # Support
+  - L1 Support
+  - L2 Support
+  - L3 Support
+  - Technical Support
+  - Customer Support
+  - Help Desk
+  - Service Desk
+  # Sales
+  - Sales Executive
+  - Sales Manager
+  - Sales Representative
+  - Business Development Executive
+  - Business Development Manager
+  - BDM
+  - Inside Sales
+  - Field Sales
+  - Key Account Manager
+  - Account Executive
+  - Account Manager
+  - Telecaller
+  - Telesales
+  - Pre-Sales
+  - Presales
+  # Marketing
+  - Performance Marketing
+  - Performance Marketing Manager
+  - Performance Marketing Lead
+  - Digital Marketing Manager
+  - Digital Marketing Lead
+  - Digital Marketing Specialist
+  - Paid Media Manager
+  - SEO Manager
+  - SEO Specialist
+  - SEM Manager
+  - PPC Manager
+  # BPO / voice
+  - BPO
+  - Call Center
+  - Voice Process
+  # SAP / ERP
+  - SAP ABAP
+  - SAP Basis
+  - SAP Consultant
+  - Oracle Developer
+  - Oracle Consultant
+  - PeopleSoft Consultant
+  - Siebel Consultant
+  # Non-CRM implementation noise
+  - ERP Implementation Manager
+  - HRMS Implementation Manager
+  - Payroll Implementation Manager
+  - WMS Implementation Manager
+  - POS Implementation Manager
+  - Billing Implementation Engineer
+  - Network Implementation
+  - Telecom Field Implementation
+  - Installation Engineer
+  # Generic PMO / coordination
+  - PMO Analyst
+  - Program Coordinator
+  - Project Coordinator
+
+# =============================================================================
+# NEGATIVE KEYWORDS (reject if in description)
+# =============================================================================
 negative_keywords:
-- coding assignment
-- unit testing
-- code review
-- algorithm design
-- software development life cycle
-- sdlc
-- full stack
-- backend development
-- frontend development
-- l1 support
-- l2 support
-- voice process
-- chat support
-- email support
-- ticket handling
-- helpdesk
-- service desk
-- cold calling
-- lead generation
-- outbound sales
-- field sales
-- inside sales
-- targets achievement
-- quota
-- hunting
-- on-site installation
-- hardware installation
-- network cabling
-- field deployment
-- rack mounting
-- device commissioning
-- qa engineer
-- manual testing
-- automation testing
-- selenium
-- test automation
+  # Engineering / coding
+  - coding assignment
+  - unit testing
+  - code review
+  - algorithm design
+  - software development life cycle
+  - sdlc
+  - full stack
+  - backend development
+  - frontend development
+  # Support / voice
+  - l1 support
+  - l2 support
+  - voice process
+  - chat support
+  - email support
+  - ticket handling
+  - helpdesk
+  - service desk
+  # Sales / lead-gen noise
+  - cold calling
+  - lead generation
+  - lead gen
+  - outbound sales
+  - field sales
+  - inside sales
+  - targets achievement
+  - quota
+  - hunting
+  # Hardware / field
+  - on-site installation
+  - hardware installation
+  - network cabling
+  - field deployment
+  - rack mounting
+  - device commissioning
+  # QA / test automation
+  - qa engineer
+  - manual testing
+  - automation testing
+  - selenium
+  - test automation
+  # Marketing noise
+  - performance marketing
+  - paid media
+  - paid acquisition
+  - roas
+  - ppc campaigns
+  - google ads management
+  - meta ads management
+  - search engine optimization
+  - paid search
+
+# =============================================================================
+# LOCATIONS
+# =============================================================================
 locations:
-- Gurgaon
-- Noida
-- Delhi
-- Bangalore
-- Mumbai
-- Hyderabad
-- Pune
-- Chennai
-- Kolkata
-- Remote
+  - Gurgaon
+  - Noida
+  - Delhi
+  - Bangalore
+  - Mumbai
+  - Hyderabad
+  - Pune
+  - Remote
