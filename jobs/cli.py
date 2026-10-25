@@ -110,6 +110,13 @@ def main() -> int:
         help="Maximum number of jobs to fetch (for testing).",
     )
 
+    parser.add_argument(
+        "--force-refresh",
+        action="store_true",
+        default=False,
+        help="Bypass the search cache and fetch fresh data from connectors.",
+    )
+
     args = parser.parse_args()
 
     if not args.profile and not args.keyword:
@@ -295,6 +302,7 @@ def main() -> int:
                         connectors=[connector],
                         exporter=exporter,
                         db_path=db_path,
+                        force_refresh=args.force_refresh,
                     )
 
                     try:
@@ -322,6 +330,7 @@ def main() -> int:
                 connectors=[connector],
                 exporter=exporter,
                 db_path=db_path,
+                force_refresh=args.force_refresh,
             )
 
             try:

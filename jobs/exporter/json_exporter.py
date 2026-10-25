@@ -132,6 +132,7 @@ class JSONExporter(BaseExporter):
                     file,
                     indent=2,
                     ensure_ascii=False,
+                    default=str,
                 )
 
         except (OSError, TypeError, ValueError) as e:
