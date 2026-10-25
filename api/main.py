@@ -2,26 +2,32 @@
 AI Job Hunter API - Main Entry Point
 """
 
+from contextlib import asynccontextmanager
+import threading
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.s3_refresh import refresh_loop
-import asyncio
+
+
+@asynccontextmanager
+async def lifespan(app):
+    thread = threading.Thread(target=refresh_loop, daemon=True, name="api-db-refresh")
+    thread.start()
+    yield
+
 
 from api.config import settings
 from api.routes import applications, auth, dashboard, jobs, preferences, profile, profiles
 
 app = FastAPI(
+    lifespan=lifespan,
     title="AI Job Hunter API",
     description="API for AI Job Hunter - Job search, scoring, and ranking platform",
     version="1.0.0",
 )
 
 
-@app.on_event("startup")
-async def start_s3_refresh() -> None:
-    asyncio.create_task(
-        asyncio.to_thread(refresh_loop)
-    )
 
 
 # Configure CORS
