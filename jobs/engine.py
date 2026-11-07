@@ -172,6 +172,7 @@ class Engine:
         exporter: BaseExporter,
         db_path: Path,
         destination: Destination = Destination.LOCAL,
+        force_refresh: bool = False,
     ) -> None:
         """
         Initialize the engine.
@@ -193,6 +194,7 @@ class Engine:
         self._exporter: BaseExporter = exporter
         self._db_path: Path = db_path
         self._destination: Destination = destination
+        self._force_refresh = force_refresh
 
         self._deduplicator: JobDeduplicator = JobDeduplicator()
         self._validator: JobValidator = JobValidator()
@@ -737,10 +739,11 @@ class Engine:
                             "total_searches": len(
                                 request_list
                             ),
-                            "keywords": [
+                            "keyword_sample": [
                                 request.keyword
-                                for request in request_list
+                                for request in request_list[:10]
                             ],
+                            "keywords_truncated": len(request_list) > 10,
                         },
                         "python_version":
                             platform.python_version(),
@@ -828,7 +831,7 @@ class Engine:
                         if self._connectors else ""
                     )
                     try:
-                        if search_cache.should_skip(
+                        if (not self._force_refresh) and search_cache.should_skip(
                             portal=portal_name,
                             keyword=request.keyword,
                             location=request.location,
@@ -1269,6 +1272,7 @@ class Engine:
                 self._exporter.export(
                     valid_new,
                     destination,
+                    search_id=profile_type,
                 )
 
                 if self._registry is not None:

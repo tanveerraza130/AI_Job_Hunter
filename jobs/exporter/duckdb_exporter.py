@@ -302,6 +302,7 @@ class DuckDBExporter(BaseExporter):
         resolver: CompanyResolver,
         normalizer: Normalizer,
         created_at: datetime,
+        search_id: str | None = None,
     ) -> None:
         """
         Insert jobs into fact_jobs.
@@ -327,7 +328,7 @@ class DuckDBExporter(BaseExporter):
                     f"Job missing portal or job_id: title='{job.title}', company='{job.company}'"
                 )
 
-            job_id = f"{job.portal}:{job.job_id}"
+            job_id = f"{job.portal}:{job.job_id}:{search_id or 'default'}"
 
             fact_rows.append((
                 job_id,
@@ -345,7 +346,7 @@ class DuckDBExporter(BaseExporter):
                 job.experience_max,
                 normalizer.normalize_employment_type(job.employment_type),
                 created_at,
-                None,  # search_id - reserved for future
+                search_id,
             ))
 
         # Preserve the existing production fact_jobs schema, which does
@@ -498,6 +499,7 @@ class DuckDBExporter(BaseExporter):
         self,
         jobs: list[Job],
         destination: Path,
+        search_id: str | None = None,
     ) -> None:
         """
         Export jobs to DuckDB database.
@@ -545,7 +547,7 @@ class DuckDBExporter(BaseExporter):
                     self._insert_skills(conn, skills, created_at)
 
                     # Insert facts
-                    self._insert_jobs(conn, jobs, resolver, normalizer, created_at)
+                    self._insert_jobs(conn, jobs, resolver, normalizer, created_at, search_id)
 
                     # Insert bridge
                     self._insert_job_skills(conn, jobs, normalizer)

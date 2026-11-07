@@ -190,7 +190,35 @@ class ProfileJobFilter:
 
         title = (job.title or "").strip().lower()
         description = (job.description or "").strip().lower()
+
+        # -- Honor profile-owned titles.yaml (strong / weak) first.
+        # A title that explicitly matches the profile's own strong/weak
+        # title list qualifies as positive relevance regardless of the
+        # hardcoded CRM-Manager-shaped heuristics below.
+        if self._strong_titles or self._weak_titles:
+            import re as _re
+            def _title_match(candidate: str) -> bool:
+                c = candidate.strip().lower()
+                if not c:
+                    return False
+                pattern = r"(?<![a-z0-9])" + _re.escape(c) + r"(?![a-z0-9])"
+                return _re.search(pattern, title) is not None
+
+            if any(_title_match(t) for t in self._strong_titles):
+                return True
+            if any(_title_match(t) for t in self._weak_titles):
+                return True
         combined = f"{title} {description}"
+
+        # ------------------------------------------------------
+        # Hardcoded CRM-Manager heuristics — only apply to crm_manager.
+        # Other profiles must be driven by their own titles.yaml /
+        # matching.yaml configuration (see profile-owned titles check
+        # above). Applying these to crm_implementation_manager was
+        # rejecting valid "Implementation Manager" titles.
+        # ------------------------------------------------------
+        if getattr(self.profile, "profile_id", "") != "crm_manager":
+            return True
 
         # ------------------------------------------------------
         # Technical / engineering roles MUST be checked FIRST.
@@ -271,6 +299,28 @@ class ProfileJobFilter:
             "e-commerce",
         )
 
+        if getattr(self.profile, "profile_id", "") == "crm_implementation_manager":
+            allow_functional_titles = {
+                "implementation consultant",
+                "technical implementation manager",
+                "technical manager",
+                "d365",
+                "dynamics 365",
+                "dynamics crm",
+                "copilot",
+                "power platform",
+                "architect",
+                "system admin",
+                "administrator",
+                "veeva",
+                "zoho",
+                "shopify",
+            }
+            technical_title_signals = tuple(
+                signal for signal in technical_title_signals
+                if signal not in allow_functional_titles
+            )
+
         if any(signal in title for signal in technical_title_signals):
             return False
 
@@ -310,6 +360,113 @@ class ProfileJobFilter:
             return False
 
         # ------------------------------------------------------
+        # CRM Implementation Manager: require relevant CRM platform
+        # evidence and implementation responsibilities. Keep this
+        # profile-specific so other profiles retain their existing rules.
+        if getattr(self.profile, "profile_id", "") == "crm_implementation_manager":
+            title_text = title
+            body_text = combined
+
+            # Exclude clearly unrelated implementation domains.
+            unrelated_title = any(
+                term in title_text for term in (
+                    "erp implementation",
+                    "hris implementation",
+                    "hrms implementation",
+                    "payroll implementation",
+                    "database implementation",
+                    "db implementation",
+                    "wms implementation",
+                    "pos implementation",
+                )
+            )
+            unrelated_body = any(
+                term in body_text for term in (
+                    "pension administration",
+                    "defined benefit plans",
+                    "cybersecurity suite",
+                    "endpoint management",
+                    "manufacturing plant operations",
+                    "workday implementation",
+                    "sap abap",
+                )
+            )
+            if unrelated_title or unrelated_body:
+                return False
+
+            implementation_role = any(
+                term in title_text for term in (
+                    "implementation", "deployment", "solution delivery",
+                    "professional services", "onboarding manager",
+                )
+            )
+
+            # Explicit Salesforce Marketing Cloud implementation titles
+            # are strong platform evidence even when the captured JD is short.
+            sfmc_implementation_title = (
+                implementation_role
+                and any(
+                    term in title_text
+                    for term in (
+                        "sfmc",
+                        "salesforce marketing cloud",
+                        "marketing cloud",
+                    )
+                )
+            )
+            if sfmc_implementation_title:
+                return True
+
+            crm_platform = any(
+                term in body_text for term in (
+                    "salesforce", "dynamics 365", "dynamics crm",
+                    "hubspot", "zoho crm", "freshsales", "leadsquared",
+                    "sugarcrm", "pipedrive", "sap crm", "oracle cx",
+                    "oracle customer experience",
+                )
+            )
+
+            lifecycle = any(
+                term in body_text for term in (
+                    "requirements gathering", "requirements discovery",
+                    "discovery workshop", "solution design",
+                    "process mapping", "data migration",
+                    "configuration", "workflow", "go-live",
+                    "user acceptance testing", "uat", "deployment",
+                    "implementation lifecycle", "integration",
+                )
+            )
+
+            delivery_support = any(
+                term in body_text for term in (
+                    "customer onboarding", "client onboarding",
+                    "stakeholder management", "project management",
+                    "implementation project", "user training",
+                    "change management", "data integration",
+                    "workflow automation", "platform adoption",
+                )
+            )
+
+            # A named CRM platform in the job title is strong evidence,
+            # but unrelated ERP/HRIS roles were excluded above.
+            direct_platform_title = any(
+                term in title_text for term in (
+                    "salesforce", "dynamics 365", "dynamics crm",
+                    "hubspot", "zoho crm", "freshsales", "leadsquared",
+                    "sugarcrm", "pipedrive",
+                )
+            )
+
+            if direct_platform_title and implementation_role:
+                return bool(lifecycle or delivery_support)
+
+            return bool(
+                implementation_role
+                and crm_platform
+                and lifecycle
+                and delivery_support
+            )
+
         # Explicit CRM / MarTech role titles
         # ------------------------------------------------------
         strong_role_signals = (
@@ -474,6 +631,8 @@ class ProfileJobFilter:
         title_rejections = Counter()
         keyword_rejections = Counter()
         positive_rejections = []
+        title_rejection_jobs = 0
+        keyword_rejection_jobs = 0
 
         for job in jobs:
 
@@ -481,6 +640,7 @@ class ProfileJobFilter:
             # 1. Negative title
             # ------------------------------------------------------
             if self._has_negative_title(job):
+                title_rejection_jobs += 1
                 rejected.append(job)
 
                 title_lower = (job.title or "").lower()
@@ -507,6 +667,7 @@ class ProfileJobFilter:
             # 2. Negative keyword
             # ------------------------------------------------------
             if self._has_negative_keyword(job):
+                keyword_rejection_jobs += 1
                 rejected.append(job)
 
                 combined_text = (
@@ -558,8 +719,8 @@ class ProfileJobFilter:
         print("REJECTION STAGE SUMMARY")
         print("-" * 72)
 
-        title_total = sum(title_rejections.values())
-        keyword_total = sum(keyword_rejections.values())
+        title_total = title_rejection_jobs
+        keyword_total = keyword_rejection_jobs
         positive_total = len(positive_rejections)
 
         print(f"Negative TITLE rejection     : {title_total:,}")
@@ -596,6 +757,8 @@ class ProfileJobFilter:
         print("")
         print("-" * 72)
         print("POSITIVE RELEVANCE REJECTIONS — SAMPLE")
+        print("-" * 72)
+
         print("-" * 72)
 
         for job in positive_rejections[:30]:
