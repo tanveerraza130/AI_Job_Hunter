@@ -199,6 +199,12 @@ Examples:
         ),
     )
 
+    parser.add_argument(
+        "--force-refresh",
+        action="store_true",
+        help="Bypass recent search cache and fetch again.",
+    )
+
     args = parser.parse_args()
 
     # Multi-profile: parse comma-separated list into a clean list.
@@ -357,6 +363,7 @@ Examples:
                             connectors=[connector],
                             exporter=exporter,
                             db_path=db_path,
+                            force_refresh=args.force_refresh,
                         )
 
                         try:
@@ -387,19 +394,42 @@ Examples:
                         "Starting next connector..."
                     )
 
-                # ------------------------------------------------
-                # PUBLISH ONCE AT THE END (not per connector)
-                # ------------------------------------------------
+                # Local-only workflow: do not publish to AWS/S3.
                 print()
                 print("=" * 70)
-                print("🚀 PUBLISHING ALL CONNECTORS TO LIVE (single publish)")
+                print("LOCAL FETCH COMPLETE — AWS/S3 PUBLISH SKIPPED")
                 print("=" * 70)
 
-                _publish_connector_to_production(
-                    Path(__file__).resolve().parent,
-                    "all",
+                return 0
+
+            # Keyword mode — execute the single explicit search request.
+            if args.keyword:
+                connector = _create_connector(connector_names[0], context)
+                engine = Engine(
+                    connectors=[connector],
+                    exporter=exporter,
+                    db_path=db_path,
+                    force_refresh=args.force_refresh,
                 )
 
+                try:
+                    summary = engine.run(
+                        requests,
+                        destination,
+                    )
+                    _print_summary(summary, args.exporter)
+
+                    if summary.errors:
+                        print(
+                            f"❌ {connector_names[0]}: "
+                            f"{len(summary.errors)} error(s).",
+                            file=sys.stderr,
+                        )
+                        return 1
+                finally:
+                    engine.close()
+
+                print(f"✓ {connector_names[0].upper()} keyword search complete.")
                 return 0
 
             # Single-connector path — iterate each profile.
@@ -449,10 +479,11 @@ Examples:
 
                 connector = _create_connector(connector_names[0], context)
                 engine = Engine(
-                    connectors=[connector],
-                    exporter=exporter,
-                    db_path=db_path,
-                )
+                            connectors=[connector],
+                            exporter=exporter,
+                            db_path=db_path,
+                            force_refresh=args.force_refresh,
+                        )
 
                 try:
                     summary = engine.run(

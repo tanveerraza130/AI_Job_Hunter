@@ -4,7 +4,7 @@ Taxonomy Build System - Orchestrator
 
 Usage:
     python -m taxonomy.build --profile crm_manager
-    python -m taxonomy.build --profile data_analyst
+    python -m taxonomy.build --profile crm_manager
 
 Phase: 4.2
 Status: PRODUCTION
@@ -129,7 +129,7 @@ def main() -> int:
         epilog="""
 Examples:
   python -m taxonomy.build --profile crm_manager
-  python -m taxonomy.build --profile data_analyst
+  python -m taxonomy.build --profile crm_manager
         """,
     )
     parser.add_argument(
@@ -137,7 +137,7 @@ Examples:
         type=str,
         default="crm_manager",
         help=(
-            "Profile name (e.g., crm_manager, data_analyst). "
+            "Profile name (e.g., crm_manager). "
             "Defaults to crm_manager."
         ),
     )

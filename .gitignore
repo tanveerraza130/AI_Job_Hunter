@@ -89,3 +89,4 @@ debug/*.logfvxcvxv
 # User preferences DB
 data/preferences.duckdb
 data/preferences.duckdb.wal
+backups/

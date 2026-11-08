@@ -9,6 +9,7 @@ import {
   getMyProfile,
   getUserPreferences,
   saveUserPreferences,
+  updateUserProfile,
 } from "@/lib/api";
 import type { DashboardSummary, Job, JobFilterOptions } from "@/types/job";
 import DashboardMobile from "./DashboardMobile";
@@ -961,8 +962,27 @@ export default function Dashboard() {
 
   const totalPages = Math.max(1, Math.ceil(totalJobs / PAGE_SIZE));
 
+  async function handleProfileChange(newProfileId: string) {
+    if (!newProfileId || newProfileId === profileId) return;
+
+    try {
+      await updateUserProfile(newProfileId);
+
+      // Update local state — triggers all profileId useEffects
+      setProfileId(newProfileId);
+      setProfileReady(false);
+      setPage(1);
+
+      // Small delay to allow backend commit, then re-init
+      setTimeout(() => setProfileReady(true), 150);
+    } catch (err) {
+      console.error("Profile switch failed:", err);
+    }
+  }
+
   const presentationProps = {
     profileId,
+    onProfileChange: handleProfileChange,
     totalJobs,
     summary,
     jobs,

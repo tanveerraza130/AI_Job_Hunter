@@ -247,15 +247,15 @@ class LinkedInAPI:
         self._detail_pace()
 
         response = None
-        for attempt in range(2):
+        for attempt in range(self.max_retries + 1):
             try:
                 response = self.session.get(
                     url, timeout=self.timeout, allow_redirects=True
                 )
             except requests.RequestException:
-                if attempt == 1:
+                if attempt >= self.max_retries:
                     return None
-                time.sleep(0.2)
+                time.sleep(min(0.2 * (2 ** attempt), 1.0))
                 continue
 
             if response.status_code != 429:
@@ -270,7 +270,7 @@ class LinkedInAPI:
             if wait >= 1.5:
                 return None
 
-            if attempt == 1:
+            if attempt >= self.max_retries:
                 return None
 
             time.sleep(wait)

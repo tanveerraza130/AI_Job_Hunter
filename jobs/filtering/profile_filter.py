@@ -169,6 +169,217 @@ class ProfileJobFilter:
                 if str(x).strip()
             ]
 
+    def _profile_specific_positive_relevance(self, job: Job) -> bool:
+        """
+        Positive relevance for non-crm_manager profiles.
+
+        Accept only when:
+          1. Title matches a strong title from this profile's titles.yaml, or
+          2. Title matches a weak title AND JD contains >=1 mandatory skill, or
+          3. Title contains a recognised domain word AND JD contains >=2 mandatory skills.
+
+        Rejects titles like "Grants Manager", "Trainer", "Finops Manager",
+        "Scrum Master", "Hardware Sales Head" that slipped through with the
+        earlier permissive fallback.
+        """
+        import re as _re
+
+        title = (job.title or "").strip().lower()
+        description = (job.description or "").strip().lower()
+        if not title:
+            return False
+
+        def _wb(candidate: str, haystack: str) -> bool:
+            c = candidate.strip().lower()
+            if not c:
+                return False
+            return _re.search(
+                r"(?<![a-z0-9])" + _re.escape(c) + r"(?![a-z0-9])",
+                haystack,
+            ) is not None
+
+        def _count_mandatory() -> int:
+            n = 0
+            for skill in self._mandatory_skills:
+                if _wb(skill, description):
+                    n += 1
+            return n
+
+        # 1. Strong title -> accept
+        if any(_wb(t, title) for t in self._strong_titles):
+            return True
+
+        # 2. Weak title + >=1 mandatory skill -> accept
+        if any(_wb(t, title) for t in self._weak_titles):
+            return _count_mandatory() >= 1
+
+        # 3. Domain words in title -> require CRM context.
+        #    crm_implementation_manager must only accept roles with an
+        #    explicit CRM signal (platform / acronym / CRM-adjacent tool).
+        domain_words = (
+            "implementation",
+            "onboarding",
+            "delivery",
+            "go-live",
+            "deployment",
+            "professional services",
+            "solution delivery",
+            "solutions delivery",
+        )
+        if any(_wb(dw, title) for dw in domain_words):
+            crm_signals = (
+                "salesforce", "sfdc",
+                "dynamics", "d365", "microsoft dynamic", "ms dynamic",
+                "crm", "hubspot", "zoho", "leadsquared", "freshsales",
+                "freshworks", "sugarcrm", "pipedrive", "netsuite", "sap cx",
+                "customer relationship", "customer lifecycle",
+                "coupa", "jaggaer", "clm", "contract lifecycle",
+                "professional services",
+            )
+            haystack = title + " " + description
+            if not any(_wb(sig, haystack) for sig in crm_signals):
+                return False
+            return _count_mandatory() >= 1
+
+        return False
+
+    def _crm_implementation_positive_relevance(self, job: Job) -> bool:
+        """Require CRM platform relevance and genuine implementation/delivery scope."""
+
+        title = (job.title or "").strip().lower()
+        description = (job.description or "").strip().lower()
+        combined = f"{title} {description}"
+
+        if not title:
+            return False
+
+        def has_any(text: str, terms: tuple[str, ...]) -> bool:
+            return any(
+                re.search(
+                    r"(?<![a-z0-9])" + re.escape(term) + r"(?![a-z0-9])",
+                    text,
+                )
+                for term in terms
+            )
+
+        unrelated_title = (
+            "erp implementation", "hris implementation",
+            "hrms implementation", "payroll implementation",
+            "database implementation", "db implementation",
+            "wms implementation", "pos implementation",
+        )
+        unrelated_body = (
+            "pension administration", "defined benefit plans",
+            "cybersecurity suite", "endpoint management",
+            "manufacturing plant operations", "workday implementation",
+            "sap abap",
+        )
+        if has_any(title, unrelated_title) or has_any(combined, unrelated_body):
+            return False
+
+        technical_exclusions = (
+            "software developer", "salesforce developer",
+            "dynamics developer", "software engineer",
+            "data engineer", "backend developer",
+            "frontend developer", "application developer",
+        )
+        if has_any(title, technical_exclusions):
+            return False
+
+        implementation_role = has_any(
+            title,
+            (
+                "implementation", "deployment",
+                "professional services", "onboarding manager",
+            ),
+        )
+        delivery_role = has_any(
+            title,
+            (
+                "solution delivery", "solutions delivery",
+                "delivery manager", "service delivery manager",
+                "technical delivery manager", "delivery lead",
+            ),
+        )
+
+        if not implementation_role and not delivery_role:
+            return False
+
+        crm_platforms = (
+            "salesforce", "sfdc", "sales cloud", "service cloud",
+            "salesforce marketing cloud", "sfmc", "dynamics 365",
+            "dynamics crm", "microsoft dynamics", "hubspot",
+            "zoho crm", "freshsales", "leadsquared", "sugarcrm",
+            "pipedrive", "sap crm", "oracle cx",
+            "oracle customer experience",
+        )
+
+        platform_in_title = has_any(title, crm_platforms)
+        platform_in_description = has_any(description, crm_platforms)
+
+        if not platform_in_title and not platform_in_description:
+            return False
+
+        lifecycle_evidence = has_any(
+            description,
+            (
+                "requirements gathering", "requirements discovery",
+                "discovery workshop", "solution design", "process mapping",
+                "data migration", "configuration", "workflow", "go-live",
+                "user acceptance testing", "uat", "deployment",
+                "implementation lifecycle", "integration",
+            ),
+        )
+
+        delivery_evidence = has_any(
+            description,
+            (
+                "customer onboarding", "client onboarding",
+                "stakeholder management", "project management",
+                "implementation project", "project delivery",
+                "program delivery", "portfolio delivery",
+                "delivery governance", "client delivery",
+                "user training", "change management",
+                "data integration", "workflow automation",
+                "platform adoption",
+            ),
+        )
+
+        coding_evidence = has_any(
+            description,
+            (
+                "apex triggers", "batch classes", "batch apex",
+                "lightning web components", "lwc", "aura components",
+                "apex development", "software coding",
+                "developing custom code",
+            ),
+        )
+
+        # Explicit CRM implementation titles are strong enough to qualify.
+        if platform_in_title and implementation_role:
+            return True
+
+        # CRM delivery titles must demonstrate actual delivery ownership.
+        if platform_in_title and delivery_role:
+            if coding_evidence and not delivery_evidence:
+                return False
+            return lifecycle_evidence or delivery_evidence
+
+        # Generic CRM-implementation titles are strong signals on their own,
+        # even when the platform name is only implied.
+        if implementation_role:
+            if lifecycle_evidence or delivery_evidence:
+                return True
+
+        # Generic implementation titles with platform evidence but no
+        # implementation_role in title still need both pieces.
+        _final = (
+            platform_in_description
+            and lifecycle_evidence
+            and delivery_evidence
+        )
+        return _final
+
     def _positive_relevance(self, job: Job) -> bool:
         """
         Require substantive CRM/MarTech role evidence.
@@ -190,6 +401,11 @@ class ProfileJobFilter:
 
         title = (job.title or "").strip().lower()
         description = (job.description or "").strip().lower()
+
+        # CRM Implementation Manager uses a dedicated strict gate.
+        # This must run before generic strong/weak title matching.
+        if getattr(self.profile, "profile_id", "") == "crm_implementation_manager":
+            return self._crm_implementation_positive_relevance(job)
 
         # -- Honor profile-owned titles.yaml (strong / weak) first.
         # A title that explicitly matches the profile's own strong/weak
@@ -218,7 +434,7 @@ class ProfileJobFilter:
         # rejecting valid "Implementation Manager" titles.
         # ------------------------------------------------------
         if getattr(self.profile, "profile_id", "") != "crm_manager":
-            return True
+            return self._profile_specific_positive_relevance(job)
 
         # ------------------------------------------------------
         # Technical / engineering roles MUST be checked FIRST.
@@ -315,6 +531,8 @@ class ProfileJobFilter:
                 "veeva",
                 "zoho",
                 "shopify",
+                "engineer",
+                "publisher",
             }
             technical_title_signals = tuple(
                 signal for signal in technical_title_signals

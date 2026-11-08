@@ -7,6 +7,7 @@ import pytest
 from jobs.filtering.profile_filter import ProfileJobFilter
 from jobs.job import Job
 from jobs.profiles.profile import Profile
+from jobs.profiles.loader import ConfigLoader
 from jobs.scoring.engine import ProfileScoringEngine
 
 
@@ -322,3 +323,187 @@ def test_reject_generic_marketing_without_crm_evidence():
 
     assert accepted == []
     assert len(rejected) == 1
+
+
+
+def test_accept_sfmc_platform_implementation_lead():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+
+    job = Job(
+        job_id="sfmc-regression",
+        title="SFMC Platform Implementation Lead",
+        company="Test Company",
+        location="India",
+        description=(
+            "Experience with SFDC, SF Personalization, architecting, "
+            "design and strong hands-on experience with Marketing Cloud."
+        ),
+        job_url="https://example.com/sfmc",
+        portal="naukri",
+    )
+
+    assert filter_obj._positive_relevance(job) is True
+
+
+def test_reject_concur_implementation_manager_for_crm_profile():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+
+    job = Job(
+        job_id="concur-regression",
+        title="Concur Implementation Manager",
+        company="Test Company",
+        location="India",
+        description=(
+            "SAP Concur spend management, financial and payroll systems, "
+            "SAP ICS native integration and Concur Web API."
+        ),
+        job_url="https://example.com/concur",
+        portal="naukri",
+    )
+
+    assert filter_obj._positive_relevance(job) is False
+
+
+def test_reject_generic_saas_implementation_manager_for_crm_profile():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+
+    job = Job(
+        job_id="saas-regression",
+        title="Technical Implementation Manager",
+        company="Test Company",
+        location="India",
+        description=(
+            "Experience in SaaS, ecommerce, retail tech, logistics, "
+            "enterprise platforms, customer experience and adoption."
+        ),
+        job_url="https://example.com/saas",
+        portal="naukri",
+    )
+
+    assert filter_obj._positive_relevance(job) is False
+
+
+def test_accept_salesforce_implementation_lead_with_short_description():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+    job = Job(
+        job_id="salesforce-implementation-lead",
+        title="Salesforce Implementation Lead",
+        company="Test Company",
+        location="India",
+        description="Salesforce Administrator and Consultant experience required.",
+        job_url="https://example.com/salesforce-implementation",
+        portal="naukri",
+    )
+    assert filter_obj._positive_relevance(job) is True
+
+
+def test_accept_salesforce_delivery_manager_with_delivery_ownership():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+    job = Job(
+        job_id="salesforce-delivery-manager",
+        title="Salesforce Delivery Manager",
+        company="Test Company",
+        location="India",
+        description=(
+            "Own Salesforce project delivery across client engagements, "
+            "manage stakeholders, integrations, deployment and go-live."
+        ),
+        job_url="https://example.com/salesforce-delivery",
+        portal="naukri",
+    )
+    assert filter_obj._positive_relevance(job) is True
+
+
+def test_accept_salesforce_service_delivery_manager():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+    job = Job(
+        job_id="salesforce-service-delivery",
+        title="Salesforce Service Delivery Manager",
+        company="Test Company",
+        location="India",
+        description=(
+            "Lead Salesforce implementation projects, manage client "
+            "stakeholders, delivery governance, UAT and platform adoption."
+        ),
+        job_url="https://example.com/salesforce-service-delivery",
+        portal="naukri",
+    )
+    assert filter_obj._positive_relevance(job) is True
+
+
+def test_accept_salesforce_technical_delivery_manager_with_integration_scope():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+    job = Job(
+        job_id="salesforce-technical-delivery",
+        title="Salesforce Technical Delivery Manager",
+        company="Test Company",
+        location="India",
+        description=(
+            "Own Salesforce multi-cloud implementation and client delivery, "
+            "including integrations, project governance, deployment and UAT."
+        ),
+        job_url="https://example.com/salesforce-technical-delivery",
+        portal="naukri",
+    )
+    assert filter_obj._positive_relevance(job) is True
+
+
+def test_reject_generic_implementation_consultant_with_only_crm_familiarity():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+    job = Job(
+        job_id="generic-crm-familiarity",
+        title="Implementation Consultant",
+        company="Test Company",
+        location="India",
+        description=(
+            "Commerce platform onboarding. Experience using a CRM platform "
+            "is preferred."
+        ),
+        job_url="https://example.com/generic-consultant",
+        portal="naukri",
+    )
+    assert filter_obj._positive_relevance(job) is False
+
+
+def test_reject_salesforce_technical_delivery_role_that_is_pure_development():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+    job = Job(
+        job_id="salesforce-pure-development",
+        title="Salesforce Technical Delivery Manager",
+        company="Test Company",
+        location="India",
+        description=(
+            "Hands-on Apex Triggers, Batch Classes, LWC, Aura components "
+            "and Apex development."
+        ),
+        job_url="https://example.com/salesforce-development",
+        portal="naukri",
+    )
+    assert filter_obj._positive_relevance(job) is False
+
+
+def test_reject_erp_implementation_with_incidental_dynamics_reference():
+    profile = ConfigLoader.load_profile("crm_implementation_manager")
+    filter_obj = ProfileJobFilter(profile)
+    job = Job(
+        job_id="erp-incidental-dynamics",
+        title="ERP Implementation Manager",
+        company="Test Company",
+        location="India",
+        description=(
+            "Lead ERP implementation. Microsoft Dynamics 365 experience "
+            "is preferred."
+        ),
+        job_url="https://example.com/erp-implementation",
+        portal="naukri",
+    )
+    assert filter_obj._positive_relevance(job) is False

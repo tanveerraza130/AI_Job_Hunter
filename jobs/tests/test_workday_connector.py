@@ -56,8 +56,12 @@ def test_workday_deduplicates_external_path_across_keyword_requests(monkeypatch)
         lambda path: [],
     )
     monkeypatch.setattr(
-        "jobs.connectors.workday.connector.WorkdayDiscovery.discover_live",
+        "jobs.connectors.workday.connector.WorkdayDiscovery.discover",
         lambda self: [("example.com", "tenant", "site")],
+    )
+    monkeypatch.setattr(
+        "jobs.connectors.workday.connector.WorkdayDiscovery.validate",
+        lambda self, boards: boards,
     )
 
     request_1 = SearchRequest(keyword="CRM Manager", location="India", max_jobs=10)

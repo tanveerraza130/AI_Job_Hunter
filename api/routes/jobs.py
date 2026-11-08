@@ -78,7 +78,7 @@ async def list_jobs(
     portal: Optional[str] = Query(None),
     skill: list[str] = Query(default=[]),
     tool: list[str] = Query(default=[]),
-    relevance: list[str] = Query(default=["gte_30"]),
+    relevance: list[str] = Query(default=["all"]),
     posted_date_from: Optional[str] = Query(None),
     user=Depends(current_user),
     posted_date_to: Optional[str] = Query(None),
@@ -211,13 +211,9 @@ async def list_jobs(
     # positional placeholder has exactly one supplied value.
     # ------------------------------------------------------------------
 
-    where_conditions: list[str] = [
-        "s.profile_id = ?",
-    ]
+    where_conditions: list[str] = []
 
-    params: list[object] = [
-        profile_id,
-    ]
+    params: list[object] = []
 
     if normalized_locations:
         location_conditions = []
@@ -650,12 +646,12 @@ async def list_jobs(
                     ''
                 ) AS skills,
 
-                s.overall_score,
-                s.skill_score,
-                s.tool_score,
-                s.experience_score,
-                s.salary_score,
-                s.work_mode_score,
+                COALESCE(s.overall_score, 0.0) AS overall_score,
+                COALESCE(s.skill_score, 0.0) AS skill_score,
+                COALESCE(s.tool_score, 0.0) AS tool_score,
+                COALESCE(s.experience_score, 0.0) AS experience_score,
+                COALESCE(s.salary_score, 0.0) AS salary_score,
+                COALESCE(s.work_mode_score, 0.0) AS work_mode_score,
                 s.score_breakdown,
 
                 {search_score_expression}
@@ -678,9 +674,9 @@ async def list_jobs(
             LEFT JOIN skill_data sd
                 ON j.job_id = sd.job_id
 
-            JOIN latest_scores s
+            LEFT JOIN latest_scores s
                 ON j.job_id = s.job_id
-
+                AND s.profile_id = ?
                 AND s.rn = 1
 
             WHERE j.is_active IS NOT FALSE
@@ -753,10 +749,8 @@ async def list_jobs(
 
     final_params: list[object] = []
 
-    final_params.extend(
-        search_score_params
-    )
-
+    final_params.extend(search_score_params)
+    final_params.append(profile_id)
     final_params.extend(params)
 
     offset = (
@@ -1226,6 +1220,20 @@ async def get_job(
 
     row = results[0]
 
+    skill_rows = db.execute(
+        """
+        SELECT ds.name
+        FROM fact_jobs_skills fjs
+        JOIN dim_skill ds
+            ON fjs.skill_id = ds.skill_id
+        WHERE fjs.job_id = ?
+        ORDER BY ds.name
+        """,
+        [job_id],
+    ).fetchall()
+
+    skills = [skill_row[0] for skill_row in skill_rows]
+
     score = None
 
     if row[14] is not None:
@@ -1281,6 +1289,7 @@ async def get_job(
         portal=row[4] or "",
 
         description=row[2] or "",
+        skills=skills,
         job_url=row[3] or "",
 
         salary_min=row[5],

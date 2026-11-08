@@ -82,6 +82,7 @@ from jobs.enums import (
 from jobs.exporter.base import BaseExporter
 from jobs.filtering import ProfileJobFilter
 from jobs.identity.deduplicator import JobDeduplicator
+from jobs.identity.job_id import canonical_job_id
 from jobs.intelligence import IntelligenceExtractor
 from jobs.job import Job
 from jobs.registry import JobRegistry
@@ -346,10 +347,7 @@ class Engine:
 
     def _canonical_job_id(self, job: Job) -> str:
         """Return the canonical globally unique job ID."""
-        if job.portal and ":" not in str(job.job_id):
-            return f"{job.portal}:{job.job_id}"
-
-        return str(job.job_id)
+        return canonical_job_id(job.portal, job.job_id)
 
     def _save_to_registry(
         self,
@@ -1212,6 +1210,41 @@ class Engine:
                         intelligence = (
                             extractor.extract_from_job(job)
                         )
+
+                        # Enrich Job.skills from the active profile's
+                        # dedicated skills category. Preserve connector
+                        # skills and avoid mixing tools/concepts/channels.
+                        skill_category = (
+                            extractor.category_mappings.get("skills")
+                        )
+
+                        if skill_category:
+                            extracted_items = (
+                                intelligence.get_category(skill_category)
+                            )
+
+                            existing_skills = job.skills or []
+                            if isinstance(existing_skills, str):
+                                existing_skills = [existing_skills]
+
+                            merged_skills = []
+                            seen_skills = set()
+
+                            for skill in [
+                                *existing_skills,
+                                *[
+                                    item.name
+                                    for item in extracted_items
+                                ],
+                            ]:
+                                skill_name = str(skill).strip()
+                                skill_key = skill_name.casefold()
+
+                                if skill_name and skill_key not in seen_skills:
+                                    seen_skills.add(skill_key)
+                                    merged_skills.append(skill_name)
+
+                            job.skills = merged_skills
 
                         result = scoring_engine.score_job(
                             intelligence,

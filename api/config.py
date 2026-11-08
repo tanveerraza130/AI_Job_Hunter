@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     db_path: Path = (
         Path(__file__).resolve().parents[1]
         / "output"
-        / "job_hunter_api.duckdb"
+        / "job_hunter_production_minimal.duckdb"
     )
 
     # Authentication

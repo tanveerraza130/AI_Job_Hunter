@@ -11,17 +11,12 @@ from jobs.profiles.profile import Profile
 
 def build_search_keywords(profile: Profile) -> list[str]:
     """
-    Build unique Naukri discovery keywords.
-
-    Includes:
-    - Profile search keywords.
-    - Profile tools as standalone searches.
+    Build unique job discovery keywords from profile.search_keywords only.
 
     Excludes:
     - Values configured in profile.search_exclude.
 
-    Exclusions apply only to search discovery.
-    They do not remove tools from scoring/intelligence.
+    Tools and skills must not generate discovery searches.
     """
 
     seen: set[str] = set()
@@ -52,8 +47,5 @@ def build_search_keywords(profile: Profile) -> list[str]:
 
     for keyword in profile.search_keywords:
         add_keyword(keyword)
-
-    for tool in profile.tools:
-        add_keyword(tool)
 
     return result

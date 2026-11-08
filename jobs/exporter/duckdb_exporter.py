@@ -57,6 +57,7 @@ import duckdb
 
 from jobs.enums import ExportFormat
 from jobs.exporter.base import BaseExporter
+from jobs.identity.job_id import canonical_job_id
 from jobs.identity.normalizer import Normalizer
 from jobs.identity.resolver import CompanyResolver
 from jobs.job import Job
@@ -328,7 +329,7 @@ class DuckDBExporter(BaseExporter):
                     f"Job missing portal or job_id: title='{job.title}', company='{job.company}'"
                 )
 
-            job_id = f"{job.portal}:{job.job_id}:{search_id or 'default'}"
+            job_id = canonical_job_id(job.portal, job.job_id)
 
             fact_rows.append((
                 job_id,
@@ -424,7 +425,7 @@ class DuckDBExporter(BaseExporter):
             if not job.portal or not job.job_id:
                 continue
 
-            job_id = f"{job.portal}:{job.job_id}"
+            job_id = canonical_job_id(job.portal, job.job_id)
             skills = normalizer.normalize_skills(job.skills)
 
             for skill in skills:
@@ -435,7 +436,7 @@ class DuckDBExporter(BaseExporter):
         # including jobs whose current skill list is empty. Then insert
         # only the current skill relationships.
         exported_job_ids = list({
-            f"{job.portal}:{job.job_id}"
+            canonical_job_id(job.portal, job.job_id)
             for job in jobs
             if job.portal and job.job_id
         })

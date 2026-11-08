@@ -101,6 +101,19 @@ export async function getMyProfile(
   });
 }
 
+/**
+ * Update the authenticated user's active profile_id.
+ * Validates the profile exists on the backend.
+ */
+export async function updateUserProfile(
+  profileId: string,
+): Promise<{ profile_id: string }> {
+  return apiRequest<{ profile_id: string }>("/profile/active", {
+    method: "PATCH",
+    body: JSON.stringify({ profile_id: profileId }),
+  });
+}
+
 export async function getDashboardSummary(
   profileId: string,
   filters?: GetJobsParams,

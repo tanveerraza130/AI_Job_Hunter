@@ -102,6 +102,8 @@ class JobDetail(JobBase):
 
     description: Optional[str] = None
 
+    skills: List[str] = Field(default_factory=list)
+
     job_url: Optional[str] = None
 
     posted_date: Optional[date] = None

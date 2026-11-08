@@ -66,18 +66,26 @@ async def update_my_profile(
 
     existing_profile = get_profile(user["user_id"])
 
-    # IMPORTANT:
-    # Once a profile exists, its profile_id is immutable.
-    # The authenticated account is always the source of truth.
-    if existing_profile:
-        locked_profile_id = existing_profile["profile_id"]
-    else:
-        if not payload.profile_id:
+    # Profile switching: allow the user to change their active
+    # profile_id, but only if they explicitly provide one.
+    # If payload.profile_id is omitted, keep the existing profile.
+    if payload.profile_id:
+        from jobs.profiles.loader import ConfigLoader
+        try:
+            ConfigLoader.load_profile(payload.profile_id)
+        except Exception as exc:
             raise HTTPException(
                 status_code=400,
-                detail="Job profile is required.",
-            )
+                detail="Unknown profile: " + payload.profile_id,
+            ) from exc
         locked_profile_id = payload.profile_id
+    elif existing_profile:
+        locked_profile_id = existing_profile["profile_id"]
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail="Job profile is required.",
+        )
 
     profile = create_or_replace_profile(
         user_id=user["user_id"],
@@ -98,3 +106,54 @@ async def update_my_profile(
         "profile_locked": True,
         "message": "Profile updated successfully.",
     }
+
+# ============================================================
+# Profile switching (lightweight — only changes profile_id)
+# ============================================================
+
+class ActiveProfileUpdate(BaseModel):
+    profile_id: str = Field(min_length=1, max_length=100)
+
+
+@router.patch("/active")
+async def switch_active_profile(
+    payload: ActiveProfileUpdate,
+    user=Depends(current_user),
+):
+    """
+    Switch the authenticated user's active profile_id.
+    Only changes profile_id — preserves all other profile fields.
+    """
+    from jobs.profiles.loader import ConfigLoader
+    from api.account_store import create_or_replace_profile
+
+    # Validate the profile exists on disk
+    try:
+        ConfigLoader.load_profile(payload.profile_id)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=400,
+            detail="Unknown profile: " + payload.profile_id,
+        ) from exc
+
+    existing = get_profile(user["user_id"])
+    if not existing:
+        raise HTTPException(
+            status_code=400,
+            detail="No profile found. Complete your profile first.",
+        )
+
+    profile = create_or_replace_profile(
+        user_id=user["user_id"],
+        full_name=existing["full_name"],
+        phone=existing["phone"],
+        profile_id=payload.profile_id,
+        preferred_location=existing["preferred_location"],
+        role_level=existing["role_level"],
+        experience_years=existing["experience_years"],
+        current_ctc_lpa=existing["current_ctc_lpa"],
+        expected_ctc_lpa=existing["expected_ctc_lpa"],
+        resume_path=existing["resume_path"],
+    )
+
+    return {"profile_id": payload.profile_id, "profile": profile}

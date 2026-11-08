@@ -46,7 +46,7 @@ from .session import NaukriSession
 logger = logging.getLogger(__name__)
 
 
-API_CAPTURE_TIMEOUT_SECONDS = 3
+API_CAPTURE_TIMEOUT_SECONDS = 15
 PAGE_NAVIGATION_TIMEOUT_SECONDS = 30
 
 # Diagnostic experiment: bounded relevance pagination.

@@ -5,6 +5,7 @@ Google OAuth helpers for AI Job Hunter.
 from __future__ import annotations
 
 from urllib.parse import urlencode
+import logging
 
 import requests
 from fastapi import HTTPException
@@ -50,6 +51,23 @@ def exchange_google_code(code: str) -> dict:
     )
 
     if not response.ok:
+        try:
+            error_payload = response.json()
+        except (ValueError, requests.exceptions.JSONDecodeError):
+            error_payload = {}
+
+        google_error = error_payload.get("error", "unknown_error")
+        google_description = error_payload.get(
+            "error_description", "No description provided"
+        )
+
+        logging.getLogger(__name__).error(
+            "Google OAuth token exchange failed: HTTP %s, error=%s, description=%s",
+            response.status_code,
+            str(google_error)[:100],
+            str(google_description)[:250],
+        )
+
         raise HTTPException(
             status_code=401,
             detail="Unable to authenticate with Google.",

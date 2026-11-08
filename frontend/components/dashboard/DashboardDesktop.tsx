@@ -8,6 +8,7 @@ import DashboardContent from "./DashboardContent";
 
 export interface DashboardPresentationProps {
   profileId: string;
+  onProfileChange: (profileId: string) => void | Promise<void>;
   totalJobs: number;
   summary: DashboardSummary | null;
   jobs: Job[];
@@ -59,6 +60,7 @@ export default function DashboardDesktop(props: DashboardPresentationProps) {
       <div className={styles.container}>
         <DashboardHeader
           profileId={props.profileId}
+          onProfileChange={props.onProfileChange}
         />
 
         <DashboardContent {...props} />

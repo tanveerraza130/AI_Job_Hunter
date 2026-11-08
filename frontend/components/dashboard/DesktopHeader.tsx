@@ -10,9 +10,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import styles from "./DesktopHeader.module.css";
+import ProfileSelector from "./ProfileSelector";
 
 interface DesktopHeaderProps {
   profileId: string;
+  onProfileChange?: (profileId: string) => void | Promise<void>;
 }
 
 function formatProfile(value: string): string {
@@ -31,6 +33,7 @@ const navigation = [
 
 export default function DesktopHeader({
   profileId,
+  onProfileChange,
 }: DesktopHeaderProps) {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
@@ -99,6 +102,15 @@ export default function DesktopHeader({
             ),
           )}
         </nav>
+
+        {onProfileChange && (
+          <div style={{ marginRight: 12 }}>
+            <ProfileSelector
+              currentProfileId={profileId}
+              onChange={onProfileChange}
+            />
+          </div>
+        )}
 
         <div className={styles.profileArea}>
           <button
