@@ -74,6 +74,8 @@ interface Props {
    * When provided, tab counts reflect global totals, not just this page.
    */
   statusCounts?: Record<string, number>;
+  onFilterChange?: (status: string | null) => void;
+  serverFiltered?: boolean;
 }
 
 const displayStatus = (status?: string): ApplicationStatus => {
@@ -201,6 +203,8 @@ export default function JobTable({
   totalJobs,
   onJobOpen,
   statusCounts,
+  onFilterChange,
+  serverFiltered = false,
 }: Props) {
   const [statusMap, setStatusMap] = useState<
     Record<string, ApplicationStatus>
@@ -447,10 +451,15 @@ export default function JobTable({
 
   const reportedDeadIds = getReportedDeadIds();
 
+  const selectStatusFilter = (displayStatus: typeof filter, apiStatus: string | null) => {
+    setFilter(displayStatus);
+    onFilterChange?.(apiStatus);
+  };
+
   const filtered = jobs
     .filter((job) => !reportedDeadIds.has(String(job.job_id)))
     .filter((job) => {
-      if (filter === "ALL") return true;
+      if (serverFiltered || filter === "ALL") return true;
       return (statusMap[job.job_id] || "Not Applied") === filter;
     });
   void reportedDeadVersion; // subscribe to re-render on report
@@ -498,7 +507,7 @@ export default function JobTable({
               <button
                 key="ALL"
                 type="button"
-                onClick={() => setFilter("ALL")}
+                onClick={() => selectStatusFilter("ALL", null)}
                 className={
                   isActive ? "mj-tab mj-tab-active" : "mj-tab"
                 }
@@ -546,7 +555,7 @@ export default function JobTable({
             <button
               key={apiValue}
               type="button"
-              onClick={() => setFilter(tabValue)}
+              onClick={() => selectStatusFilter(tabValue, apiValue)}
               className={
                 isActive ? "mj-tab mj-tab-active" : "mj-tab"
               }

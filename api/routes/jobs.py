@@ -20,6 +20,7 @@ from duckdb import DuckDBPyConnection
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from api.config import settings
+from api.application_store import get_application_job_ids
 from api.database import get_db
 from api.location_policy import (
     ALLOWED_LOCATIONS,
@@ -83,6 +84,7 @@ async def list_jobs(
     user=Depends(current_user),
     posted_date_to: Optional[str] = Query(None),
     sort: str = Query("newest"),
+    application_status: Optional[str] = Query(None),
     db: DuckDBPyConnection = Depends(get_db),
 ) -> JobListResponse:
     """
@@ -417,6 +419,57 @@ async def list_jobs(
                 search_pattern,
             ]
         )
+
+    # Application status is applied before SQL ranking, counting and pagination.
+    allowed_application_statuses = {
+        "saved",
+        "pending",
+        "applied",
+        "interview",
+        "offer",
+        "rejected",
+        "not_relevant",
+        "not_applied",
+    }
+
+    normalized_application_status = (
+        application_status.strip().lower()
+        if application_status
+        else None
+    )
+
+    if normalized_application_status:
+        if normalized_application_status not in allowed_application_statuses:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid application_status",
+            )
+
+        if normalized_application_status == "not_applied":
+            tracked_job_ids = get_application_job_ids(
+                user["user_id"],
+                profile_id,
+            )
+
+            if tracked_job_ids:
+                where_conditions.append(
+                    "j.job_id NOT IN (SELECT UNNEST(?::VARCHAR[]))"
+                )
+                params.append(tracked_job_ids)
+        else:
+            matching_job_ids = get_application_job_ids(
+                user["user_id"],
+                profile_id,
+                normalized_application_status,
+            )
+
+            if matching_job_ids:
+                where_conditions.append(
+                    "j.job_id IN (SELECT UNNEST(?::VARCHAR[]))"
+                )
+                params.append(matching_job_ids)
+            else:
+                where_conditions.append("FALSE")
 
     where_clause = "\n AND ".join(
         where_conditions

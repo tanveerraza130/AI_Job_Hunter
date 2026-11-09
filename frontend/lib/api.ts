@@ -224,6 +224,7 @@ export interface GetJobsParams {
   posted_date_from?: string;
   posted_date_to?: string;
   sort?: "score" | "newest" | "oldest";
+  application_status?: "saved" | "pending" | "applied" | "interview" | "offer" | "rejected" | "not_relevant" | "not_applied";
 }
 
 export async function getJobs(
@@ -293,6 +294,9 @@ export async function getJobs(
   }
 
   query.set("sort", params?.sort ?? "newest");
+  if (params?.application_status) {
+    query.set("application_status", params.application_status);
+  }
 
   return apiRequest<JobListResponse>(
     `/jobs?${query.toString()}`,

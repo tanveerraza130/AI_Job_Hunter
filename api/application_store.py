@@ -33,6 +33,7 @@ def _connect() -> duckdb.DuckDBPyConnection:
 def get_application(
     user_id: str,
     job_id: str,
+    profile_id: str,
 ) -> dict | None:
     connection = _connect()
 
@@ -51,8 +52,9 @@ def get_application(
             FROM applications
             WHERE user_id = ?
               AND job_id = ?
+              AND profile_id = ?
             """,
-            [user_id, job_id],
+            [user_id, job_id, profile_id],
         ).fetchone()
 
         if row is None:
@@ -77,6 +79,7 @@ def get_application(
 
 def get_applications(
     user_id: str,
+    profile_id: str,
     job_ids: list[str],
 ) -> dict[str, dict]:
     """
@@ -110,9 +113,10 @@ def get_applications(
                 created_at
             FROM applications
             WHERE user_id = ?
+              AND profile_id = ?
               AND job_id IN ({placeholders})
             """,
-            [user_id, *unique_job_ids],
+            [user_id, profile_id, *unique_job_ids],
         ).fetchall()
 
         columns = [
@@ -182,6 +186,7 @@ def upsert_application(
         application = get_application(
             user_id,
             job_id,
+            profile_id,
         )
 
         if application is None:
@@ -217,6 +222,7 @@ def delete_application(
 
 def get_application_summary(
     user_id: str,
+    profile_id: str,
 ) -> dict:
     connection = _connect()
 
@@ -228,9 +234,10 @@ def get_application_summary(
                 COUNT(*) AS count
             FROM applications
             WHERE user_id = ?
+              AND profile_id = ?
             GROUP BY status
             """,
-            [user_id],
+            [user_id, profile_id],
         ).fetchall()
 
         summary = {
@@ -337,5 +344,41 @@ def count_dead_reports(
 
         return int(row[0]) if row else 0
 
+    finally:
+        connection.close()
+
+
+def get_application_job_ids(
+    user_id: str,
+    profile_id: str,
+    status: str | None = None,
+) -> list[str]:
+    """Return tracked job IDs for one user and profile."""
+    connection = _connect()
+
+    try:
+        if status is None:
+            rows = connection.execute(
+                """
+                SELECT job_id
+                FROM applications
+                WHERE user_id = ?
+                  AND profile_id = ?
+                """,
+                [user_id, profile_id],
+            ).fetchall()
+        else:
+            rows = connection.execute(
+                """
+                SELECT job_id
+                FROM applications
+                WHERE user_id = ?
+                  AND profile_id = ?
+                  AND status = ?
+                """,
+                [user_id, profile_id, status],
+            ).fetchall()
+
+        return list(dict.fromkeys(str(row[0]) for row in rows))
     finally:
         connection.close()

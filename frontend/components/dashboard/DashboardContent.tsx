@@ -4,7 +4,7 @@ import { CalendarDays, ChevronDown, Search, SlidersHorizontal, X } from "lucide-
 import { formatDisplayText } from "@/lib/display";
 import { useEffect, useRef, useState } from "react";
 import JobTable from "@/components/JobTable";
-import { getApplicationSummary } from "@/lib/api";
+import { getApplicationSummary, getJobs } from "@/lib/api";
 import DashboardFilters from "./DashboardFilters";
 import DashboardHero from "./DashboardHero";
 import DashboardStats from "./DashboardStats";
@@ -29,6 +29,24 @@ export default function DashboardContent(props: DashboardPresentationProps) {
   const { filtersOpen, setFiltersOpen } = props;
 
   const [statusCounts, setStatusCounts] = useState<Record<string, number>>({});
+  const [desktopStatusFilter, setDesktopStatusFilter] = useState<string | null>(null);
+  const [desktopStatusPage, setDesktopStatusPage] = useState(1);
+  const [desktopStatusJobs, setDesktopStatusJobs] = useState<typeof props.jobs>([]);
+  const [desktopStatusTotal, setDesktopStatusTotal] = useState(0);
+  const [desktopStatusLoading, setDesktopStatusLoading] = useState(false);
+
+  const displayedJobs = desktopStatusFilter
+    ? desktopStatusJobs
+    : props.jobs;
+  const displayedTotalJobs = desktopStatusFilter
+    ? desktopStatusTotal
+    : props.totalJobs;
+  const displayedPage = desktopStatusFilter
+    ? desktopStatusPage
+    : props.page;
+  const displayedTotalPages = desktopStatusFilter
+    ? Math.max(1, Math.ceil(desktopStatusTotal / 20))
+    : props.totalPages;
 
   useEffect(() => {
     let cancelled = false;
@@ -78,6 +96,76 @@ export default function DashboardContent(props: DashboardPresentationProps) {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [filtersOpen, setFiltersOpen]);
+
+  useEffect(() => {
+    if (!desktopStatusFilter) return;
+
+    let cancelled = false;
+
+    async function loadDesktopStatusJobs() {
+      setDesktopStatusLoading(true);
+
+      try {
+        const result = await getJobs({
+          page: desktopStatusPage,
+          page_size: 20,
+          profile_id: props.profileId,
+          search: props.search,
+          company: props.company,
+          portal: props.portal,
+          location: props.locations,
+          skill: props.skills,
+          tool: props.tools,
+          relevance: props.relevance,
+          posted_date_from: props.postedDateFrom || undefined,
+          posted_date_to: props.postedDateTo || undefined,
+          sort: props.sort,
+          application_status: desktopStatusFilter as
+            | "saved"
+            | "pending"
+            | "applied"
+            | "interview"
+            | "offer"
+            | "rejected"
+            | "not_relevant"
+            | "not_applied",
+        });
+
+        if (!cancelled) {
+          setDesktopStatusJobs(result.jobs || []);
+          setDesktopStatusTotal(result.total || 0);
+        }
+      } catch (error) {
+        console.error("Failed to load status-filtered jobs:", error);
+        if (!cancelled) {
+          setDesktopStatusJobs([]);
+          setDesktopStatusTotal(0);
+        }
+      } finally {
+        if (!cancelled) setDesktopStatusLoading(false);
+      }
+    }
+
+    void loadDesktopStatusJobs();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    desktopStatusFilter,
+    desktopStatusPage,
+    props.profileId,
+    props.search,
+    props.company,
+    props.portal,
+    props.locations,
+    props.skills,
+    props.tools,
+    props.relevance,
+    props.postedDateFrom,
+    props.postedDateTo,
+    props.sort,
+  ]);
 
   if (props.loading && props.jobs.length === 0) {
     return (
@@ -158,7 +246,7 @@ export default function DashboardContent(props: DashboardPresentationProps) {
       <DashboardStats summary={props.summary} />
 
       <JobList>
-        {props.totalJobs === 0 ? (
+        {displayedTotalJobs === 0 && !desktopStatusLoading ? (
           <section className={styles.profileEmptyState}>
             <div className={styles.profileEmptyIcon} aria-hidden="true">
               <span>✦</span>
@@ -188,41 +276,50 @@ export default function DashboardContent(props: DashboardPresentationProps) {
         ) : (
           <section className={styles.jobsSection}>
             <JobTable
-              jobs={props.jobs}
+              jobs={displayedJobs}
               profileId={props.profileId}
-              totalJobs={props.totalJobs}
+              totalJobs={displayedTotalJobs}
               onJobOpen={props.onJobOpen}
               statusCounts={statusCounts}
+              serverFiltered={Boolean(desktopStatusFilter)}
+              onFilterChange={(status) => {
+                setDesktopStatusFilter(status);
+                setDesktopStatusPage(1);
+              }}
             />
 
-            {props.totalJobs > 20 && (
+            {displayedTotalJobs > 20 && (
               <div className={styles.pagination}>
                 <button
                   type="button"
-                  disabled={props.page <= 1}
-                  onClick={() =>
-                    props.setPage((current) =>
-                      Math.max(1, current - 1),
-                    )
-                  }
+                  disabled={displayedPage <= 1}
+                  onClick={() => {
+                    if (desktopStatusFilter) {
+                      setDesktopStatusPage((current) => Math.max(1, current - 1));
+                    } else {
+                      props.setPage((current) => Math.max(1, current - 1));
+                    }
+                  }}
                   className={styles.paginationButton}
                 >
                   Previous
                 </button>
 
                 <span className={styles.paginationInfo}>
-                  Page <strong>{props.page}</strong> of{" "}
-                  <strong>{props.totalPages}</strong>
+                  Page <strong>{displayedPage}</strong> of{" "}
+                  <strong>{displayedTotalPages}</strong>
                 </span>
 
                 <button
                   type="button"
-                  disabled={props.page >= props.totalPages}
-                  onClick={() =>
-                    props.setPage((current) =>
-                      Math.min(props.totalPages, current + 1),
-                    )
-                  }
+                  disabled={displayedPage >= displayedTotalPages}
+                  onClick={() => {
+                    if (desktopStatusFilter) {
+                      setDesktopStatusPage((current) => Math.min(displayedTotalPages, current + 1));
+                    } else {
+                      props.setPage((current) => Math.min(props.totalPages, current + 1));
+                    }
+                  }}
                   className={styles.paginationButton}
                 >
                   Next

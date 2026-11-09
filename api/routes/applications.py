@@ -62,9 +62,18 @@ async def get_application_status(
     job_id: str,
     user: Annotated[dict, Depends(get_current_user)],
 ):
+    profile = get_profile(user["user_id"])
+
+    if profile is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Complete your profile before viewing application status.",
+        )
+
     application = get_application(
         user["user_id"],
         job_id,
+        profile["profile_id"],
     )
 
     return {
@@ -139,16 +148,26 @@ async def applications(
     """
 
     user_id = user["user_id"]
+    profile = get_profile(user_id)
+
+    if profile is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Complete your profile before viewing application status.",
+        )
+
+    profile_id = profile["profile_id"]
 
     if job_id:
         return {
             "applications": get_applications(
                 user_id,
+                profile_id,
                 job_id,
             )
         }
 
-    return get_application_summary(user_id)
+    return get_application_summary(user_id, profile_id)
 
 # ============================================================
 # Job-liveness: user reports a job as dead
